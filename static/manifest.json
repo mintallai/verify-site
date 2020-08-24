@@ -1,0 +1,9 @@
+{
+  "background_color": "#ffffff",
+  "theme_color": "#E938C2",
+  "name": "Verify app",
+  "short_name": "Verify app",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": []
+}
