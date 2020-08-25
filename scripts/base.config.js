@@ -1,3 +1,4 @@
+import childProcess from 'child_process';
 import svelte from 'rollup-plugin-svelte-hot';
 import Hmr from 'rollup-plugin-hot';
 import resolve from '@rollup/plugin-node-resolve';
@@ -8,8 +9,20 @@ import copy from 'rollup-plugin-copy';
 import del from 'del';
 import replace from '@rollup/plugin-replace';
 import { spassr } from 'spassr';
+import { typescript } from 'svelte-preprocess';
 
 const isNollup = !!process.env.NOLLUP;
+
+function typeCheck() {
+  return {
+    writeBundle() {
+      childProcess.spawn('svelte-check', {
+        stdio: ['ignore', 'inherit', 'inherit'],
+        shell: true,
+      });
+    },
+  };
+}
 
 export function createRollupConfigs(config) {
   const { production, serve, distDir } = config;
@@ -63,9 +76,9 @@ function baseConfig(config, ctx) {
   const _rollupConfig = {
     inlineDynamicImports: !dynamicImports,
     preserveEntrySignatures: false,
-    input: `src/main.js`,
+    input: `src/main.ts`,
     output: {
-      name: 'routify_app',
+      name: 'verify_site',
       sourcemap: true,
       ...outputConfig,
     },
@@ -83,11 +96,14 @@ function baseConfig(config, ctx) {
         copyOnce: true,
         flatten: false,
       }),
+      typeCheck(),
+      typescript({ sourceMap: !production }),
       svelte(svelteConfig),
 
       // resolve matching modules from current working directory
       resolve({
         browser: true,
+        extensions: ['.svelte', '.ts', '.js'],
         dedupe: (importee) => !!importee.match(/svelte(\/|$)/),
       }),
       commonjs(),

@@ -1,3 +1,4 @@
+// @ts-ignore
 import HMR from '@sveltech/routify/hmr';
 import App from './App.svelte';
 
