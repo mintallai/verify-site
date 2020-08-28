@@ -3105,6 +3105,13 @@ html-encoding-sniffer@^2.0.1:
   dependencies:
     whatwg-encoding "^1.0.5"
 
+html-parse-stringify@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/html-parse-stringify/-/html-parse-stringify-2.0.0.tgz#d461b53fce26acc3be07e0b98c355c003c4fc8d1"
+  integrity sha512-CW6e38VbOU/lRtPnPu2N0iAcFrM6RrNGO7L32Hrh0tVo698UuJweEdlLuCtPjoUOtoW1ojZdImIv+0SFlWmmPQ==
+  dependencies:
+    void-elements "3.1.0"
+
 http-cache-semantics@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/http-cache-semantics/-/http-cache-semantics-4.1.0.tgz#49e91c5cbf36c9b94bcfcd71c23d5249ec74e390"
@@ -4819,7 +4826,7 @@ postcss-minify-selectors@^4.0.2:
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
 
-postcss-nested@^4.1.1:
+postcss-nested@^4.1.1, postcss-nested@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/postcss-nested/-/postcss-nested-4.2.3.tgz#c6f255b0a720549776d220d00c4b70cd244136f6"
   integrity sha512-rOv0W1HquRCamWy2kFl3QazJMMe1ku6rCFoAAH+9AcxdbpDeBr6k968MLWuLjvjMcGEip01ak09hKOEgpK9hvw==
@@ -5479,6 +5486,13 @@ rollup-plugin-livereload@^1.3.0:
   dependencies:
     livereload "^0.9.1"
 
+rollup-plugin-string@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-string/-/rollup-plugin-string-3.0.0.tgz#fed2d6301fae1e59eb610957df757ef13fada3f0"
+  integrity sha512-vqyzgn9QefAgeKi+Y4A7jETeIAU1zQmS6VotH6bzm/zmUQEnYkpIGRaOBPY41oiWYV4JyBoGAaBjYMYuv+6wVw==
+  dependencies:
+    rollup-pluginutils "^2.4.1"
+
 rollup-plugin-svelte-hot@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/rollup-plugin-svelte-hot/-/rollup-plugin-svelte-hot-0.10.0.tgz#9f3ca029119c1beb461ae8eb69ea9fdc7639524a"
@@ -5522,7 +5536,7 @@ rollup-plugin-terser@^6.1.0:
     serialize-javascript "^3.0.0"
     terser "^4.7.0"
 
-rollup-pluginutils@^2.8.1, rollup-pluginutils@^2.8.2:
+rollup-pluginutils@^2.4.1, rollup-pluginutils@^2.8.1, rollup-pluginutils@^2.8.2:
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.8.2.tgz#72f2af0748b592364dbd3389e600e5a9444a351e"
   integrity sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==
@@ -6515,6 +6529,11 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+void-elements@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
+  integrity sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=
 
 vscode-css-languageservice@4.1.0:
   version "4.1.0"

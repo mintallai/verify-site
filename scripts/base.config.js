@@ -8,6 +8,7 @@ import { terser } from 'rollup-plugin-terser';
 import copy from 'rollup-plugin-copy';
 import del from 'del';
 import replace from '@rollup/plugin-replace';
+import { string } from 'rollup-plugin-string';
 import { spassr } from 'spassr';
 import { typescript } from 'svelte-preprocess';
 
@@ -105,6 +106,9 @@ function baseConfig(config, ctx) {
         browser: true,
         extensions: ['.svelte', '.ts', '.js'],
         dedupe: (importee) => !!importee.match(/svelte(\/|$)/),
+      }),
+      string({
+        include: 'assets/**/*.svg',
       }),
       commonjs(),
 
