@@ -29,7 +29,7 @@
   bind:clientHeight={height}>
   <div class="inner" use:style={styles}>
     <img
-      src="/images/test/image-1.jpg"
+      src="images/test/image-1.jpg"
       alt=""
       class="h-full w-full object-contain object-center" />
   </div>
