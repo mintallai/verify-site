@@ -20,6 +20,7 @@
     @apply rounded-md bg-white shadow-md overflow-hidden;
     width: var(--width);
     height: var(--height);
+    min-width: 256px;
   }
 </style>
 

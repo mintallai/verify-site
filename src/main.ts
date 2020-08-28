@@ -1,4 +1,3 @@
-import 'global.d.ts';
 import HMR from '@sveltech/routify/hmr';
 import App from './App.svelte';
 
