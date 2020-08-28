@@ -23,6 +23,12 @@ module.exports = {
           '900': '#212121',
         },
       },
+      fontSize: {
+        base: '0.9375rem',
+      },
+      boxShadow: {
+        md: '0 0 10px 0 rgba(0, 0, 0, 0.15)',
+      },
     },
   },
   variants: {},

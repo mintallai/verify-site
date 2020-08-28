@@ -1,5 +1,7 @@
 <script lang="ts">
   import Header from '../components/Header.svelte';
+  import Attribution from '../components/Attribution.svelte';
+  import Viewer from '../components/Viewer.svelte';
   import { metatags } from '@sveltech/routify';
   metatags.title = 'CAI Verify';
   metatags.description = 'CAI Verify Site';
@@ -29,7 +31,9 @@
 
 <main>
   <Header />
-  <section class="side left">Left</section>
-  <section class="center">Center</section>
+  <section class="side left">
+    <Attribution />
+  </section>
+  <Viewer />
   <section class="side right">Right</section>
 </main>
