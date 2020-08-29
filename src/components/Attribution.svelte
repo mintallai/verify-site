@@ -13,6 +13,11 @@
       @apply text-base float-right;
     }
   }
+  img.logo {
+    @apply ml-1;
+    width: 14px;
+    height: 14px;
+  }
 </style>
 
 <div>
@@ -21,6 +26,14 @@
     <dt>Creator</dt>
     <dd>Pia Blumenthal</dd>
     <dt>Creator Verified By</dt>
-    <dd>Adobe</dd>
+    <dd class="flex items-center">
+      <span>Adobe</span>
+      <img src="images/svg/logos/adobe.svg" class="logo" alt="Adobe" />
+    </dd>
+    <dt>Created With</dt>
+    <dd class="flex items-center">
+      <span>Photoshop</span>
+      <img src="images/svg/logos/photoshop.svg" class="logo" alt="Photoshop" />
+    </dd>
   </dl>
 </div>

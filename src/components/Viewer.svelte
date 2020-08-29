@@ -25,12 +25,12 @@
 </style>
 
 <div
-  class="bg-gray-100 flex items-center justify-center"
+  class="bg-gray-100 flex items-center justify-center overflow-hidden"
   bind:clientWidth={width}
   bind:clientHeight={height}>
   <div class="inner" use:style={styles}>
     <img
-      src="images/test/image-1.jpg"
+      src="images/test/thumbnail-5.jpg"
       alt=""
       class="h-full w-full object-contain object-center" />
   </div>

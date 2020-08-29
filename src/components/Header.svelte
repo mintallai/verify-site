@@ -1,6 +1,4 @@
 <script lang="ts">
-  import logo from '../../assets/svg/logos/cai.svg';
-  import Icon from '../components/Icon.svelte';
   import Button from './Button.svelte';
 </script>
 
@@ -8,12 +6,19 @@
   header {
     @apply col-span-3 border-gray-200 border-b px-5 flex items-center justify-between;
     height: 80px;
+    .logo {
+      width: 20px;
+      height: 20px;
+    }
   }
 </style>
 
 <header>
   <div class="flex justify-between">
-    <Icon svg={logo} />
+    <img
+      src="images/svg/logos/cai.svg"
+      class="logo"
+      alt="Content Authenticity Initiative" />
     <h1 class="font-black uppercase text-sm ml-2">Image Report</h1>
   </div>
   <div>
