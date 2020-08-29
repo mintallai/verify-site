@@ -4,7 +4,7 @@
 
 <style>
   button {
-    @apply text-sm text-white font-bold px-4 py-2 rounded-full;
+    @apply bg-purple text-sm text-white font-bold px-4 py-2 rounded-full;
     > div {
       position: relative;
       top: -1px;
@@ -12,7 +12,7 @@
   }
 </style>
 
-<button class="bg-purple">
+<button>
   <div>
     <slot />
   </div>

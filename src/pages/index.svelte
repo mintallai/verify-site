@@ -11,29 +11,20 @@
 
 <style lang="postcss">
   main {
-    @apply grid fixed inset-0 font-body;
+    @apply grid absolute w-screen h-screen font-body;
     grid-template-columns: 320px auto 320px;
     grid-template-rows: 80px auto;
-    > section {
-      @apply col-span-1 p-5 border-gray-200;
-      &.left {
-        @apply border-r;
-      }
-      &.center {
-        @apply bg-gray-100;
-      }
-      &.right {
-        @apply border-l;
-      }
-    }
+  }
+  section {
+    @apply col-span-1 p-5 border-gray-200;
   }
 </style>
 
 <main>
   <Header />
-  <section class="side left">
+  <section class="border-r">
     <Attribution />
   </section>
   <Viewer />
-  <section class="side right">Right</section>
+  <section class="border-l">Right</section>
 </main>

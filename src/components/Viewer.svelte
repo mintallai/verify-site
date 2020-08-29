@@ -17,7 +17,7 @@
 
 <style lang="postcss">
   .inner {
-    @apply rounded-md bg-white shadow-md overflow-hidden;
+    @apply rounded-md bg-white shadow-md;
     width: var(--width);
     height: var(--height);
     min-width: 256px;

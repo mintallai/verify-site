@@ -3,15 +3,13 @@
 </script>
 
 <style lang="postcss">
-  dl {
-    dt {
-      @apply font-bold text-xs uppercase text-gray-500 float-left clear-left mb-2;
-      line-height: 1.45rem;
-      vertical-align: middle;
-    }
-    dd {
-      @apply text-base float-right;
-    }
+  dt {
+    @apply font-bold text-xs uppercase text-gray-500 float-left clear-left mb-2;
+    line-height: 1.45rem;
+    vertical-align: middle;
+  }
+  dd {
+    @apply text-base float-right;
   }
   img.logo {
     @apply ml-1;
