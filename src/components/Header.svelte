@@ -1,5 +1,5 @@
 <script lang="ts">
-  import logo from '../../assets/svg/logo.svg';
+  import logo from '../../assets/svg/logos/cai.svg';
   import Icon from '../components/Icon.svelte';
   import Button from './Button.svelte';
 </script>

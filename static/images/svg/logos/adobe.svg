@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
+    <defs>
+        <clipPath id="clip-path">
+            <path fill="none" d="M0 0h16v16H0z"/>
+        </clipPath>
+        <clipPath id="clip-path-3" transform="translate(5 5)">
+            <path class="cls-2" d="M2 0h12a2 2 0 012 2v12a2 2 0 01-2 2H2a2 2 0 01-2-2V2a2 2 0 012-2z"/>
+        </clipPath>
+        <clipPath id="clip-path-4" transform="translate(5 5)">
+            <path class="cls-2" d="M9.38 3.33l3.95 9.43H2.67l4-9.43zM8 6.78l-1.72 4.06h1.81l.79 1.92h1.63L8 6.78z"/>
+        </clipPath>
+        <style>
+            .cls-2{fill:none;clip-path:url(#clip-path);clip-rule:evenodd}
+        </style>
+    </defs>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <g clip-path="url(#clip-path-3)">
+                <path fill="#ea1f21" d="M0 0h26v26H0z"/>
+            </g>
+            <g clip-path="url(#clip-path-4)">
+                <path fill="#fff" d="M2.67 3.33h20.67v19.43H2.67z"/>
+            </g>
+        </g>
+    </g>
+</svg>

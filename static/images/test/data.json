@@ -1,0 +1,103 @@
+{
+  "assets": {
+    "1": {
+      "thumbnailURL": "images/test/thumbnail-1.jpg",
+      "verification": {
+        "contributor": "Andy Parsons",
+        "verifiedBy": {
+          "organizationName": "Truepic",
+          "iconURL": "images/svg/logos/truepic.svg"
+        },
+        "createdWith": {
+          "programName": "Truepic",
+          "iconURL": "images/svg/logos/truepic.svg"
+        },
+        "dateCreated": "2020-07-05T23:15:01.234Z",
+        "edits": {
+          "originalCreation": true,
+          "toolUsage": {
+            "Erase": 7,
+            "Brush Tool": 3
+          },
+          "specialFilters": []
+        },
+        "parent": "1",
+        "ingredients": ["4", "3", "2"]
+      }
+    },
+    "2": {
+      "thumbnailURL": "images/test/thumbnail-2.jpg"
+    },
+    "3": {
+      "thumbnailURL": "images/test/thumbnail-3.jpg"
+    },
+    "4": {
+      "thumbnailURL": "images/test/thumbnail-4.jpg",
+      "verification": {
+        "contributor": "Andrew Kaback",
+        "verifiedBy": {
+          "organizationName": "Adobe",
+          "iconURL": "images/svg/logos/adobe.svg"
+        },
+        "createdWith": {
+          "programName": "Photoshop",
+          "iconURL": "images/svg/logos/photoshop.svg"
+        },
+        "dateCreated": "2020-06-25T16:04:29.097Z",
+        "edits": {
+          "originalCreation": false,
+          "categories": [
+            "Cropped or Reframed",
+            "Globally Adjusted",
+            "Modified Content"
+          ],
+          "toolUsage": {
+            "Brush Tool": 26,
+            "Spot Healing Brush": 8,
+            "Erase": 7,
+            "Layer Via Copy": 2,
+            "Crop": 1
+          },
+          "specialFilters": []
+        },
+        "parent": "1",
+        "ingredients": ["4", "3", "2"]
+      }
+    },
+    "5": {
+      "thumbnailURL": "images/test/thumbnail-5.jpg",
+      "verification": {
+        "contributor": "Pia Blumenthal",
+        "verifiedBy": {
+          "organizationName": "Adobe",
+          "iconURL": "images/svg/logos/adobe.svg"
+        },
+        "createdWith": {
+          "programName": "Photoshop",
+          "iconURL": "images/svg/logos/photoshop.svg"
+        },
+        "dateCreated": "2020-07-30T13:30:56.207Z",
+        "edits": {
+          "originalCreation": false,
+          "categories": [
+            "Cropped or Reframed",
+            "Globally Adjusted",
+            "Modified Content"
+          ],
+          "toolUsage": {
+            "Brush Tool": 26,
+            "Spot Healing Brush": 8,
+            "Erase": 7,
+            "Layer Via Copy": 2,
+            "Crop": 1,
+            "Neural Gallery": 1
+          },
+          "specialFilters": ["Neural Gallery"]
+        },
+        "parent": "1",
+        "ingredients": ["4", "3", "2"]
+      }
+    }
+  },
+  "rootAsset": "5"
+}
