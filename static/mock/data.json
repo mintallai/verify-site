@@ -1,6 +1,6 @@
 {
   "assets": {
-    "1": {
+    "self#jumbf=c_adbe_1/cai.claim?hl=12B974123DC2D0B": {
       "thumbnailURL": "images/test/thumbnail-1.jpg",
       "verification": {
         "contributor": "Andy Parsons",
@@ -20,18 +20,16 @@
             "Brush Tool": 3
           },
           "specialFilters": []
-        },
-        "parent": "1",
-        "ingredients": ["4", "3", "2"]
+        }
       }
     },
-    "2": {
+    "self#jumbf=c_adbe_2/cai.claim?hl=DC3DBFFB000B682": {
       "thumbnailURL": "images/test/thumbnail-2.jpg"
     },
-    "3": {
+    "self#jumbf=c_adbe_3/cai.claim?hl=65EFA9DF4772A02": {
       "thumbnailURL": "images/test/thumbnail-3.jpg"
     },
-    "4": {
+    "self#jumbf=c_adbe_4/cai.claim?hl=3FCBADED7BCF967": {
       "thumbnailURL": "images/test/thumbnail-4.jpg",
       "verification": {
         "contributor": "Andrew Kaback",
@@ -53,18 +51,13 @@
           ],
           "toolUsage": {
             "Brush Tool": 26,
-            "Spot Healing Brush": 8,
-            "Erase": 7,
-            "Layer Via Copy": 2,
             "Crop": 1
           },
           "specialFilters": []
-        },
-        "parent": "1",
-        "ingredients": ["4", "3", "2"]
+        }
       }
     },
-    "5": {
+    "self#jumbf=c_adbe_5/cai.claim?hl=77CF01760F909F3": {
       "thumbnailURL": "images/test/thumbnail-5.jpg",
       "verification": {
         "contributor": "Pia Blumenthal",
@@ -94,10 +87,14 @@
           },
           "specialFilters": ["Neural Gallery"]
         },
-        "parent": "1",
-        "ingredients": ["4", "3", "2"]
+        "parent": "self#jumbf=c_adbe_1/cai.claim?hl=12B974123DC2D0B",
+        "ingredients": [
+          "self#jumbf=c_adbe_4/cai.claim?hl=3FCBADED7BCF967",
+          "self#jumbf=c_adbe_3/cai.claim?hl=65EFA9DF4772A02",
+          "self#jumbf=c_adbe_2/cai.claim?hl=DC3DBFFB000B682"
+        ]
       }
     }
   },
-  "rootAsset": "5"
+  "rootAsset": "self#jumbf=c_adbe_5/cai.claim?hl=77CF01760F909F3"
 }
