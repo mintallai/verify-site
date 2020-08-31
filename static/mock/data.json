@@ -1,6 +1,6 @@
 {
   "assets": {
-    "self#jumbf=c_adbe_1/cai.claim?hl=12B974123DC2D0B": {
+    "c_adbe_1/cai.claim": {
       "thumbnailURL": "images/test/thumbnail-1.jpg",
       "verification": {
         "contributor": "Andy Parsons",
@@ -23,13 +23,13 @@
         }
       }
     },
-    "self#jumbf=c_adbe_2/cai.claim?hl=DC3DBFFB000B682": {
+    "c_adbe_2/cai.claim": {
       "thumbnailURL": "images/test/thumbnail-2.jpg"
     },
-    "self#jumbf=c_adbe_3/cai.claim?hl=65EFA9DF4772A02": {
+    "c_adbe_3/cai.claim": {
       "thumbnailURL": "images/test/thumbnail-3.jpg"
     },
-    "self#jumbf=c_adbe_4/cai.claim?hl=3FCBADED7BCF967": {
+    "c_adbe_4/cai.claim": {
       "thumbnailURL": "images/test/thumbnail-4.jpg",
       "verification": {
         "contributor": "Andrew Kaback",
@@ -57,7 +57,7 @@
         }
       }
     },
-    "self#jumbf=c_adbe_5/cai.claim?hl=77CF01760F909F3": {
+    "c_adbe_5/cai.claim": {
       "thumbnailURL": "images/test/thumbnail-5.jpg",
       "verification": {
         "contributor": "Pia Blumenthal",
@@ -87,14 +87,14 @@
           },
           "specialFilters": ["Neural Gallery"]
         },
-        "parent": "self#jumbf=c_adbe_1/cai.claim?hl=12B974123DC2D0B",
+        "parent": "c_adbe_1/cai.claim",
         "ingredients": [
-          "self#jumbf=c_adbe_4/cai.claim?hl=3FCBADED7BCF967",
-          "self#jumbf=c_adbe_3/cai.claim?hl=65EFA9DF4772A02",
-          "self#jumbf=c_adbe_2/cai.claim?hl=DC3DBFFB000B682"
+          "c_adbe_4/cai.claim",
+          "c_adbe_3/cai.claim",
+          "c_adbe_2/cai.claim"
         ]
       }
     }
   },
-  "rootAsset": "self#jumbf=c_adbe_5/cai.claim?hl=77CF01760F909F3"
+  "rootAsset": "c_adbe_5/cai.claim"
 }
