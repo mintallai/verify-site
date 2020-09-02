@@ -17,6 +17,7 @@ declare interface IIngredient {
 }
 
 declare interface IClaimSummary {
+  thumbnail_url: string;
   contributor: string;
   verified_by: string;
   created_with: string;
@@ -27,6 +28,6 @@ declare interface IClaimSummary {
 }
 
 declare interface ISummaryResponse {
-  rootAsset: string;
+  root_claim_id: string;
   claims: { [claimID: string]: IClaimSummary };
 }

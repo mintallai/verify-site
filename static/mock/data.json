@@ -2,89 +2,83 @@
   "claims": {
     "c_adbe_1/cai.claim": {
       "thumbnail_url": "mock/images/thumbnail-1.jpg",
-      "verification": {
-        "contributor": "Andy Parsons",
-        "verified_by": "Truepic",
-        "created_with": "Truepic",
-        "date_created": "2020-07-05T23:15:01.234Z",
-        "edits": {
-          "original_creation": true,
-          "tool_usage": {
-            "Erase": 7,
-            "Brush Tool": 3
-          },
-          "special_filters": []
-        }
+      "contributor": "Andy Parsons",
+      "verified_by": "Truepic",
+      "created_with": "Truepic",
+      "date_created": "2020-07-05T23:15:01.234Z",
+      "edits": {
+        "original_creation": true,
+        "tool_usage": {
+          "Erase": 7,
+          "Brush Tool": 3
+        },
+        "special_filters": []
       }
     },
     "c_adbe_4/cai.claim": {
       "thumbnail_url": "mock/images/thumbnail-4.jpg",
-      "verification": {
-        "contributor": "Andrew Kaback",
-        "verified_by": "Adobe",
-        "created_with": "Photoshop",
-        "date_created": "2020-06-25T16:04:29.097Z",
-        "edits": {
-          "original_creation": false,
-          "categories": [
-            "Cropped or Reframed",
-            "Globally Adjusted",
-            "Modified Content"
-          ],
-          "tool_usage": {
-            "Brush Tool": 26,
-            "Crop": 1
-          },
-          "special_filters": []
-        }
+      "contributor": "Andrew Kaback",
+      "verified_by": "Adobe",
+      "created_with": "Photoshop",
+      "date_created": "2020-06-25T16:04:29.097Z",
+      "edits": {
+        "original_creation": false,
+        "categories": [
+          "Cropped or Reframed",
+          "Globally Adjusted",
+          "Modified Content"
+        ],
+        "tool_usage": {
+          "Brush Tool": 26,
+          "Crop": 1
+        },
+        "special_filters": []
       }
     },
     "c_adbe_5/cai.claim": {
       "thumbnail_url": "mock/images/thumbnail-5.jpg",
-      "verification": {
-        "contributor": "Pia Blumenthal",
-        "verified_by": "Adobe",
-        "created_with": "Photoshop",
-        "date_created": "2020-07-30T13:30:56.207Z",
-        "edits": {
-          "original_creation": false,
-          "categories": [
-            "Cropped or Reframed",
-            "Globally Adjusted",
-            "Modified Content"
-          ],
-          "tool_usage": {
-            "Brush Tool": 26,
-            "Spot Healing Brush": 8,
-            "Erase": 7,
-            "Layer Via Copy": 2,
-            "Crop": 1,
-            "Neural Gallery": 1
-          },
-          "special_filters": ["Neural Gallery"]
+      "contributor": "Pia Blumenthal",
+      "verified_by": "Adobe",
+      "created_with": "Photoshop",
+      "date_created": "2020-07-30T13:30:56.207Z",
+      "edits": {
+        "original_creation": false,
+        "categories": [
+          "Cropped or Reframed",
+          "Globally Adjusted",
+          "Modified Content"
+        ],
+        "tool_usage": {
+          "Brush Tool": 26,
+          "Spot Healing Brush": 8,
+          "Erase": 7,
+          "Layer Via Copy": 2,
+          "Crop": 1,
+          "Neural Gallery": 1
         },
-        "parent": "c_adbe_1/cai.claim",
-        "ingredients": [
-          {
-            "title": "image 1.jpg",
-            "document_id": "6CC921188E857BF6B6601BB2F2CBDE37",
-            "thumbnail_url": "mock/images/thumbnail-2.jpg",
-            "claim_id": null
-          },
-          {
-            "title": "image 3.jpg",
-            "document_id": "04B4F0672A7B6001A6DF1A6CF55FEC6A",
-            "thumbnail_url": "mock/images/thumbnail-3.jpg",
-            "claim_id": null
-          },
-          {
-            "title": "image 4.jpg",
-            "document_id": "6A74374D486A33B24E05E4BAA83DDB73",
-            "thumbnail_url": "mock/images/thumbnail-4.jpg",
-            "claim_id": "c_adbe_4/cai.claim"
-          }
-        ]
-      }
+        "special_filters": ["Neural Gallery"]
+      },
+      "parent": "c_adbe_1/cai.claim",
+      "ingredients": [
+        {
+          "title": "image 1.jpg",
+          "document_id": "6CC921188E857BF6B6601BB2F2CBDE37",
+          "thumbnail_url": "mock/images/thumbnail-2.jpg",
+          "claim_id": null
+        },
+        {
+          "title": "image 3.jpg",
+          "document_id": "04B4F0672A7B6001A6DF1A6CF55FEC6A",
+          "thumbnail_url": "mock/images/thumbnail-3.jpg",
+          "claim_id": null
+        },
+        {
+          "title": "image 4.jpg",
+          "document_id": "6A74374D486A33B24E05E4BAA83DDB73",
+          "thumbnail_url": "mock/images/thumbnail-4.jpg",
+          "claim_id": "c_adbe_4/cai.claim"
+        }
+      ]
     }
   },
   "root_claim_id": "c_adbe_5/cai.claim"

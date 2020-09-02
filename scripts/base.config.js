@@ -100,7 +100,7 @@ function baseConfig(config, ctx) {
       }),
       typeCheck(),
       embeddedTypescript({ sourceMap: !production }),
-      typescript({ sourceMap: !production }),
+      typescript(),
       svelte(svelteConfig),
 
       // resolve matching modules from current working directory

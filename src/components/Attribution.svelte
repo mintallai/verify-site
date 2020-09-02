@@ -27,19 +27,19 @@
     <dd>{data.contributor}</dd>
     <dt>Creator Verified By</dt>
     <dd class="flex items-center">
-      <span>{data.verifiedBy.organizationName}</span>
+      <span>{data.verified_by}</span>
       <img
-        src={data.verifiedBy.iconURL}
+        src={`images/svg/logos/${data.verified_by.toLowerCase()}.svg`}
         class="logo"
-        alt={data.verifiedBy.organizationName} />
+        alt="Adobe" />
     </dd>
     <dt>Created With</dt>
     <dd class="flex items-center">
-      <span>{data.createdWith.programName}</span>
+      <span>{data.created_with}</span>
       <img
-        src={data.createdWith.iconURL}
+        src={`images/svg/logos/${data.created_with.toLowerCase()}.svg`}
         class="logo"
-        alt={data.createdWith.programName} />
+        alt={data.created_with} />
     </dd>
   </dl>
 </div>

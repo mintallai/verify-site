@@ -25,9 +25,9 @@
   <Header />
   {#if $primaryAsset}
     <section class="border-r">
-      <Attribution data={$primaryAsset.verification} />
+      <Attribution data={$primaryAsset} />
     </section>
-    <Viewer thumbnailURL={$primaryAsset.thumbnailURL} />
+    <Viewer thumbnailURL={$primaryAsset.thumbnail_url} />
     <section class="border-l">Right</section>
   {/if}
 </main>

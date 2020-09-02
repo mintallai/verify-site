@@ -7,8 +7,8 @@
   },
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "run-p routify nollup",
-    "dev:rollup": "run-p routify rollup",
+    "dev": "run-p routify rollup",
+    "dev:nollup": "run-p routify nollup",
     "dev:deploy": "gh-pages -d dist",
     "dev-dynamic": "cross-env BUNDLING=dynamic npm run dev",
     "build": "routify -b && rollup -c && routify export && workbox injectManifest",
