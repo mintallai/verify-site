@@ -5,34 +5,28 @@ declare module 'html-parse-stringify' {
 
 declare interface IEditSummary {
   categories: string[];
-  toolUsage: { [toolName: string]: number };
-  specialFilters: string[];
+  tool_usage: { [toolName: string]: number };
+  special_filters: string[];
 }
 
-declare interface IAuthoringTool {
-  programName: string;
-  iconURL: string;
-}
-
-declare interface ISigningAuthority {
-  organizationName: string;
-  iconURL: string;
+declare interface IIngredient {
+  title: string;
+  document_id: string;
+  thumbnail_url: string;
+  claim_id: string | null;
 }
 
 declare interface IClaimSummary {
   contributor: string;
-  verifiedBy: ISigningAuthority;
-  createdWith: IAuthoringTool;
-  dateCreated: string;
+  verified_by: string;
+  created_with: string;
+  date_created: string;
   edits: IEditSummary;
-}
-
-declare interface IAsset {
-  thumbnailURL: string;
-  verification?: IClaimSummary;
+  parent?: string;
+  ingredients?: IIngredient[];
 }
 
 declare interface ISummaryResponse {
   rootAsset: string;
-  assets: { [id: string]: IAsset };
+  claims: { [claimID: string]: IClaimSummary };
 }
