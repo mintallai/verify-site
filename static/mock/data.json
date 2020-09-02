@@ -4,14 +4,8 @@
       "thumbnailURL": "mock/images/thumbnail-1.jpg",
       "verification": {
         "contributor": "Andy Parsons",
-        "verifiedBy": {
-          "organizationName": "Truepic",
-          "iconURL": "images/svg/logos/truepic.svg"
-        },
-        "createdWith": {
-          "programName": "Truepic",
-          "iconURL": "images/svg/logos/truepic.svg"
-        },
+        "verifiedBy": "Truepic",
+        "createdWith": "Truepic",
         "dateCreated": "2020-07-05T23:15:01.234Z",
         "edits": {
           "originalCreation": true,
@@ -27,14 +21,8 @@
       "thumbnailURL": "mock/images/thumbnail-4.jpg",
       "verification": {
         "contributor": "Andrew Kaback",
-        "verifiedBy": {
-          "organizationName": "Adobe",
-          "iconURL": "images/svg/logos/adobe.svg"
-        },
-        "createdWith": {
-          "programName": "Photoshop",
-          "iconURL": "images/svg/logos/photoshop.svg"
-        },
+        "verifiedBy": "Adobe",
+        "createdWith": "Photoshop",
         "dateCreated": "2020-06-25T16:04:29.097Z",
         "edits": {
           "originalCreation": false,
@@ -55,14 +43,8 @@
       "thumbnailURL": "mock/images/thumbnail-5.jpg",
       "verification": {
         "contributor": "Pia Blumenthal",
-        "verifiedBy": {
-          "organizationName": "Adobe",
-          "iconURL": "images/svg/logos/adobe.svg"
-        },
-        "createdWith": {
-          "programName": "Photoshop",
-          "iconURL": "images/svg/logos/photoshop.svg"
-        },
+        "verifiedBy": "Adobe",
+        "createdWith": "Photoshop",
         "dateCreated": "2020-07-30T13:30:56.207Z",
         "edits": {
           "originalCreation": false,
