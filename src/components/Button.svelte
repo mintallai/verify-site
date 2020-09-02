@@ -2,18 +2,18 @@
 
 </script>
 
-<style>
+<style lang="postcss">
   button {
     @apply bg-purple text-sm text-white font-bold px-4 py-2 rounded-full;
-    > div {
-      position: relative;
-      top: -1px;
-    }
+  }
+  .inner {
+    position: relative;
+    top: -1px;
   }
 </style>
 
 <button>
-  <div>
+  <div class="inner">
     <slot />
   </div>
 </button>

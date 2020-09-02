@@ -1,5 +1,7 @@
 <script lang="ts">
   import Icon from '../components/Icon.svelte';
+
+  export let data: IClaimSummary;
 </script>
 
 <style lang="postcss">
@@ -22,16 +24,22 @@
   <h2>Attribution</h2>
   <dl>
     <dt>Creator</dt>
-    <dd>Pia Blumenthal</dd>
+    <dd>{data.contributor}</dd>
     <dt>Creator Verified By</dt>
     <dd class="flex items-center">
-      <span>Adobe</span>
-      <img src="images/svg/logos/adobe.svg" class="logo" alt="Adobe" />
+      <span>{data.verified_by}</span>
+      <img
+        src={`images/svg/logos/${data.verified_by.toLowerCase()}.svg`}
+        class="logo"
+        alt="Adobe" />
     </dd>
     <dt>Created With</dt>
     <dd class="flex items-center">
-      <span>Photoshop</span>
-      <img src="images/svg/logos/photoshop.svg" class="logo" alt="Photoshop" />
+      <span>{data.created_with}</span>
+      <img
+        src={`images/svg/logos/${data.created_with.toLowerCase()}.svg`}
+        class="logo"
+        alt={data.created_with} />
     </dd>
   </dl>
 </div>

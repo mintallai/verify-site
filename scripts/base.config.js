@@ -10,7 +10,8 @@ import del from 'del';
 import replace from '@rollup/plugin-replace';
 import { string } from 'rollup-plugin-string';
 import { spassr } from 'spassr';
-import { typescript } from 'svelte-preprocess';
+import { typescript as embeddedTypescript } from 'svelte-preprocess';
+import typescript from '@rollup/plugin-typescript';
 
 const isNollup = !!process.env.NOLLUP;
 
@@ -98,7 +99,8 @@ function baseConfig(config, ctx) {
         flatten: false,
       }),
       typeCheck(),
-      typescript({ sourceMap: !production }),
+      embeddedTypescript({ sourceMap: !production }),
+      typescript(),
       svelte(svelteConfig),
 
       // resolve matching modules from current working directory
