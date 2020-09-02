@@ -83,31 +83,26 @@
         },
         "parent": "c_adbe_1/cai.claim",
         "ingredients": [
-          "6A74374D486A33B24E05E4BAA83DDB73",
-          "04B4F0672A7B6001A6DF1A6CF55FEC6A",
-          "6CC921188E857BF6B6601BB2F2CBDE37"
+          {
+            "title": "image 1.jpg",
+            "documentId": "6CC921188E857BF6B6601BB2F2CBDE37",
+            "thumbnailUrl": "mock/images/thumbnail-2.jpg",
+            "claimId": null
+          },
+          {
+            "title": "image 3.jpg",
+            "documentId": "04B4F0672A7B6001A6DF1A6CF55FEC6A",
+            "thumbnailUrl": "mock/images/thumbnail-3.jpg",
+            "claimId": null
+          },
+          {
+            "title": "image 4.jpg",
+            "documentId": "6A74374D486A33B24E05E4BAA83DDB73",
+            "thumbnailUrl": "mock/images/thumbnail-4.jpg",
+            "claimId": "c_adbe_4/cai.claim"
+          }
         ]
       }
-    }
-  },
-  "ingredients": {
-    "6CC921188E857BF6B6601BB2F2CBDE37": {
-      "title": "image 1.jpg",
-      "documentId": "6CC921188E857BF6B6601BB2F2CBDE37",
-      "thumbnailUrl": "mock/images/thumbnail-2.jpg",
-      "claimId": null
-    },
-    "04B4F0672A7B6001A6DF1A6CF55FEC6A": {
-      "title": "image 3.jpg",
-      "documentId": "04B4F0672A7B6001A6DF1A6CF55FEC6A",
-      "thumbnailUrl": "mock/images/thumbnail-3.jpg",
-      "claimId": null
-    },
-    "6A74374D486A33B24E05E4BAA83DDB73": {
-      "title": "image 4.jpg",
-      "documentId": "6A74374D486A33B24E05E4BAA83DDB73",
-      "thumbnailUrl": "mock/images/thumbnail-4.jpg",
-      "claimId": "c_adbe_4/cai.claim"
     }
   },
   "root_claim_id": "c_adbe_5/cai.claim"
