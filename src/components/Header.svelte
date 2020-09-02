@@ -6,10 +6,10 @@
   header {
     @apply col-span-3 border-gray-200 border-b px-5 flex items-center justify-between;
     height: 80px;
-    .logo {
-      width: 20px;
-      height: 20px;
-    }
+  }
+  .logo {
+    width: 20px;
+    height: 20px;
   }
 </style>
 

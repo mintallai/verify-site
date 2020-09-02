@@ -1,7 +1,7 @@
 {
   "assets": {
     "c_adbe_1/cai.claim": {
-      "thumbnailURL": "images/test/thumbnail-1.jpg",
+      "thumbnailURL": "mock/images/thumbnail-1.jpg",
       "verification": {
         "contributor": "Andy Parsons",
         "verifiedBy": {
@@ -24,13 +24,13 @@
       }
     },
     "c_adbe_2/cai.claim": {
-      "thumbnailURL": "images/test/thumbnail-2.jpg"
+      "thumbnailURL": "mock/images/thumbnail-2.jpg"
     },
     "c_adbe_3/cai.claim": {
-      "thumbnailURL": "images/test/thumbnail-3.jpg"
+      "thumbnailURL": "mock/images/thumbnail-3.jpg"
     },
     "c_adbe_4/cai.claim": {
-      "thumbnailURL": "images/test/thumbnail-4.jpg",
+      "thumbnailURL": "mock/images/thumbnail-4.jpg",
       "verification": {
         "contributor": "Andrew Kaback",
         "verifiedBy": {
@@ -58,7 +58,7 @@
       }
     },
     "c_adbe_5/cai.claim": {
-      "thumbnailURL": "images/test/thumbnail-5.jpg",
+      "thumbnailURL": "mock/images/thumbnail-5.jpg",
       "verification": {
         "contributor": "Pia Blumenthal",
         "verifiedBy": {

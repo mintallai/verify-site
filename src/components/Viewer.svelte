@@ -13,6 +13,8 @@
     width: side,
     height: side,
   };
+
+  export let thumbnailURL: string;
 </script>
 
 <style lang="postcss">
@@ -30,7 +32,7 @@
   bind:clientHeight={height}>
   <div class="inner" use:style={styles}>
     <img
-      src="images/test/thumbnail-5.jpg"
+      src={thumbnailURL}
       alt=""
       class="h-full w-full object-contain object-center" />
   </div>

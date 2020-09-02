@@ -3,10 +3,11 @@
   import Attribution from '../components/Attribution.svelte';
   import Viewer from '../components/Viewer.svelte';
   import { metatags } from '@sveltech/routify';
-  metatags.title = 'CAI Verify';
-  metatags.description = 'CAI Verify Site';
+  import { primaryAsset } from '../stores';
 
-  const title: string = 'CAI Verify site';
+  $: {
+    console.log('$primaryAsset', $primaryAsset);
+  }
 </script>
 
 <style lang="postcss">
@@ -22,9 +23,11 @@
 
 <main>
   <Header />
-  <section class="border-r">
-    <Attribution />
-  </section>
-  <Viewer />
-  <section class="border-l">Right</section>
+  {#if $primaryAsset}
+    <section class="border-r">
+      <Attribution data={$primaryAsset.verification} />
+    </section>
+    <Viewer thumbnailURL={$primaryAsset.thumbnailURL} />
+    <section class="border-l">Right</section>
+  {/if}
 </main>
