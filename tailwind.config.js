@@ -10,7 +10,10 @@ module.exports = {
     },
     extend: {
       colors: {
-        purple: '#5548ed',
+        purple: {
+          '200': 'rgba(85, 72, 237, 0.1)',
+          '500': '#5548ed',
+        },
         gray: {
           '100': '#fafafa',
           '200': '#eeeeee',
@@ -28,7 +31,7 @@ module.exports = {
         base: '0.9375rem',
       },
       boxShadow: {
-        md: '0 0 10px 0 rgba(0, 0, 0, 0.15)',
+        md: '0 0 10px 0 rgba(0, 0, 0, 0.20)',
       },
     },
   },

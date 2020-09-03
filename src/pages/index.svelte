@@ -17,7 +17,7 @@
     grid-template-rows: 80px auto;
   }
   section {
-    @apply col-span-1 p-5 border-gray-200;
+    @apply col-span-1 border-gray-200;
   }
 </style>
 

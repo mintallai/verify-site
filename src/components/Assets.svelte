@@ -8,16 +8,11 @@
 </script>
 
 <style lang="postcss">
-  .container {
-    @apply grid gap-5 max-w-full;
-    grid-template-columns: 94px auto;
-    min-height: 0;
-    min-width: 0;
-  }
+
 </style>
 
-<div>
-  <h2 class="mb-5">Assets</h2>
+<div class="p-2">
+  <h2 class="mb-5 p-3 pb-0">Assets</h2>
   <div class="container">
     {#each $assetList as asset}
       <Asset {asset} />

@@ -1,10 +1,30 @@
 <script lang="ts">
+  import size from 'lodash/size';
+  import sum from 'lodash/sum';
+  import toPairs from 'lodash/toPairs';
+  import pullAllWith from 'lodash/pullAllWith';
   import parseISO from 'date-fns/parseISO';
   import { formatDate, formatTime } from '../lib/util/format';
 
   export let claim: IClaimSummary;
+  let mostUsedTools = [];
 
   $: dateCreated = parseISO(claim.date_created);
+  $: {
+    const totalEdits = sum(Object.values(claim.edits.tool_usage));
+    const sorted = toPairs(claim.edits.tool_usage)
+      .sort((a, b) => (a[1] < b[1] ? 1 : -1))
+      .map(([name, count]) => ({
+        name,
+        percentage: Math.round((count / totalEdits) * 100),
+      }));
+    mostUsedTools = pullAllWith(
+      sorted,
+      claim.edits.special_filters,
+      (a, b) => a.name === b,
+    );
+    console.log('mostUsed', mostUsedTools);
+  }
 </script>
 
 <style lang="postcss">
@@ -15,7 +35,7 @@
   }
 </style>
 
-<div>
+<div class="p-5">
   <h2 class="mb-5">Attribution</h2>
   <dl class="attributes">
     <dt>Creator</dt>
@@ -41,5 +61,26 @@
       <span>{formatDate(dateCreated)}</span><br />
       <span class="text-gray-500">{formatTime(dateCreated)}</span>
     </dd>
+  </dl>
+  <dl class="attributes multiline border-t border-gray-200 mt-5 pt-4">
+    <dt class="mb-2">Edit Type</dt>
+    <dd>{claim.edits.categories.join(', ')}</dd>
+  </dl>
+  <dl class="attributes mt-3">
+    <dt>Number of Tools</dt>
+    <dd>{size(claim.edits.tool_usage)}</dd>
+  </dl>
+  <dl class="attributes multiline mt-3">
+    <dt class="mb-2">Most Used Tools</dt>
+    <dd class="ml-4">
+      {#each mostUsedTools as tool}
+        <div class="mb-2">
+          {tool.name}
+          <span class="text-gray-400 ml-1">{tool.percentage}%</span>
+        </div>
+      {/each}
+    </dd>
+    <dt class="mt-3 mb-2">Special Filters</dt>
+    <dd>{claim.edits.special_filters.join(', ')}</dd>
   </dl>
 </div>

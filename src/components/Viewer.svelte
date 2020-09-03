@@ -19,15 +19,10 @@
 
 <style lang="postcss">
   .inner {
-    @apply rounded-md bg-white shadow-md;
+    @apply rounded-md overflow-hidden bg-white shadow-md;
     width: var(--width);
     height: var(--height);
     min-width: 256px;
-  }
-  .inner img {
-    @apply object-contain object-center;
-    width: var(--width);
-    height: var(--height);
   }
 </style>
 
@@ -36,6 +31,9 @@
   bind:clientWidth={width}
   bind:clientHeight={height}>
   <div class="inner" use:cssVars={styles}>
-    <img src={thumbnailURL} alt="" />
+    <img
+      src={thumbnailURL}
+      alt=""
+      class="h-full w-full object-contain object-center" />
   </div>
 </div>
