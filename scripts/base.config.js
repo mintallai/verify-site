@@ -7,7 +7,6 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import copy from 'rollup-plugin-copy';
 import del from 'del';
-import replace from '@rollup/plugin-replace';
 import { string } from 'rollup-plugin-string';
 import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
@@ -138,29 +137,4 @@ function baseConfig(config, ctx) {
       .toString()
       .replace('__SCRIPT__', dynamicImports ? scriptTag : bundleTag);
   }
-}
-
-/**
- * Can be deleted if service workers aren't used
- */
-function serviceWorkerConfig(config) {
-  const { distDir, production, swWrapper } = config;
-  const _rollupConfig = {
-    input: `src/sw.js`,
-    output: {
-      name: 'service_worker',
-      sourcemap: true,
-      format: 'iife',
-      file: `${distDir}/sw.js`,
-    },
-    plugins: [
-      commonjs(),
-      resolve({ browser: true }),
-      production && terser(),
-      replace({ 'process.env.NODE_ENV': "'production'" }),
-    ],
-  };
-  const rollupConfig = swWrapper(_rollupConfig, {}) || _rollupConfig;
-
-  return rollupConfig;
 }

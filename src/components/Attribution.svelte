@@ -1,18 +1,13 @@
 <script lang="ts">
-  import Icon from '../components/Icon.svelte';
+  import parseISO from 'date-fns/parseISO';
+  import { formatDate, formatTime } from '../lib/util/format';
 
-  export let data: IClaimSummary;
+  export let claim: IClaimSummary;
+
+  $: dateCreated = parseISO(claim.date_created);
 </script>
 
 <style lang="postcss">
-  dt {
-    @apply font-bold text-xs uppercase text-gray-500 float-left clear-left mb-2;
-    line-height: 1.45rem;
-    vertical-align: middle;
-  }
-  dd {
-    @apply text-base float-right;
-  }
   img.logo {
     @apply ml-1;
     width: 14px;
@@ -21,25 +16,30 @@
 </style>
 
 <div>
-  <h2>Attribution</h2>
-  <dl>
+  <h2 class="mb-5">Attribution</h2>
+  <dl class="attributes">
     <dt>Creator</dt>
-    <dd>{data.contributor}</dd>
+    <dd>{claim.contributor}</dd>
     <dt>Creator Verified By</dt>
     <dd class="flex items-center">
-      <span>{data.verified_by}</span>
+      <span>{claim.verified_by}</span>
       <img
-        src={`images/svg/logos/${data.verified_by.toLowerCase()}.svg`}
+        src={`images/svg/logos/${claim.verified_by.toLowerCase()}.svg`}
         class="logo"
         alt="Adobe" />
     </dd>
     <dt>Created With</dt>
     <dd class="flex items-center">
-      <span>{data.created_with}</span>
+      <span>{claim.created_with}</span>
       <img
-        src={`images/svg/logos/${data.created_with.toLowerCase()}.svg`}
+        src={`images/svg/logos/${claim.created_with.toLowerCase()}.svg`}
         class="logo"
-        alt={data.created_with} />
+        alt={claim.created_with} />
+    </dd>
+    <dt>Date Created</dt>
+    <dd class="text-right leading-tight">
+      <span>{formatDate(dateCreated)}</span><br />
+      <span class="text-gray-500">{formatTime(dateCreated)}</span>
     </dd>
   </dl>
 </div>

@@ -5,3 +5,27 @@ h2 {
 h6 {
   @apply font-bold text-xs uppercase text-gray-500;
 }
+
+dl.attributes {
+  dt {
+    @apply font-bold text-xs uppercase text-gray-500 float-left clear-left mb-2;
+    line-height: 1.45rem;
+    vertical-align: middle;
+  }
+
+  dd {
+    @apply text-base float-right;
+  }
+
+  &.multiline {
+    dt {
+      @apply float-none leading-normal mb-0;
+    }
+    dd {
+      @apply float-none mb-2;
+      &:last-child {
+        @apply mb-0;
+      }
+    }
+  }
+}

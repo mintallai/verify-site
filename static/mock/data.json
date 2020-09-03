@@ -1,7 +1,7 @@
 {
   "claims": {
     "c_adbe_1/cai.claim": {
-      "thumbnail_url": "mock/images/thumbnail-1.jpg",
+      "thumbnail_url": "/mock/images/thumbnail-1.jpg",
       "contributor": "Andy Parsons",
       "verified_by": "Truepic",
       "created_with": "Truepic",
@@ -16,7 +16,7 @@
       }
     },
     "c_adbe_4/cai.claim": {
-      "thumbnail_url": "mock/images/thumbnail-4.jpg",
+      "thumbnail_url": "/mock/images/thumbnail-4.jpg",
       "contributor": "Andrew Kaback",
       "verified_by": "Adobe",
       "created_with": "Photoshop",
@@ -36,7 +36,7 @@
       }
     },
     "c_adbe_5/cai.claim": {
-      "thumbnail_url": "mock/images/thumbnail-5.jpg",
+      "thumbnail_url": "/mock/images/thumbnail-5.jpg",
       "contributor": "Pia Blumenthal",
       "verified_by": "Adobe",
       "created_with": "Photoshop",
@@ -61,22 +61,22 @@
       "parent": "c_adbe_1/cai.claim",
       "ingredients": [
         {
-          "title": "image 1.jpg",
-          "document_id": "6CC921188E857BF6B6601BB2F2CBDE37",
-          "thumbnail_url": "mock/images/thumbnail-2.jpg",
-          "claim_id": null
-        },
-        {
-          "title": "image 3.jpg",
-          "document_id": "04B4F0672A7B6001A6DF1A6CF55FEC6A",
-          "thumbnail_url": "mock/images/thumbnail-3.jpg",
-          "claim_id": null
-        },
-        {
           "title": "image 4.jpg",
           "document_id": "6A74374D486A33B24E05E4BAA83DDB73",
-          "thumbnail_url": "mock/images/thumbnail-4.jpg",
+          "thumbnail_url": "/mock/images/thumbnail-4.jpg",
           "claim_id": "c_adbe_4/cai.claim"
+        },
+        {
+          "title": "Screen Shot 2020-05-10 14:05:02.jpg",
+          "document_id": "04B4F0672A7B6001A6DF1A6CF55FEC6A",
+          "thumbnail_url": "/mock/images/thumbnail-3.jpg",
+          "claim_id": null
+        },
+        {
+          "title": "image 1.jpg",
+          "document_id": "6CC921188E857BF6B6601BB2F2CBDE37",
+          "thumbnail_url": "/mock/images/thumbnail-2.jpg",
+          "claim_id": null
         }
       ]
     }

@@ -51,10 +51,12 @@
   },
   "dependencies": {
     "@sveltech/routify": "^1.9.7",
+    "date-fns": "^2.16.1",
     "html-parse-stringify": "^2.0.0",
     "postcss-import": "^12.0.1",
     "postcss-nested": "^4.2.3",
     "svelte": "^3.23.2",
+    "svelte-css-vars": "^0.0.1",
     "svelte-preprocess": "^4.1.1",
     "workbox-cli": "^5.1.3"
   },

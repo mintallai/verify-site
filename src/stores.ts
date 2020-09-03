@@ -1,4 +1,5 @@
 import { readable, writable, derived } from 'svelte/store';
+import compact from 'lodash/compact';
 
 export const primaryClaimId = writable('');
 
@@ -22,3 +23,25 @@ export const primaryAsset = derived(
       : null;
   },
 );
+
+export const assetList = derived<
+  [typeof primaryAsset, typeof summary],
+  Asset[]
+>([primaryAsset, summary], ([$primaryAsset, $summary]) => {
+  if ($summary) {
+    const { claims } = $summary;
+    const { ingredients, parent } = $primaryAsset;
+    const parentAsset = parent
+      ? ({ ...claims[parent], type: 'parent' } as IParentAsset)
+      : null;
+    const ingredientAssets = ingredients.map((ingredient) => {
+      return {
+        ...ingredient,
+        type: 'ingredient',
+        claim: ingredient.claim_id ? claims[ingredient.claim_id] : undefined,
+      } as IIngredientAsset;
+    });
+    return compact([parentAsset, ...ingredientAssets]);
+  }
+  return null;
+});

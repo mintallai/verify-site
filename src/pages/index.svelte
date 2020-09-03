@@ -1,8 +1,8 @@
 <script lang="ts">
   import Header from '../components/Header.svelte';
+  import Assets from '../components/Assets.svelte';
   import Attribution from '../components/Attribution.svelte';
   import Viewer from '../components/Viewer.svelte';
-  import { metatags } from '@sveltech/routify';
   import { primaryAsset } from '../stores';
 
   $: {
@@ -25,9 +25,11 @@
   <Header />
   {#if $primaryAsset}
     <section class="border-r">
-      <Attribution data={$primaryAsset} />
+      <Attribution claim={$primaryAsset} />
     </section>
     <Viewer thumbnailURL={$primaryAsset.thumbnail_url} />
-    <section class="border-l">Right</section>
+    <section class="border-l">
+      <Assets />
+    </section>
   {/if}
 </main>
