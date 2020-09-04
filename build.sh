@@ -55,7 +55,7 @@ if [[ -n "$PUSH_ARTIFACTS" && -d dist-pub ]]; then
     # project is in the "dc" organization, or dcms@adobe.com if your project
     # is in the "echosign" organization. Those accounts are the utility
     # Artifactory users used by the Jenkins job.
-    PUBLISH_REGISTRY=https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adobesign-release-local/
+    PUBLISH_REGISTRY=https://artifactory-uw2.adobeitc.com/artifactory/docker2-cai-verify-site-release-local/
     cat > .npmrc << EOF
 registry=$PUBLISH_REGISTRY
 _auth=$NPM_AUTH

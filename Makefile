@@ -1,6 +1,4 @@
-ifndef SERVICE_NAME
-$(error SERVICE_NAME is not set)
-endif
+SERVICE_NAME=verify-site
 
 # $sha is provided by jenkins
 BUILDER_TAG?=$(or $(sha),$(SERVICE_NAME)-builder)
@@ -24,7 +22,6 @@ ci: IMAGE_TAG := $(if $(sha),$(IMAGE_TAG)-ci-$(sha),$(IMAGE_TAG))
 ci: build
 ifeq ($(RUN_COVERAGE),true)
 	docker run \
-	-v `pwd`:/build:z \
 	-e COVERALLS_SERVICE_NAME \
 	-e COVERALLS_REPO_TOKEN \
 	-e COVERALLS_ENDPOINT \
@@ -45,7 +42,6 @@ build: login
 	# folder, prepare the manifest, etc.). The results are placed in the current
 	# directory of the local file system.
 	docker run \
-	-v `pwd`:/build:z \
 	-e PATH_PREFIX \
 	-e PUSH_ARTIFACTS \
 	-e ARTIFACTORY_API_TOKEN \
@@ -72,7 +68,6 @@ run-uitest: login
 run-postmerge-hook: login
 	docker build --pull -t $(BUILDER_TAG) -f Dockerfile.build.mt .
 	docker run \
-	-v `pwd`:/build:z \
 	-e PATH_PREFIX \
 	-e ARTIFACTORY_API_TOKEN \
 	-e ARTIFACTORY_USER \
@@ -83,7 +78,6 @@ run-postmerge-hook: login
 
 run-build-image-interactively:
 	docker run \
-	-v `pwd`:/build:z \
 	-e PATH_PREFIX \
 	-e PUSH_ARTIFACTS \
 	-e ARTIFACTORY_API_TOKEN \

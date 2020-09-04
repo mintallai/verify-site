@@ -11,13 +11,14 @@
     "dev:nollup": "run-p routify nollup",
     "dev:deploy": "gh-pages -d dist",
     "dev-dynamic": "cross-env BUNDLING=dynamic npm run dev",
-    "build": "routify -b && rollup -c && routify export && workbox injectManifest",
+    "build": "routify -b && rollup -c && routify export",
     "serve": "spassr --serve-spa --serve-ssr",
     "export": "routify export",
     "build:docker": "npm run build && ./scripts/docker/docker-build.sh",
     "rollup": "rollup -cw",
     "nollup": "nollup -c",
-    "routify": "routify"
+    "routify": "routify",
+    "test": "echo \"Tests pending\" && exit 0"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.3.0",
