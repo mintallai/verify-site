@@ -42,6 +42,7 @@ build: login
 	# folder, prepare the manifest, etc.). The results are placed in the current
 	# directory of the local file system.
 	docker run \
+	-v `pwd`:/build:z,cached \
 	-e PATH_PREFIX \
 	-e PUSH_ARTIFACTS \
 	-e ARTIFACTORY_API_TOKEN \
