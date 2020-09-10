@@ -4,7 +4,7 @@
   import { formatDate } from '../lib/util/format';
   import Button from './Button.svelte';
   import { getIdentifier } from '../lib/claim';
-  import { navigateToId } from '../stores';
+  import { navigateToId, compareWithId } from '../stores';
 
   let hover: boolean;
   export let asset: ViewableItem;
@@ -73,7 +73,9 @@
       <Button secondary on:click={() => navigateToId(getIdentifier(asset))}>
         Inspect
       </Button>
-      <Button secondary on:click={() => {}}>Compare</Button>
+      <Button secondary on:click={() => compareWithId(getIdentifier(asset))}>
+        Compare
+      </Button>
     </div>
   {/if}
 </div>

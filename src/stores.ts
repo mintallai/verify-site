@@ -7,16 +7,27 @@ export const breadcrumbIds = writable<string[]>([]);
 
 export const primaryId = writable<string>('');
 
+export const secondaryId = writable<string>('');
+
 export function navigateToId(id: string): void {
-  console.log('navigating to', id);
+  console.log('navigating to', id, get(breadcrumbIds));
+  const currId = get(primaryId);
   breadcrumbIds.update((ids) => {
     if (ids.includes(id)) {
       return ids.slice(0, ids.indexOf(id));
+    } else if (id !== currId) {
+      // Don't add the current ID if it's not changing (in the case of closing a secondary asset)
+      return [...ids, currId];
     } else {
-      return [...ids, get(primaryId)];
+      return ids;
     }
   });
   primaryId.set(id);
+}
+
+export function compareWithId(id: string): void {
+  console.log('comparing with', id);
+  secondaryId.set(id);
 }
 
 async function fetchSummary(set: any): Promise<void> {
@@ -27,6 +38,8 @@ async function fetchSummary(set: any): Promise<void> {
     claim_id,
   }));
   primaryId.set(`claim_id:${data.root_claim_id}`);
+  // navigateToId(`claim_id:c_tpic_1/cai.claim`);
+  // secondaryId.set(`claim_id:c_adbe_5/cai.claim`);
   set(data);
 }
 
@@ -55,6 +68,12 @@ export const primaryAsset = derived<
   [typeof assetsByIdentifier, typeof primaryId],
   ViewableItem
 >([assetsByIdentifier, primaryId], ([$assetsByIdentifier, $primaryId]) => {
-  console.log('$assetsByIdentifier', $assetsByIdentifier);
   return $assetsByIdentifier[$primaryId];
+});
+
+export const secondaryAsset = derived<
+  [typeof assetsByIdentifier, typeof secondaryId],
+  ViewableItem
+>([assetsByIdentifier, secondaryId], ([$assetsByIdentifier, $secondaryId]) => {
+  return $assetsByIdentifier[$secondaryId];
 });

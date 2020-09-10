@@ -56,6 +56,7 @@
     "@sveltech/routify": "^1.9.7",
     "date-fns": "^2.16.1",
     "html-parse-stringify": "^2.0.0",
+    "interactjs": "^1.9.22",
     "lodash": "^4.17.20",
     "postcss-import": "^12.0.1",
     "postcss-nested": "^4.2.3",

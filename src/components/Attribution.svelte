@@ -11,6 +11,7 @@
 </script>
 
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte';
   import size from 'lodash/size';
   import sum from 'lodash/sum';
   import toPairs from 'lodash/toPairs';
@@ -20,7 +21,9 @@
   import { formatDate, formatTime } from '../lib/util/format';
 
   export let claim: IClaimSummary;
+  export let isComparing: boolean = false;
   let mostUsedTools = [];
+  const dispatch = createEventDispatcher();
 
   $: dateCreated = parseISO(claim.date_created);
   $: categoryList = Object.keys(claim.edits.categories).map(
@@ -39,7 +42,6 @@
       claim.edits.special_filters,
       (a, b) => a.name === b,
     );
-    console.log('mostUsed', mostUsedTools);
   }
 </script>
 
@@ -57,8 +59,15 @@
 
 <div class="p-5">
   <h2 class="mb-5 flex items-center">
-    <span>Attribution</span>
+    <span>About This Image</span>
     <Icon size="m" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
+    {#if isComparing}
+      <div
+        class="flex-grow flex justify-end cursor-pointer"
+        on:click={() => dispatch('close', { claim })}>
+        <Icon size="m" name="workflow:Close" class="text-gray-400 ml-2" />
+      </div>
+    {/if}
   </h2>
   <dl class="attributes">
     <dt>Creator</dt>
@@ -108,18 +117,26 @@
       <span>Most Used Tools</span>
       <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
     </dt>
-    <dd class="ml-4">
-      {#each mostUsedTools as tool}
-        <div class="mb-2">
-          {tool.name}
-          <span class="text-gray-400 ml-1">{tool.percentage}%</span>
+    <dd>
+      {#if mostUsedTools.length}
+        <div class="ml-4">
+          {#each mostUsedTools as tool}
+            <div class="mb-2">
+              {tool.name}
+              <span class="text-gray-400 ml-1">{tool.percentage}%</span>
+            </div>
+          {/each}
         </div>
-      {/each}
+      {:else}<span class="italic">None</span>{/if}
     </dd>
     <dt class="mt-3 mb-2 flex items-center">
       <span>Special Filters</span>
       <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
     </dt>
-    <dd>{claim.edits.special_filters.join(', ')}</dd>
+    <dd>
+      {#if claim.edits.special_filters.length}
+        {claim.edits.special_filters.join(', ')}
+      {:else}<span class="italic">None</span>{/if}
+    </dd>
   </dl>
 </div>

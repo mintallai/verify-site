@@ -1,8 +1,16 @@
 <script lang="ts" context="module">
-  import { HelpOutlineIcon } from '@spectrum-web-components/icons-workflow/lib/icons';
+  import {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    CloseIcon,
+    HelpOutlineIcon,
+  } from '@spectrum-web-components/icons-workflow/lib/icons';
 
   const IconsUI = {};
   const IconsWorkflow = {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    CloseIcon,
     HelpOutlineIcon,
   };
 </script>
