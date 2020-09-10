@@ -10,22 +10,22 @@ services:
       - name: moonbeam_token
         github_token: true
         secret_data:
-          field: token
-          path: dme_cai/caivrfy/moonbeam_token
+          field: moonbeam_token
+          path: dme_cai/caivrfy
       - name: ssh_private_key
         global: "true"
         secret_data:
-          field: PrivateKey
-          path: dme_cai/caivrfy/ssh_private_key
+          field: ssh_private_key
+          path: dme_cai/caivrfy
       - name: artifactory_corp_credentials
         global: "true"
         secret_data:
-          field: corp
-          path: dme_cai/caivrfy/artifactory_corp_credentials
+          field: artifactory_corp_credentials
+          path: dme_cai/caivrfy
       - name: Tessa_API_Key
         secret_data:
-          field: Tessa_API_Key
-          path: dme_cai/caivrfy/tessa2_api_key
+          field: tessa2_api_key
+          path: dme_cai/caivrfy
     environments:
       - name: Build
         tier: 5
