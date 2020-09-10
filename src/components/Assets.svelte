@@ -1,10 +1,6 @@
 <script lang="ts">
   import { assetList } from '../stores';
   import Asset from './Asset.svelte';
-
-  $: {
-    console.log('$assetList', $assetList);
-  }
 </script>
 
 <style lang="postcss">

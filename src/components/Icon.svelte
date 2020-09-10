@@ -1,26 +1,50 @@
-<script lang="ts">
-  import html from 'html-parse-stringify';
+<script lang="ts" context="module">
+  import { HelpOutlineIcon } from '@spectrum-web-components/icons-workflow/lib/icons';
 
-  let elements = '';
-  export let svg = '';
-  export let size = '20px';
-  export let width = size;
-  export let height = size;
-  export let color = 'currentColor';
-  export let stroke = color;
-  export let fill = color;
+  const IconsUI = {};
+  const IconsWorkflow = {
+    HelpOutlineIcon,
+  };
+</script>
+
+<script lang="ts">
+  enum Sizes {
+    m = `1rem`,
+    s = `0.875rem`,
+  }
+
+  export let size = 'm';
+  export let name: string;
+  $: dims = Sizes[size];
+  let svg = '';
+
   $: {
-    let [parsed] = html.parse(svg);
-    parsed.attrs = {
-      ...parsed.attrs,
-      width,
-      height,
-      color,
-      stroke,
-      fill,
-    };
-    elements = html.stringify([parsed]);
+    const [library, icon] = name.split(':');
+    let iconFn: (args: any) => any;
+    if (library === 'ui') {
+      iconFn = IconsUI[`${icon}Icon`];
+    } else if (library === 'workflow') {
+      iconFn = IconsWorkflow[`${icon}Icon`];
+    } else {
+      console.error(
+        `Icon library must be either "ui" or "workflow". Received:`,
+        library,
+      );
+    }
+    if (iconFn) {
+      svg = iconFn({
+        width: dims,
+        height: dims,
+      });
+    } else {
+      console.error(
+        `Icon "${icon}" not found. Available options are:`,
+        Object.keys(library === 'workflow' ? IconsWorkflow : IconsUI),
+      );
+    }
   }
 </script>
 
-{@html elements}
+<div class={$$props.class}>
+  {@html svg}
+</div>

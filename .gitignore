@@ -6,3 +6,4 @@
 /src/tmp/
 .routify
 *.log
+.vscode

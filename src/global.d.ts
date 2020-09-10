@@ -6,41 +6,49 @@ declare module 'html-parse-stringify' {
 declare module 'svelte-css-vars';
 
 declare interface IEditSummary {
-  categories: string[];
+  categories: { [categoryName: string]: number };
   tool_usage: { [toolName: string]: number };
   special_filters: string[];
 }
 
-declare interface IIngredient {
+declare interface IReference {
   title: string;
   document_id: string;
   thumbnail_url: string;
   claim_id: string | null;
-}
-
-declare interface IIngredientAsset extends IIngredient {
-  type: 'ingredient';
   claim?: IClaimSummary;
 }
 
-declare interface IParentAsset extends IClaimSummary {
+declare interface IIngredientAsset extends IReference {
+  type: 'ingredient';
+}
+
+declare interface IParentAsset extends IReference {
   type: 'parent';
 }
 
 declare type Asset = IIngredientAsset | IParentAsset;
 
 declare interface IClaimSummary {
+  claim_id: string;
   thumbnail_url: string;
   contributor: string;
+  contributor_id?: string;
   verified_by: string;
   created_with: string;
   date_created: string;
   edits: IEditSummary;
-  parent?: string;
-  ingredients?: IIngredient[];
+  parent?: IReference;
+  ingredients?: IReference[];
+}
+
+declare interface IClaimMap {
+  [claimID: string]: IClaimSummary;
 }
 
 declare interface ISummaryResponse {
   root_claim_id: string;
-  claims: { [claimID: string]: IClaimSummary };
+  claims: IClaimMap;
 }
+
+declare type ViewableItem = IClaimSummary | typeof IReference;

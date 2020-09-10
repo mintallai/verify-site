@@ -4,6 +4,7 @@
   import toPairs from 'lodash/toPairs';
   import pullAllWith from 'lodash/pullAllWith';
   import parseISO from 'date-fns/parseISO';
+  import Icon from './Icon.svelte';
   import { formatDate, formatTime } from '../lib/util/format';
 
   export let claim: IClaimSummary;
@@ -36,7 +37,10 @@
 </style>
 
 <div class="p-5">
-  <h2 class="mb-5">Attribution</h2>
+  <h2 class="mb-5 flex items-center">
+    <span>Attribution</span>
+    <Icon size="m" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
+  </h2>
   <dl class="attributes">
     <dt>Creator</dt>
     <dd>{claim.contributor}</dd>
@@ -64,7 +68,7 @@
   </dl>
   <dl class="attributes multiline border-t border-gray-200 mt-5 pt-4">
     <dt class="mb-2">Edit Type</dt>
-    <dd>{claim.edits.categories.join(', ')}</dd>
+    <dd>{Object.keys(claim.edits.categories).join(', ')}</dd>
   </dl>
   <dl class="attributes mt-3">
     <dt>Number of Tools</dt>

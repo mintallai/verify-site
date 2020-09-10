@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let secondary: boolean;
+  export let secondary: boolean = false;
 </script>
 
 <style lang="postcss">

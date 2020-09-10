@@ -10,10 +10,11 @@
 
 <style lang="postcss">
   .container {
-    @apply relative mb-4 p-2 transition-all duration-200;
+    @apply relative mb-4 p-2 transition-all duration-200 z-0;
     height: 99px;
   }
   .container.hover {
+    @apply z-10;
     height: 155px;
   }
   .item {
@@ -44,17 +45,7 @@
   on:mouseleave={() => (hover = false)}>
   <div class="selection" class:hover />
   <div class="item">
-    {#if asset.type === 'parent'}
-      <div
-        class="thumbnail"
-        use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }} />
-      <dl class="attributes multiline self-center">
-        <dt>Creator</dt>
-        <dd>{asset.contributor}</dd>
-        <dt>Date Created</dt>
-        <dd>{formatDate(asset.date_created)}</dd>
-      </dl>
-    {:else if asset.type === 'ingredient' && asset.claim}
+    {#if asset.claim}
       <div
         class="thumbnail"
         use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }} />
