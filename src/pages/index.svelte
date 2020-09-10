@@ -2,8 +2,9 @@
   import partial from 'lodash/partial';
   import Header from '../components/Header.svelte';
   import Assets from '../components/Assets.svelte';
+  import NoInfo from '../components/NoInfo.svelte';
   import Breadcrumbs from '../components/Breadcrumbs.svelte';
-  import Attribution from '../components/Attribution.svelte';
+  import About from '../components/About.svelte';
   import Comparison from '../components/Comparison.svelte';
   import Viewer from '../components/Viewer.svelte';
   import {
@@ -14,23 +15,14 @@
   } from '../stores';
   import { getIdentifier } from '../lib/claim';
 
-  function handleClose(navigateToAsset) {
+  function handleClose(navigateToAsset: ViewableItem) {
     navigateToId(getIdentifier(navigateToAsset));
     secondaryId.set('');
   }
 
-  $: {
-    console.log('$primaryAsset', $primaryAsset);
-    console.log('$secondaryAsset', $secondaryAsset);
-  }
-
-  $: isComparing = !!($primaryAsset && $secondaryAsset);
-  $: primaryClaim =
-    $primaryAsset?.type === 'claim' ? ($primaryAsset as IClaimSummary) : null;
-  $: secondaryClaim =
-    $secondaryAsset?.type === 'claim'
-      ? ($secondaryAsset as IClaimSummary)
-      : null;
+  $: primary = $primaryAsset;
+  $: secondary = $secondaryAsset;
+  $: isComparing = !!(primary && secondary);
 </script>
 
 <style lang="postcss">
@@ -46,33 +38,37 @@
 
 <main>
   <Header />
-  {#if $primaryAsset}
+  {#if primary}
     <section class="border-r">
-      {#if primaryClaim}
-        <Attribution
-          claim={primaryClaim}
+      {#if primary?.type === 'claim'}
+        <About
+          claim={primary}
           {isComparing}
-          on:close={partial(handleClose, $secondaryAsset)} />
+          on:close={partial(handleClose, secondary)} />
+      {:else}
+        <NoInfo {isComparing} on:close={partial(handleClose, secondary)} />
       {/if}
     </section>
     {#if isComparing}
       <Comparison
-        primaryURL={$primaryAsset.thumbnail_url}
-        secondaryURL={$secondaryAsset.thumbnail_url} />
+        primaryURL={primary.thumbnail_url}
+        secondaryURL={secondary.thumbnail_url} />
     {:else}
-      <Viewer thumbnailURL={$primaryAsset.thumbnail_url} />
+      <Viewer thumbnailURL={primary.thumbnail_url} />
     {/if}
     <section class="border-l">
       {#if !isComparing}
         <Breadcrumbs />
       {/if}
-      {#if secondaryClaim}
-        <Attribution
-          claim={secondaryClaim}
+      {#if secondary?.type === 'claim'}
+        <About
+          claim={secondary}
           {isComparing}
-          on:close={partial(handleClose, $primaryAsset)} />
-      {:else if primaryClaim}
-        <Assets claim={primaryClaim} />
+          on:close={partial(handleClose, primary)} />
+      {:else if secondary?.type === 'reference'}
+        <NoInfo {isComparing} on:close={partial(handleClose, primary)} />
+      {:else if primary?.type === 'claim'}
+        <Assets claim={primary} />
       {/if}
     </section>
   {/if}

@@ -9,7 +9,7 @@
   let height = 0;
   let side = 0;
   let padding = 20;
-  let slider;
+  let slider: HTMLDivElement;
   let sliderX = 0.5;
 
   $: {
@@ -36,12 +36,11 @@
   });
 
   onMount(() => {
-    console.log('slider', slider);
-    let origSliderX;
+    let origSliderX: number;
     interact(slider).draggable({
       modifiers: [restrictToParent, snap],
       listeners: {
-        start(evt: DragEvent) {
+        start() {
           origSliderX = sliderX;
         },
         move(evt: DragEvent) {

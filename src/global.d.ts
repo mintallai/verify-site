@@ -27,8 +27,6 @@ declare interface IParentAsset extends IReference {
   type: 'parent';
 }
 
-declare type Asset = IIngredientAsset | IParentAsset;
-
 declare interface IClaimSummary {
   type: 'claim';
   claim_id: string;
@@ -39,8 +37,7 @@ declare interface IClaimSummary {
   created_with: string;
   date_created: string;
   edits: IEditSummary;
-  parent?: IReference;
-  ingredients?: IReference[];
+  references: IReference[];
 }
 
 declare interface IClaimMap {

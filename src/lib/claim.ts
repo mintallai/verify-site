@@ -26,8 +26,7 @@ function withIdentifier(item: ViewableItem) {
 function claimItemReducer(acc: any[], claim: IClaimSummary) {
   acc.push([
     withIdentifier(claim),
-    ...(claim.ingredients ?? []).map(withIdentifier),
-    claim.parent && withIdentifier(claim.parent),
+    ...(claim.references || []).map(withIdentifier),
   ]);
   return acc;
 }
@@ -60,7 +59,7 @@ export function getAssetList(
   assetsByIdentifier: IAssetIdentifierMap,
 ): ViewableItem[] {
   if (assetsByIdentifier) {
-    const ids = getIdentifiers([claim.parent, ...(claim.ingredients ?? [])]);
+    const ids = getIdentifiers(claim.references);
     return pickAssets(ids, assetsByIdentifier);
   }
   return [];

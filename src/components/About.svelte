@@ -52,7 +52,7 @@
     height: 14px;
   }
   .category {
-    @apply mr-2 mb-2 px-2 py-1 inline-block uppercase border border-gray-400 text-xs font-bold rounded-sm;
+    @apply mr-2 mb-2 px-2 py-1 inline-block uppercase border border-gray-300 text-xs font-bold rounded-sm;
     padding-top: 3px;
   }
 </style>
@@ -105,7 +105,7 @@
       {/each}
     </dd>
   </dl>
-  <dl class="attributes mt-3">
+  <dl class="attributes multiline mt-3">
     <dt class="flex items-center">
       <span>Number of Tools</span>
       <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
