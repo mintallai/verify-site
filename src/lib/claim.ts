@@ -1,14 +1,15 @@
 import flow from 'lodash/fp/flow';
 import flatten from 'lodash/fp/flatten';
 import compact from 'lodash/fp/compact';
+import map from 'lodash/fp/map';
 import groupBy from 'lodash/fp/groupBy';
 import values from 'lodash/fp/values';
 import reduce from 'lodash/fp/reduce';
 
 export function getIdentifier(item: ViewableItem): string {
-  if (item.claim_id) {
+  if ('claim_id' in item) {
     return `claim_id:${item.claim_id}`;
-  } else if (item.document_id) {
+  } else if ('document_id' in item) {
     return `document_id:${item.document_id}`;
   } else {
     console.error('No identifier found for', item);
@@ -39,6 +40,4 @@ export const addIdentifiers = flow(
   groupBy('id'),
 );
 
-export function isClaimSummary(item: ViewableItem): item is IClaimSummary {
-  return !!(item as IClaimSummary).claim_id;
-}
+export const getIdentifiers = flow(compact, map(getIdentifier));

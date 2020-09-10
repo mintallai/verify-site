@@ -1,11 +1,23 @@
-import { readable, writable, derived } from 'svelte/store';
-import compact from 'lodash/compact';
+import { readable, writable, derived, get } from 'svelte/store';
+import omit from 'lodash/omit';
 import mapValues from 'lodash/mapValues';
-import { addIdentifiers, isClaimSummary } from './lib/claim';
+import { addIdentifiers, getIdentifiers } from './lib/claim';
 
 export const breadcrumbIds = writable<string[]>([]);
 
 export const primaryId = writable<string>('');
+
+export function navigateToId(id: string): void {
+  console.log('navigating to', id);
+  breadcrumbIds.update((ids) => {
+    if (ids.includes(id)) {
+      return ids.slice(0, ids.indexOf(id));
+    } else {
+      return [...ids, get(primaryId)];
+    }
+  });
+  primaryId.set(id);
+}
 
 async function fetchSummary(set: any): Promise<void> {
   const res = await fetch(`mock/data.json`);
@@ -30,52 +42,63 @@ export const assetsByIdentifier = derived<
   const grouped = addIdentifiers($summary?.claims);
   return mapValues(grouped, ([item]) => {
     if (item.claim_id) {
-      return $summary.claims[item.claim_id];
+      const claim = $summary.claims[item.claim_id] ?? {};
+      return { ...claim, type: 'claim' } as IClaimSummary;
     } else {
-      return item;
+      const ref = omit(item, ['claim_id', 'id']);
+      return { ...ref, type: 'reference' } as IReference;
     }
   });
 });
 
-export const primaryAsset = derived(
-  [assetsByIdentifier, primaryId],
-  ([$assetsByIdentifier, $primaryId]) => {
-    return $assetsByIdentifier[$primaryId];
+export const primaryAsset = derived<
+  [typeof assetsByIdentifier, typeof primaryId],
+  ViewableItem
+>([assetsByIdentifier, primaryId], ([$assetsByIdentifier, $primaryId]) => {
+  return $assetsByIdentifier[$primaryId];
+});
+
+function pickAssets(
+  $ids: string[],
+  $assetsByIdentifier: { [identifier: string]: ViewableItem },
+): ViewableItem[] {
+  return $ids.reduce((acc, id) => {
+    const asset = $assetsByIdentifier[id];
+    if (asset) {
+      acc.push(asset);
+    }
+    return acc;
+  }, []);
+}
+
+export const assetList = derived<
+  [typeof primaryAsset, typeof assetsByIdentifier],
+  ViewableItem[]
+>(
+  [primaryAsset, assetsByIdentifier],
+  ([$primaryAsset, $assetsByIdentifier]) => {
+    if ($assetsByIdentifier && $primaryAsset?.type === 'claim') {
+      console.time('assetList');
+      const ids = getIdentifiers([
+        $primaryAsset.parent,
+        ...($primaryAsset.ingredients ?? []),
+      ]);
+      const assets = pickAssets(ids, $assetsByIdentifier);
+      console.timeEnd('assetList');
+      return assets;
+    }
+    return [];
   },
 );
 
-export const assetList = derived<
-  [typeof primaryAsset, typeof summary],
-  Asset[]
->([primaryAsset, summary], ([$primaryAsset, $summary]) => {
-  if ($summary && isClaimSummary($primaryAsset)) {
-    const { claims } = $summary;
-    const { ingredients, parent } = $primaryAsset;
-    const parentAsset = parent
-      ? ({
-          ...parent,
-          type: 'parent',
-          claim: claims[parent.claim_id],
-        } as IParentAsset)
-      : null;
-    const ingredientAssets = ingredients.map((ingredient) => {
-      return {
-        ...ingredient,
-        type: 'ingredient',
-        claim: claims[ingredient.claim_id],
-      } as IIngredientAsset;
-    });
-    return compact([parentAsset, ...ingredientAssets]);
-  }
-  return null;
-});
-
 export const breadcrumbList = derived<
-  [typeof breadcrumbIds, typeof summary],
-  Asset[]
->([breadcrumbIds, summary], ([$breadcrumbIds, $summary]) => {
-  if ($summary) {
-    return [];
-  }
-  return null;
-});
+  [typeof breadcrumbIds, typeof assetsByIdentifier],
+  ViewableItem[]
+>(
+  [breadcrumbIds, assetsByIdentifier],
+  ([$breadcrumbIds, $assetsByIdentifier]) => {
+    return $assetsByIdentifier
+      ? pickAssets($breadcrumbIds, $assetsByIdentifier)
+      : [];
+  },
+);

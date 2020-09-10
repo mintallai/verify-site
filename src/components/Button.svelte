@@ -15,7 +15,7 @@
   }
 </style>
 
-<button class:secondary>
+<button class:secondary on:click>
   <div class="inner">
     <slot />
   </div>

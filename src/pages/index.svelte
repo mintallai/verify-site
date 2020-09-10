@@ -9,6 +9,9 @@
   $: {
     console.log('$primaryAsset', $primaryAsset);
   }
+
+  $: attributionClaim =
+    $primaryAsset?.type === 'claim' ? ($primaryAsset as IClaimSummary) : null;
 </script>
 
 <style lang="postcss">
@@ -26,7 +29,9 @@
   <Header />
   {#if $primaryAsset}
     <section class="border-r">
-      <Attribution claim={$primaryAsset} />
+      {#if attributionClaim}
+        <Attribution claim={attributionClaim} />
+      {/if}
     </section>
     <Viewer thumbnailURL={$primaryAsset.thumbnail_url} />
     <section class="border-l">

@@ -3,9 +3,11 @@
   import cssVars from 'svelte-css-vars';
   import { formatDate } from '../lib/util/format';
   import Button from './Button.svelte';
+  import { getIdentifier } from '../lib/claim';
+  import { navigateToId } from '../stores';
 
   let hover: boolean;
-  export let asset: Asset;
+  export let asset: ViewableItem;
 </script>
 
 <style lang="postcss">
@@ -18,7 +20,7 @@
     height: 155px;
   }
   .item {
-    @apply grid gap-5 max-w-full cursor-pointer;
+    @apply grid gap-5 max-w-full;
     grid-template-columns: 94px auto;
     min-height: 0;
     min-width: 0;
@@ -45,15 +47,15 @@
   on:mouseleave={() => (hover = false)}>
   <div class="selection" class:hover />
   <div class="item">
-    {#if asset.claim}
+    {#if asset.type === 'claim'}
       <div
         class="thumbnail"
         use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }} />
       <dl class="attributes multiline overflow-hidden self-center">
         <dt>Creator</dt>
-        <dd>{asset.claim.contributor}</dd>
+        <dd>{asset.contributor}</dd>
         <dt>Date Created</dt>
-        <dd>{formatDate(asset.claim.date_created)}</dd>
+        <dd>{formatDate(asset.date_created)}</dd>
       </dl>
     {:else}
       <div
@@ -67,7 +69,9 @@
   </div>
   {#if hover}
     <div class="grid grid-cols-2 gap-3 mt-2" transition:scale={{ start: 0.8 }}>
-      <Button secondary>Inspect</Button>
+      <Button secondary on:click={() => navigateToId(getIdentifier(asset))}>
+        Inspect
+      </Button>
       <Button secondary>Compare</Button>
     </div>
   {/if}
