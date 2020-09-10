@@ -1,6 +1,9 @@
 /node_modules/
 /dist/
+/build-artifacts/
 .DS_Store
 **/.history
 /src/tmp/
 .routify
+*.log
+.vscode

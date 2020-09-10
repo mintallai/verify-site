@@ -1,12 +1,45 @@
-import { readable, writable, derived } from 'svelte/store';
-import compact from 'lodash/compact';
+import { readable, writable, derived, get } from 'svelte/store';
+import omit from 'lodash/omit';
+import mapValues from 'lodash/mapValues';
+import { addIdentifiers } from './lib/claim';
 
-export const primaryClaimId = writable('');
+export const breadcrumbIds = writable<string[]>([]);
+
+export const primaryId = writable<string>('');
+
+export const secondaryId = writable<string>('');
+
+export function navigateToId(id: string): void {
+  console.log('navigating to', id, get(breadcrumbIds));
+  const currId = get(primaryId);
+  breadcrumbIds.update((ids) => {
+    if (ids.includes(id)) {
+      return ids.slice(0, ids.indexOf(id));
+    } else if (id !== currId) {
+      // Don't add the current ID if it's not changing (in the case of closing a secondary asset)
+      return [...ids, currId];
+    } else {
+      return ids;
+    }
+  });
+  primaryId.set(id);
+}
+
+export function compareWithId(id: string): void {
+  console.log('comparing with', id);
+  secondaryId.set(id);
+}
 
 async function fetchSummary(set: any): Promise<void> {
   const res = await fetch(`mock/data.json`);
   const data = (await res.json()) as ISummaryResponse;
-  primaryClaimId.set(data.root_claim_id);
+  data.claims = mapValues(data.claims, (claim, claim_id) => ({
+    ...claim,
+    claim_id,
+  }));
+  primaryId.set(`claim_id:${data.root_claim_id}`);
+  // navigateToId(`claim_id:c_tpic_1/cai.claim`);
+  // secondaryId.set(`claim_id:c_adbe_5/cai.claim`);
   set(data);
 }
 
@@ -15,33 +48,32 @@ export const summary = readable<ISummaryResponse | null>(null, (set) => {
   return () => {};
 });
 
-export const primaryAsset = derived(
-  [summary, primaryClaimId],
-  ([$summary, $primaryClaimId]) => {
-    return $summary && $primaryClaimId
-      ? $summary.claims[$primaryClaimId]
-      : null;
-  },
-);
+export const assetsByIdentifier = derived<
+  [typeof summary],
+  { [identifier: string]: ViewableItem }
+>([summary], ([$summary]) => {
+  const grouped = addIdentifiers($summary?.claims);
+  return mapValues(grouped, ([item]) => {
+    if (item.claim_id) {
+      const claim = $summary.claims[item.claim_id] ?? {};
+      return { ...claim, type: 'claim' } as IClaimSummary;
+    } else {
+      const ref = omit(item, ['claim_id', 'id']);
+      return { ...ref, type: 'reference' } as IReference;
+    }
+  });
+});
 
-export const assetList = derived<
-  [typeof primaryAsset, typeof summary],
-  Asset[]
->([primaryAsset, summary], ([$primaryAsset, $summary]) => {
-  if ($summary) {
-    const { claims } = $summary;
-    const { ingredients, parent } = $primaryAsset;
-    const parentAsset = parent
-      ? ({ ...claims[parent], type: 'parent' } as IParentAsset)
-      : null;
-    const ingredientAssets = ingredients.map((ingredient) => {
-      return {
-        ...ingredient,
-        type: 'ingredient',
-        claim: ingredient.claim_id ? claims[ingredient.claim_id] : undefined,
-      } as IIngredientAsset;
-    });
-    return compact([parentAsset, ...ingredientAssets]);
-  }
-  return null;
+export const primaryAsset = derived<
+  [typeof assetsByIdentifier, typeof primaryId],
+  ViewableItem
+>([assetsByIdentifier, primaryId], ([$assetsByIdentifier, $primaryId]) => {
+  return $assetsByIdentifier[$primaryId];
+});
+
+export const secondaryAsset = derived<
+  [typeof assetsByIdentifier, typeof secondaryId],
+  ViewableItem
+>([assetsByIdentifier, secondaryId], ([$assetsByIdentifier, $secondaryId]) => {
+  return $assetsByIdentifier[$secondaryId];
 });
