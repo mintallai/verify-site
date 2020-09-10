@@ -12,7 +12,7 @@
 
 <style lang="postcss">
   .container {
-    @apply relative mb-4 p-2 transition-all duration-200 z-0;
+    @apply relative mb-4 p-2 transition-all duration-200 z-0 cursor-pointer;
     height: 99px;
   }
   .container.hover {
@@ -44,7 +44,8 @@
   class="container"
   class:hover
   on:mouseenter={() => (hover = true)}
-  on:mouseleave={() => (hover = false)}>
+  on:mouseleave={() => (hover = false)}
+  on:click={() => navigateToId(getIdentifier(asset))}>
   <div class="selection" class:hover />
   <div class="item">
     {#if asset.type === 'claim'}
@@ -68,11 +69,11 @@
     {/if}
   </div>
   {#if hover}
-    <div class="grid grid-cols-2 gap-3 mt-2" transition:scale={{ start: 0.8 }}>
+    <div class="grid grid-cols-2 gap-3 mt-2" in:scale={{ start: 0.8 }}>
       <Button secondary on:click={() => navigateToId(getIdentifier(asset))}>
         Inspect
       </Button>
-      <Button secondary>Compare</Button>
+      <Button secondary on:click={() => {}}>Compare</Button>
     </div>
   {/if}
 </div>

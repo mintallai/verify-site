@@ -10,7 +10,7 @@
     console.log('$primaryAsset', $primaryAsset);
   }
 
-  $: attributionClaim =
+  $: currentClaim =
     $primaryAsset?.type === 'claim' ? ($primaryAsset as IClaimSummary) : null;
 </script>
 
@@ -29,14 +29,16 @@
   <Header />
   {#if $primaryAsset}
     <section class="border-r">
-      {#if attributionClaim}
-        <Attribution claim={attributionClaim} />
+      {#if currentClaim}
+        <Attribution claim={currentClaim} />
       {/if}
     </section>
     <Viewer thumbnailURL={$primaryAsset.thumbnail_url} />
     <section class="border-l">
       <Breadcrumbs />
-      <Assets />
+      {#if currentClaim}
+        <Assets claim={currentClaim} />
+      {/if}
     </section>
   {/if}
 </main>

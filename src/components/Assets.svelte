@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { assetList, primaryAsset } from '../stores';
   import Asset from './Asset.svelte';
   import Icon from './Icon.svelte';
+  import { getAssetList } from '../lib/claim';
+  import { assetsByIdentifier } from '../stores';
 
-  $: isOriginalCreation =
-    $primaryAsset?.type === 'claim'
-      ? ($primaryAsset as IClaimSummary).edits.original_creation
-      : false;
+  export let claim: IClaimSummary;
+
+  $: assetList = getAssetList(claim, $assetsByIdentifier);
 </script>
 
 <style lang="postcss">
@@ -22,10 +22,10 @@
     <Icon size="m" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
   </h2>
   <div class="container">
-    {#each $assetList as asset}
+    {#each assetList as asset}
       <Asset {asset} />
     {/each}
-    {#if isOriginalCreation}
+    {#if claim.edits.original_creation}
       <div class="original-creation">
         <img
           src="/images/svg/original-creation.svg"

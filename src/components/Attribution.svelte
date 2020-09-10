@@ -1,3 +1,15 @@
+<script lang="ts" context="module">
+  const translations = {
+    AI_ASSISTED: 'AI Assisted',
+    CAPTURE: 'Capture',
+    COLORS_ADJUSTMENTS: 'Colors & Adjustments',
+    IMPORTED_ASSETS: 'Imported Assets',
+    PAINTING: 'Painting',
+    STYLES_EFFECTS: 'Styles & Effects',
+    TRANSFORMS: 'Transforms',
+  };
+</script>
+
 <script lang="ts">
   import size from 'lodash/size';
   import sum from 'lodash/sum';
@@ -11,6 +23,9 @@
   let mostUsedTools = [];
 
   $: dateCreated = parseISO(claim.date_created);
+  $: categoryList = Object.keys(claim.edits.categories).map(
+    (x) => translations[x],
+  );
   $: {
     const totalEdits = sum(Object.values(claim.edits.tool_usage));
     const sorted = toPairs(claim.edits.tool_usage)
@@ -33,6 +48,10 @@
     @apply ml-1;
     width: 14px;
     height: 14px;
+  }
+  .category {
+    @apply mr-2 mb-2 px-2 py-1 inline-block uppercase border border-gray-400 text-xs font-bold rounded-sm;
+    padding-top: 3px;
   }
 </style>
 
@@ -67,15 +86,28 @@
     </dd>
   </dl>
   <dl class="attributes multiline border-t border-gray-200 mt-5 pt-4">
-    <dt class="mb-2">Edit Type</dt>
-    <dd>{Object.keys(claim.edits.categories).join(', ')}</dd>
+    <dt class="mb-2 flex items-center">
+      <span>Edit Type</span>
+      <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
+    </dt>
+    <dd>
+      {#each categoryList as category}
+        <div class="category">{category}</div>
+      {/each}
+    </dd>
   </dl>
   <dl class="attributes mt-3">
-    <dt>Number of Tools</dt>
+    <dt class="flex items-center">
+      <span>Number of Tools</span>
+      <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
+    </dt>
     <dd>{size(claim.edits.tool_usage)}</dd>
   </dl>
   <dl class="attributes multiline mt-3">
-    <dt class="mb-2">Most Used Tools</dt>
+    <dt class="mb-2 flex items-center">
+      <span>Most Used Tools</span>
+      <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
+    </dt>
     <dd class="ml-4">
       {#each mostUsedTools as tool}
         <div class="mb-2">
@@ -84,7 +116,10 @@
         </div>
       {/each}
     </dd>
-    <dt class="mt-3 mb-2">Special Filters</dt>
+    <dt class="mt-3 mb-2 flex items-center">
+      <span>Special Filters</span>
+      <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
+    </dt>
     <dd>{claim.edits.special_filters.join(', ')}</dd>
   </dl>
 </div>

@@ -15,7 +15,7 @@
   }
 </style>
 
-<button class:secondary on:click>
+<button class:secondary on:click|stopPropagation>
   <div class="inner">
     <slot />
   </div>

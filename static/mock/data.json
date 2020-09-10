@@ -10,17 +10,14 @@
       "edits": {
         "original_creation": true,
         "categories": {
-          "MODIFIED_CONTENT": 10
+          "CAPTURE": 1
         },
-        "tool_usage": {
-          "Erase": 7,
-          "Brush Tool": 3
-        },
+        "tool_usage": {},
         "special_filters": []
       }
     },
     "c_adbe_4/cai.claim": {
-      "thumbnail_url": "/mock/images/thumbnail-4.jpg",
+      "thumbnail_url": "http://127.0.0.1:5000/mock/images/thumbnail-4.jpg",
       "contributor": "Andrew Kaback",
       "contributor_id": "F96FC54EE7FBC11B698FA28262C@adobe.com",
       "verified_by": "Adobe",
@@ -29,8 +26,8 @@
       "edits": {
         "original_creation": false,
         "categories": {
-          "MODIFIED_CONTENT": 26,
-          "CROPPED_REFRAMED": 1
+          "PAINTING": 26,
+          "TRANSFORMS": 1
         },
         "tool_usage": {
           "Brush Tool": 26,
@@ -48,9 +45,10 @@
       "edits": {
         "original_creation": false,
         "categories": {
-          "CROPPED_REFRAMED": 30,
-          "GLOBALLY_ADJUSTED": 8,
-          "MODIFIED_CONTENT": 5
+          "PAINTING": 41,
+          "IMPORTED_ASSETS": 2,
+          "TRANSFORMS": 1,
+          "AI_ASSISTED": 1
         },
         "tool_usage": {
           "Brush Tool": 26,

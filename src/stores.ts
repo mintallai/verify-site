@@ -1,7 +1,7 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import omit from 'lodash/omit';
 import mapValues from 'lodash/mapValues';
-import { addIdentifiers, getIdentifiers } from './lib/claim';
+import { addIdentifiers } from './lib/claim';
 
 export const breadcrumbIds = writable<string[]>([]);
 
@@ -55,50 +55,6 @@ export const primaryAsset = derived<
   [typeof assetsByIdentifier, typeof primaryId],
   ViewableItem
 >([assetsByIdentifier, primaryId], ([$assetsByIdentifier, $primaryId]) => {
+  console.log('$assetsByIdentifier', $assetsByIdentifier);
   return $assetsByIdentifier[$primaryId];
 });
-
-function pickAssets(
-  $ids: string[],
-  $assetsByIdentifier: { [identifier: string]: ViewableItem },
-): ViewableItem[] {
-  return $ids.reduce((acc, id) => {
-    const asset = $assetsByIdentifier[id];
-    if (asset) {
-      acc.push(asset);
-    }
-    return acc;
-  }, []);
-}
-
-export const assetList = derived<
-  [typeof primaryAsset, typeof assetsByIdentifier],
-  ViewableItem[]
->(
-  [primaryAsset, assetsByIdentifier],
-  ([$primaryAsset, $assetsByIdentifier]) => {
-    if ($assetsByIdentifier && $primaryAsset?.type === 'claim') {
-      console.time('assetList');
-      const ids = getIdentifiers([
-        $primaryAsset.parent,
-        ...($primaryAsset.ingredients ?? []),
-      ]);
-      const assets = pickAssets(ids, $assetsByIdentifier);
-      console.timeEnd('assetList');
-      return assets;
-    }
-    return [];
-  },
-);
-
-export const breadcrumbList = derived<
-  [typeof breadcrumbIds, typeof assetsByIdentifier],
-  ViewableItem[]
->(
-  [breadcrumbIds, assetsByIdentifier],
-  ([$breadcrumbIds, $assetsByIdentifier]) => {
-    return $assetsByIdentifier
-      ? pickAssets($breadcrumbIds, $assetsByIdentifier)
-      : [];
-  },
-);

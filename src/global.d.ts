@@ -53,3 +53,7 @@ declare interface ISummaryResponse {
 }
 
 declare type ViewableItem = IClaimSummary | IReference;
+
+declare interface IAssetIdentifierMap {
+  [claimID: string]: ViewableItem;
+}
