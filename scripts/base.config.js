@@ -7,7 +7,6 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import copy from 'rollup-plugin-copy';
 import del from 'del';
-import { string } from 'rollup-plugin-string';
 import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
@@ -35,7 +34,7 @@ export function createRollupConfigs(config) {
   if (serve && !isNollup)
     spassr({
       serveSpa: true, // serve app
-      serveSsr: !isNollup, // Nollup doesn't need SSR
+      serveSsr: false, // we don't need SSR
       silent: isNollup, // Nollup needs Spassr internally
     });
 
@@ -76,6 +75,7 @@ function baseConfig(config, ctx) {
   const _rollupConfig = {
     inlineDynamicImports: !dynamicImports,
     preserveEntrySignatures: false,
+
     input: `src/main.ts`,
     output: {
       name: 'verify_site',
@@ -97,8 +97,6 @@ function baseConfig(config, ctx) {
         flatten: false,
       }),
       typeCheck(),
-      embeddedTypescript({ sourceMap: !production }),
-      typescript(),
       svelte(svelteConfig),
 
       // resolve matching modules from current working directory
@@ -107,9 +105,8 @@ function baseConfig(config, ctx) {
         extensions: ['.svelte', '.ts', '.js'],
         dedupe: (importee) => !!importee.match(/svelte(\/|$)/),
       }),
-      string({
-        include: 'assets/**/*.svg',
-      }),
+      embeddedTypescript({ sourceMap: !production }),
+      typescript(),
       commonjs(),
 
       production && terser(), // minify

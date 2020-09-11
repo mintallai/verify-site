@@ -3,21 +3,24 @@
   import cssVars from 'svelte-css-vars';
   import { formatDate } from '../lib/util/format';
   import Button from './Button.svelte';
+  import { getIdentifier } from '../lib/claim';
+  import { navigateToId, compareWithId } from '../stores';
 
   let hover: boolean;
-  export let asset: Asset;
+  export let asset: ViewableItem;
 </script>
 
 <style lang="postcss">
   .container {
-    @apply relative mb-4 p-2 transition-all duration-200;
+    @apply relative mb-4 p-2 transition-all duration-200 z-0 cursor-pointer;
     height: 99px;
   }
   .container.hover {
+    @apply z-10;
     height: 155px;
   }
   .item {
-    @apply grid gap-5 max-w-full cursor-pointer;
+    @apply grid gap-5 max-w-full;
     grid-template-columns: 94px auto;
     min-height: 0;
     min-width: 0;
@@ -41,28 +44,19 @@
   class="container"
   class:hover
   on:mouseenter={() => (hover = true)}
-  on:mouseleave={() => (hover = false)}>
+  on:mouseleave={() => (hover = false)}
+  on:click={() => navigateToId(getIdentifier(asset))}>
   <div class="selection" class:hover />
   <div class="item">
-    {#if asset.type === 'parent'}
-      <div
-        class="thumbnail"
-        use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }} />
-      <dl class="attributes multiline self-center">
-        <dt>Creator</dt>
-        <dd>{asset.contributor}</dd>
-        <dt>Date Created</dt>
-        <dd>{formatDate(asset.date_created)}</dd>
-      </dl>
-    {:else if asset.type === 'ingredient' && asset.claim}
+    {#if asset.type === 'claim'}
       <div
         class="thumbnail"
         use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }} />
       <dl class="attributes multiline overflow-hidden self-center">
         <dt>Creator</dt>
-        <dd>{asset.claim.contributor}</dd>
+        <dd>{asset.contributor}</dd>
         <dt>Date Created</dt>
-        <dd>{formatDate(asset.claim.date_created)}</dd>
+        <dd>{formatDate(asset.date_created)}</dd>
       </dl>
     {:else}
       <div
@@ -75,9 +69,13 @@
     {/if}
   </div>
   {#if hover}
-    <div class="grid grid-cols-2 gap-3 mt-2" transition:scale={{ start: 0.8 }}>
-      <Button secondary>Inspect</Button>
-      <Button secondary>Compare</Button>
+    <div class="grid grid-cols-2 gap-3 mt-2" in:scale={{ start: 0.8 }}>
+      <Button secondary on:click={() => navigateToId(getIdentifier(asset))}>
+        Inspect
+      </Button>
+      <Button secondary on:click={() => compareWithId(getIdentifier(asset))}>
+        Compare
+      </Button>
     </div>
   {/if}
 </div>

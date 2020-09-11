@@ -7,3 +7,4 @@
 .routify
 .npmrc
 *.log
+.vscode

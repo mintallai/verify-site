@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let secondary: boolean;
+  export let secondary: boolean = false;
 </script>
 
 <style lang="postcss">
@@ -15,7 +15,7 @@
   }
 </style>
 
-<button class:secondary>
+<button class:secondary on:click|stopPropagation>
   <div class="inner">
     <slot />
   </div>

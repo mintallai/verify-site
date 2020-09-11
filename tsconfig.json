@@ -1,5 +1,10 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "importsNotUsedAsValues": "remove",
+    "noEmitOnError": false
+  },
   "include": ["src/**/*"],
   "exclude": ["node_modules/*", "static/*", "scripts/*", "assets/*"]
 }
