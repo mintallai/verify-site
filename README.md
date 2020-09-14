@@ -1,6 +1,6 @@
 # verify-site
 
-This project generates the CAI verify site front end
+This project generates the CAI verify site front end.
 
 ### Get started
 
