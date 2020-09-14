@@ -17,11 +17,6 @@ services:
         secret_data:
           field: ssh_private_key
           path: dme_cai/caivrfy
-      - name: artifactory_aws_credentials
-        global: 'true'
-        secret_data:
-          field: artifactory_aws_credentials
-          path: dme_cai/caivrfy
       - name: artifactory_corp_credentials
         global: 'true'
         secret_data:
