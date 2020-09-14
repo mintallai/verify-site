@@ -11,6 +11,22 @@ import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 
+const year = new Date().getFullYear();
+const banner = `
+/*************************************************************************
+ * Copyright ${year} Adobe. All Rights Reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Adobe and its suppliers, if any. The intellectual
+ * and technical concepts contained herein are proprietary to Adobe
+ * and its suppliers and are protected by all applicable intellectual
+ * property laws, including trade secret and copyright laws.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Adobe.
+ **************************************************************************/
+`;
+
 const isNollup = !!process.env.NOLLUP;
 
 function typeCheck() {
@@ -34,7 +50,7 @@ export function createRollupConfigs(config) {
   if (serve && !isNollup)
     spassr({
       serveSpa: true, // serve app
-      serveSsr: false, // we don't need SSR
+      serveSsr: !isNollup, // Nollup doesn't need SSR
       silent: isNollup, // Nollup needs Spassr internally
     });
 
@@ -75,11 +91,11 @@ function baseConfig(config, ctx) {
   const _rollupConfig = {
     inlineDynamicImports: !dynamicImports,
     preserveEntrySignatures: false,
-
     input: `src/main.ts`,
     output: {
       name: 'verify_site',
-      sourcemap: true,
+      sourcemap: !production,
+      banner,
       ...outputConfig,
     },
     plugins: [
@@ -89,7 +105,7 @@ function baseConfig(config, ctx) {
           {
             src: [`${staticDir}/__index.html`],
             dest: distDir,
-            rename: '__app.html',
+            rename: 'index.html',
             transform,
           },
         ],
@@ -106,10 +122,24 @@ function baseConfig(config, ctx) {
         dedupe: (importee) => !!importee.match(/svelte(\/|$)/),
       }),
       embeddedTypescript({ sourceMap: !production }),
-      typescript(),
+      typescript({
+        sourceMap: !production,
+      }),
       commonjs(),
 
-      production && terser(), // minify
+      production &&
+        terser({
+          output: {
+            comments: function (node, comment) {
+              var text = comment.value;
+              var type = comment.type;
+              if (type == 'comment2') {
+                // multiline comment
+                return /Adobe|@preserve|@license|@cc_on/i.test(text);
+              }
+            },
+          },
+        }), // minify
       !production && isNollup && Hmr({ inMemory: true, public: staticDir }), // refresh only updated code
       !production && !isNollup && livereload(distDir), // refresh entire window when code is updated
     ],

@@ -1,8 +1,0 @@
-version: "3"
-
-services:
-  verify-site:
-    image: "verify-site"
-    ports:
-      - "5000:5000"
-      - "5005:5005"
