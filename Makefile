@@ -2,7 +2,8 @@ SERVICE_NAME=verify-site
 
 # $sha is provided by jenkins
 BUILDER_TAG?=$(or $(sha),$(SERVICE_NAME)-builder)
-IMAGE_TAG=$(SERVICE_NAME)-s3
+IMAGE_TAG=$(SERVICE_NAME)-img
+IMAGE_TAG_S3_SHA=$(sha)-img
 
 default: ci
 
