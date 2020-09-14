@@ -75,7 +75,7 @@ services:
                 hidden: false
               - name: ARTIFACTORY_DOCKER_REGISTRY
                 param_type: string
-                default: docker-cai-verify-site-release.dr-uw2.adobeitc.com
+                default: docker-cai-verify-site-release.dr.corp.adobe.com
                 hidden: false
               - name: DOCKER_REPO
                 param_type: string
@@ -129,7 +129,7 @@ services:
                 hidden: false
               - name: ARTIFACTORY_DOCKER_REGISTRY
                 param_type: string
-                default: docker-cai-verify-site-release.dr-uw2.adobeitc.com
+                default: docker-cai-verify-site-release.dr.corp.adobe.com
                 hidden: false
               - name: DOCKER_REPO
                 param_type: string
