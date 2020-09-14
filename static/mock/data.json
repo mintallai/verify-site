@@ -1,7 +1,7 @@
 {
   "claims": {
     "c_tpic_1/cai.claim": {
-      "thumbnail_url": "http://127.0.0.1:5000/mock/images/thumbnail-1.jpg",
+      "thumbnail_url": "/mock/images/thumbnail-1.jpg",
       "contributor": "Andy Parsons",
       "contributor_id": "F96FC54EE7FBC11B698FA28262B@adobe.com",
       "verified_by": "Truepic",
@@ -17,7 +17,7 @@
       }
     },
     "c_adbe_4/cai.claim": {
-      "thumbnail_url": "http://127.0.0.1:5000/mock/images/thumbnail-4.jpg",
+      "thumbnail_url": "/mock/images/thumbnail-4.jpg",
       "contributor": "Andrew Kaback",
       "contributor_id": "F96FC54EE7FBC11B698FA28262C@adobe.com",
       "verified_by": "Adobe",
@@ -37,7 +37,7 @@
       }
     },
     "c_adbe_5/cai.claim": {
-      "thumbnail_url": "http://127.0.0.1:5000/mock/images/thumbnail-5.jpg",
+      "thumbnail_url": "/mock/images/thumbnail-5.jpg",
       "contributor": "Pia Blumenthal",
       "verified_by": "Adobe",
       "created_with": "Photoshop",
@@ -65,28 +65,28 @@
           "type": "parent",
           "title": "image 1.jpg",
           "document_id": "6A74374D486A33B24E05E4BAA83DDB74",
-          "thumbnail_url": "http://127.0.0.1:5000/mock/images/thumbnail-1.jpg",
+          "thumbnail_url": "/mock/images/thumbnail-1.jpg",
           "claim_id": "c_tpic_1/cai.claim"
         },
         {
           "type": "ingredient",
           "title": "image 4.jpg",
           "document_id": "6A74374D486A33B24E05E4BAA83DDB73",
-          "thumbnail_url": "http://127.0.0.1:5000/mock/images/thumbnail-4.jpg",
+          "thumbnail_url": "/mock/images/thumbnail-4.jpg",
           "claim_id": "c_adbe_4/cai.claim"
         },
         {
           "type": "ingredient",
           "title": "Screen Shot 2020-05-10 14:05:02.jpg",
           "document_id": "04B4F0672A7B6001A6DF1A6CF55FEC6A",
-          "thumbnail_url": "http://127.0.0.1:5000/mock/images/thumbnail-3.jpg",
+          "thumbnail_url": "/mock/images/thumbnail-3.jpg",
           "claim_id": null
         },
         {
           "type": "ingredient",
           "title": "image 2.jpg",
           "document_id": "6CC921188E857BF6B6601BB2F2CBDE37",
-          "thumbnail_url": "http://127.0.0.1:5000/mock/images/thumbnail-2.jpg",
+          "thumbnail_url": "/mock/images/thumbnail-2.jpg",
           "claim_id": null
         }
       ]
