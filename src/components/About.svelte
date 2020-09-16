@@ -76,7 +76,7 @@
     <dd class="flex items-center">
       <span>{claim.verified_by}</span>
       <img
-        src={`images/svg/logos/${claim.verified_by.toLowerCase()}.svg`}
+        src={`images/svg/logos/${claim.verified_by?.toLowerCase()}.svg`}
         class="logo"
         alt="Adobe" />
     </dd>
@@ -84,7 +84,7 @@
     <dd class="flex items-center">
       <span>{claim.created_with}</span>
       <img
-        src={`images/svg/logos/${claim.created_with.toLowerCase()}.svg`}
+        src={`images/svg/logos/${claim.created_with?.toLowerCase()}.svg`}
         class="logo"
         alt={claim.created_with} />
     </dd>

@@ -3,6 +3,9 @@ import omit from 'lodash/omit';
 import mapValues from 'lodash/mapValues';
 import { addIdentifiers } from './lib/claim';
 
+const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
+// const API_BASE_URL = 'http://localhost:4000';
+
 export const breadcrumbIds = writable<string[]>([]);
 
 export const primaryId = writable<string>('');
@@ -31,7 +34,17 @@ export function compareWithId(id: string): void {
 }
 
 async function fetchSummary(set: any): Promise<void> {
-  const res = await fetch(`mock/data.json`);
+  const res = await fetch(`${API_BASE_URL}/claim/summary`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      asset_url: 'http://path/file.jpg',
+    }),
+  });
   const data = (await res.json()) as ISummaryResponse;
   data.claims = mapValues(data.claims, (claim, claim_id) => ({
     ...claim,

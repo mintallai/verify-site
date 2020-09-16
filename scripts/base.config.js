@@ -50,7 +50,7 @@ export function createRollupConfigs(config) {
   if (serve && !isNollup)
     spassr({
       serveSpa: true, // serve app
-      serveSsr: !isNollup, // Nollup doesn't need SSR
+      serveSsr: false, // No ssr for now
       silent: isNollup, // Nollup needs Spassr internally
     });
 
