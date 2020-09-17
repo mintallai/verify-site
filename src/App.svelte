@@ -8,6 +8,7 @@
   @import '../static/base.css';
   @import 'tailwindcss/components';
   @import 'tailwindcss/utilities';
+  @import 'tippy.js/dist/tippy.css';
 </style>
 
 <Router {routes} />

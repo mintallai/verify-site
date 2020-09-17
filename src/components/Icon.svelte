@@ -1,17 +1,35 @@
 <script lang="ts" context="module">
   import {
+    ActionsIcon,
+    BrushIcon,
+    CameraIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
     CloseIcon,
+    ColorPaletteIcon,
+    FolderOpenOutlineIcon,
+    GroupIcon,
     HelpOutlineIcon,
+    ShapesIcon,
+    TextIcon,
+    VideoOutlineIcon,
   } from '@spectrum-web-components/icons-workflow/lib/icons';
 
   const IconsUI = {};
   const IconsWorkflow = {
+    ActionsIcon,
+    BrushIcon,
+    CameraIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
     CloseIcon,
+    ColorPaletteIcon,
+    FolderOpenOutlineIcon,
+    GroupIcon,
     HelpOutlineIcon,
+    ShapesIcon,
+    TextIcon,
+    VideoOutlineIcon,
   };
 </script>
 

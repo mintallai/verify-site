@@ -18,7 +18,7 @@
 
 <div class="p-2">
   <h2 class="mb-5 p-3 pb-0 flex items-center">
-    <span>Assets</span>
+    <span>Assets Used</span>
     <Icon size="m" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
   </h2>
   <div class="container">

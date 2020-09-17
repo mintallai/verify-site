@@ -12,7 +12,8 @@
   }
 
   dl.attributes {
-    @apply grid grid-cols-2;
+    @apply grid;
+    grid-template-columns: repeat(2, auto);
     row-gap: 0.5em;
 
     dt {
@@ -36,6 +37,13 @@
           @apply mb-0;
         }
       }
+    }
+  }
+
+  .tippy-box[data-theme~='cai'] {
+    @apply font-body text-sm;
+    .content {
+      padding-bottom: 7px;
     }
   }
 }

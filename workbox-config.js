@@ -2,7 +2,7 @@ const distDir = 'dist';
 
 module.exports = {
   globDirectory: distDir,
-  globPatterns: ['**/*.{js,css,svg}', '__app.html'],
+  globPatterns: ['**/*.{js,css,svg}', 'index.html'],
   swSrc: `${distDir}/sw.js`,
   swDest: `${distDir}/sw.js`,
   maximumFileSizeToCacheInBytes: 10000000, // 10 MB

@@ -4,10 +4,17 @@
   import { formatDate } from '../lib/util/format';
   import Button from './Button.svelte';
   import { getIdentifier } from '../lib/claim';
-  import { navigateToId, compareWithId } from '../stores';
+  import { navigateToId, compareWithId, primaryId } from '../stores';
 
   let hover: boolean;
   export let asset: ViewableItem;
+
+  $: isCurrent = asset._id === $primaryId;
+  $: {
+    if (isCurrent) {
+      hover = false;
+    }
+  }
 </script>
 
 <style lang="postcss">
@@ -26,7 +33,7 @@
     min-width: 0;
   }
   .thumbnail {
-    @apply border border-gray-350 rounded-sm bg-contain bg-center bg-no-repeat;
+    @apply border border-gray-350 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
     width: 94px;
     height: 94px;
     background-image: var(--backgroundImage);
@@ -38,14 +45,19 @@
   .selection.hover {
     @apply opacity-100 scale-100;
   }
+  .connector {
+    @apply absolute bg-gray-350;
+    width: 2px;
+    height: 30px;
+  }
 </style>
 
 <div
   class="container"
   class:hover
-  on:mouseenter={() => (hover = true)}
+  on:mouseenter={() => (hover = isCurrent ? false : true)}
   on:mouseleave={() => (hover = false)}
-  on:click={() => navigateToId(getIdentifier(asset))}>
+  on:click={() => navigateToId(asset._id)}>
   <div class="selection" class:hover />
   <div class="item">
     {#if asset.type === 'claim'}
@@ -53,9 +65,9 @@
         class="thumbnail"
         use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }} />
       <dl class="attributes multiline overflow-hidden self-center">
-        <dt>Creator</dt>
+        <dt>Edited By</dt>
         <dd>{asset.contributor}</dd>
-        <dt>Date Created</dt>
+        <dt>Export Date</dt>
         <dd>{formatDate(asset.date_created)}</dd>
       </dl>
     {:else}
@@ -70,10 +82,8 @@
   </div>
   {#if hover}
     <div class="grid grid-cols-2 gap-3 mt-2" in:scale={{ start: 0.8 }}>
-      <Button secondary on:click={() => navigateToId(getIdentifier(asset))}>
-        Inspect
-      </Button>
-      <Button secondary on:click={() => compareWithId(getIdentifier(asset))}>
+      <Button secondary on:click={() => navigateToId(asset._id)}>View</Button>
+      <Button secondary on:click={() => compareWithId(asset._id)}>
         Compare
       </Button>
     </div>
