@@ -30,7 +30,7 @@
   let container: any;
   let bgStyles = {
     top: `0`,
-    height: `0`,
+    height: `112px`,
   };
 
   onMount(() => {
@@ -40,7 +40,6 @@
       resizeObserver = new ResizeObserver(([entry]) => {
         // TODO: Optimize this
         const activeItem = container.querySelector('div.current');
-        bgStyles.height = `${activeItem.offsetHeight}px`;
         bgStyles.top = `${activeItem.offsetTop}px`;
         console.log('resize', activeItem.offsetTop);
       });
@@ -57,7 +56,7 @@
 
 <style lang="postcss">
   .active-bg {
-    @apply absolute bg-gray-200 rounded w-full;
+    @apply absolute bg-gray-200 rounded w-full z-0;
     top: var(--top);
     height: var(--height);
   }
@@ -72,13 +71,13 @@
     <div class="active-bg" use:cssVars={bgStyles} />
   {/if}
   <div bind:this={container} class="grid">
-    {#each breadcrumbList as asset (asset._id)}
+    {#each breadcrumbList as asset, index (asset._id)}
       <div
         in:add={{ key: asset._id }}
         out:remove={{ key: asset._id }}
-        animate:flip
+        animate:flip={{ duration: 200 }}
         class:current={asset._id === $primaryId}>
-        <Asset {asset} />
+        <Asset {asset} hasConnector={index > 0} />
       </div>
     {/each}
   </div>

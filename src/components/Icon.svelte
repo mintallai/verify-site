@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
   import {
     ActionsIcon,
+    AlertIcon,
     BrushIcon,
     CameraIcon,
     ChevronLeftIcon,
@@ -18,6 +19,7 @@
   const IconsUI = {};
   const IconsWorkflow = {
     ActionsIcon,
+    AlertIcon,
     BrushIcon,
     CameraIcon,
     ChevronLeftIcon,
@@ -35,6 +37,7 @@
 
 <script lang="ts">
   enum Sizes {
+    l = `1.25rem`,
     m = `1rem`,
     s = `0.875rem`,
   }

@@ -46,7 +46,10 @@
           {isComparing}
           on:close={partial(handleClose, secondary)} />
       {:else}
-        <NoInfo {isComparing} on:close={partial(handleClose, secondary)} />
+        <NoInfo
+          ingredient={primary}
+          {isComparing}
+          on:close={partial(handleClose, secondary)} />
       {/if}
     </section>
     {#if isComparing}
@@ -66,7 +69,10 @@
           {isComparing}
           on:close={partial(handleClose, primary)} />
       {:else if secondary?.type === 'reference'}
-        <NoInfo {isComparing} on:close={partial(handleClose, primary)} />
+        <NoInfo
+          ingredient={secondary}
+          {isComparing}
+          on:close={partial(handleClose, primary)} />
       {:else if primary?.type === 'claim'}
         <Assets claim={primary} />
       {/if}

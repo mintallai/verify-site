@@ -54,7 +54,10 @@ async function fetchSummary(set: any): Promise<void> {
     claim_id,
   }));
   navigateToId(`claim_id:${data.root_claim_id}`);
-  // secondaryId.set(`claim_id:c_adbe_5/cai.claim`);
+  // setTimeout(() => {
+  //   navigateToId(`claim_id:c_tpic_1/cai.claim`);
+  // }, 1000);
+  // secondaryId.set(`document_id:04B4F0672A7B6001A6DF1A6CF55FEC6A`);
   set(data);
 }
 

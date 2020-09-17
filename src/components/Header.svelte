@@ -22,7 +22,7 @@
     <h1 class="font-black uppercase text-sm ml-2">Image Report</h1>
   </div>
   <div>
-    <a href="/" class="font-bold text-sm mr-4 hover:underline">FAQs</a>
-    <Button>Upload New Image</Button>
+    <!-- <a href="/" class="font-bold text-sm mr-4 hover:underline">FAQs</a> -->
+    <Button>Learn More</Button>
   </div>
 </header>

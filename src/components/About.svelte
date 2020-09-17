@@ -62,6 +62,11 @@
   .category {
     @apply flex items-center mb-1;
   }
+  .close {
+    @apply bg-gray-200 rounded-full cursor-pointer flex items-center justify-center;
+    width: 28px;
+    height: 28px;
+  }
 </style>
 
 <div class="p-5">
@@ -69,10 +74,10 @@
     <span>About This Content</span>
     <Icon size="m" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
     {#if isComparing}
-      <div
-        class="flex-grow flex justify-end cursor-pointer"
-        on:click={() => dispatch('close', { claim })}>
-        <Icon size="m" name="workflow:Close" class="text-gray-400 ml-2" />
+      <div class="flex-grow flex justify-end">
+        <div class="close" on:click={() => dispatch('close', { claim })}>
+          <Icon size="m" name="workflow:Close" class="text-gray-400" />
+        </div>
       </div>
     {/if}
   </h2>

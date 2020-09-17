@@ -1,5 +1,6 @@
 <script lang="ts">
   import { scale } from 'svelte/transition';
+  import { quintOut } from 'svelte/easing';
   import cssVars from 'svelte-css-vars';
   import { formatDate } from '../lib/util/format';
   import Button from './Button.svelte';
@@ -8,6 +9,21 @@
 
   let hover: boolean;
   export let asset: ViewableItem;
+  export let hasConnector: boolean = false;
+
+  function scaleIn(node, params) {
+    const existingTransform = getComputedStyle(node).transform.replace(
+      'none',
+      '',
+    );
+
+    return {
+      delay: 300,
+      duration: 500,
+      easing: quintOut,
+      css: (t, u) => `transform: ${existingTransform} scaleY(${t})`,
+    };
+  }
 
   $: isCurrent = asset._id === $primaryId;
   $: {
@@ -48,7 +64,11 @@
   .connector {
     @apply absolute bg-gray-350;
     width: 2px;
-    height: 30px;
+    height: 25px;
+    top: -14px;
+    left: 54px;
+    transform-origin: top;
+    z-index: -1;
   }
 </style>
 
@@ -59,6 +79,9 @@
   on:mouseleave={() => (hover = false)}
   on:click={() => navigateToId(asset._id)}>
   <div class="selection" class:hover />
+  {#if hasConnector}
+    <div class="connector" in:scaleIn />
+  {/if}
   <div class="item">
     {#if asset.type === 'claim'}
       <div
