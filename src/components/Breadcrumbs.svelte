@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { afterUpdate } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { flip } from 'svelte/animate';
   import { crossfade } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
@@ -26,28 +26,30 @@
     },
   });
 
+  let resizeObserver;
   let container: any;
   let bgStyles = {
     top: `0`,
     height: `0`,
   };
-  let resizeObserver: any;
 
-  afterUpdate(() => {
-    resizeObserver?.disconnect();
+  onMount(() => {
     if (container && $primaryId) {
-      const activeItem = container.querySelector('div.current');
-      if (activeItem) {
-        // bgStyles.height = `${activeItem.offsetHeight}px`;
-        // Waiting on https://github.com/microsoft/TypeScript/issues/37861
-        // @ts-ignore
-        resizeObserver = new ResizeObserver(([entry]) => {
-          bgStyles.top = `${activeItem.offsetTop}px`;
-          console.log('entries', entry.contentRect.top);
-        });
-        resizeObserver.observe(activeItem);
-      }
+      // Waiting on https://github.com/microsoft/TypeScript/issues/37861
+      // @ts-ignore
+      resizeObserver = new ResizeObserver(([entry]) => {
+        // TODO: Optimize this
+        const activeItem = container.querySelector('div.current');
+        bgStyles.height = `${activeItem.offsetHeight}px`;
+        bgStyles.top = `${activeItem.offsetTop}px`;
+        console.log('resize', activeItem.offsetTop);
+      });
+      resizeObserver.observe(container);
     }
+  });
+
+  onDestroy(() => {
+    resizeObserver?.disconnect();
   });
 
   $: breadcrumbList = getBreadcrumbList($breadcrumbIds, $assetsByIdentifier);

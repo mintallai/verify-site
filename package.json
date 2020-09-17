@@ -19,7 +19,6 @@
     "routify": "routify",
     "test": "echo \"Tests pending\" && exit 0"
   },
-  "types": "global.d.ts",
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.3.0",
     "@rollup/plugin-commonjs": "^15.0.0",

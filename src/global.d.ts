@@ -1,5 +1,3 @@
-import { any } from 'lodash/fp';
-
 declare module 'html-parse-stringify' {
   function parse(html: string): any;
   function stringify(ast: any): string;
@@ -55,7 +53,9 @@ declare interface ISummaryResponse {
   claims: IClaimMap;
 }
 
-declare type ViewableItem = (IClaimSummary | IReference) & IIdentifiable;
+declare type ReferenceInfo = IClaimSummary | IReference;
+
+declare type ViewableItem = ReferenceInfo & IIdentifiable;
 
 declare interface IAssetIdentifierMap {
   [claimID: string]: ViewableItem;
