@@ -2,6 +2,7 @@
   import {
     ActionsIcon,
     AlertIcon,
+    AlgorithmIcon,
     BrushIcon,
     CameraIcon,
     ChevronLeftIcon,
@@ -10,9 +11,11 @@
     ColorPaletteIcon,
     FolderOpenOutlineIcon,
     GroupIcon,
+    InfoIcon,
     HelpOutlineIcon,
     ShapesIcon,
     TextIcon,
+    UploadToCloudIcon,
     VideoOutlineIcon,
   } from '@spectrum-web-components/icons-workflow/lib/icons';
 
@@ -20,6 +23,7 @@
   const IconsWorkflow = {
     ActionsIcon,
     AlertIcon,
+    AlgorithmIcon,
     BrushIcon,
     CameraIcon,
     ChevronLeftIcon,
@@ -29,15 +33,18 @@
     FolderOpenOutlineIcon,
     GroupIcon,
     HelpOutlineIcon,
+    InfoIcon,
     ShapesIcon,
     TextIcon,
+    UploadToCloudIcon,
     VideoOutlineIcon,
   };
 </script>
 
 <script lang="ts">
   enum Sizes {
-    l = `1.25rem`,
+    xl = `1.25rem`,
+    l = `1.125rem`,
     m = `1rem`,
     s = `0.875rem`,
   }

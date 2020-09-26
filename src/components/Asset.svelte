@@ -2,9 +2,9 @@
   import { scale } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
   import cssVars from 'svelte-css-vars';
-  import { formatDate } from '../lib/util/format';
   import Button from './Button.svelte';
-  import { getIdentifier } from '../lib/claim';
+  import Icon from './Icon.svelte';
+  import { tippy } from '../lib/tippy';
   import { navigateToId, compareWithId, primaryId } from '../stores';
 
   let hover: boolean;
@@ -49,10 +49,22 @@
     min-width: 0;
   }
   .thumbnail {
-    @apply border border-gray-350 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
+    @apply relative border border-gray-350 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
     width: 94px;
     height: 94px;
     background-image: var(--backgroundImage);
+  }
+  .info-container {
+    @apply bg-black border-gray-350 border rounded-full overflow-hidden absolute;
+    width: 18px;
+    height: 18px;
+    right: 1px;
+    bottom: 1px;
+  }
+  .info {
+    @apply absolute;
+    top: -1px;
+    left: -1px;
   }
   .selection {
     @apply absolute pointer-events-none inset-0 shadow-md rounded;
@@ -86,12 +98,20 @@
     {#if asset.type === 'claim'}
       <div
         class="thumbnail"
-        use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }} />
+        use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}>
+        <div
+          class="info-container"
+          use:tippy={{ content: 'This asset has attribution<br/>and history data.', placement: 'top-start', offset: [-10, 8] }}>
+          <div class="info">
+            <Icon size="l" name="workflow:Info" class="text-white" />
+          </div>
+        </div>
+      </div>
       <dl class="attributes multiline overflow-hidden self-center">
-        <dt>Edited By</dt>
-        <dd>{asset.contributor}</dd>
-        <dt>Export Date</dt>
-        <dd>{formatDate(asset.date_created)}</dd>
+        <dt>Produced By</dt>
+        <dd>{asset.produced_by}</dd>
+        <dt>File Name</dt>
+        <dd class="truncate">{asset.title}</dd>
       </dl>
     {:else}
       <div

@@ -3,7 +3,7 @@
   import Header from '../components/Header.svelte';
   import Assets from '../components/Assets.svelte';
   import NoInfo from '../components/NoInfo.svelte';
-  import Breadcrumbs from '../components/Breadcrumbs.svelte';
+  import ContentSources from '../components/ContentSources.svelte';
   import About from '../components/About.svelte';
   import Comparison from '../components/Comparison.svelte';
   import Viewer from '../components/Viewer.svelte';
@@ -61,7 +61,7 @@
     {/if}
     <section class="border-l">
       {#if !isComparing}
-        <Breadcrumbs />
+        <ContentSources />
       {/if}
       {#if secondary?.type === 'claim'}
         <About

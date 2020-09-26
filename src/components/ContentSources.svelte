@@ -5,8 +5,7 @@
   import { quintOut } from 'svelte/easing';
   import cssVars from 'svelte-css-vars';
   import Asset from './Asset.svelte';
-  import Icon from './Icon.svelte';
-  import { breadcrumbIds, assetsByIdentifier, primaryId } from '../stores';
+  import { contentSourceIds, assetsByIdentifier, primaryId } from '../stores';
   import { getBreadcrumbList } from '../lib/claim';
 
   const [add, remove] = crossfade({
@@ -31,6 +30,7 @@
   let bgStyles = {
     top: `0`,
     height: `112px`,
+    width: `0`,
   };
 
   onMount(() => {
@@ -41,7 +41,7 @@
         // TODO: Optimize this
         const activeItem = container.querySelector('div.current');
         bgStyles.top = `${activeItem.offsetTop}px`;
-        console.log('resize', activeItem.offsetTop);
+        bgStyles.width = `${activeItem.offsetWidth}px`;
       });
       resizeObserver.observe(container);
     }
@@ -51,7 +51,7 @@
     resizeObserver?.disconnect();
   });
 
-  $: breadcrumbList = getBreadcrumbList($breadcrumbIds, $assetsByIdentifier);
+  $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
 </script>
 
 <style lang="postcss">
@@ -59,14 +59,12 @@
     @apply absolute bg-gray-200 rounded w-full z-0;
     top: var(--top);
     height: var(--height);
+    width: var(--width);
   }
 </style>
 
 <div class="p-2 relative">
-  <h2 class="mb-5 p-3 pb-0 flex items-center">
-    <span>Content Timeline</span>
-    <Icon size="m" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
-  </h2>
+  <h2 class="mb-5 p-3 pb-0 flex items-center"><span>Content sources</span></h2>
   {#if $primaryId}
     <div class="active-bg" use:cssVars={bgStyles} />
   {/if}

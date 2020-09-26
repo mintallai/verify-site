@@ -66,10 +66,10 @@ export function getAssetList(
 }
 
 export function getBreadcrumbList(
-  $breadcrumbIds: string[],
+  $contentSourceIds: string[],
   assetsByIdentifier: IAssetIdentifierMap,
 ): ViewableItem[] {
   return assetsByIdentifier
-    ? pickAssets($breadcrumbIds, assetsByIdentifier)
+    ? pickAssets($contentSourceIds, assetsByIdentifier)
     : [];
 }

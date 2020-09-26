@@ -3,19 +3,20 @@ import omit from 'lodash/omit';
 import mapValues from 'lodash/mapValues';
 import { addIdentifiers } from './lib/claim';
 
-const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
-// const API_BASE_URL = 'http://localhost:4000';
+// const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
+const API_BASE_URL = 'http://localhost:3000';
+const API_KEY = 'caiverify';
 
-export const breadcrumbIds = writable<string[]>([]);
+export const contentSourceIds = writable<string[]>([]);
 
 export const primaryId = writable<string>('');
 
 export const secondaryId = writable<string>('');
 
 export function navigateToId(newId: string): void {
-  console.log('navigating to', newId, get(breadcrumbIds));
+  console.log('navigating to', newId, get(contentSourceIds));
   const currId = get(primaryId);
-  breadcrumbIds.update((ids) => {
+  contentSourceIds.update((ids) => {
     if (ids.includes(newId)) {
       return ids.slice(0, ids.indexOf(newId) + 1);
     } else if (ids.length && newId !== currId) {
@@ -37,12 +38,13 @@ export function compareWithId(id: string): void {
 }
 
 async function fetchSummary(set: any): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/claim/summary`, {
+  const res = await fetch(`${API_BASE_URL}/working_claim`, {
     method: 'POST',
     mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      'x-api-key': API_KEY,
     },
     body: JSON.stringify({
       asset_url: 'http://path/file.jpg',
@@ -54,10 +56,10 @@ async function fetchSummary(set: any): Promise<void> {
     claim_id,
   }));
   navigateToId(`claim_id:${data.root_claim_id}`);
+  // navigateToId('claim_id:c_adbe_1/cai.claim');
   // setTimeout(() => {
   //   navigateToId(`claim_id:c_tpic_1/cai.claim`);
   // }, 1000);
-  // secondaryId.set(`document_id:04B4F0672A7B6001A6DF1A6CF55FEC6A`);
   set(data);
 }
 
@@ -73,7 +75,7 @@ export const assetsByIdentifier = derived<
   const grouped = addIdentifiers($summary?.claims);
   return mapValues(grouped, ([item], _id) => {
     if (item.claim_id) {
-      const claim = $summary.claims[item.claim_id] ?? {};
+      const claim = $summary.claims[item.claim_id];
       return {
         ...claim,
         type: 'claim',

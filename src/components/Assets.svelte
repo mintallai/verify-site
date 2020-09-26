@@ -1,6 +1,5 @@
 <script lang="ts">
   import Asset from './Asset.svelte';
-  import Icon from './Icon.svelte';
   import { getAssetList } from '../lib/claim';
   import { assetsByIdentifier } from '../stores';
 
@@ -17,15 +16,12 @@
 </style>
 
 <div class="p-2">
-  <h2 class="mb-5 p-3 pb-0 flex items-center">
-    <span>Assets Used</span>
-    <Icon size="m" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
-  </h2>
+  <h2 class="mb-5 p-3 pb-0 flex items-center"><span>Assets used</span></h2>
   <div class="container">
     {#each assetList as asset}
       <Asset {asset} />
     {/each}
-    {#if claim.edits.original_creation}
+    {#if false}
       <div class="original-creation">
         <img
           src="/images/svg/original-creation.svg"
