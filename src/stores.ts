@@ -3,8 +3,7 @@ import omit from 'lodash/omit';
 import mapValues from 'lodash/mapValues';
 import { addIdentifiers } from './lib/claim';
 
-// const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
 const API_KEY = 'caiverify';
 
 export const contentSourceIds = writable<string[]>([]);
@@ -38,7 +37,7 @@ export function compareWithId(id: string): void {
 }
 
 async function fetchSummary(set: any): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/working_claim`, {
+  const res = await fetch(`${API_BASE_URL}/claim/summary`, {
     method: 'POST',
     mode: 'cors',
     headers: {
