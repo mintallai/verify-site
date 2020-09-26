@@ -3,26 +3,32 @@ import omit from 'lodash/omit';
 import mapValues from 'lodash/mapValues';
 import { addIdentifiers } from './lib/claim';
 
-export const breadcrumbIds = writable<string[]>([]);
+const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
+const API_KEY = 'caiverify';
+
+export const contentSourceIds = writable<string[]>([]);
 
 export const primaryId = writable<string>('');
 
 export const secondaryId = writable<string>('');
 
-export function navigateToId(id: string): void {
-  console.log('navigating to', id, get(breadcrumbIds));
+export function navigateToId(newId: string): void {
+  console.log('navigating to', newId, get(contentSourceIds));
   const currId = get(primaryId);
-  breadcrumbIds.update((ids) => {
-    if (ids.includes(id)) {
-      return ids.slice(0, ids.indexOf(id));
-    } else if (id !== currId) {
+  contentSourceIds.update((ids) => {
+    if (ids.includes(newId)) {
+      return ids.slice(0, ids.indexOf(newId) + 1);
+    } else if (ids.length && newId !== currId) {
       // Don't add the current ID if it's not changing (in the case of closing a secondary asset)
-      return [...ids, currId];
+      return [...ids, newId];
+    } else if (!ids.length && newId) {
+      // Initial load
+      return [newId];
     } else {
       return ids;
     }
   });
-  primaryId.set(id);
+  primaryId.set(newId);
 }
 
 export function compareWithId(id: string): void {
@@ -31,15 +37,28 @@ export function compareWithId(id: string): void {
 }
 
 async function fetchSummary(set: any): Promise<void> {
-  const res = await fetch(`mock/data.json`);
+  const res = await fetch(`${API_BASE_URL}/claim/summary`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'x-api-key': API_KEY,
+    },
+    body: JSON.stringify({
+      asset_url: 'http://path/file.jpg',
+    }),
+  });
   const data = (await res.json()) as ISummaryResponse;
   data.claims = mapValues(data.claims, (claim, claim_id) => ({
     ...claim,
     claim_id,
   }));
-  primaryId.set(`claim_id:${data.root_claim_id}`);
-  // navigateToId(`claim_id:c_tpic_1/cai.claim`);
-  // secondaryId.set(`claim_id:c_adbe_5/cai.claim`);
+  navigateToId(`claim_id:${data.root_claim_id}`);
+  // navigateToId('claim_id:c_adbe_1/cai.claim');
+  // setTimeout(() => {
+  //   navigateToId(`claim_id:c_tpic_1/cai.claim`);
+  // }, 1000);
   set(data);
 }
 
@@ -53,13 +72,21 @@ export const assetsByIdentifier = derived<
   { [identifier: string]: ViewableItem }
 >([summary], ([$summary]) => {
   const grouped = addIdentifiers($summary?.claims);
-  return mapValues(grouped, ([item]) => {
+  return mapValues(grouped, ([item], _id) => {
     if (item.claim_id) {
-      const claim = $summary.claims[item.claim_id] ?? {};
-      return { ...claim, type: 'claim' } as IClaimSummary;
+      const claim = $summary.claims[item.claim_id];
+      return {
+        ...claim,
+        type: 'claim',
+        _id,
+      } as ViewableItem;
     } else {
       const ref = omit(item, ['claim_id', 'id']);
-      return { ...ref, type: 'reference' } as IReference;
+      return {
+        ...ref,
+        type: 'reference',
+        _id,
+      } as ViewableItem;
     }
   });
 });

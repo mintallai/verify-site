@@ -1,96 +1,61 @@
 {
   "claims": {
-    "c_tpic_1/cai.claim": {
-      "thumbnail_url": "/mock/images/thumbnail-1.jpg",
-      "contributor": "Andy Parsons",
-      "contributor_id": "F96FC54EE7FBC11B698FA28262B@adobe.com",
-      "verified_by": "Truepic",
-      "created_with": "Truepic",
-      "date_created": "2020-07-05T23:15:01.234Z",
-      "edits": {
-        "original_creation": true,
-        "categories": {
-          "CAPTURE": 1
-        },
-        "tool_usage": {},
-        "special_filters": []
-      }
+    "c_adbe_1/cai.claim": {
+      "title": "AdobeStock_376908262.jpg",
+      "thumbnail_url": "https://caiverifyservice-stage-or2.stage.cloud.adobe.io/ingredient-1.jpg",
+      "produced_by": "Tanya Keisha",
+      "produced_with": "Adobe Stock",
+      "signed_by": "Adobe",
+      "signed_on": "2020-09-09T16:39:00.000Z",
+      "edits": { "categories": ["UPLOADED"] },
+      "location": "Bohol, Philippines",
+      "camera_info": {
+        "camera": "Canon EOS 5D Mark III",
+        "lens": "EF24-105mm f/4L IS USM",
+        "focal_length": "84.00 mm",
+        "exposure": "1/320 sec; f/8; ISO 100; Normal programming; Pattern metering"
+      },
+      "stock": { "source": "376908262", "license_type": "Standard License" },
+      "references": [
+        {
+          "type": "parent",
+          "title": "img-2020-01-04.jpg",
+          "format": "image/jpeg",
+          "document_id": "6A74374D486A33B24E05E4BAA83DDB74",
+          "thumbnail_url": "https://caiverifyservice-stage-or2.stage.cloud.adobe.io/ingredient-1.jpg",
+          "claim_id": null
+        }
+      ]
     },
-    "c_adbe_4/cai.claim": {
-      "thumbnail_url": "/mock/images/thumbnail-4.jpg",
-      "contributor": "Andrew Kaback",
-      "contributor_id": "F96FC54EE7FBC11B698FA28262C@adobe.com",
-      "verified_by": "Adobe",
-      "created_with": "Photoshop",
-      "date_created": "2020-06-25T16:04:29.097Z",
+    "c_adbe_2/cai.claim": {
+      "title": "vacation-andy.jpg",
+      "thumbnail_url": "https://caiverifyservice-stage-or2.stage.cloud.adobe.io/thumbnail.jpg",
+      "produced_by": "Andy Parsons",
+      "produced_with": "Photoshop",
+      "signed_by": "Adobe",
+      "signed_on": "2020-09-17T13:30:56.207Z",
       "edits": {
-        "original_creation": false,
-        "categories": {
-          "PAINTING": 26,
-          "TRANSFORMS": 1
-        },
-        "tool_usage": {
-          "Brush Tool": 26,
-          "Crop": 1
-        },
-        "special_filters": []
-      }
-    },
-    "c_adbe_5/cai.claim": {
-      "thumbnail_url": "/mock/images/thumbnail-5.jpg",
-      "contributor": "Pia Blumenthal",
-      "verified_by": "Adobe",
-      "created_with": "Photoshop",
-      "date_created": "2020-07-30T13:30:56.207Z",
-      "edits": {
-        "original_creation": false,
-        "categories": {
-          "PAINTING": 41,
-          "IMPORTED_ASSETS": 2,
-          "TRANSFORMS": 1,
-          "AI_ASSISTED": 1
-        },
-        "tool_usage": {
-          "Brush Tool": 26,
-          "Spot Healing Brush": 8,
-          "Erase": 7,
-          "Layer Via Copy": 2,
-          "Crop": 1,
-          "Neural Gallery": 1
-        },
-        "special_filters": ["Neural Gallery"]
+        "categories": ["AI_ASSISTED", "IMPORTED_ASSETS", "TRANSFORMED"]
       },
       "references": [
         {
           "type": "parent",
-          "title": "image 1.jpg",
+          "title": "AdobeStock_376908262.jpg",
+          "format": "image/jpeg",
           "document_id": "6A74374D486A33B24E05E4BAA83DDB74",
-          "thumbnail_url": "/mock/images/thumbnail-1.jpg",
-          "claim_id": "c_tpic_1/cai.claim"
+          "thumbnail_url": "https://caiverifyservice-stage-or2.stage.cloud.adobe.io/ingredient-1.jpg",
+          "claim_id": "c_adbe_1/cai.claim"
         },
         {
           "type": "ingredient",
-          "title": "image 4.jpg",
+          "title": "image01.jpg",
+          "format": "image/jpeg",
           "document_id": "6A74374D486A33B24E05E4BAA83DDB73",
-          "thumbnail_url": "/mock/images/thumbnail-4.jpg",
-          "claim_id": "c_adbe_4/cai.claim"
-        },
-        {
-          "type": "ingredient",
-          "title": "Screen Shot 2020-05-10 14:05:02.jpg",
-          "document_id": "04B4F0672A7B6001A6DF1A6CF55FEC6A",
-          "thumbnail_url": "/mock/images/thumbnail-3.jpg",
-          "claim_id": null
-        },
-        {
-          "type": "ingredient",
-          "title": "image 2.jpg",
-          "document_id": "6CC921188E857BF6B6601BB2F2CBDE37",
-          "thumbnail_url": "/mock/images/thumbnail-2.jpg",
+          "thumbnail_url": "https://caiverifyservice-stage-or2.stage.cloud.adobe.io/ingredient-2.jpg",
           "claim_id": null
         }
       ]
     }
   },
-  "root_claim_id": "c_adbe_5/cai.claim"
+  "root_claim_id": "c_adbe_2/cai.claim"
 }

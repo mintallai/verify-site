@@ -6,38 +6,52 @@ declare module 'html-parse-stringify' {
 declare module 'svelte-css-vars';
 
 declare interface IEditSummary {
-  original_creation?: boolean;
-  categories: { [categoryName: string]: number };
-  tool_usage: { [toolName: string]: number };
-  special_filters: string[];
+  categories: string[];
+}
+
+declare interface ICameraInfo {
+  camera?: string;
+  exposure?: string;
+  focal_length?: string;
+  lens?: string;
+}
+
+declare interface IStockInfo {
+  license_type?: string;
+  source?: string;
 }
 
 declare interface IReference {
   type: 'reference';
   title: string;
+  format: string;
   document_id: string;
   thumbnail_url: string;
+  claim_id: string | null;
 }
 
-declare interface IIngredientAsset extends IReference {
+declare interface IIngredientReference extends IReference {
   type: 'ingredient';
 }
 
-declare interface IParentAsset extends IReference {
+declare interface IParentReference extends IReference {
   type: 'parent';
 }
 
 declare interface IClaimSummary {
   type: 'claim';
-  claim_id: string;
+  claim_id?: string;
+  title: string;
   thumbnail_url: string;
-  contributor: string;
-  contributor_id?: string;
-  verified_by: string;
-  created_with: string;
-  date_created: string;
+  produced_by: string;
+  produced_with: string;
+  signed_by: string;
+  signed_on: string;
   edits: IEditSummary;
-  references: IReference[];
+  location?: string;
+  camera_info?: ICameraInfo;
+  stock?: IStockInfo;
+  references?: IReference[];
 }
 
 declare interface IClaimMap {
@@ -49,7 +63,13 @@ declare interface ISummaryResponse {
   claims: IClaimMap;
 }
 
-declare type ViewableItem = IClaimSummary | IReference;
+declare interface IIdentifiable {
+  _id: string;
+}
+
+declare type ReferenceInfo = IClaimSummary | IReference;
+
+declare type ViewableItem = ReferenceInfo & IIdentifiable;
 
 declare interface IAssetIdentifierMap {
   [claimID: string]: ViewableItem;

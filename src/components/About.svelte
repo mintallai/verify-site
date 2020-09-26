@@ -2,47 +2,52 @@
   const translations = {
     AI_ASSISTED: 'AI Assisted',
     CAPTURE: 'Capture',
-    COLORS_ADJUSTMENTS: 'Colors & Adjustments',
+    COLOR_ADJUSTMENTS: 'Color & Adjustments',
+    EFFECTS_STYLING: 'Effects & Styling',
     IMPORTED_ASSETS: 'Imported Assets',
     PAINTING: 'Painting',
-    STYLES_EFFECTS: 'Styles & Effects',
-    TRANSFORMS: 'Transforms',
+    SHAPES_PATHS: 'Shapes & Paths',
+    TRANSFORMED: 'Transformed',
+    TYPE: 'Type',
+    UPLOADED: 'Uploaded',
+    VIDEO: 'Video',
+  };
+  const iconMapping = {
+    AI_ASSISTED: 'Algorithm',
+    CAPTURE: 'Camera',
+    COLOR_ADJUSTMENTS: 'ColorPalette',
+    EFFECTS_STYLING: 'Actions',
+    IMPORTED_ASSETS: 'FolderOpenOutline',
+    PAINTING: 'Brush',
+    SHAPES_PATHS: 'Shapes',
+    TRANSFORMED: 'Group',
+    TYPE: 'Text',
+    UPLOADED: 'UploadToCloud',
+    VIDEO: 'VideoOutline',
   };
 </script>
 
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import size from 'lodash/size';
-  import sum from 'lodash/sum';
-  import toPairs from 'lodash/toPairs';
-  import pullAllWith from 'lodash/pullAllWith';
   import parseISO from 'date-fns/parseISO';
   import Icon from './Icon.svelte';
-  import { formatDate, formatTime } from '../lib/util/format';
+  import { assetsByIdentifier } from '../stores';
+  import { getAssetList } from '../lib/claim';
+  import { tippy } from '../lib/tippy';
+  import type { TippyProps } from '../lib/tippy';
+  import { formatDate, formatTime, asFilename } from '../lib/util/format';
 
   export let claim: IClaimSummary;
   export let isComparing: boolean = false;
-  let mostUsedTools = [];
   const dispatch = createEventDispatcher();
+  const tippyProps: Partial<TippyProps> = {
+    content: 'This asset has attribution<br/>and history data.',
+    placement: 'top-start',
+    offset: [-10, 8],
+  };
 
-  $: dateCreated = parseISO(claim.date_created);
-  $: categoryList = Object.keys(claim.edits.categories).map(
-    (x) => translations[x],
-  );
-  $: {
-    const totalEdits = sum(Object.values(claim.edits.tool_usage));
-    const sorted = toPairs(claim.edits.tool_usage)
-      .sort((a, b) => (a[1] < b[1] ? 1 : -1))
-      .map(([name, count]) => ({
-        name,
-        percentage: Math.round((count / totalEdits) * 100),
-      }));
-    mostUsedTools = pullAllWith(
-      sorted,
-      claim.edits.special_filters,
-      (a, b) => a.name === b,
-    );
-  }
+  $: signedOn = parseISO(claim.signed_on);
+  $: assetList = getAssetList(claim, $assetsByIdentifier);
 </script>
 
 <style lang="postcss">
@@ -52,91 +57,157 @@
     height: 14px;
   }
   .category {
-    @apply mr-2 mb-2 px-2 py-1 inline-block uppercase border border-gray-300 text-xs font-bold rounded-sm;
-    padding-top: 3px;
+    @apply flex items-center mb-1;
+  }
+  .close {
+    @apply bg-gray-200 rounded-full cursor-pointer flex items-center justify-center;
+    width: 28px;
+    height: 28px;
+  }
+  dl.multiline dd {
+    @apply my-2;
+  }
+  dl.multiline dt {
+    @apply mt-2;
+  }
+  .compare-title {
+    @apply font-bold text-xl truncate mb-1;
+    max-width: 240px;
+  }
+  .compare-thumbnail {
+    @apply w-full border border-gray-350 bg-white rounded bg-contain bg-center bg-no-repeat;
+    height: 280px;
+  }
+  .asset-thumbnail {
+    @apply inline-block relative mr-2 mb-2 border border-gray-350 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
+    width: 64px;
+    height: 64px;
+  }
+  .info-container {
+    @apply bg-black border-gray-350 border rounded-full overflow-hidden absolute cursor-pointer;
+    width: 16px;
+    height: 16px;
+    right: 1px;
+    bottom: 1px;
+  }
+  .info {
+    @apply absolute;
+    top: -1px;
+    left: -1px;
   }
 </style>
 
 <div class="p-5">
-  <h2 class="mb-5 flex items-center">
-    <span>About This Image</span>
-    <Icon size="m" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
+  <h2 class="mb-2 flex items-center">
     {#if isComparing}
-      <div
-        class="flex-grow flex justify-end cursor-pointer"
-        on:click={() => dispatch('close', { claim })}>
-        <Icon size="m" name="workflow:Close" class="text-gray-400 ml-2" />
+      <div>
+        <div class="font-bold text-xs uppercase text-gray-500 leading-none">
+          File name
+        </div>
+        <div class="compare-title">{claim.title}</div>
       </div>
+      <div class="flex-grow flex justify-end">
+        <div class="close" on:click={() => dispatch('close', { claim })}>
+          <Icon size="m" name="workflow:Close" class="text-gray-400" />
+        </div>
+      </div>
+    {:else}
+      <div>About this content</div>
     {/if}
   </h2>
-  <dl class="attributes">
-    <dt>Creator</dt>
-    <dd>{claim.contributor}</dd>
-    <dt>Creator Verified By</dt>
+  {#if isComparing}
+    <div
+      class="compare-thumbnail"
+      style={`background-image: url("${claim.thumbnail_url}");`} />
+  {/if}
+  <dl class="attributes mt-3">
+    <dt>Produced by</dt>
+    <dd>{claim.produced_by}</dd>
+    <dt>Produced with</dt>
     <dd class="flex items-center">
-      <span>{claim.verified_by}</span>
+      <span>{claim.produced_with}</span>
       <img
-        src={`images/svg/logos/${claim.verified_by.toLowerCase()}.svg`}
+        src={`images/svg/logos/${asFilename(claim.produced_with)}.svg`}
+        class="logo"
+        alt={claim.produced_with} />
+    </dd>
+    <dt>Signed by</dt>
+    <dd class="flex items-center">
+      <span>{claim.signed_by}</span>
+      <img
+        src={`images/svg/logos/${asFilename(claim.signed_by)}.svg`}
         class="logo"
         alt="Adobe" />
     </dd>
-    <dt>Created With</dt>
-    <dd class="flex items-center">
-      <span>{claim.created_with}</span>
-      <img
-        src={`images/svg/logos/${claim.created_with.toLowerCase()}.svg`}
-        class="logo"
-        alt={claim.created_with} />
-    </dd>
-    <dt>Date Created</dt>
+    <dt>Signed on</dt>
     <dd class="text-right leading-tight">
-      <span>{formatDate(dateCreated)}</span><br />
-      <span class="text-gray-500">{formatTime(dateCreated)}</span>
+      {formatDate(signedOn)}, {formatTime(signedOn)}
     </dd>
   </dl>
   <dl class="attributes multiline border-t border-gray-200 mt-5 pt-4">
-    <dt class="mb-2 flex items-center">
-      <span>Edit Type</span>
-      <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
-    </dt>
+    <dt class="mb-2 items-center">Edits and activity</dt>
     <dd>
-      {#each categoryList as category}
-        <div class="category">{category}</div>
+      {#each claim.edits.categories as category}
+        <div class="category">
+          <Icon
+            size="s"
+            name={`workflow:${iconMapping[category]}`}
+            class="mr-2" />
+          <div class="flex-grow">{translations[category]}</div>
+        </div>
       {/each}
     </dd>
+    {#if claim.camera_info?.camera}
+      <dt>Camera</dt>
+      <dd>{claim.camera_info.camera}</dd>
+    {/if}
+    {#if claim.camera_info?.lens}
+      <dt>Lens</dt>
+      <dd>{claim.camera_info.lens}</dd>
+    {/if}
+    {#if claim.camera_info?.focal_length}
+      <dt>Focal Length</dt>
+      <dd>{claim.camera_info.focal_length}</dd>
+    {/if}
+    {#if claim.camera_info?.exposure}
+      <dt>Exposure</dt>
+      <dd>{claim.camera_info.exposure}</dd>
+    {/if}
+    {#if claim.location}
+      <dt>Location</dt>
+      <dd>{claim.location}</dd>
+    {/if}
   </dl>
-  <dl class="attributes multiline mt-3">
-    <dt class="flex items-center">
-      <span>Number of Tools</span>
-      <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
-    </dt>
-    <dd>{size(claim.edits.tool_usage)}</dd>
-  </dl>
-  <dl class="attributes multiline mt-3">
-    <dt class="mb-2 flex items-center">
-      <span>Most Used Tools</span>
-      <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
-    </dt>
-    <dd>
-      {#if mostUsedTools.length}
-        <div class="ml-4">
-          {#each mostUsedTools as tool}
-            <div class="mb-2">
-              {tool.name}
-              <span class="text-gray-400 ml-1">{tool.percentage}%</span>
-            </div>
-          {/each}
-        </div>
-      {:else}<span class="italic">None</span>{/if}
-    </dd>
-    <dt class="mt-3 mb-2 flex items-center">
-      <span>Special Filters</span>
-      <Icon size="s" name="workflow:HelpOutline" class="text-gray-400 ml-2" />
-    </dt>
-    <dd>
-      {#if claim.edits.special_filters.length}
-        {claim.edits.special_filters.join(', ')}
-      {:else}<span class="italic">None</span>{/if}
-    </dd>
-  </dl>
+  {#if claim.stock}
+    <dl class="attributes border-t border-gray-200 mt-5 pt-4">
+      {#if claim.stock.license_type}
+        <dt>Source</dt>
+        <dd>{claim.stock.source}</dd>
+      {/if}
+      {#if claim.stock.license_type}
+        <dt>License type</dt>
+        <dd>{claim.stock.license_type}</dd>
+      {/if}
+    </dl>
+  {/if}
+  {#if isComparing && assetList}
+    <dl class="attributes multiline border-t border-gray-200 mt-5 pt-4">
+      <dt>Assets used</dt>
+      <dd>
+        {#each assetList as asset}
+          <div
+            class="asset-thumbnail"
+            style={`background-image: url("${asset.thumbnail_url}");`}>
+            {#if asset.claim_id}
+              <div class="info-container" use:tippy={tippyProps}>
+                <div class="info">
+                  <Icon size="m" name="workflow:Info" class="text-white" />
+                </div>
+              </div>
+            {/if}
+          </div>
+        {/each}
+      </dd>
+    </dl>
+  {/if}
 </div>

@@ -6,7 +6,7 @@ import groupBy from 'lodash/fp/groupBy';
 import values from 'lodash/fp/values';
 import reduce from 'lodash/fp/reduce';
 
-export function getIdentifier(item: ViewableItem): string {
+export function getIdentifier(item: ReferenceInfo): string {
   if ('claim_id' in item && !!item.claim_id) {
     return `claim_id:${item.claim_id}`;
   } else if ('document_id' in item) {
@@ -16,7 +16,7 @@ export function getIdentifier(item: ViewableItem): string {
   }
 }
 
-function withIdentifier(item: ViewableItem) {
+function withIdentifier(item: ReferenceInfo) {
   return {
     ...item,
     id: getIdentifier(item),
@@ -66,10 +66,10 @@ export function getAssetList(
 }
 
 export function getBreadcrumbList(
-  $breadcrumbIds: string[],
+  $contentSourceIds: string[],
   assetsByIdentifier: IAssetIdentifierMap,
 ): ViewableItem[] {
   return assetsByIdentifier
-    ? pickAssets($breadcrumbIds, assetsByIdentifier)
+    ? pickAssets($contentSourceIds, assetsByIdentifier)
     : [];
 }

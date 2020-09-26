@@ -12,7 +12,8 @@
   }
 
   dl.attributes {
-    @apply grid grid-cols-2;
+    @apply grid;
+    grid-template-columns: repeat(2, auto);
     row-gap: 0.5em;
 
     dt {
@@ -36,6 +37,34 @@
           @apply mb-0;
         }
       }
+    }
+  }
+
+  .tippy-box[data-theme~='cai'] {
+    @apply font-body text-sm leading-snug text-black bg-white shadow-sm p-1;
+
+    &[data-placement^='top'] > .tippy-arrow::before {
+      border-top-color: white;
+    }
+
+    &[data-placement^='bottom'] > .tippy-arrow::before {
+      border-bottom-color: white;
+    }
+
+    &[data-placement^='left'] > .tippy-arrow::before {
+      border-left-color: white;
+    }
+
+    &[data-placement^='right'] > .tippy-arrow::before {
+      border-right-color: white;
+    }
+
+    > .tippy-backdrop {
+      @apply bg-white;
+    }
+
+    > .tippy-svg-arrow {
+      fill: #fff;
     }
   }
 }

@@ -3,7 +3,7 @@
   import Header from '../components/Header.svelte';
   import Assets from '../components/Assets.svelte';
   import NoInfo from '../components/NoInfo.svelte';
-  import Breadcrumbs from '../components/Breadcrumbs.svelte';
+  import ContentSources from '../components/ContentSources.svelte';
   import About from '../components/About.svelte';
   import Comparison from '../components/Comparison.svelte';
   import Viewer from '../components/Viewer.svelte';
@@ -46,7 +46,10 @@
           {isComparing}
           on:close={partial(handleClose, secondary)} />
       {:else}
-        <NoInfo {isComparing} on:close={partial(handleClose, secondary)} />
+        <NoInfo
+          ingredient={primary}
+          {isComparing}
+          on:close={partial(handleClose, secondary)} />
       {/if}
     </section>
     {#if isComparing}
@@ -58,7 +61,7 @@
     {/if}
     <section class="border-l">
       {#if !isComparing}
-        <Breadcrumbs />
+        <ContentSources />
       {/if}
       {#if secondary?.type === 'claim'}
         <About
@@ -66,7 +69,10 @@
           {isComparing}
           on:close={partial(handleClose, primary)} />
       {:else if secondary?.type === 'reference'}
-        <NoInfo {isComparing} on:close={partial(handleClose, primary)} />
+        <NoInfo
+          ingredient={secondary}
+          {isComparing}
+          on:close={partial(handleClose, primary)} />
       {:else if primary?.type === 'claim'}
         <Assets claim={primary} />
       {/if}

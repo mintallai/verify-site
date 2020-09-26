@@ -19,10 +19,9 @@
       src="images/svg/logos/cai.svg"
       class="logo"
       alt="Content Authenticity Initiative" />
-    <h1 class="font-black uppercase text-sm ml-2">Image Report</h1>
+    <h1 class="font-black uppercase text-sm ml-2">Content Authenticity</h1>
   </div>
   <div>
-    <a href="/" class="font-bold text-sm mr-4 hover:underline">FAQs</a>
-    <Button>Upload New Image</Button>
+    <Button>Learn More</Button>
   </div>
 </header>

@@ -2,6 +2,7 @@ import childProcess from 'child_process';
 import svelte from 'rollup-plugin-svelte-hot';
 import Hmr from 'rollup-plugin-hot';
 import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
@@ -120,6 +121,9 @@ function baseConfig(config, ctx) {
         browser: true,
         extensions: ['.svelte', '.ts', '.js'],
         dedupe: (importee) => !!importee.match(/svelte(\/|$)/),
+      }),
+      replace({
+        'process.env.NODE_ENV': production ? '"production"' : '"development"',
       }),
       embeddedTypescript({ sourceMap: !production }),
       typescript({
