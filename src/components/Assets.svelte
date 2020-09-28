@@ -1,9 +1,29 @@
 <script lang="ts">
   import Asset from './Asset.svelte';
+  import { flip } from 'svelte/animate';
+  import { crossfade } from 'svelte/transition';
+  import { cubicOut } from 'svelte/easing';
   import { getAssetList } from '../lib/claim';
   import { assetsByIdentifier } from '../stores';
 
   export let claim: IClaimSummary;
+
+  const [add, remove] = crossfade({
+    fallback(node) {
+      const style = getComputedStyle(node);
+      const transform = style.transform === 'none' ? '' : style.transform;
+      const dropFrom = -20;
+
+      return {
+        duration: 600,
+        easing: cubicOut,
+        css: (t) => `
+					transform: ${transform} translateY(${dropFrom - t * dropFrom}px);
+					opacity: ${t}
+				`,
+      };
+    },
+  });
 
   $: assetList = getAssetList(claim, $assetsByIdentifier);
 </script>
@@ -18,8 +38,13 @@
 <div class="p-2">
   <h2 class="mb-5 p-3 pb-0 flex items-center"><span>Assets used</span></h2>
   <div class="container">
-    {#each assetList as asset}
-      <Asset {asset} />
+    {#each assetList as asset, index (asset._id)}
+      <div
+        in:add={{ key: asset._id }}
+        out:remove|local={{ key: asset._id }}
+        animate:flip>
+        <Asset {asset} />
+      </div>
     {/each}
     {#if false}
       <div class="original-creation">

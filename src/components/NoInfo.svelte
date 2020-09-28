@@ -51,7 +51,7 @@
         <div class="thumbnail">
           <Icon size="l" name="workflow:Alert" class="text-black" />
         </div>
-        <div class="flex">
+        <div class="flex items-center">
           <div>Unverified Asset</div>
         </div>
       </div>

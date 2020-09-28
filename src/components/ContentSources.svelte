@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import { flip } from 'svelte/animate';
+  import { tweened } from 'svelte/motion';
   import { crossfade } from 'svelte/transition';
-  import { quintOut } from 'svelte/easing';
-  import cssVars from 'svelte-css-vars';
+  import { cubicOut } from 'svelte/easing';
   import Asset from './Asset.svelte';
   import { contentSourceIds, assetsByIdentifier, primaryId } from '../stores';
   import { getBreadcrumbList } from '../lib/claim';
@@ -12,11 +12,11 @@
     fallback(node) {
       const style = getComputedStyle(node);
       const transform = style.transform === 'none' ? '' : style.transform;
-      const dropFrom = -50;
+      const dropFrom = 20;
 
       return {
         duration: 600,
-        easing: quintOut,
+        easing: cubicOut,
         css: (t) => `
 					transform: ${transform} translateY(${dropFrom - t * dropFrom}px);
 					opacity: ${t}
@@ -27,11 +27,14 @@
 
   let resizeObserver;
   let container: any;
-  let bgStyles = {
-    top: `0`,
-    height: `112px`,
-    width: `0`,
-  };
+  let bgStyles = tweened(
+    { top: 0, width: 0 },
+    {
+      duration: 0,
+      easing: cubicOut,
+    },
+  );
+  let prevActiveItem;
 
   onMount(() => {
     if (container && $primaryId) {
@@ -40,8 +43,18 @@
       resizeObserver = new ResizeObserver(([entry]) => {
         // TODO: Optimize this
         const activeItem = container.querySelector('div.current');
-        bgStyles.top = `${activeItem.offsetTop}px`;
-        bgStyles.width = `${activeItem.offsetWidth}px`;
+        let duration = 0;
+        if (prevActiveItem !== activeItem && $bgStyles.width) {
+          duration = 400;
+          prevActiveItem = activeItem;
+        }
+        bgStyles.set(
+          {
+            top: activeItem.offsetTop,
+            width: activeItem.offsetWidth,
+          },
+          { duration },
+        );
       });
       resizeObserver.observe(container);
     }
@@ -57,23 +70,23 @@
 <style lang="postcss">
   .active-bg {
     @apply absolute bg-gray-200 rounded w-full z-0;
-    top: var(--top);
-    height: var(--height);
-    width: var(--width);
+    height: 112px;
   }
 </style>
 
 <div class="p-2 relative">
   <h2 class="mb-5 p-3 pb-0 flex items-center"><span>Content sources</span></h2>
   {#if $primaryId}
-    <div class="active-bg" use:cssVars={bgStyles} />
+    <div
+      class="active-bg"
+      style="top: {$bgStyles.top}px; width: {$bgStyles.width}px;" />
   {/if}
   <div bind:this={container} class="grid">
     {#each breadcrumbList as asset, index (asset._id)}
       <div
         in:add={{ key: asset._id }}
-        out:remove={{ key: asset._id }}
-        animate:flip={{ duration: 200 }}
+        out:remove|local={{ key: asset._id }}
+        animate:flip
         class:current={asset._id === $primaryId}>
         <Asset {asset} hasConnector={index > 0} />
       </div>

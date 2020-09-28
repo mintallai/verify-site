@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { fade } from 'svelte/transition';
   import partial from 'lodash/partial';
   import Header from '../components/Header.svelte';
   import Assets from '../components/Assets.svelte';
@@ -74,7 +75,9 @@
           {isComparing}
           on:close={partial(handleClose, primary)} />
       {:else if primary?.type === 'claim'}
-        <Assets claim={primary} />
+        <div in:fade|local={{ duration: 200 }}>
+          <Assets claim={primary} />
+        </div>
       {/if}
     </section>
   {/if}
