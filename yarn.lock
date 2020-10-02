@@ -981,6 +981,14 @@
     lit-html "^1.0.0"
     tslib "^2.0.0"
 
+"@spectrum-web-components/circle-loader@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/circle-loader/-/circle-loader-0.3.1.tgz#aabf35508a77ec101b8e4006a79fe0ed8af46d05"
+  integrity sha512-ClKnGEHFIBkP7WHI4Rnv6UMnmQF/ecTwGsX7WHJJScFZz1h8og8WxomxkAXPwLK+i4DMQxK5/WUftd3EloWuCg==
+  dependencies:
+    "@spectrum-web-components/base" "^0.1.1"
+    tslib "^2.0.0"
+
 "@spectrum-web-components/icon@^0.6.0":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@spectrum-web-components/icon/-/icon-0.6.1.tgz#3b55c0d1437bccb2619ed6e261e9caa6943f6cd5"

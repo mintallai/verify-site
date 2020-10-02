@@ -1,5 +1,6 @@
 <script lang="ts">
   import cssVars from 'svelte-css-vars';
+  import CircleLoader from './CircleLoader.svelte';
 
   let width = 0;
   let height = 0;
@@ -14,7 +15,8 @@
     height: side,
   };
 
-  export let thumbnailURL: string;
+  export let thumbnailURL: string = null;
+  export let isLoading: boolean = false;
 </script>
 
 <style lang="postcss">
@@ -31,9 +33,15 @@
   bind:clientWidth={width}
   bind:clientHeight={height}>
   <div class="inner" use:cssVars={styles}>
-    <img
-      src={thumbnailURL}
-      alt=""
-      class="h-full w-full object-contain object-center" />
+    {#if !isLoading && thumbnailURL}
+      <img
+        src={thumbnailURL}
+        alt=""
+        class="h-full w-full object-contain object-center" />
+    {:else}
+      <div class="inner flex items-center justify-center">
+        <CircleLoader />
+      </div>
+    {/if}
   </div>
 </div>

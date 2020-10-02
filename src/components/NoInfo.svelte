@@ -29,7 +29,7 @@
 
 <div class="p-5">
   <h2 class="mb-5 flex items-center">
-    <span>About This Content</span>
+    <span>About this content</span>
     {#if isComparing}
       <div class="flex-grow flex justify-end">
         <div class="close" on:click={() => dispatch('close')}>

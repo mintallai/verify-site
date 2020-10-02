@@ -4,23 +4,29 @@
   import Header from '../components/Header.svelte';
   import Assets from '../components/Assets.svelte';
   import NoInfo from '../components/NoInfo.svelte';
+  import CircleLoader from '../components/CircleLoader.svelte';
   import ContentSources from '../components/ContentSources.svelte';
   import About from '../components/About.svelte';
   import Comparison from '../components/Comparison.svelte';
   import Viewer from '../components/Viewer.svelte';
   import {
+    summary,
     navigateToId,
     secondaryId,
     primaryAsset,
     secondaryAsset,
   } from '../stores';
   import { getIdentifier } from '../lib/claim';
+  import '@spectrum-web-components/theme/theme-lightest.js';
+  import '@spectrum-web-components/theme/scale-large.js';
+  import '@spectrum-web-components/theme/sp-theme.js';
 
   function handleClose(navigateToAsset: ViewableItem) {
     navigateToId(getIdentifier(navigateToAsset));
     secondaryId.set('');
   }
 
+  $: isLoading = $summary === null;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
@@ -35,11 +41,22 @@
   section {
     @apply col-span-1 border-gray-200 max-h-full overflow-auto;
   }
+  section.loading {
+    @apply flex items-center justify-center;
+  }
 </style>
 
 <main>
   <Header />
-  {#if primary}
+  {#if isLoading}
+    <section class="border-r" class:loading={isLoading}>
+      <CircleLoader />
+    </section>
+    <Viewer isLoading={true} />
+    <section class="border-l" class:loading={isLoading}>
+      <CircleLoader />
+    </section>
+  {:else if primary}
     <section class="border-r">
       {#if primary?.type === 'claim'}
         <About
