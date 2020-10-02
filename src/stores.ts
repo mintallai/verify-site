@@ -5,6 +5,7 @@ import { addIdentifiers } from './lib/claim';
 
 const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
 const API_KEY = 'caiverify';
+const LOAD_DELAY = 3000;
 
 export const contentSourceIds = writable<string[]>([]);
 
@@ -36,6 +37,12 @@ export function compareWithId(id: string): void {
   secondaryId.set(id);
 }
 
+function simulateDelay() {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, LOAD_DELAY);
+  });
+}
+
 async function fetchSummary(set: any): Promise<void> {
   const res = await fetch(`${API_BASE_URL}/claim/summary`, {
     method: 'POST',
@@ -49,6 +56,7 @@ async function fetchSummary(set: any): Promise<void> {
       asset_url: 'http://path/file.jpg',
     }),
   });
+  await simulateDelay();
   const data = (await res.json()) as ISummaryResponse;
   data.claims = mapValues(data.claims, (claim, claim_id) => ({
     ...claim,
