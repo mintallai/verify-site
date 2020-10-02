@@ -40,6 +40,7 @@
     }
   }
 
+  /* purgecss start ignore */
   .tippy-box[data-theme~='cai'] {
     @apply font-body text-sm leading-snug text-black bg-white shadow-sm p-1;
 
@@ -67,4 +68,5 @@
       fill: #fff;
     }
   }
+  /* purgecss end ignore */
 }

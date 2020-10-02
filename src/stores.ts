@@ -44,19 +44,21 @@ function simulateDelay() {
 }
 
 async function fetchSummary(set: any): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/claim/summary`, {
-    method: 'POST',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'x-api-key': API_KEY,
-    },
-    body: JSON.stringify({
-      asset_url: 'http://path/file.jpg',
+  const [res] = await Promise.all([
+    fetch(`${API_BASE_URL}/claim/summary`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'x-api-key': API_KEY,
+      },
+      body: JSON.stringify({
+        asset_url: 'http://path/file.jpg',
+      }),
     }),
-  });
-  await simulateDelay();
+    simulateDelay(),
+  ]);
   const data = (await res.json()) as ISummaryResponse;
   data.claims = mapValues(data.claims, (claim, claim_id) => ({
     ...claim,
