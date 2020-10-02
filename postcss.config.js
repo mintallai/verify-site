@@ -3,7 +3,8 @@ const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano')({ preset: 'default' });
 const purgecss = require('@fullhuman/postcss-purgecss')({
   content: ['./**/**/*.html', './**/**/*.svelte'],
-  whitelistPatterns: [/svelte-/],
+  whitelistPatterns: [/svelte-/, /tippy-/],
+  whitelistPatternsChildren: [/tippy-/],
   defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
 });
 
