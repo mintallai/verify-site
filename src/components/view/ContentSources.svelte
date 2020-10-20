@@ -5,8 +5,12 @@
   import { crossfade } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import Asset from './Asset.svelte';
-  import { contentSourceIds, assetsByIdentifier, primaryId } from '../stores';
-  import { getBreadcrumbList } from '../lib/claim';
+  import {
+    contentSourceIds,
+    assetsByIdentifier,
+    primaryId,
+  } from '../../stores';
+  import { getBreadcrumbList } from '../../lib/claim';
 
   const [add, remove] = crossfade({
     fallback(node) {

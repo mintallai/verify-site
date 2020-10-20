@@ -30,6 +30,8 @@ module.exports = {
       },
       fontSize: {
         base: '0.9375rem',
+        xxl: '1.5rem',
+        xxxl: '3.125rem',
       },
       boxShadow: {
         md: '0 0 10px 0 rgba(0, 0, 0, 0.20)',

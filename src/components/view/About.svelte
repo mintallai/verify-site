@@ -30,12 +30,12 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import parseISO from 'date-fns/parseISO';
-  import Icon from './Icon.svelte';
-  import { assetsByIdentifier } from '../stores';
-  import { getAssetList } from '../lib/claim';
-  import { tippy } from '../lib/tippy';
-  import type { TippyProps } from '../lib/tippy';
-  import { formatDate, formatTime, asFilename } from '../lib/util/format';
+  import Icon from '../Icon.svelte';
+  import { assetsByIdentifier } from '../../stores';
+  import { getAssetList } from '../../lib/claim';
+  import { tippy } from '../../lib/tippy';
+  import type { TippyProps } from '../../lib/tippy';
+  import { formatDate, formatTime, asFilename } from '../../lib/util/format';
 
   export let claim: IClaimSummary;
   export let isComparing: boolean = false;
@@ -141,7 +141,8 @@
     </dd>
     <dt>Signed on</dt>
     <dd class="text-right leading-tight">
-      {formatDate(signedOn)}, {formatTime(signedOn)}
+      {formatDate(signedOn)},
+      {formatTime(signedOn)}
     </dd>
   </dl>
   <dl class="attributes multiline border-t border-gray-200 mt-5 pt-4">

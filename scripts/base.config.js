@@ -106,7 +106,7 @@ function baseConfig(config, ctx) {
           {
             src: [`${staticDir}/__index.html`],
             dest: distDir,
-            rename: 'index.html',
+            rename: '__app.html',
             transform,
           },
         ],

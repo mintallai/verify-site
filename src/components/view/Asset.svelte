@@ -2,10 +2,10 @@
   import { scale } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
   import cssVars from 'svelte-css-vars';
-  import Button from './Button.svelte';
-  import Icon from './Icon.svelte';
-  import { tippy } from '../lib/tippy';
-  import { navigateToId, compareWithId, primaryId } from '../stores';
+  import Button from '../Button.svelte';
+  import Icon from '../Icon.svelte';
+  import { tippy } from '../../lib/tippy';
+  import { navigateToId, compareWithId, primaryId } from '../../stores';
 
   let hover: boolean;
   export let asset: ViewableItem;

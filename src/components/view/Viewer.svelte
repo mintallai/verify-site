@@ -1,6 +1,6 @@
 <script lang="ts">
   import cssVars from 'svelte-css-vars';
-  import CircleLoader from './CircleLoader.svelte';
+  import CircleLoader from '../CircleLoader.svelte';
 
   let width = 0;
   let height = 0;
