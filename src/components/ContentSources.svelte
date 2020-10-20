@@ -17,7 +17,7 @@
       return {
         duration: 600,
         easing: cubicOut,
-        css: (t) => `
+        css: (t: number) => `
 					transform: ${transform} translateY(${dropFrom - t * dropFrom}px);
 					opacity: ${t}
 				`,
@@ -25,7 +25,7 @@
     },
   });
 
-  let resizeObserver;
+  let resizeObserver: any;
   let container: any;
   let bgStyles = tweened(
     { top: 0, width: 0 },
@@ -34,13 +34,13 @@
       easing: cubicOut,
     },
   );
-  let prevActiveItem;
+  let prevActiveItem: HTMLElement | undefined;
 
   onMount(() => {
     if (container && $primaryId) {
       // Waiting on https://github.com/microsoft/TypeScript/issues/37861
       // @ts-ignore
-      resizeObserver = new ResizeObserver(([entry]) => {
+      resizeObserver = new ResizeObserver(() => {
         // TODO: Optimize this
         const activeItem = container.querySelector('div.current');
         let duration = 0;

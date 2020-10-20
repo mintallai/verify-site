@@ -11,7 +11,7 @@
   export let asset: ViewableItem;
   export let hasConnector: boolean = false;
 
-  function scaleIn(node, params) {
+  function scaleIn(node: HTMLElement, _params: any) {
     const existingTransform = getComputedStyle(node).transform.replace(
       'none',
       '',
@@ -21,7 +21,7 @@
       delay: 300,
       duration: 500,
       easing: quintOut,
-      css: (t, u) => `transform: ${existingTransform} scaleY(${t})`,
+      css: (t: number) => `transform: ${existingTransform} scaleY(${t})`,
     };
   }
 
