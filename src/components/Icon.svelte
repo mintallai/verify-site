@@ -48,6 +48,7 @@
     l = `1.125rem`,
     m = `1rem`,
     s = `0.875rem`,
+    xs = `0.75rem`,
   }
 
   export let size = 'm';

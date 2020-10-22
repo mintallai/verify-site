@@ -6,7 +6,8 @@ import { addIdentifiers } from './lib/claim';
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
 const API_KEY = 'caiverify';
-const LOAD_DELAY = 3000;
+// @ts-ignore
+const LOAD_DELAY = __delay__;
 
 export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
 
@@ -68,7 +69,7 @@ async function fetchSummary(set: any): Promise<void> {
     claim_id,
   }));
   navigateToId(`claim_id:${data.root_claim_id}`);
-  // navigateToId('claim_id:c_adbe_1/cai.claim');
+  // compareWithId('claim_id:c_adbe_1/cai.claim');
   // setTimeout(() => {
   //   navigateToId(`claim_id:c_tpic_1/cai.claim`);
   // }, 1000);

@@ -45,6 +45,9 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    margin: ({ after }) => after(['first']),
+    padding: ({ after }) => after(['first']),
+  },
   plugins: [],
 };

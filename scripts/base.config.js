@@ -124,6 +124,7 @@ function baseConfig(config, ctx) {
       }),
       replace({
         'process.env.NODE_ENV': production ? '"production"' : '"development"',
+        __delay__: production ? '3000' : '100',
         __year__: new Date().getFullYear(),
       }),
       embeddedTypescript({ sourceMap: !production }),

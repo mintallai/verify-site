@@ -1,12 +1,12 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import partial from 'lodash/partial';
-  import Header from '../components/Header.svelte';
+  import About from '../components/About.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
+  import Header from '../components/Header.svelte';
   import ContentSources from '../components/view/ContentSources.svelte';
   import Assets from '../components/view/Assets.svelte';
-  import NoInfo from '../components/view/NoInfo.svelte';
-  import About from '../components/view/About.svelte';
+  import NoInfo from '../components/About.svelte';
   import Comparison from '../components/view/Comparison.svelte';
   import Viewer from '../components/view/Viewer.svelte';
   import {

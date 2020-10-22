@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { url } from '@sveltech/routify';
+  import { url, metatags } from '@sveltech/routify';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import Icon from '../components/Icon.svelte';
-  import AspectBox from '../components/AspectBox.svelte';
   import Button from '../components/Button.svelte';
   import { learnMoreUrl } from '../stores';
   import '@spectrum-web-components/theme/theme-lightest.js';
   import '@spectrum-web-components/theme/scale-large.js';
   import '@spectrum-web-components/theme/sp-theme.js';
+
+  metatags.title = 'Frequently Asked Questions';
 </script>
 
 <style lang="postcss">
