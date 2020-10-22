@@ -6,7 +6,7 @@
   import Header from '../components/Header.svelte';
   import ContentSources from '../components/view/ContentSources.svelte';
   import Assets from '../components/view/Assets.svelte';
-  import NoInfo from '../components/About.svelte';
+  import NoInfo from '../components/view/NoInfo.svelte';
   import Comparison from '../components/view/Comparison.svelte';
   import Viewer from '../components/view/Viewer.svelte';
   import {
@@ -17,9 +17,6 @@
     secondaryAsset,
   } from '../stores';
   import { getIdentifier } from '../lib/claim';
-  import '@spectrum-web-components/theme/theme-lightest.js';
-  import '@spectrum-web-components/theme/scale-large.js';
-  import '@spectrum-web-components/theme/sp-theme.js';
 
   function handleClose(navigateToAsset: ViewableItem) {
     navigateToId(getIdentifier(navigateToAsset));
@@ -59,10 +56,12 @@
   {:else if primary}
     <section class="border-r">
       {#if primary?.type === 'claim'}
-        <About
-          claim={primary}
-          {isComparing}
-          on:close={partial(handleClose, secondary)} />
+        <div class="p-4">
+          <About
+            claim={primary}
+            {isComparing}
+            on:close={partial(handleClose, secondary)} />
+        </div>
       {:else}
         <NoInfo
           ingredient={primary}
@@ -82,10 +81,12 @@
         <ContentSources />
       {/if}
       {#if secondary?.type === 'claim'}
-        <About
-          claim={secondary}
-          {isComparing}
-          on:close={partial(handleClose, primary)} />
+        <div class="p-4">
+          <About
+            claim={secondary}
+            {isComparing}
+            on:close={partial(handleClose, primary)} />
+        </div>
       {:else if secondary?.type === 'reference'}
         <NoInfo
           ingredient={secondary}

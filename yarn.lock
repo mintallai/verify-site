@@ -989,6 +989,14 @@
     "@spectrum-web-components/base" "^0.1.3"
     tslib "^2.0.0"
 
+"@spectrum-web-components/coachmark@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/coachmark/-/coachmark-0.3.3.tgz#88cc07de676457c5141dac8162bad54dfabe8271"
+  integrity sha512-K+IT967s8WqI0q3tpjdmevBg7v0d3Xg9NRiELj3hyhwSrcSjNa+djXzowSg2wgNLdDKM4Jk4Ts2J88QB8Cyc/A==
+  dependencies:
+    "@spectrum-web-components/base" "^0.1.3"
+    tslib "^2.0.0"
+
 "@spectrum-web-components/icon@^0.6.0":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@spectrum-web-components/icon/-/icon-0.6.3.tgz#5a773b6950ae29006a8508a04e4b43972dec7566"

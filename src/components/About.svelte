@@ -70,10 +70,10 @@
     @apply mt-0;
   }
   h2.alternate {
-    @apply text-sm pt-4;
+    @apply text-sm pt-4 mb-3;
   }
   h2.alternate:not(:first-child) {
-    @apply border-t border-gray-200 mt-5;
+    @apply border-t border-gray-200 mt-4;
   }
   h2 .icon {
     @apply relative ml-2;
@@ -123,7 +123,7 @@
   }
 </style>
 
-<div class="p-5">
+<div>
   <!-- Compare header -->
   {#if alternate}
     {#if isComparing}
@@ -247,7 +247,7 @@
     {/if}
 
     <!-- Assets used (comparison mode only) -->
-    {#if isComparing && assetList}
+    {#if alternate && assetList}
       <h2 class:alternate>
         <span>Assets used</span>
         <div class="icon">

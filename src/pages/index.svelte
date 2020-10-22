@@ -1,14 +1,22 @@
 <script lang="ts">
   import { url } from '@sveltech/routify';
+  import { fade } from 'svelte/transition';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
   import Icon from '../components/Icon.svelte';
   import AspectBox from '../components/AspectBox.svelte';
   import Button from '../components/Button.svelte';
+  import ImageInfo from '../components/ImageInfo.svelte';
+  import Coachmark from '../components/Coachmark.svelte';
   import { learnMoreUrl } from '../stores';
+  import { primaryAsset } from '../stores';
   import '@spectrum-web-components/theme/theme-lightest.js';
   import '@spectrum-web-components/theme/scale-large.js';
   import '@spectrum-web-components/theme/sp-theme.js';
+
+  let coachmarkClicked = false;
+
+  $: primary = $primaryAsset;
 </script>
 
 <style lang="postcss">
@@ -36,8 +44,16 @@
     @apply mb-56;
   }
   .example {
-    @apply w-full shadow-lg;
+    @apply w-full shadow-lg relative;
     background-color: #ccc;
+  }
+  .example .coachmark {
+    @apply absolute z-10 pointer-events-none;
+    top: -7px;
+    right: -12px;
+  }
+  .example .glyph {
+    @apply absolute p-4 top-0 right-0;
   }
   .view-cta {
     @apply inline-flex text-purple-500 text-xl font-bold mt-3 items-center;
@@ -74,7 +90,18 @@
     <section class="feature">
       <div class="mb-8 md:mb-0">
         <AspectBox ratio={422 / 500}>
-          <div class="example" />
+          <div class="example">
+            {#if primary?.type === 'claim'}
+              {#if !coachmarkClicked}
+                <div class="coachmark" transition:fade={{ duration: 250 }}>
+                  <Coachmark />
+                </div>
+              {/if}
+              <div class="glyph" on:click={() => (coachmarkClicked = true)}>
+                <ImageInfo claim={primary} />
+              </div>
+            {/if}
+          </div>
         </AspectBox>
       </div>
       <div class="info md:pl-12">
@@ -83,7 +110,7 @@
         </h2>
         <p>
           Content Authenticity provides a public, tamper-evident attribution and
-          history layer viewable on enabled images. That data is embeded in the
+          history layer viewable on enabled images. That data is embedded in the
           image, so it can travel with the image wherever it goes. Tap the (i)
           on the image to preview, or go straight to the Verify inspect view
           below.
