@@ -52,13 +52,15 @@
 
   <!-- Hero -->
   <section class="hero flex items-center justify-center w-full bg-gray-150">
-    <div>
-      <h1 class="font-black text-5xl text-center leading-tight mb-4">
-        Verify images with<br />Content Authenticity
+    <div class="max-w-full px-8">
+      <h1
+        class="font-black text-5xl text-center leading-tight mb-4 max-w-full"
+        style="width: 600px;">
+        Verify images with Content Authenticity
       </h1>
-      <div class="text-center text-xl">
-        Use Verify to inspect and compare the history of digital images<br />
-        with Content Authenticity data.
+      <div class="text-center text-xl max-w-full mx-auto" style="width: 550px;">
+        Use Verify to inspect and compare the history of digital images with
+        Content Authenticity data.
       </div>
       <div class="text-center mt-12">
         <Button size="lg" href={$learnMoreUrl}>Learn More</Button>
