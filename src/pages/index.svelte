@@ -1,101 +1,184 @@
 <script lang="ts">
+  import { url } from '@sveltech/routify';
   import { fade } from 'svelte/transition';
-  import partial from 'lodash/partial';
   import Header from '../components/Header.svelte';
-  import Assets from '../components/Assets.svelte';
-  import NoInfo from '../components/NoInfo.svelte';
-  import CircleLoader from '../components/CircleLoader.svelte';
-  import ContentSources from '../components/ContentSources.svelte';
-  import About from '../components/About.svelte';
-  import Comparison from '../components/Comparison.svelte';
-  import Viewer from '../components/Viewer.svelte';
-  import {
-    summary,
-    navigateToId,
-    secondaryId,
-    primaryAsset,
-    secondaryAsset,
-  } from '../stores';
-  import { getIdentifier } from '../lib/claim';
+  import Footer from '../components/Footer.svelte';
+  import Icon from '../components/Icon.svelte';
+  import AspectBox from '../components/AspectBox.svelte';
+  import Button from '../components/Button.svelte';
+  import ImageInfo from '../components/ImageInfo.svelte';
+  import Coachmark from '../components/Coachmark.svelte';
+  import { learnMoreUrl } from '../stores';
+  import { primaryAsset } from '../stores';
   import '@spectrum-web-components/theme/theme-lightest.js';
   import '@spectrum-web-components/theme/scale-large.js';
   import '@spectrum-web-components/theme/sp-theme.js';
 
-  function handleClose(navigateToAsset: ViewableItem) {
-    navigateToId(getIdentifier(navigateToAsset));
-    secondaryId.set('');
-  }
+  let coachmarkClicked = false;
 
-  $: isLoading = $summary === null;
   $: primary = $primaryAsset;
-  $: secondary = $secondaryAsset;
-  $: isComparing = !!(primary && secondary);
 </script>
 
 <style lang="postcss">
   main {
-    @apply grid absolute w-screen h-screen font-body;
-    grid-template-columns: 320px auto 320px;
-    grid-template-rows: 80px auto;
+    @apply font-body;
   }
-  section {
-    @apply col-span-1 border-gray-200 max-h-full overflow-auto;
+  .hero {
+    height: 506px;
   }
-  section.loading {
-    @apply flex items-center justify-center;
+  .feature {
+    @apply grid grid-cols-1 items-center;
+  }
+  @screen md {
+    .feature {
+      @apply grid-cols-2;
+    }
+  }
+  .feature h2 {
+    @apply text-3xl leading-8 mb-6;
+  }
+  .feature p {
+    @apply text-xl;
+  }
+  .feature:not(:last-of-type) {
+    @apply mb-56;
+  }
+  .example {
+    @apply w-full shadow-lg relative;
+    background-color: #ccc;
+  }
+  .example .coachmark {
+    @apply absolute z-10 pointer-events-none;
+    top: -7px;
+    right: -12px;
+  }
+  .example .glyph {
+    @apply absolute p-4 top-0 right-0;
+  }
+  .view-cta {
+    @apply inline-flex text-purple-500 text-xl font-bold mt-3 items-center;
+  }
+  .view-cta .icon {
+    @apply relative ml-1;
   }
 </style>
 
 <main>
   <Header />
-  {#if isLoading}
-    <section class="border-r" class:loading={isLoading}>
-      <CircleLoader />
+
+  <!-- Hero -->
+  <section class="hero flex items-center justify-center w-full bg-gray-150">
+    <div class="max-w-full px-8">
+      <h1
+        class="font-black text-5xl text-center leading-tight mb-4 max-w-full"
+        style="width: 600px;">
+        Verify images with Content Authenticity
+      </h1>
+      <div class="text-center text-xl max-w-full mx-auto" style="width: 550px;">
+        Use Verify to inspect and compare the history of digital images with
+        Content Authenticity data.
+      </div>
+      <div class="text-center mt-12">
+        <Button size="lg" href={$learnMoreUrl}>Learn More</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="lg:container lg:mx-auto px-8 py-32">
+    <!-- Feature 1 -->
+    <section class="feature">
+      <div class="mb-8 md:mb-0">
+        <AspectBox ratio={422 / 500}>
+          <div class="example">
+            {#if primary?.type === 'claim'}
+              {#if !coachmarkClicked}
+                <div class="coachmark" transition:fade={{ duration: 250 }}>
+                  <Coachmark />
+                </div>
+              {/if}
+              <div class="glyph" on:click={() => (coachmarkClicked = true)}>
+                <ImageInfo claim={primary} />
+              </div>
+            {/if}
+          </div>
+        </AspectBox>
+      </div>
+      <div class="info md:pl-12">
+        <h2>
+          See an image's Content Authenticity data anywhere it goes online
+        </h2>
+        <p>
+          Content Authenticity provides a public, tamper-evident attribution and
+          history layer viewable on enabled images. That data is embedded in the
+          image, so it can travel with the image wherever it goes. Tap the (i)
+          on the image to preview, or go straight to the Verify inspect view
+          below.
+        </p>
+        <a href={$url('/view', { callout: 'anchor' })} class="view-cta">
+          <div>Inspect Image</div>
+          <div class="icon">
+            <Icon
+              size="2xl"
+              name="workflow:ChevronRight"
+              class="text-purple-500" />
+          </div>
+        </a>
+      </div>
     </section>
-    <Viewer isLoading={true} />
-    <section class="border-l" class:loading={isLoading}>
-      <CircleLoader />
+
+    <!-- Feature 2 -->
+    <section class="feature">
+      <div class="info md:pr-12">
+        <h2>Dive deep into how the image came together</h2>
+        <p>
+          Use Verify to see what assets were used to create an image, or explore
+          further into its past.
+        </p>
+        <a href={$url('/view', { callout: 'asset' })} class="view-cta">
+          <div>Inspect History</div>
+          <div class="icon">
+            <Icon
+              size="2xl"
+              name="workflow:ChevronRight"
+              class="text-purple-500" />
+          </div>
+        </a>
+      </div>
+      <div class="mt-8 md:mt-0">
+        <AspectBox ratio={310 / 500}>
+          <div class="example" />
+        </AspectBox>
+      </div>
     </section>
-  {:else if primary}
-    <section class="border-r">
-      {#if primary?.type === 'claim'}
-        <About
-          claim={primary}
-          {isComparing}
-          on:close={partial(handleClose, secondary)} />
-      {:else}
-        <NoInfo
-          ingredient={primary}
-          {isComparing}
-          on:close={partial(handleClose, secondary)} />
-      {/if}
+
+    <!-- Feature 3 -->
+    <section class="feature">
+      <div class="flex items-center justify-center">
+        <div
+          class="example mb-8 md:mb-0"
+          style="width: 402px; height: 500px; max-width: 100%; max-height: auto;" />
+      </div>
+      <div class="info md:pl-12">
+        <h2>
+          Compare historical versions of an image to see how changes over time
+        </h2>
+        <p>
+          Verify enables the comparison of different versions and assets used in
+          an image's history, so changes over time can be easy to see.
+        </p>
+        <a href={$url('/view', { callout: 'parent' })} class="view-cta">
+          <div>Compare History</div>
+          <div class="icon">
+            <Icon
+              size="2xl"
+              name="workflow:ChevronRight"
+              class="text-purple-500" />
+          </div>
+        </a>
+      </div>
     </section>
-    {#if isComparing}
-      <Comparison
-        primaryURL={primary.thumbnail_url}
-        secondaryURL={secondary.thumbnail_url} />
-    {:else}
-      <Viewer thumbnailURL={primary.thumbnail_url} />
-    {/if}
-    <section class="border-l">
-      {#if !isComparing}
-        <ContentSources />
-      {/if}
-      {#if secondary?.type === 'claim'}
-        <About
-          claim={secondary}
-          {isComparing}
-          on:close={partial(handleClose, primary)} />
-      {:else if secondary?.type === 'reference'}
-        <NoInfo
-          ingredient={secondary}
-          {isComparing}
-          on:close={partial(handleClose, primary)} />
-      {:else if primary?.type === 'claim'}
-        <div in:fade|local={{ duration: 200 }}>
-          <Assets claim={primary} />
-        </div>
-      {/if}
-    </section>
-  {/if}
+  </section>
+
+  <Footer />
 </main>

@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { url } from '@sveltech/routify';
   import Button from './Button.svelte';
+  import { learnMoreUrl } from '../stores';
 </script>
 
 <style lang="postcss">
@@ -8,20 +10,27 @@
     height: 80px;
   }
   .logo {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
   }
 </style>
 
-<header>
-  <div class="flex justify-between">
-    <img
-      src="images/svg/logos/cai.svg"
-      class="logo"
-      alt="Content Authenticity Initiative" />
-    <h1 class="font-black uppercase text-sm ml-2">Content Authenticity</h1>
+<header class="flex">
+  <div class="flex-shrink">
+    <a href={$url('/')} class="flex flex-start select-none">
+      <img
+        src="images/svg/logos/cai.svg"
+        class="logo"
+        alt="Content Authenticity Initiative" />
+      <h1 class="font-black text-2xl leading-none ml-3">Verify</h1>
+    </a>
   </div>
-  <div>
-    <Button>Learn More</Button>
+  <div class="flex-grow text-right">
+    <a href={$url('/faq')} class="font-bold text-sm tracking-tight">
+      Frequently Asked Questions
+    </a>
+  </div>
+  <div class="ml-5">
+    <Button href={$learnMoreUrl}>Learn More</Button>
   </div>
 </header>

@@ -3,7 +3,7 @@
   import interact from 'interactjs';
   import type { DragEvent } from '@interactjs/types';
   import cssVars from 'svelte-css-vars';
-  import Icon from './Icon.svelte';
+  import Icon from '../Icon.svelte';
 
   let width = 0;
   let height = 0;

@@ -5,8 +5,12 @@
   import { crossfade } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import Asset from './Asset.svelte';
-  import { contentSourceIds, assetsByIdentifier, primaryId } from '../stores';
-  import { getBreadcrumbList } from '../lib/claim';
+  import {
+    contentSourceIds,
+    assetsByIdentifier,
+    primaryId,
+  } from '../../stores';
+  import { getBreadcrumbList } from '../../lib/claim';
 
   const [add, remove] = crossfade({
     fallback(node) {
@@ -17,7 +21,7 @@
       return {
         duration: 600,
         easing: cubicOut,
-        css: (t) => `
+        css: (t: number) => `
 					transform: ${transform} translateY(${dropFrom - t * dropFrom}px);
 					opacity: ${t}
 				`,
@@ -25,7 +29,7 @@
     },
   });
 
-  let resizeObserver;
+  let resizeObserver: any;
   let container: any;
   let bgStyles = tweened(
     { top: 0, width: 0 },
@@ -34,13 +38,13 @@
       easing: cubicOut,
     },
   );
-  let prevActiveItem;
+  let prevActiveItem: HTMLElement | undefined;
 
   onMount(() => {
     if (container && $primaryId) {
       // Waiting on https://github.com/microsoft/TypeScript/issues/37861
       // @ts-ignore
-      resizeObserver = new ResizeObserver(([entry]) => {
+      resizeObserver = new ResizeObserver(() => {
         // TODO: Optimize this
         const activeItem = container.querySelector('div.current');
         let duration = 0;

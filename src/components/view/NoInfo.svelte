@@ -1,7 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import cssVars from 'svelte-css-vars';
-  import Icon from './Icon.svelte';
+  import Icon from '../Icon.svelte';
 
   export let ingredient: IReference;
   export let isComparing: boolean = false;

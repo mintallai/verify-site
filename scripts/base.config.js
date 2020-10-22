@@ -106,7 +106,7 @@ function baseConfig(config, ctx) {
           {
             src: [`${staticDir}/__index.html`],
             dest: distDir,
-            rename: 'index.html',
+            rename: '__app.html',
             transform,
           },
         ],
@@ -124,6 +124,8 @@ function baseConfig(config, ctx) {
       }),
       replace({
         'process.env.NODE_ENV': production ? '"production"' : '"development"',
+        __delay__: production ? '3000' : '100',
+        __year__: new Date().getFullYear(),
       }),
       embeddedTypescript({ sourceMap: !production }),
       typescript({

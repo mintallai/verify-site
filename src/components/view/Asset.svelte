@@ -2,16 +2,16 @@
   import { scale } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
   import cssVars from 'svelte-css-vars';
-  import Button from './Button.svelte';
-  import Icon from './Icon.svelte';
-  import { tippy } from '../lib/tippy';
-  import { navigateToId, compareWithId, primaryId } from '../stores';
+  import Button from '../Button.svelte';
+  import Icon from '../Icon.svelte';
+  import { tippy } from '../../lib/tippy';
+  import { navigateToId, compareWithId, primaryId } from '../../stores';
 
   let hover: boolean;
   export let asset: ViewableItem;
   export let hasConnector: boolean = false;
 
-  function scaleIn(node, params) {
+  function scaleIn(node: HTMLElement, _params: any) {
     const existingTransform = getComputedStyle(node).transform.replace(
       'none',
       '',
@@ -21,7 +21,7 @@
       delay: 300,
       duration: 500,
       easing: quintOut,
-      css: (t, u) => `transform: ${existingTransform} scaleY(${t})`,
+      css: (t: number) => `transform: ${existingTransform} scaleY(${t})`,
     };
   }
 
