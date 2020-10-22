@@ -1,6 +1,7 @@
 <script lang="ts">
-  import Button from './Button.svelte';
   import { url } from '@sveltech/routify';
+  import Button from './Button.svelte';
+  import { learnMoreUrl } from '../stores';
 </script>
 
 <style lang="postcss">
@@ -21,7 +22,7 @@
         src="images/svg/logos/cai.svg"
         class="logo"
         alt="Content Authenticity Initiative" />
-      <h1 class="font-black text-xxl leading-none ml-3">Verify</h1>
+      <h1 class="font-black text-2xl leading-none ml-3">Verify</h1>
     </a>
   </div>
   <div class="flex-grow text-right">
@@ -30,6 +31,6 @@
     </a>
   </div>
   <div class="ml-5">
-    <Button>Learn More</Button>
+    <Button href={$learnMoreUrl}>Learn More</Button>
   </div>
 </header>

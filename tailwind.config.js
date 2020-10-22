@@ -5,6 +5,11 @@ module.exports = {
   },
   purge: [],
   theme: {
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+    },
     fontFamily: {
       display: ['acumin-pro', 'sans-serif'],
       body: ['acumin-pro', 'sans-serif'],
@@ -17,6 +22,7 @@ module.exports = {
         },
         gray: {
           '100': '#fafafa',
+          '150': '#f6f6f6',
           '200': '#eeeeee',
           '300': '#e0e0e0',
           '350': '#dddddd',
@@ -30,12 +36,12 @@ module.exports = {
       },
       fontSize: {
         base: '0.9375rem',
-        xxl: '1.5rem',
-        xxxl: '3.125rem',
+        '5xl': '3.125rem',
       },
       boxShadow: {
-        md: '0 0 10px 0 rgba(0, 0, 0, 0.20)',
         sm: '0 0 4px 0 rgba(0, 0, 0, 0.40)',
+        md: '0 0 10px 0 rgba(0, 0, 0, 0.20)',
+        lg: '0 0 40px 0 rgba(0, 0, 0, 0.10)',
       },
     },
   },

@@ -3,9 +3,12 @@ import omit from 'lodash/omit';
 import mapValues from 'lodash/mapValues';
 import { addIdentifiers } from './lib/claim';
 
+const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
 const API_KEY = 'caiverify';
 const LOAD_DELAY = 3000;
+
+export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
 
 export const contentSourceIds = writable<string[]>([]);
 
