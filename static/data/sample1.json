@@ -1,0 +1,61 @@
+{
+  "claims": {
+    "c_adbe_1/cai.claim": {
+      "camera_info": {
+        "camera": "Canon EOS 5D Mark III",
+        "exposure": "1/320 sec; f/8; ISO 100; Normal programming; Pattern metering",
+        "focal_length": "84.00 mm",
+        "lens": "EF24-105mm f/4L IS USM"
+      },
+      "edits": { "categories": ["UPLOADED"] },
+      "location": "Bohol, Philippines",
+      "produced_by": "Tanya Keisha",
+      "produced_with": "Adobe Stock",
+      "references": [
+        {
+          "claim_id": null,
+          "document_id": "6A74374D486A33B24E05E4BAA83DDB74",
+          "format": "image/jpeg",
+          "thumbnail_url": "https://caiverifyservice-stage-or2.stage.cloud.adobe.io/ingredient-1.jpg",
+          "title": "img-2020-01-04.jpg",
+          "type": "parent"
+        }
+      ],
+      "signed_by": "Adobe",
+      "signed_on": "2020-09-09T16:39:00.000Z",
+      "stock": { "license_type": "Standard License", "source": "376908262" },
+      "thumbnail_url": "https://caiverifyservice-stage-or2.stage.cloud.adobe.io/ingredient-1.jpg",
+      "title": "AdobeStock_376908262.jpg"
+    },
+    "c_adbe_2/cai.claim": {
+      "edits": {
+        "categories": ["AI_ASSISTED", "IMPORTED_ASSETS", "TRANSFORMED"]
+      },
+      "produced_by": "Andy Parsons",
+      "produced_with": "Photoshop",
+      "references": [
+        {
+          "claim_id": "c_adbe_1/cai.claim",
+          "document_id": "6A74374D486A33B24E05E4BAA83DDB74",
+          "format": "image/jpeg",
+          "thumbnail_url": "https://caiverifyservice-stage-or2.stage.cloud.adobe.io/ingredient-1.jpg",
+          "title": "AdobeStock_376908262.jpg",
+          "type": "parent"
+        },
+        {
+          "claim_id": null,
+          "document_id": "6A74374D486A33B24E05E4BAA83DDB73",
+          "format": "image/jpeg",
+          "thumbnail_url": "https://caiverifyservice-stage-or2.stage.cloud.adobe.io/ingredient-2.jpg",
+          "title": "image01.jpg",
+          "type": "ingredient"
+        }
+      ],
+      "signed_by": "Adobe",
+      "signed_on": "2020-09-17T13:30:56.207Z",
+      "thumbnail_url": "https://caiverifyservice-stage-or2.stage.cloud.adobe.io/thumbnail.jpg",
+      "title": "brooklyn-vacation.jpg"
+    }
+  },
+  "root_claim_id": "c_adbe_2/cai.claim"
+}

@@ -2,11 +2,15 @@
   export let href: string | undefined;
   export let secondary: boolean = false;
   export let size: string = 'md';
+  export let full: boolean = false;
 </script>
 
 <style lang="postcss">
   .button {
     @apply inline-block bg-purple-500 text-sm text-white font-bold px-6 py-2 rounded-full;
+  }
+  .button.full {
+    @apply w-full;
   }
   .secondary {
     @apply bg-purple-200 text-purple-500;
@@ -21,7 +25,7 @@
 </style>
 
 {#if href}
-  <a class="button" class:secondary class:lg={size === 'lg'} {href}>
+  <a class="button" class:full class:secondary class:lg={size === 'lg'} {href}>
     <div class="inner">
       <slot />
     </div>
@@ -29,6 +33,7 @@
 {:else}
   <button
     class="button"
+    class:full
     class:secondary
     class:lg={size === 'lg'}
     on:click|stopPropagation>

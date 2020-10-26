@@ -1,22 +1,27 @@
 <script lang="ts">
   import { url } from '@sveltech/routify';
-  import { fade } from 'svelte/transition';
+  import { onMount } from 'svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
   import Icon from '../components/Icon.svelte';
   import AspectBox from '../components/AspectBox.svelte';
   import Button from '../components/Button.svelte';
   import ImageInfo from '../components/ImageInfo.svelte';
-  import Coachmark from '../components/Coachmark.svelte';
   import { learnMoreUrl } from '../stores';
-  import { primaryAsset } from '../stores';
   import '@spectrum-web-components/theme/theme-lightest.js';
   import '@spectrum-web-components/theme/scale-large.js';
   import '@spectrum-web-components/theme/sp-theme.js';
 
-  let coachmarkClicked = false;
+  let summary1: IClaimSummary | undefined;
 
-  $: primary = $primaryAsset;
+  onMount(async () => {
+    const s1res = await fetch(`/data/sample1.json`);
+    const s1coll = (await s1res.json()) as ISummaryResponse;
+    summary1 = {
+      ...s1coll.claims[s1coll.root_claim_id],
+      type: 'claim',
+    };
+  });
 </script>
 
 <style lang="postcss">
@@ -31,7 +36,7 @@
   }
   @screen md {
     .feature {
-      @apply grid-cols-2;
+      @apply grid-cols-2 pl-12;
     }
   }
   .feature h2 {
@@ -46,11 +51,6 @@
   .example {
     @apply w-full shadow-lg relative;
     background-color: #ccc;
-  }
-  .example .coachmark {
-    @apply absolute z-10 pointer-events-none;
-    top: -7px;
-    right: -12px;
   }
   .example .glyph {
     @apply absolute p-4 top-0 right-0;
@@ -91,14 +91,9 @@
       <div class="mb-8 md:mb-0">
         <AspectBox ratio={422 / 500}>
           <div class="example">
-            {#if primary?.type === 'claim'}
-              {#if !coachmarkClicked}
-                <div class="coachmark" transition:fade={{ duration: 250 }}>
-                  <Coachmark />
-                </div>
-              {/if}
-              <div class="glyph" on:click={() => (coachmarkClicked = true)}>
-                <ImageInfo claim={primary} />
+            {#if summary1?.type === 'claim'}
+              <div class="glyph">
+                <ImageInfo claim={summary1} />
               </div>
             {/if}
           </div>
@@ -129,6 +124,11 @@
 
     <!-- Feature 2 -->
     <section class="feature">
+      <div class="mb-8 md:mb-0 md:order-1">
+        <AspectBox ratio={310 / 500}>
+          <div class="example" />
+        </AspectBox>
+      </div>
       <div class="info md:pr-12">
         <h2>Dive deep into how the image came together</h2>
         <p>
@@ -144,11 +144,6 @@
               class="text-purple-500" />
           </div>
         </a>
-      </div>
-      <div class="mt-8 md:mt-0">
-        <AspectBox ratio={310 / 500}>
-          <div class="example" />
-        </AspectBox>
       </div>
     </section>
 

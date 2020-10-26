@@ -42,7 +42,7 @@
 
   /* purgecss start ignore */
   .tippy-box[data-theme~='cai'] {
-    @apply font-body text-sm leading-snug text-black bg-white p-1;
+    @apply font-body text-sm leading-snug text-black bg-white p-0;
     filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.3));
 
     &[data-placement^='top'] > .tippy-arrow::before {
@@ -59,6 +59,10 @@
 
     &[data-placement^='right'] > .tippy-arrow::before {
       border-right-color: white;
+    }
+
+    > .tippy-content {
+      @apply p-0;
     }
 
     > .tippy-backdrop {
