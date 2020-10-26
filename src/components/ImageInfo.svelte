@@ -1,11 +1,17 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { fade } from 'svelte/transition';
+  import cssVars from 'svelte-css-vars';
   import { tippy } from '../lib/tippy';
   import About from './About.svelte';
+  import Button from './Button.svelte';
+  import Coachmark from './Coachmark.svelte';
 
   export let claim: IClaimSummary;
-  let popupElement;
-  let infoElement;
+  let coachmarkClicked = false;
+  let popupElement: HTMLElement;
+  let infoElement: HTMLElement;
+  let shadowOpacity = 1;
 
   const svgData = `data:image/svg+xml;utf8,<svg width="5px" height="14px" viewBox="0 0 5 14" version="1.1" xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -14,25 +20,47 @@
         fill="currentColor" fill-rule="nonzero"></path>
   </svg>`;
 
+  function handleScroll(evt) {
+    const target: HTMLElement = evt.target;
+    const pct = (target.scrollTop + target.clientHeight) / target.scrollHeight;
+    const tail = 1 - Math.max(0, pct - 0.9) * 10;
+    shadowOpacity = tail;
+  }
+
   onMount(() => {
-    const instance = tippy(infoElement, {
-      theme: 'cai',
-      placement: 'left-start',
-      offset: [-10, 8],
-      interactive: true,
-      content: popupElement,
-      trigger: 'click',
-      popperOptions: {
-        modifiers: [
-          {
-            name: 'preventOverflow',
-            options: {
-              padding: 30,
+    const instance = tippy(
+      infoElement,
+      {
+        theme: 'cai',
+        placement: 'left-start',
+        offset: [-11, 10],
+        interactive: true,
+        content: popupElement,
+        trigger: 'click',
+        popperOptions: {
+          modifiers: [
+            {
+              name: 'preventOverflow',
+              enabled: false,
             },
-          },
-        ],
+            {
+              name: 'flip',
+              enabled: false,
+            },
+            {
+              name: 'arrow',
+              options: {
+                padding: 16,
+              },
+            },
+          ],
+        },
+        onShow() {
+          coachmarkClicked = true;
+        },
       },
-    });
+      { hasPadding: false },
+    );
 
     return () => {
       instance.destroy();
@@ -41,13 +69,37 @@
 </script>
 
 <style lang="postcss">
+  .coachmark {
+    @apply absolute z-10 pointer-events-none;
+    top: -23px;
+    right: -29px;
+  }
   .info {
-    @apply bg-white text-black border border-gray-350 flex items-center justify-center rounded-full cursor-pointer;
+    @apply absolute bg-white text-black border border-gray-350 flex items-center justify-center rounded-full cursor-pointer;
     width: 24px;
     height: 24px;
+    top: 0;
+    right: 0;
   }
   .popup {
     width: 288px;
+  }
+  .inner {
+    @apply flex flex-col;
+    height: 600px;
+  }
+  .about {
+    @apply flex-grow overflow-auto p-3 relative;
+  }
+  .button {
+    @apply relative flex-shrink-0 p-3;
+  }
+  .shadow {
+    @apply absolute left-0 right-0 bg-gradient-to-t from-current to-transparent z-10 pointer-events-none;
+    color: rgba(0, 0, 0, 0.1);
+    height: 10px;
+    top: -10px;
+    opacity: var(--shadowOpacity);
   }
   .logo {
     width: 16px;
@@ -55,14 +107,31 @@
   }
 </style>
 
-<div bind:this={popupElement} class="popup">
-  <div class="flex items-center mb-3">
-    <img
-      src="images/svg/logos/cai.svg"
-      class="logo"
-      alt="Content Authenticity Initiative" />
-    <h2 class="my-0 ml-2">About this content</h2>
+<div bind:this={popupElement} class="popup" use:cssVars={{ shadowOpacity }}>
+  <div class="inner">
+    <div on:scroll={handleScroll} class="about">
+      <div class="flex items-center mb-3">
+        <img
+          src="images/svg/logos/cai.svg"
+          class="logo"
+          alt="Content Authenticity Initiative" />
+        <h2 class="my-0 ml-2">About this content</h2>
+      </div>
+      <About {claim} isPopup={true} />
+    </div>
+    <div class="button">
+      <div class="shadow" />
+      <Button full={true}>View More</Button>
+    </div>
   </div>
-  <About {claim} isPopup={true} />
 </div>
-<div class="info" bind:this={infoElement}><img src={svgData} alt="Info" /></div>
+<div class="relative">
+  {#if !coachmarkClicked}
+    <div class="coachmark" transition:fade={{ duration: 250 }}>
+      <Coachmark />
+    </div>
+  {/if}
+  <div class="info" bind:this={infoElement}>
+    <img src={svgData} alt="Info" />
+  </div>
+</div>

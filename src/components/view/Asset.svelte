@@ -101,7 +101,7 @@
         use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}>
         <div
           class="info-container"
-          use:tippy={{ content: 'This asset has attribution<br/>and history data.', placement: 'top-start', offset: [-10, 8] }}>
+          use:tippy={{ content: `This asset has attribution<br/>and history data.`, placement: 'top-start', offset: [-10, 8] }}>
           <div class="info">
             <Icon size="l" name="workflow:Info" class="text-white" />
           </div>
