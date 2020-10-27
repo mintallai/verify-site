@@ -69,7 +69,7 @@ async function fetchSummary(set: any): Promise<void> {
     claim_id,
   }));
   navigateToId(`claim_id:${data.root_claim_id}`);
-  navigateToId(`document_id:6A74374D486A33B24E05E4BAA83DDB73`);
+  compareWithId(`document_id:6A74374D486A33B24E05E4BAA83DDB73`);
   // compareWithId('claim_id:c_adbe_1/cai.claim');
   // setTimeout(() => {
   //   navigateToId(`claim_id:c_tpic_1/cai.claim`);

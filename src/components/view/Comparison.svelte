@@ -1,127 +1,30 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import interact from 'interactjs';
-  import type { DragEvent } from '@interactjs/types';
-  import cssVars from 'svelte-css-vars';
-  import Icon from '../Icon.svelte';
+  import Slider from './comparison/Slider.svelte';
+  import CircleLoader from '../CircleLoader.svelte';
 
   let width = 0;
   let height = 0;
   let side = 0;
   let padding = 20;
-  let slider: HTMLDivElement;
-  let sliderX = 0.5;
 
   $: {
     side = Math.min(width, height) - padding * 2;
   }
-  $: styles = {
-    width: `${side}px`,
-    height: `${side}px`,
-    leftWidth: `${sliderX * 100}%`,
-    rightWidth: `${100 - sliderX * 100}%`,
-  };
 
   export let primaryURL: string;
   export let secondaryURL: string;
-
-  const restrictToParent = interact.modifiers.restrict({
-    restriction: 'parent',
-    elementRect: { left: 0, right: 0, top: 1, bottom: 1 },
-  });
-
-  const snap = interact.modifiers.snap({
-    targets: [{ x: 0, y: 0, range: 50 }],
-    relativePoints: [{ x: 0.5, y: 0.5 }],
-  });
-
-  onMount(() => {
-    let origSliderX: number;
-    interact(slider).draggable({
-      modifiers: [restrictToParent, snap],
-      listeners: {
-        start() {
-          origSliderX = sliderX;
-        },
-        move(evt: DragEvent) {
-          const deltaX = evt.pageX - evt.x0 - 2;
-          const newPos = side * origSliderX + deltaX;
-          sliderX = Math.min(newPos / side, 1);
-        },
-      },
-    });
-
-    return () => interact(slider).unset();
-  });
+  export let isLoading: boolean = false;
 </script>
-
-<style lang="postcss">
-  .inner {
-    @apply relative rounded-md overflow-hidden bg-white shadow-md pointer-events-none;
-    width: var(--width);
-    height: var(--height);
-    min-width: 256px;
-  }
-  .primary,
-  .secondary {
-    @apply absolute top-0 overflow-hidden h-full pointer-events-none;
-  }
-  .primary {
-    left: 0;
-    width: var(--leftWidth);
-  }
-  .secondary {
-    right: 0;
-    width: var(--rightWidth);
-  }
-  .secondary .thumbnail {
-    float: right;
-  }
-  .thumbnail {
-    width: var(--width);
-    height: var(--height);
-  }
-  .thumbnail img {
-    @apply h-full w-full object-contain object-center;
-    width: var(--width);
-    height: var(--height);
-  }
-  .slider {
-    @apply absolute top-0 bottom-0 border-l border-r border-gray-300 bg-white z-10 pointer-events-none;
-    transform: translateX(-2px);
-    width: 4px;
-    left: var(--leftWidth);
-  }
-  .handle {
-    @apply absolute flex items-center justify-center border border-gray-300 rounded-full bg-white pointer-events-auto select-none;
-    top: 50%;
-    width: 32px;
-    height: 32px;
-    transform: translate(-14px, -15px);
-  }
-  .handle > div {
-    @apply flex relative;
-  }
-</style>
 
 <div
   class="bg-gray-100 flex items-center justify-center overflow-hidden"
   bind:clientWidth={width}
   bind:clientHeight={height}>
-  <div class="inner" use:cssVars={styles}>
-    <div class="slider" bind:this={slider}>
-      <div class="handle">
-        <div>
-          <Icon size="m" name="workflow:ChevronLeft" class="text-gray-700" />
-          <Icon size="m" name="workflow:ChevronRight" class="text-gray-700" />
-        </div>
-      </div>
+  {#if !isLoading}
+    <Slider {primaryURL} {secondaryURL} {side} />
+  {:else}
+    <div class="inner flex items-center justify-center">
+      <CircleLoader />
     </div>
-    <div class="primary">
-      <div class="thumbnail"><img src={primaryURL} alt="" /></div>
-    </div>
-    <div class="secondary">
-      <div class="thumbnail"><img src={secondaryURL} alt="" /></div>
-    </div>
-  </div>
+  {/if}
 </div>
