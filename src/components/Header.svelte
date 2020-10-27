@@ -26,9 +26,7 @@
     </a>
   </div>
   <div class="flex-grow text-right">
-    <a href={$url('/faq')} class="font-bold text-sm tracking-tight">
-      Frequently Asked Questions
-    </a>
+    <a href={$url('/faq')} class="font-bold text-sm tracking-tight"> FAQ </a>
   </div>
   <div class="ml-5">
     <Button href={$learnMoreUrl}>Learn More</Button>

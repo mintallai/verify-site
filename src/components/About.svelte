@@ -60,9 +60,6 @@
     width: 14px;
     height: 14px;
   }
-  h2 {
-    @apply font-bold text-xl my-5 flex items-center;
-  }
   h2.filename {
     @apply mt-0 mb-3;
   }
@@ -74,10 +71,6 @@
   }
   h2.alternate:not(:first-child) {
     @apply border-t border-gray-200 mt-4;
-  }
-  h2 .icon {
-    @apply relative ml-2;
-    top: 2px;
   }
   h2.alternate .icon {
     top: 1px;

@@ -27,6 +27,10 @@
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
+
+  $: {
+    console.log('secondary', secondary);
+  }
 </script>
 
 <style lang="postcss">
@@ -54,19 +58,24 @@
       <CircleLoader />
     </section>
   {:else if primary}
-    <section class="border-r">
-      {#if primary?.type === 'claim'}
-        <div class="p-4">
-          <About
-            claim={primary}
-            {isComparing}
-            on:close={partial(handleClose, secondary)} />
-        </div>
-      {:else}
+    <section class="border-l p-4">
+      {#if !isComparing}
+        <ContentSources />
+        {#if primary?.type === 'claim'}
+          <div in:fade|local={{ duration: 200 }}>
+            <Assets claim={primary} />
+          </div>
+        {/if}
+      {:else if primary?.type === 'claim'}
+        <About
+          claim={primary}
+          {isComparing}
+          on:close={partial(handleClose, secondary)} />
+      {:else if primary?.type === 'reference'}
         <NoInfo
           ingredient={primary}
           {isComparing}
-          on:close={partial(handleClose, secondary)} />
+          on:close={partial(handleClose, primary)} />
       {/if}
     </section>
     {#if isComparing}
@@ -76,26 +85,27 @@
     {:else}
       <Viewer thumbnailURL={primary.thumbnail_url} />
     {/if}
-    <section class="border-l">
-      {#if !isComparing}
-        <ContentSources />
-      {/if}
-      {#if secondary?.type === 'claim'}
-        <div class="p-4">
-          <About
-            claim={secondary}
-            {isComparing}
-            on:close={partial(handleClose, primary)} />
-        </div>
+    <section class="border-r p-4">
+      {#if !isComparing && primary?.type === 'claim'}
+        <About
+          claim={primary}
+          {isComparing}
+          on:close={partial(handleClose, secondary)} />
+      {:else if !isComparing && primary?.type === 'reference'}
+        <NoInfo
+          ingredient={primary}
+          {isComparing}
+          on:close={partial(handleClose, primary)} />
+      {:else if secondary?.type === 'claim'}
+        <About
+          claim={secondary}
+          {isComparing}
+          on:close={partial(handleClose, primary)} />
       {:else if secondary?.type === 'reference'}
         <NoInfo
           ingredient={secondary}
           {isComparing}
           on:close={partial(handleClose, primary)} />
-      {:else if primary?.type === 'claim'}
-        <div in:fade|local={{ duration: 200 }}>
-          <Assets claim={primary} />
-        </div>
       {/if}
     </section>
   {/if}
