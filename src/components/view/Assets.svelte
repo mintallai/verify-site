@@ -1,11 +1,11 @@
 <script lang="ts">
-  import Asset from './Asset.svelte';
   import { flip } from 'svelte/animate';
   import { crossfade } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
+  import Asset from './Asset.svelte';
+  import HelpIcon from '../HelpIcon.svelte';
   import { getAssetList } from '../../lib/claim';
   import { assetsByIdentifier } from '../../stores';
-
   export let claim: IClaimSummary;
 
   const [add, remove] = crossfade({
@@ -35,8 +35,15 @@
   }
 </style>-->
 
-<div class="p-2">
-  <h2 class="mb-5 p-3 pb-0 flex items-center"><span>Assets used</span></h2>
+<div>
+  <h2>
+    <span>Assets used</span>
+    <div class="icon">
+      <HelpIcon
+        size="s"
+        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+    </div>
+  </h2>
   <div class="container">
     {#each assetList as asset (asset._id)}
       <div

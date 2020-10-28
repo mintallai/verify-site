@@ -1,127 +1,78 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import interact from 'interactjs';
-  import type { DragEvent } from '@interactjs/types';
-  import cssVars from 'svelte-css-vars';
-  import Icon from '../Icon.svelte';
+  import store from 'store2';
+  import Split from './comparison/Split.svelte';
+  import Slider from './comparison/Slider.svelte';
+  import CircleLoader from '../CircleLoader.svelte';
 
+  const STORAGE_MODE_KEY = 'compareMode';
+  const MIN_SIDE_PX = 256;
+
+  enum CompareMode {
+    Split = 'SPLIT',
+    Slider = 'SLIDER',
+  }
+
+  let mode = store.local.get(STORAGE_MODE_KEY) || CompareMode.Split;
   let width = 0;
   let height = 0;
   let side = 0;
   let padding = 20;
-  let slider: HTMLDivElement;
-  let sliderX = 0.5;
+  let selectorHeight = 0;
 
   $: {
-    side = Math.min(width, height) - padding * 2;
+    side = Math.max(
+      MIN_SIDE_PX,
+      Math.min(width, height) - padding * 2 - selectorHeight,
+    );
   }
-  $: styles = {
-    width: `${side}px`,
-    height: `${side}px`,
-    leftWidth: `${sliderX * 100}%`,
-    rightWidth: `${100 - sliderX * 100}%`,
-  };
 
   export let primaryURL: string;
   export let secondaryURL: string;
+  export let isLoading: boolean = false;
 
-  const restrictToParent = interact.modifiers.restrict({
-    restriction: 'parent',
-    elementRect: { left: 0, right: 0, top: 1, bottom: 1 },
-  });
-
-  const snap = interact.modifiers.snap({
-    targets: [{ x: 0, y: 0, range: 50 }],
-    relativePoints: [{ x: 0.5, y: 0.5 }],
-  });
-
-  onMount(() => {
-    let origSliderX: number;
-    interact(slider).draggable({
-      modifiers: [restrictToParent, snap],
-      listeners: {
-        start() {
-          origSliderX = sliderX;
-        },
-        move(evt: DragEvent) {
-          const deltaX = evt.pageX - evt.x0 - 2;
-          const newPos = side * origSliderX + deltaX;
-          sliderX = Math.min(newPos / side, 1);
-        },
-      },
-    });
-
-    return () => interact(slider).unset();
-  });
+  function setMode(newMode: CompareMode) {
+    mode = newMode;
+    store.local.set(STORAGE_MODE_KEY, mode);
+  }
 </script>
 
 <style lang="postcss">
-  .inner {
-    @apply relative rounded-md overflow-hidden bg-white shadow-md pointer-events-none;
-    width: var(--width);
-    height: var(--height);
-    min-width: 256px;
+  .selector {
+    @apply grid grid-cols-2 pb-5;
+    grid-gap: 2px;
   }
-  .primary,
-  .secondary {
-    @apply absolute top-0 overflow-hidden h-full pointer-events-none;
+  .selector button {
+    @apply bg-gray-200 text-center font-bold text-sm py-2 outline-none transition-colors duration-150;
+    width: 100px;
   }
-  .primary {
-    left: 0;
-    width: var(--leftWidth);
-  }
-  .secondary {
-    right: 0;
-    width: var(--rightWidth);
-  }
-  .secondary .thumbnail {
-    float: right;
-  }
-  .thumbnail {
-    width: var(--width);
-    height: var(--height);
-  }
-  .thumbnail img {
-    @apply h-full w-full object-contain object-center;
-    width: var(--width);
-    height: var(--height);
-  }
-  .slider {
-    @apply absolute top-0 bottom-0 border-l border-r border-gray-300 bg-white z-10 pointer-events-none;
-    transform: translateX(-2px);
-    width: 4px;
-    left: var(--leftWidth);
-  }
-  .handle {
-    @apply absolute flex items-center justify-center border border-gray-300 rounded-full bg-white pointer-events-auto select-none;
-    top: 50%;
-    width: 32px;
-    height: 32px;
-    transform: translate(-14px, -15px);
-  }
-  .handle > div {
-    @apply flex relative;
+  .selector button.selected {
+    @apply bg-gray-800 text-white;
   }
 </style>
 
 <div
-  class="bg-gray-100 flex items-center justify-center overflow-hidden"
+  class="bg-gray-100 flex flex-col items-center justify-center overflow-hidden"
   bind:clientWidth={width}
   bind:clientHeight={height}>
-  <div class="inner" use:cssVars={styles}>
-    <div class="slider" bind:this={slider}>
-      <div class="handle">
-        <div>
-          <Icon size="m" name="workflow:ChevronLeft" class="text-gray-700" />
-          <Icon size="m" name="workflow:ChevronRight" class="text-gray-700" />
-        </div>
-      </div>
-    </div>
-    <div class="primary">
-      <div class="thumbnail"><img src={primaryURL} alt="" /></div>
-    </div>
-    <div class="secondary">
-      <div class="thumbnail"><img src={secondaryURL} alt="" /></div>
-    </div>
+  <div class="selector" bind:clientHeight={selectorHeight}>
+    <button
+      class="rounded-l-full"
+      class:selected={mode === CompareMode.Split}
+      on:click={() => setMode(CompareMode.Split)}>Split</button>
+    <button
+      class="rounded-r-full"
+      class:selected={mode === CompareMode.Slider}
+      on:click={() => setMode(CompareMode.Slider)}>Slider</button>
   </div>
+  {#if !isLoading}
+    {#if mode === CompareMode.Slider}
+      <Slider {primaryURL} {secondaryURL} {side} />
+    {:else}
+      <Split {primaryURL} {secondaryURL} {side} />
+    {/if}
+  {:else}
+    <div class="inner flex items-center justify-center">
+      <CircleLoader />
+    </div>
+  {/if}
 </div>

@@ -5,6 +5,7 @@
   import { crossfade } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import Asset from './Asset.svelte';
+  import HelpIcon from '../HelpIcon.svelte';
   import {
     contentSourceIds,
     assetsByIdentifier,
@@ -78,8 +79,15 @@
   }
 </style>
 
-<div class="p-2 relative">
-  <h2 class="mb-5 p-3 pb-0 flex items-center"><span>Content sources</span></h2>
+<div class="relative">
+  <h2 class="mt-0">
+    <span>How this was verified</span>
+    <div class="icon">
+      <HelpIcon
+        size="s"
+        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+    </div>
+  </h2>
   {#if $primaryId}
     <div
       class="active-bg"
