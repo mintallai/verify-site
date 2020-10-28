@@ -27,10 +27,6 @@
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
-
-  $: {
-    console.log('secondary', secondary);
-  }
 </script>
 
 <style lang="postcss">

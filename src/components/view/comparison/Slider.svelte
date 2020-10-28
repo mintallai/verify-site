@@ -54,7 +54,6 @@
     @apply relative rounded-md overflow-hidden bg-white shadow-md pointer-events-none;
     width: var(--width);
     height: var(--height);
-    min-width: 256px;
   }
   .primary,
   .secondary {
