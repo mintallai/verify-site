@@ -25,13 +25,15 @@
   });
 
   const snap = interact.modifiers.snap({
-    targets: [{ x: 0, y: 0, range: 50 }],
-    relativePoints: [{ x: 0.5, y: 0.5 }],
+    range: 15,
+    targets: [{ x: 0 }, () => ({ x: side / 2 }), () => ({ x: side })],
+    relativePoints: [{ x: 0, y: 0 }],
   });
 
   onMount(() => {
     let origSliderX: number;
     interact(slider).draggable({
+      origin: 'parent',
       modifiers: [restrictToParent, snap],
       listeners: {
         start() {
@@ -84,6 +86,7 @@
     transform: translateX(-2px);
     width: 4px;
     left: var(--leftWidth);
+    touch-action: none;
   }
   .handle {
     @apply absolute flex items-center justify-center border border-gray-300 rounded-full bg-white pointer-events-auto select-none;
