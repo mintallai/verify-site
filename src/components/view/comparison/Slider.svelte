@@ -4,6 +4,8 @@
   import interact from 'interactjs';
   import type { DragEvent } from '@interactjs/types';
   import Icon from '../../Icon.svelte';
+  import type { TippyProps } from '../../../lib/tippy';
+  import { tippy } from '../../../lib/tippy';
 
   export let side = 0;
   let slider: HTMLDivElement;
@@ -16,8 +18,15 @@
     rightWidth: `${100 - sliderX * 100}%`,
   };
 
-  export let primaryURL: string;
-  export let secondaryURL: string;
+  export let primary: ViewableItem;
+  export let secondary: ViewableItem;
+
+  let tippyOpts: Partial<TippyProps> = {
+    placement: 'top',
+    followCursor: 'initial',
+    delay: [1000, 0],
+    offset: [0, 15],
+  };
 
   const restrictToParent = interact.modifiers.restrict({
     restriction: 'parent',
@@ -53,7 +62,7 @@
 
 <style lang="postcss">
   .inner {
-    @apply relative rounded-md overflow-hidden bg-white shadow-md pointer-events-none;
+    @apply relative rounded-md overflow-hidden bg-white shadow-md pointer-events-none select-none;
     width: var(--width);
     height: var(--height);
   }
@@ -73,6 +82,7 @@
     float: right;
   }
   .thumbnail {
+    @apply pointer-events-auto;
     width: var(--width);
     height: var(--height);
   }
@@ -110,9 +120,11 @@
     </div>
   </div>
   <div class="primary">
-    <div class="thumbnail"><img src={primaryURL} alt="" /></div>
+    <div class="thumbnail" use:tippy={{ content: primary.title, ...tippyOpts }}>
+      <img src={primary.thumbnail_url} alt="" />
+    </div>
   </div>
-  <div class="secondary">
-    <div class="thumbnail"><img src={secondaryURL} alt="" /></div>
+  <div class="secondary" use:tippy={{ content: secondary.title, ...tippyOpts }}>
+    <div class="thumbnail"><img src={secondary.thumbnail_url} alt="" /></div>
   </div>
 </div>

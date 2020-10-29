@@ -26,8 +26,8 @@
     );
   }
 
-  export let primaryURL: string;
-  export let secondaryURL: string;
+  export let primary: ViewableItem;
+  export let secondary: ViewableItem;
   export let isLoading: boolean = false;
 
   function setMode(newMode: CompareMode) {
@@ -66,9 +66,9 @@
   </div>
   {#if !isLoading}
     {#if mode === CompareMode.Slider}
-      <Slider {primaryURL} {secondaryURL} {side} />
+      <Slider {primary} {secondary} {side} />
     {:else}
-      <Split {primaryURL} {secondaryURL} {side} />
+      <Split {primary} {secondary} {side} />
     {/if}
   {:else}
     <div class="inner flex items-center justify-center">

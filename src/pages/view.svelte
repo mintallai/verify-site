@@ -75,9 +75,7 @@
       {/if}
     </section>
     {#if isComparing}
-      <Comparison
-        primaryURL={primary.thumbnail_url}
-        secondaryURL={secondary.thumbnail_url} />
+      <Comparison {primary} {secondary} />
     {:else}
       <Viewer thumbnailURL={primary.thumbnail_url} />
     {/if}
