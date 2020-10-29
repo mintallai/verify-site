@@ -1,10 +1,11 @@
 import type { Props as TippyProps, Tippy } from 'tippy.js';
-import tippyjs from 'tippy.js';
+import tippyjs, { followCursor } from 'tippy.js';
 
 const defaultProps: Partial<TippyProps> = {
   allowHTML: true,
   placement: 'top',
   theme: 'cai',
+  plugins: [followCursor],
 };
 
 interface ITippyOpts {

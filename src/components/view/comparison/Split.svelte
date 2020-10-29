@@ -1,6 +1,8 @@
 <script lang="ts">
   import cssVars from 'svelte-css-vars';
   import partial from 'lodash/partial';
+  import type { TippyProps } from '../../../lib/tippy';
+  import { tippy } from '../../../lib/tippy';
 
   enum Layout {
     Stacked = 'stacked',
@@ -8,8 +10,8 @@
   }
 
   export let side = 0;
-  export let primaryURL: string;
-  export let secondaryURL: string;
+  export let primary: ViewableItem;
+  export let secondary: ViewableItem;
   let layout: Layout | undefined;
   let aspectRatios = {
     primary: null,
@@ -32,6 +34,13 @@
     width: `${side}px`,
     height: `${side}px`,
   };
+
+  let tippyOpts: Partial<TippyProps> = {
+    placement: 'top',
+    followCursor: 'initial',
+    delay: [1000, 0],
+    offset: [0, 15],
+  };
 </script>
 
 <style lang="postcss">
@@ -47,11 +56,11 @@
     @apply relative;
   }
   .thumbnail img {
-    @apply w-full h-full object-contain;
+    @apply w-full h-full object-contain pointer-events-auto;
   }
   .primary,
   .secondary {
-    @apply overflow-hidden pointer-events-none;
+    @apply overflow-hidden select-none;
     flex: 0 0 calc((var(--width) / 2) - 0.5px);
   }
   .divider {
@@ -66,12 +75,17 @@
   class:layout-sideBySide={layout === Layout.SideBySide}
   use:cssVars={styles}>
   <div class="primary thumbnail" class:invisible={!layout}>
-    <img src={primaryURL} alt="" on:load={partial(processImage, 'primary')} />
+    <img
+      use:tippy={{ content: primary.title, ...tippyOpts }}
+      src={primary.thumbnail_url}
+      alt=""
+      on:load={partial(processImage, 'primary')} />
   </div>
   <div class="divider" />
   <div class="secondary thumbnail" class:invisible={!layout}>
     <img
-      src={secondaryURL}
+      use:tippy={{ content: secondary.title, ...tippyOpts }}
+      src={secondary.thumbnail_url}
       alt=""
       on:load={partial(processImage, 'secondary')} />
   </div>
