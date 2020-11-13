@@ -81,7 +81,7 @@
 
 <div class="relative">
   <h2 class="mt-0">
-    <span>How this was verified</span>
+    <span>Content sources</span>
     <div class="icon">
       <HelpIcon
         size="s"

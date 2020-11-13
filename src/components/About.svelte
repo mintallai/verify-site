@@ -1,29 +1,29 @@
 <script lang="ts" context="module">
   const translations = {
+    '3D': '3D',
     AI_ASSISTED: 'AI Assisted',
-    CAPTURE: 'Capture',
+    ANIMATION_VIDEO: 'Animation & Video',
     COLOR_ADJUSTMENTS: 'Color & Adjustments',
+    COMPOSITING: 'Compositing',
     EFFECTS_STYLING: 'Effects & Styling',
-    IMPORTED_ASSETS: 'Imported Assets',
+    IMPORT: 'Import',
     PAINTING: 'Painting',
     SHAPES_PATHS: 'Shapes & Paths',
-    TRANSFORMED: 'Transformed',
+    TRANSFORM: 'Transform',
     TYPE: 'Type',
-    UPLOADED: 'Uploaded',
-    VIDEO: 'Video',
   };
   const iconMapping = {
+    '3D': '3DMaterials',
     AI_ASSISTED: 'Algorithm',
-    CAPTURE: 'Camera',
+    ANIMATION_VIDEO: 'VideoOutline',
     COLOR_ADJUSTMENTS: 'ColorPalette',
+    COMPOSITING: 'Layers',
     EFFECTS_STYLING: 'Actions',
-    IMPORTED_ASSETS: 'FolderOpenOutline',
+    IMPORT: 'FolderOpenOutline',
     PAINTING: 'Brush',
     SHAPES_PATHS: 'Shapes',
-    TRANSFORMED: 'Group',
+    TRANSFORM: 'Group',
     TYPE: 'Text',
-    UPLOADED: 'UploadToCloud',
-    VIDEO: 'VideoOutline',
   };
 </script>
 
@@ -173,13 +173,15 @@
     </h2>
     <div class="edit-categories">
       {#each claim.edits.categories as category}
-        <div class="category">
-          <Icon
-            size="s"
-            name={`workflow:${iconMapping[category]}`}
-            class="mr-2" />
-          <div class="flex-grow">{translations[category]}</div>
-        </div>
+        {#if translations[category]}
+          <div class="category">
+            <Icon
+              size="s"
+              name={`workflow:${iconMapping[category]}`}
+              class="mr-2" />
+            <div class="flex-grow">{translations[category]}</div>
+          </div>
+        {/if}
       {/each}
     </div>
 
