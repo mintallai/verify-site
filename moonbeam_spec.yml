@@ -13,12 +13,12 @@ services:
           field: moonbeam_token
           path: dme_cai/caivrfy
       - name: ssh_private_key
-        global: 'true'
+        global: "true"
         secret_data:
           field: ssh_private_key
           path: dme_cai/caivrfy
       - name: artifactory_corp_credentials
-        global: 'true'
+        global: "true"
         secret_data:
           field: artifactory_corp_credentials
           path: dme_cai/caivrfy
@@ -67,11 +67,11 @@ services:
                 hidden: false
               - name: enableTessaAnalysis
                 param_type: string
-                default: 'true'
+                default: "true"
                 hidden: false
               - name: pushPageObjects
                 param_type: string
-                default: 'true'
+                default: "true"
                 hidden: false
               - name: ARTIFACTORY_DOCKER_REGISTRY
                 param_type: string
@@ -89,7 +89,7 @@ services:
         single_rollback_allowed: false
         environment_stages:
           - name: deploy---Dev
-            step: 1
+            step:
         projects:
           - title: CAI Verify Site dev deploy
             name: client-cai-verify-site-makefile-exec
@@ -117,7 +117,7 @@ services:
                 hidden: false
               - name: SUPPORT_ROLLBACK_CLEANUP
                 param_type: string
-                default: 'true'
+                default: "true"
                 hidden: false
               - name: ENVIRONMENT_NAME
                 param_type: string
@@ -138,4 +138,62 @@ services:
               - name: S3_BUCKETS
                 param_type: string
                 default: adobe-cai-verify-dev
+                hidden: false
+      - name: Stage
+        tier: 3
+        production: false
+        auto_promote: false
+        optional: false
+        single_rollback_allowed: false
+        environment_stages:
+          - name: deploy---Stage
+            step: 1
+        projects:
+          - title: CAI Verify Site Stage Deploy
+            name: client-cai-verify-site-makefile-exec
+            project_group: cai-stage
+            build_type: lambda
+            lambda: proteus
+            stage: deploy---Stage
+            rollback: false
+            deploy_token: false
+            deployed_sha_for_rollback: false
+            required: true
+            unstable_allowed: false
+            build_params:
+              - name: TYPE
+                param_type: string
+                default: static-content
+                hidden: false
+              - name: ACTION
+                param_type: string
+                default: deploy
+                hidden: false
+              - name: SERVICE_NAME
+                param_type: string
+                default: verify-site
+                hidden: false
+              - name: SUPPORT_ROLLBACK_CLEANUP
+                param_type: string
+                default: "true"
+                hidden: false
+              - name: ENVIRONMENT_NAME
+                param_type: string
+                default: stage
+                hidden: false
+              - name: clientIAMRole
+                param_type: string
+                default: arn:aws:iam::351073470682:role/VerifySiteDeployerIAMRole
+                hidden: false
+              - name: ARTIFACTORY_DOCKER_REGISTRY
+                param_type: string
+                default: docker-cai-verify-site-release.dr.corp.adobe.com
+                hidden: false
+              - name: DOCKER_REPO
+                param_type: string
+                default: docker-cai-verify-site-release
+                hidden: false
+              - name: S3_BUCKETS
+                param_type: string
+                default: adobe-cai-verify-stage
                 hidden: false
