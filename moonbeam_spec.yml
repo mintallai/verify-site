@@ -28,7 +28,7 @@ services:
           path: dme_cai/caivrfy
     environments:
       - name: Build
-        tier: 5
+        tier: 4
         production: false
         auto_promote: false
         optional: false
@@ -82,7 +82,7 @@ services:
                 default: docker-cai-verify-site-release
                 hidden: false
       - name: Dev
-        tier: 4
+        tier: 3
         production: false
         auto_promote: false
         optional: false
@@ -97,7 +97,7 @@ services:
             build_type: lambda
             lambda: proteus
             stage: deploy---Dev
-            rollback: false
+            rollback: true
             deploy_token: false
             deployed_sha_for_rollback: false
             required: true
@@ -140,7 +140,7 @@ services:
                 default: adobe-cai-verify-dev
                 hidden: false
       - name: Stage
-        tier: 3
+        tier: 2
         production: false
         auto_promote: false
         optional: false
@@ -155,7 +155,7 @@ services:
             build_type: lambda
             lambda: proteus
             stage: deploy---Stage
-            rollback: false
+            rollback: true
             deploy_token: false
             deployed_sha_for_rollback: false
             required: true
@@ -196,4 +196,62 @@ services:
               - name: S3_BUCKETS
                 param_type: string
                 default: adobe-cai-verify-stage
+                hidden: false
+      - name: Prod
+        tier: 1
+        production: true
+        auto_promote: false
+        optional: false
+        single_rollback_allowed: false
+        environment_stages:
+          - name: deploy---Prod
+            step: 1
+        projects:
+          - title: CAI Verify Site Prod Deploy
+            name: client-cai-verify-site-makefile-exec
+            project_group: cai-prod
+            build_type: lambda
+            lambda: proteus
+            stage: deploy---Prod
+            rollback: true
+            deploy_token: false
+            deployed_sha_for_rollback: false
+            required: true
+            unstable_allowed: false
+            build_params:
+              - name: TYPE
+                param_type: string
+                default: static-content
+                hidden: false
+              - name: ACTION
+                param_type: string
+                default: deploy
+                hidden: false
+              - name: SERVICE_NAME
+                param_type: string
+                default: verify-site
+                hidden: false
+              - name: SUPPORT_ROLLBACK_CLEANUP
+                param_type: string
+                default: "true"
+                hidden: false
+              - name: ENVIRONMENT_NAME
+                param_type: string
+                default: prod
+                hidden: false
+              - name: clientIAMRole
+                param_type: string
+                default: arn:aws:iam::905754061388:role/VerifySiteDeployerIAMRole
+                hidden: false
+              - name: ARTIFACTORY_DOCKER_REGISTRY
+                param_type: string
+                default: docker-cai-verify-site-release.dr.corp.adobe.com
+                hidden: false
+              - name: DOCKER_REPO
+                param_type: string
+                default: docker-cai-verify-site-release
+                hidden: false
+              - name: S3_BUCKETS
+                param_type: string
+                default: adobe-cai-verify-prod
                 hidden: false
