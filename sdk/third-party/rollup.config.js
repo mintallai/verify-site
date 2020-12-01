@@ -4,14 +4,6 @@ import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 
-const MODULE_BASE = process.env.MODULE_BASE || '';
-
-if (MODULE_BASE) {
-  console.log('Using MODULE_BASE', MODULE_BASE);
-} else {
-  console.warn('MODULE_BASE not set. Not prefixing.');
-}
-
 export default {
   input: './src/index.ts',
   output: {
@@ -24,7 +16,6 @@ export default {
     nodeResolve(),
     commonjs(),
     replace({
-      __MODULE_BASE__: MODULE_BASE,
       'process.env.NODE_ENV': `'production'`,
     }),
     copy({

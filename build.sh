@@ -35,8 +35,16 @@ fi
 # Artifactory, it will be stored in the "dist-pub" folder.
 rm -rf dist dist-pub
 yarn install
-yarn run build
+yarn build
 yarn run test
+
+# Build third-party integration for squarespace
+pushd sdk/third-party
+yarn install
+yarn build
+popd
+mkdir -p dist/sdk/squarespace
+cp -R sdk/third-party/dist/ dist/sdk/squarespace
 
 # Report dependencies to TESSA
 if [ -n "$TESSA2_API_KEY" ]; then

@@ -10,6 +10,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "rollup -c -w",
+    "build": "rollup -c",
     "serve": "http-server dist -p 3000 --cors",
     "clean": "rm -rf ./pkg ./node_modules"
   },
@@ -21,11 +22,12 @@
     "symlink-dir": "^4.1.0"
   },
   "dependencies": {
-    "@contentauth/web-components": "0.1.0",
-    "@contentauth/toolkit": "^0.1.1-alpha.39",
-    "@contentauth/sdk": "0.1.0",
+    "@contentauth/web-components": "^0.1.1-alpha.46",
+    "@contentauth/sdk": "^0.1.1-alpha.46",
+    "@contentauth/toolkit": "^0.1.1-alpha.46",
     "@emotion/css": "^11.0.0",
     "@rollup/plugin-replace": "^2.3.4",
-    "@rollup/plugin-typescript": "^6.1.0"
+    "@rollup/plugin-typescript": "^6.1.0",
+    "p-queue": "^6.6.2"
   }
 }
