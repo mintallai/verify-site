@@ -40,6 +40,7 @@ yarn run test
 
 # Build third-party integration for squarespace
 pushd sdk/third-party
+# This will need authentication to succeed
 yarn install
 yarn build
 popd
