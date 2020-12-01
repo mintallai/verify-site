@@ -2,6 +2,7 @@ import { css } from '@emotion/css';
 import init, {
   get_summary_from_array_buffer,
 } from '@contentauth/toolkit/pkg/web/toolkit';
+import '@contentauth/web-components/dist/ImageInfo';
 
 let toolkit: any;
 
@@ -18,8 +19,7 @@ async function getClaimSummary(img: HTMLImageElement, source: string) {
   const res = await fetch(source);
   const buf = await res.arrayBuffer();
   await load();
-  const summary = await get_summary_from_array_buffer(buf, false);
-  console.log('summary', summary);
+  return get_summary_from_array_buffer(buf, false);
 }
 
 function wrapImage(img: HTMLImageElement, wrapper: HTMLElement) {
@@ -30,7 +30,13 @@ function wrapImage(img: HTMLImageElement, wrapper: HTMLElement) {
 }
 
 const wrapperStyle = css`
-  border: solid 4px blue;
+  position: relative;
+`;
+
+const imageInfoStyle = css`
+  position: absolute;
+  top: 15px;
+  right: 15px;
 `;
 
 async function decorateImage(img: HTMLImageElement, source: string) {
@@ -38,6 +44,14 @@ async function decorateImage(img: HTMLImageElement, source: string) {
   const summary = await getClaimSummary(img, source);
   wrapImage(img, wrapper);
   wrapper.classList.add(wrapperStyle);
+
+  if (summary) {
+    const imageInfo = document.createElement('image-info');
+    // @ts-ignore
+    imageInfo.claim = summary.claims[summary.root_claim_id];
+    imageInfo.classList.add(imageInfoStyle);
+    wrapper.append(imageInfo);
+  }
   console.log('wrapper', wrapper);
 }
 
