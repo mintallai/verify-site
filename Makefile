@@ -29,6 +29,7 @@ ifeq ($(RUN_COVERAGE),true)
 	-e CI_PULL_REQUEST=$(ghprbPullId) \
 	-e ARTIFACTORY_API_TOKEN \
 	-e ARTIFACTORY_USER \
+	-e PUBLIC_GITHUB_PACKAGE_TOKEN \
 	$(BUILDER_TAG) /build/run-coverage.sh
 else
 	echo "No test coverage to run"
@@ -48,6 +49,7 @@ build: login
 	-e PUSH_ARTIFACTS \
 	-e ARTIFACTORY_API_TOKEN \
 	-e ARTIFACTORY_USER \
+	-e PUBLIC_GITHUB_PACKAGE_TOKEN \
 	-e TESSA2_API_KEY \
 	$(BUILDER_TAG)
 	# Package the built content it into a deployer image.
@@ -63,6 +65,7 @@ run-uitest: login
 	-e PATH_PREFIX \
 	-e ARTIFACTORY_API_TOKEN \
 	-e ARTIFACTORY_USER \
+	-e PUBLIC_GITHUB_PACKAGE_TOKEN \
 	$(BUILDER_TAG) /build/run-uitest.sh
 
 # This target is called by the Jenkins "cdn-postmerge" job.
@@ -84,6 +87,7 @@ run-build-image-interactively:
 	-e PUSH_ARTIFACTS \
 	-e ARTIFACTORY_API_TOKEN \
 	-e ARTIFACTORY_USER \
+	-e PUBLIC_GITHUB_PACKAGE_TOKEN \
 	-e TESSA2_API_KEY \
 	-i -t $(BUILDER_TAG) /bin/bash
 
