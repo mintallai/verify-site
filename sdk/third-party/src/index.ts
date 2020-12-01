@@ -14,9 +14,8 @@ const queue: PQueue = new PQueue({ concurrency: 1 });
 
 let toolkit: any;
 
-const queryNode = document.createElement('a');
-queryNode.href = import.meta['url'];
-const moduleBase = queryNode.origin;
+const moduleUrl = import.meta['url'];
+const moduleBase = moduleUrl.substr(0, moduleUrl.lastIndexOf('/'));
 
 async function load() {
   if (!toolkit) {
