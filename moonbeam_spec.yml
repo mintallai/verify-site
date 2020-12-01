@@ -26,6 +26,11 @@ services:
         secret_data:
           field: tessa2_api_key
           path: dme_cai/caivrfy
+      - name: PUBLIC_GITHUB_PACKAGE_TOKEN
+        global: 'true'
+        secret_data:
+          field: public_github_package_token
+          path: dme_cai/caivrfy
     environments:
       - name: Build
         tier: 5

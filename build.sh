@@ -40,7 +40,16 @@ yarn run test
 
 # Build third-party integration for squarespace
 pushd sdk/third-party
-# This will need authentication to succeed
+# Set up authentication
+if [ -n "$PUBLIC_GITHUB_PACKAGE_TOKEN" ]; then
+cat > .npmrc << EOF
+//npm.pkg.github.com/:_authToken=$PUBLIC_GITHUB_PACKAGE_TOKEN
+@contentauth:registry=https://npm.pkg.github.com
+EOF
+else
+    echo "Github package token not found. Publishing cannot continue."
+    exit 1
+fi
 yarn install
 yarn build
 popd
