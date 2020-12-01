@@ -2,7 +2,10 @@ import copy from 'rollup-plugin-copy';
 import replace from '@rollup/plugin-replace';
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
+import { terser } from 'rollup-plugin-terser';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+
+const production = !process.env.ROLLUP_WATCH;
 
 export default {
   input: './src/index.ts',
@@ -28,5 +31,6 @@ export default {
         },
       ],
     }),
+    production && terser(),
   ],
 };
