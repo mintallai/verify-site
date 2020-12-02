@@ -1,13 +1,14 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import omit from 'lodash/omit';
 import mapValues from 'lodash/mapValues';
+import init, {
+  get_summary_from_array_buffer,
+} from '@contentauth/toolkit/pkg/web/toolkit';
 import { addIdentifiers } from './lib/claim';
 
+let toolkit: any;
+
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
-const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
-const API_KEY = 'caiverify';
-// @ts-ignore
-const LOAD_DELAY = __delay__;
 
 export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
 
@@ -41,29 +42,24 @@ export function compareWithId(id: string): void {
   secondaryId.set(id);
 }
 
-function simulateDelay() {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, LOAD_DELAY);
-  });
+async function load() {
+  if (!toolkit) {
+    const res = await fetch(
+      `https://verify-dev.contentauthenticity.org/sdk/squarespace/dist/pkg/toolkit_bg.wasm`,
+    );
+    const buf = await res.arrayBuffer();
+    toolkit = await init(buf);
+    console.debug('Loaded CAI toolkit', toolkit);
+  }
 }
 
 async function fetchSummary(set: any): Promise<void> {
-  const [res] = await Promise.all([
-    fetch(`${API_BASE_URL}/claim/summary`, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'x-api-key': API_KEY,
-      },
-      body: JSON.stringify({
-        asset_url: 'http://path/file.jpg',
-      }),
-    }),
-    simulateDelay(),
-  ]);
-  const data = (await res.json()) as ISummaryResponse;
+  const url =
+    'https://verify-dev.contentauthenticity.org/sdk/squarespace/dist/static/sample-images/SNL_20201115_102036_M.jpg';
+  const res = await fetch(url);
+  const buf = await res.arrayBuffer();
+  await load();
+  const data = await get_summary_from_array_buffer(buf, false);
   data.claims = mapValues(data.claims, (claim, claim_id) => ({
     ...claim,
     claim_id,

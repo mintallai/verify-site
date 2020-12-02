@@ -53,8 +53,8 @@ fi
 yarn install
 yarn build
 popd
-mkdir -p dist/sdk/squarespace
-cp -R sdk/third-party/dist/ dist/sdk/squarespace
+mkdir -p dist/sdk
+cp -r sdk/third-party/dist/. dist/sdk/
 
 # Report dependencies to TESSA
 if [ -n "$TESSA2_API_KEY" ]; then
