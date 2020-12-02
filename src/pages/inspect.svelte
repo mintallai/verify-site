@@ -4,11 +4,11 @@
   import About from '../components/About.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
   import Header from '../components/Header.svelte';
-  import ContentSources from '../components/view/ContentSources.svelte';
-  import Assets from '../components/view/Assets.svelte';
-  import NoInfo from '../components/view/NoInfo.svelte';
-  import Comparison from '../components/view/Comparison.svelte';
-  import Viewer from '../components/view/Viewer.svelte';
+  import ContentSources from '../components/inspect/ContentSources.svelte';
+  import Assets from '../components/inspect/Assets.svelte';
+  import NoInfo from '../components/inspect/NoInfo.svelte';
+  import Comparison from '../components/inspect/Comparison.svelte';
+  import Viewer from '../components/inspect/Viewer.svelte';
   import {
     summary,
     navigateToId,

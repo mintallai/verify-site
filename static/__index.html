@@ -10,6 +10,16 @@
     <link rel="stylesheet" href="https://use.typekit.net/cfs0cth.css" />
     <link rel="stylesheet" href="build/bundle.css" />
 
+    <script type="module">
+      import init, * as toolkit from 'https://verify-dev.contentauthenticity.org/sdk/squarespace/dist/pkg/toolkit.js';
+      async function run() {
+        await init();
+        console.log('toolkit', toolkit);
+        window.cai_toolkit = toolkit;
+      }
+      run();
+    </script>
+
     __SCRIPT__
   </head>
 

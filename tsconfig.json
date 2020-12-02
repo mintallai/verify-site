@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
+    "module": "esnext",
     "experimentalDecorators": true,
     "importsNotUsedAsValues": "remove",
     "noEmitOnError": false

@@ -110,7 +110,7 @@
           on the image to preview, or go straight to the Verify inspect view
           below.
         </p>
-        <a href={$url('/view', { callout: 'anchor' })} class="view-cta">
+        <a href={$url('/inspect', { callout: 'anchor' })} class="view-cta">
           <div>Inspect Image</div>
           <div class="icon">
             <Icon
@@ -135,7 +135,7 @@
           Use Verify to see what assets were used to create an image, or explore
           further into its past.
         </p>
-        <a href={$url('/view', { callout: 'asset' })} class="view-cta">
+        <a href={$url('/inspect', { callout: 'asset' })} class="view-cta">
           <div>Inspect History</div>
           <div class="icon">
             <Icon
@@ -162,7 +162,7 @@
           Verify enables the comparison of different versions and assets used in
           an image's history, so changes over time can be easy to see.
         </p>
-        <a href={$url('/view', { callout: 'parent' })} class="view-cta">
+        <a href={$url('/inspect', { callout: 'parent' })} class="view-cta">
           <div>Compare History</div>
           <div class="icon">
             <Icon
