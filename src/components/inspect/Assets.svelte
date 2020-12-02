@@ -28,16 +28,9 @@
   $: assetList = getAssetList(claim, $assetsByIdentifier);
 </script>
 
-<!--<style lang="postcss">
-  .original-creation {
-    @apply bg-gray-800 mx-3 rounded flex flex-col items-center justify-center text-white;
-    height: 280px;
-  }
-</style>-->
-
 <div>
   <h2>
-    <span>Assets used</span>
+    <span>Content elements</span>
     <div class="icon">
       <HelpIcon
         size="s"
@@ -53,14 +46,5 @@
         <Asset {asset} />
       </div>
     {/each}
-    <!-- <div class="original-creation">
-      <img
-        src="/images/svg/original-creation.svg"
-        alt="Original Creation"
-        width="86"
-        height="156" />
-      <div class="font-bold text-xl mt-5">Original Creation</div>
-      <div class="mt-1">Learn More</div>
-    </div> -->
   </div>
 </div>

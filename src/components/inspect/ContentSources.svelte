@@ -81,7 +81,7 @@
 
 <div class="relative">
   <h2 class="mt-0">
-    <span>Content sources</span>
+    <span>Content record</span>
     <div class="icon">
       <HelpIcon
         size="s"

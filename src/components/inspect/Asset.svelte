@@ -108,8 +108,6 @@
         </div>
       </div>
       <dl class="attributes multiline overflow-hidden self-center">
-        <dt>Produced By</dt>
-        <dd>{asset.produced_by}</dd>
         <dt>File Name</dt>
         <dd class="truncate">{asset.title}</dd>
       </dl>

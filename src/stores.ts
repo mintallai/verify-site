@@ -42,14 +42,14 @@ export function compareWithId(id: string): void {
   secondaryId.set(id);
 }
 
-async function load() {
+async function loadToolkit() {
   if (!toolkit) {
     const res = await fetch(
       `https://verify-dev.contentauthenticity.org/sdk/squarespace/dist/pkg/toolkit_bg.wasm`,
     );
     const buf = await res.arrayBuffer();
     toolkit = await init(buf);
-    console.debug('Loaded CAI toolkit', toolkit);
+    console.debug('Loaded CAI toolkit');
   }
 }
 
@@ -58,8 +58,9 @@ async function fetchSummary(set: any): Promise<void> {
     'https://verify-dev.contentauthenticity.org/sdk/squarespace/dist/static/sample-images/SNL_20201115_102036_M.jpg';
   const res = await fetch(url);
   const buf = await res.arrayBuffer();
-  await load();
+  await loadToolkit();
   const data = await get_summary_from_array_buffer(buf, false);
+  console.log('data', data);
   data.claims = mapValues(data.claims, (claim, claim_id) => ({
     ...claim,
     claim_id,
