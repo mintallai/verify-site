@@ -3,7 +3,6 @@ import PQueue from 'p-queue';
 import init, {
   get_summary_from_array_buffer,
 } from '@contentauth/toolkit/pkg/web/toolkit';
-import '@contentauth/web-components/dist/ImageInfo';
 
 type ImageInfoElement = HTMLElement & {
   summary: any;

@@ -5,7 +5,6 @@
   import { crossfade } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import Asset from './Asset.svelte';
-  import HelpIcon from '../HelpIcon.svelte';
   import {
     contentSourceIds,
     assetsByIdentifier,
@@ -82,11 +81,9 @@
 <div class="relative">
   <h2 class="mt-0">
     <span>Content record</span>
-    <div class="icon">
-      <HelpIcon
-        size="s"
-        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-    </div>
+    <cai-tooltip
+      class="ml-2"
+      content="The person who produced this content attached tamper-evident editing and activity data on export." />
   </h2>
   {#if $primaryId}
     <div

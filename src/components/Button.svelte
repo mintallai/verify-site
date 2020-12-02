@@ -3,6 +3,7 @@
   export let secondary: boolean = false;
   export let size: string = 'md';
   export let full: boolean = false;
+  export let outline: boolean = false;
 </script>
 
 <style lang="postcss">
@@ -11,6 +12,9 @@
   }
   .button.full {
     @apply w-full;
+  }
+  .button.outline {
+    @apply bg-white border-black border-2 text-black;
   }
   .secondary {
     @apply bg-purple-200 text-purple-500;
@@ -25,7 +29,13 @@
 </style>
 
 {#if href}
-  <a class="button" class:full class:secondary class:lg={size === 'lg'} {href}>
+  <a
+    class="button"
+    class:full
+    class:secondary
+    class:outline
+    class:lg={size === 'lg'}
+    {href}>
     <div class="inner">
       <slot />
     </div>

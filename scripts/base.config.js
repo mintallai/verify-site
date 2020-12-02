@@ -33,7 +33,7 @@ const isNollup = !!process.env.NOLLUP;
 function typeCheck() {
   return {
     writeBundle() {
-      childProcess.spawn('svelte-check', {
+      childProcess.spawn('svelte-check', ['--ignore sdk'], {
         stdio: ['ignore', 'inherit', 'inherit'],
         shell: true,
       });

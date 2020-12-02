@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { url } from '@sveltech/routify';
+  import { url } from '@roxi/routify';
   import { onMount } from 'svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';

@@ -54,7 +54,7 @@
       <CircleLoader />
     </section>
   {:else if primary}
-    <section class="border-l p-4">
+    <section class="border-r p-4">
       {#if !isComparing}
         <ContentSources />
         {#if primary?.type === 'claim'}
@@ -79,7 +79,7 @@
     {:else}
       <Viewer thumbnailURL={primary.thumbnail_url} />
     {/if}
-    <section class="border-r p-4">
+    <section class="border-l p-4">
       {#if !isComparing && primary?.type === 'claim'}
         <About
           claim={primary}

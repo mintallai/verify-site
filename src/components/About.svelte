@@ -1,29 +1,16 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import parseISO from 'date-fns/parseISO';
   import Icon from './Icon.svelte';
-  import HelpIcon from './HelpIcon.svelte';
   import { assetsByIdentifier } from '../stores';
   import { getAssetList } from '../lib/claim';
-  import { tippy } from '../lib/tippy';
-  import type { TippyProps } from '../lib/tippy';
-  import { formatDate, formatTime, asFilename } from '../lib/util/format';
-  import '@contentauth/web-components/dist/ClaimInfo';
 
   export let claim: IClaimSummary;
   export let isComparing: boolean = false;
   export let isPopup: boolean = false;
   const dispatch = createEventDispatcher();
-  const tippyProps: Partial<TippyProps> = {
-    content: 'This asset has attribution<br/>and history data.',
-    placement: 'top-start',
-    offset: [-10, 8],
-  };
 
-  $: signedOn = parseISO(claim.signed_on);
   $: assetList = getAssetList(claim, $assetsByIdentifier);
   $: alternate = isComparing || isPopup;
-  $: helpSize = isComparing ? 'xs' : 's';
 </script>
 
 <style lang="postcss">

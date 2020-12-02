@@ -3,7 +3,6 @@
   import { crossfade } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import Asset from './Asset.svelte';
-  import HelpIcon from '../HelpIcon.svelte';
   import { getAssetList } from '../../lib/claim';
   import { assetsByIdentifier } from '../../stores';
   export let claim: IClaimSummary;
@@ -31,11 +30,9 @@
 <div>
   <h2>
     <span>Content elements</span>
-    <div class="icon">
-      <HelpIcon
-        size="s"
-        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-    </div>
+    <cai-tooltip
+      class="ml-2"
+      content="Images and anything else the producer used to make the selected content." />
   </h2>
   <div class="container">
     {#each assetList as asset (asset._id)}

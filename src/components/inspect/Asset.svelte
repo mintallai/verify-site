@@ -43,7 +43,7 @@
     height: 155px;
   }
   .item {
-    @apply grid gap-5 max-w-full;
+    @apply grid gap-3 max-w-full;
     grid-template-columns: 94px auto;
     min-height: 0;
     min-width: 0;
