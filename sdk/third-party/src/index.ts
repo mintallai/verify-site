@@ -41,10 +41,10 @@ async function getClaimSummary(img: HTMLImageElement, source: string) {
 }
 
 function wrapImage(img: HTMLImageElement, wrapper: HTMLElement) {
-  const fig = img.closest('figure');
-  const figParent = fig.parentElement;
-  figParent.insertBefore(wrapper, fig);
-  wrapper.appendChild(fig);
+  const target = img.closest('.sqs-block-content');
+  const targetParent = target.parentElement;
+  targetParent.insertBefore(wrapper, target);
+  wrapper.appendChild(target);
 }
 
 const wrapperStyle = css`
@@ -55,7 +55,7 @@ const imageInfoStyle = css`
   position: absolute;
   top: 15px;
   right: 15px;
-  z-index: 9999;
+  z-index: 100;
 `;
 
 async function decorateImage(img: HTMLImageElement, source: string) {
