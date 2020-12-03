@@ -2,15 +2,12 @@
   import { createEventDispatcher } from 'svelte';
   import Icon from './Icon.svelte';
 
-  export let summary: ISummaryResponse;
-  export let claimId: string;
+  export let claim: IClaimSummary;
   export let isComparing: boolean = false;
   export let isPopup: boolean = false;
   const dispatch = createEventDispatcher();
 
   $: alternate = isComparing || isPopup;
-  $: pointer = claimId?.split(':')[1] || summary?.root_claim_id;
-  $: claim = summary?.claims[pointer];
 </script>
 
 <style lang="postcss">
@@ -58,5 +55,5 @@
       style={`background-image: url("${claim.thumbnail_url}");`} />
   {/if}
 
-  <claim-info {summary} claimid={pointer} variant="lg" />
+  <claim-info {claim} variant="lg" />
 </div>
