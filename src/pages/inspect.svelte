@@ -40,9 +40,9 @@
 
   onMount(async () => {
     const params = new URLSearchParams(window.location.search?.substr(1));
-    const asset = params.get('asset');
-    if (asset) {
-      const data = await getSummaryFromUrl(asset);
+    const source = params.get('source');
+    if (source) {
+      const data = await getSummaryFromUrl(source);
       setSummary(data);
     } else {
       $goto('/');
