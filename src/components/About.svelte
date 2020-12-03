@@ -1,52 +1,29 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import Icon from './Icon.svelte';
-  import { assetsByIdentifier } from '../stores';
-  import { getAssetList } from '../lib/claim';
 
-  export let claim: IClaimSummary;
+  export let summary: ISummaryResponse;
+  export let claimId: string;
   export let isComparing: boolean = false;
   export let isPopup: boolean = false;
   const dispatch = createEventDispatcher();
 
-  $: assetList = getAssetList(claim, $assetsByIdentifier);
   $: alternate = isComparing || isPopup;
+  $: pointer = claimId?.split(':')[1] || summary?.root_claim_id;
+  $: claim = summary?.claims[pointer];
 </script>
 
 <style lang="postcss">
-  img.logo {
-    @apply ml-1;
-    width: 14px;
-    height: 14px;
-  }
   h2.filename {
     @apply mt-0 mb-3;
   }
   h2:first-child {
     @apply mt-0;
   }
-  h2.alternate {
-    @apply text-sm pt-4 mb-3;
-  }
-  h2.alternate:not(:first-child) {
-    @apply border-t border-gray-200 mt-4;
-  }
-  h2.alternate .icon {
-    top: 1px;
-  }
-  .category {
-    @apply flex items-center mb-1;
-  }
   .close {
     @apply bg-gray-200 rounded-full cursor-pointer flex items-center justify-center;
     width: 28px;
     height: 28px;
-  }
-  dl.multiline dd {
-    @apply my-2;
-  }
-  dl.multiline dt {
-    @apply mt-2;
   }
   .compare-title {
     @apply font-bold text-xl truncate mb-1;
@@ -55,23 +32,6 @@
   .compare-thumbnail {
     @apply w-full border border-gray-350 bg-white rounded bg-contain bg-center bg-no-repeat;
     height: 280px;
-  }
-  .asset-thumbnail {
-    @apply inline-block relative mr-2 mb-2 border border-gray-350 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
-    width: 64px;
-    height: 64px;
-  }
-  .info-container {
-    @apply bg-black border-gray-350 border rounded-full overflow-hidden absolute cursor-pointer;
-    width: 16px;
-    height: 16px;
-    right: 1px;
-    bottom: 1px;
-  }
-  .info {
-    @apply absolute;
-    top: -1px;
-    left: -1px;
   }
 </style>
 
@@ -98,5 +58,5 @@
       style={`background-image: url("${claim.thumbnail_url}");`} />
   {/if}
 
-  <claim-info {claim} variant="lg" />
+  <claim-info {summary} claimid={pointer} variant="lg" />
 </div>

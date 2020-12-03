@@ -6,7 +6,6 @@
   import Icon from '../components/Icon.svelte';
   import AspectBox from '../components/AspectBox.svelte';
   import Button from '../components/Button.svelte';
-  import ImageInfo from '../components/ImageInfo.svelte';
   import { learnMoreUrl } from '../stores';
   import '@spectrum-web-components/theme/theme-lightest.js';
   import '@spectrum-web-components/theme/scale-large.js';
@@ -91,11 +90,7 @@
       <div class="mb-8 md:mb-0">
         <AspectBox ratio={422 / 500}>
           <div class="example">
-            {#if summary1?.type === 'claim'}
-              <div class="glyph">
-                <ImageInfo claim={summary1} />
-              </div>
-            {/if}
+            {#if summary1?.type === 'claim'}// TODO: Add ImageInfo here{/if}
           </div>
         </AspectBox>
       </div>

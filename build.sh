@@ -34,11 +34,13 @@ fi
 # in the "dist" folder, and if you want to publish an NPM package to the
 # Artifactory, it will be stored in the "dist-pub" folder.
 rm -rf dist dist-pub
+# This should match the path below
+export TOOLKIT_WASM_SRC="/sdk/pkg/toolkit_bg.wasm"
 yarn install
 yarn build
 yarn run test
 
-# Build third-party integration for squarespace
+# Build third-party integration for squarespace, etc.
 pushd sdk/third-party
 # Set up authentication
 if [ -n "$PUBLIC_GITHUB_PACKAGE_TOKEN" ]; then

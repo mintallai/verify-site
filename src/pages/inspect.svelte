@@ -12,6 +12,7 @@
   import {
     summary,
     navigateToId,
+    primaryId,
     secondaryId,
     primaryAsset,
     secondaryAsset,
@@ -64,7 +65,8 @@
         {/if}
       {:else if primary?.type === 'claim'}
         <About
-          claim={primary}
+          summary={$summary}
+          claimId={$primaryId}
           {isComparing}
           on:close={partial(handleClose, secondary)} />
       {:else if primary?.type === 'reference'}
@@ -82,7 +84,8 @@
     <section class="border-l p-4">
       {#if !isComparing && primary?.type === 'claim'}
         <About
-          claim={primary}
+          summary={$summary}
+          claimId={$primaryId}
           {isComparing}
           on:close={partial(handleClose, secondary)} />
       {:else if !isComparing && primary?.type === 'reference'}
@@ -92,7 +95,8 @@
           on:close={partial(handleClose, primary)} />
       {:else if secondary?.type === 'claim'}
         <About
-          claim={secondary}
+          summary={$summary}
+          claimId={$secondaryId}
           {isComparing}
           on:close={partial(handleClose, primary)} />
       {:else if secondary?.type === 'reference'}

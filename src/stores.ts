@@ -44,9 +44,7 @@ export function compareWithId(id: string): void {
 
 async function loadToolkit() {
   if (!toolkit) {
-    const res = await fetch(
-      `https://verify-dev.contentauthenticity.org/sdk/squarespace/dist/pkg/toolkit_bg.wasm`,
-    );
+    const res = await fetch(`__toolkit_wasm_src__`);
     const buf = await res.arrayBuffer();
     toolkit = await init(buf);
     console.debug('Loaded CAI toolkit');
