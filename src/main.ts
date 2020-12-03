@@ -1,4 +1,4 @@
-import HMR from '@sveltech/routify/hmr';
+import HMR from '@roxi/routify/hmr';
 import App from './App.svelte';
 import '@spectrum-web-components/theme/theme-lightest.js';
 import '@spectrum-web-components/theme/scale-large.js';

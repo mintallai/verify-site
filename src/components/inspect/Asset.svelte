@@ -3,8 +3,6 @@
   import { quintOut } from 'svelte/easing';
   import cssVars from 'svelte-css-vars';
   import Button from '../Button.svelte';
-  import Icon from '../Icon.svelte';
-  import { tippy } from '../../lib/tippy';
   import { navigateToId, compareWithId, primaryId } from '../../stores';
 
   let hover: boolean;
@@ -35,7 +33,7 @@
 
 <style lang="postcss">
   .container {
-    @apply relative mb-4 p-2 transition-all duration-200 z-0 cursor-pointer;
+    @apply relative mb-4 transition-all duration-200 z-0 cursor-pointer;
     height: 99px;
   }
   .container.hover {
@@ -43,10 +41,14 @@
     height: 155px;
   }
   .item {
-    @apply grid gap-5 max-w-full;
+    @apply p-2 grid gap-3 max-w-full;
     grid-template-columns: 94px auto;
     min-height: 0;
     min-width: 0;
+  }
+  .compare {
+    @apply flex items-center justify-center border-t border-gray-350 text-purple-500 text-sm;
+    height: 40px;
   }
   .thumbnail {
     @apply relative border border-gray-350 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
@@ -54,20 +56,13 @@
     height: 94px;
     background-image: var(--backgroundImage);
   }
-  .info-container {
-    @apply bg-black border-gray-350 border rounded-full overflow-hidden absolute;
-    width: 18px;
-    height: 18px;
-    right: 1px;
-    bottom: 1px;
-  }
   .info {
     @apply absolute;
-    top: -1px;
-    left: -1px;
+    top: 1px;
+    right: 1px;
   }
   .selection {
-    @apply absolute pointer-events-none inset-0 shadow-md rounded;
+    @apply absolute pointer-events-none inset-0 border border-gray-350 rounded;
     @apply transition duration-200 ease-in-out transform opacity-0 scale-90;
   }
   .selection.hover {
@@ -99,17 +94,13 @@
       <div
         class="thumbnail"
         use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}>
-        <div
-          class="info-container"
-          use:tippy={{ content: `This asset has attribution<br/>and history data.`, placement: 'top-start', offset: [-10, 8] }}>
-          <div class="info">
-            <Icon size="l" name="workflow:Info" class="text-white" />
-          </div>
-        </div>
+        <cai-tooltip
+          content="This image has attribution and history data."
+          class="info">
+          <cai-icon name="InfoCircle_Purple" width="20px" height="20px" />
+        </cai-tooltip>
       </div>
       <dl class="attributes multiline overflow-hidden self-center">
-        <dt>Produced By</dt>
-        <dd>{asset.produced_by}</dd>
         <dt>File Name</dt>
         <dd class="truncate">{asset.title}</dd>
       </dl>
@@ -124,11 +115,11 @@
     {/if}
   </div>
   {#if hover}
-    <div class="grid grid-cols-2 gap-3 mt-2" in:scale={{ start: 0.8 }}>
-      <Button secondary on:click={() => navigateToId(asset._id)}>View</Button>
-      <Button secondary on:click={() => compareWithId(asset._id)}>
-        Compare
-      </Button>
+    <div
+      class="compare"
+      in:scale={{ start: 0.8 }}
+      on:click={() => compareWithId(asset._id)}>
+      Compare to current
     </div>
   {/if}
 </div>

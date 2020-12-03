@@ -35,8 +35,9 @@ module.exports = {
         },
       },
       fontSize: {
-        base: '0.9375rem',
-        '5xl': '3.125rem',
+        xxs: ['0.625rem', { lineHeight: '0.875rem' }],
+        base: ['0.9375rem', { lineHeight: '1.5rem' }],
+        '5xl': ['3.125rem', { lineHeight: '1' }],
       },
       boxShadow: {
         sm: '0 0 4px 0 rgba(0, 0, 0, 0.40)',

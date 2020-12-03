@@ -3,7 +3,6 @@
   import { crossfade } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import Asset from './Asset.svelte';
-  import HelpIcon from '../HelpIcon.svelte';
   import { getAssetList } from '../../lib/claim';
   import { assetsByIdentifier } from '../../stores';
   export let claim: IClaimSummary;
@@ -28,22 +27,18 @@
   $: assetList = getAssetList(claim, $assetsByIdentifier);
 </script>
 
-<!--<style lang="postcss">
-  .original-creation {
-    @apply bg-gray-800 mx-3 rounded flex flex-col items-center justify-center text-white;
-    height: 280px;
-  }
-</style>-->
-
 <div>
-  <h2>
-    <span>Assets used</span>
-    <div class="icon">
-      <HelpIcon
-        size="s"
-        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-    </div>
+  <h2 class="my-3">
+    <span>Content elements</span>
+    <cai-tooltip
+      class="ml-2"
+      content="Images and anything else the producer used to make the selected content." />
   </h2>
+  <div class="mb-3 leading-snug text-gray-700">
+    {#if assetList.length}
+      Select one of these elements to view more of the content record.
+    {:else}This is an original source. No additional elements were used.{/if}
+  </div>
   <div class="container">
     {#each assetList as asset (asset._id)}
       <div
@@ -53,14 +48,5 @@
         <Asset {asset} />
       </div>
     {/each}
-    <!-- <div class="original-creation">
-      <img
-        src="/images/svg/original-creation.svg"
-        alt="Original Creation"
-        width="86"
-        height="156" />
-      <div class="font-bold text-xl mt-5">Original Creation</div>
-      <div class="mt-1">Learn More</div>
-    </div> -->
   </div>
 </div>

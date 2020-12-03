@@ -1,93 +1,26 @@
-<script lang="ts" context="module">
-  const translations = {
-    '3D': '3D',
-    AI_ASSISTED: 'AI Assisted',
-    ANIMATION_VIDEO: 'Animation & Video',
-    COLOR_ADJUSTMENTS: 'Color & Adjustments',
-    COMPOSITING: 'Compositing',
-    EFFECTS_STYLING: 'Effects & Styling',
-    IMPORT: 'Import',
-    PAINTING: 'Painting',
-    SHAPES_PATHS: 'Shapes & Paths',
-    TRANSFORM: 'Transform',
-    TYPE: 'Type',
-  };
-  const iconMapping = {
-    '3D': '3DMaterials',
-    AI_ASSISTED: 'Algorithm',
-    ANIMATION_VIDEO: 'VideoOutline',
-    COLOR_ADJUSTMENTS: 'ColorPalette',
-    COMPOSITING: 'Layers',
-    EFFECTS_STYLING: 'Actions',
-    IMPORT: 'FolderOpenOutline',
-    PAINTING: 'Brush',
-    SHAPES_PATHS: 'Shapes',
-    TRANSFORM: 'Group',
-    TYPE: 'Text',
-  };
-</script>
-
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import parseISO from 'date-fns/parseISO';
   import Icon from './Icon.svelte';
-  import HelpIcon from './HelpIcon.svelte';
-  import { assetsByIdentifier } from '../stores';
-  import { getAssetList } from '../lib/claim';
-  import { tippy } from '../lib/tippy';
-  import type { TippyProps } from '../lib/tippy';
-  import { formatDate, formatTime, asFilename } from '../lib/util/format';
 
   export let claim: IClaimSummary;
   export let isComparing: boolean = false;
   export let isPopup: boolean = false;
   const dispatch = createEventDispatcher();
-  const tippyProps: Partial<TippyProps> = {
-    content: 'This asset has attribution<br/>and history data.',
-    placement: 'top-start',
-    offset: [-10, 8],
-  };
 
-  $: signedOn = parseISO(claim.signed_on);
-  $: assetList = getAssetList(claim, $assetsByIdentifier);
   $: alternate = isComparing || isPopup;
-  $: helpSize = isComparing ? 'xs' : 's';
 </script>
 
 <style lang="postcss">
-  img.logo {
-    @apply ml-1;
-    width: 14px;
-    height: 14px;
-  }
   h2.filename {
     @apply mt-0 mb-3;
   }
   h2:first-child {
     @apply mt-0;
   }
-  h2.alternate {
-    @apply text-sm pt-4 mb-3;
-  }
-  h2.alternate:not(:first-child) {
-    @apply border-t border-gray-200 mt-4;
-  }
-  h2.alternate .icon {
-    top: 1px;
-  }
-  .category {
-    @apply flex items-center mb-1;
-  }
   .close {
     @apply bg-gray-200 rounded-full cursor-pointer flex items-center justify-center;
     width: 28px;
     height: 28px;
-  }
-  dl.multiline dd {
-    @apply my-2;
-  }
-  dl.multiline dt {
-    @apply mt-2;
   }
   .compare-title {
     @apply font-bold text-xl truncate mb-1;
@@ -96,23 +29,6 @@
   .compare-thumbnail {
     @apply w-full border border-gray-350 bg-white rounded bg-contain bg-center bg-no-repeat;
     height: 280px;
-  }
-  .asset-thumbnail {
-    @apply inline-block relative mr-2 mb-2 border border-gray-350 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
-    width: 64px;
-    height: 64px;
-  }
-  .info-container {
-    @apply bg-black border-gray-350 border rounded-full overflow-hidden absolute cursor-pointer;
-    width: 16px;
-    height: 16px;
-    right: 1px;
-    bottom: 1px;
-  }
-  .info {
-    @apply absolute;
-    top: -1px;
-    left: -1px;
   }
 </style>
 
@@ -139,166 +55,5 @@
       style={`background-image: url("${claim.thumbnail_url}");`} />
   {/if}
 
-  <div>
-    <!-- Producer -->
-    <h2 class:alternate>
-      <span>Producer</span>
-      <div class="icon">
-        <HelpIcon
-          size={helpSize}
-          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-      </div>
-    </h2>
-    <dl class="attributes mt-3">
-      <dt>Produced by</dt>
-      <dd>{claim.produced_by}</dd>
-      <dt>Identified by</dt>
-      <dd class="flex items-center">
-        <span>{claim.signed_by}</span>
-        <img
-          src={`images/svg/logos/${asFilename(claim.signed_by)}.svg`}
-          class="logo"
-          alt="Adobe" />
-      </dd>
-    </dl>
-
-    <!-- Edits and activity -->
-    <h2 class:alternate>
-      <span>Edits and activity</span>
-      <div class="icon">
-        <HelpIcon
-          size={helpSize}
-          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-      </div>
-    </h2>
-    <div class="edit-categories">
-      {#each claim.edits.categories as category}
-        {#if translations[category]}
-          <div class="category">
-            <Icon
-              size="s"
-              name={`workflow:${iconMapping[category]}`}
-              class="mr-2" />
-            <div class="flex-grow">{translations[category]}</div>
-          </div>
-        {/if}
-      {/each}
-    </div>
-
-    <!-- Camera details -->
-    {#if claim.camera_info}
-      <h2 class:alternate>
-        <span>Camera details</span>
-        <div class="icon">
-          <HelpIcon
-            size={helpSize}
-            content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-        </div>
-      </h2>
-      <dl class="attributes multiline">
-        {#if claim.camera_info?.camera}
-          <dt>Camera</dt>
-          <dd>{claim.camera_info.camera}</dd>
-        {/if}
-        {#if claim.camera_info?.lens}
-          <dt>Lens</dt>
-          <dd>{claim.camera_info.lens}</dd>
-        {/if}
-        {#if claim.camera_info?.focal_length}
-          <dt>Focal Length</dt>
-          <dd>{claim.camera_info.focal_length}</dd>
-        {/if}
-        {#if claim.camera_info?.exposure}
-          <dt>Exposure</dt>
-          <dd>{claim.camera_info.exposure}</dd>
-        {/if}
-        {#if claim.location}
-          <dt>Location</dt>
-          <dd>{claim.location}</dd>
-        {/if}
-      </dl>
-    {/if}
-
-    <!-- License -->
-    {#if claim.stock}
-      <h2 class:alternate>
-        <span>License</span>
-        <div class="icon">
-          <HelpIcon
-            size={helpSize}
-            content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-        </div>
-      </h2>
-      <dl class="attributes">
-        {#if claim.stock.license_type}
-          <dt>Source</dt>
-          <dd>{claim.stock.source}</dd>
-        {/if}
-        {#if claim.stock.license_type}
-          <dt>License type</dt>
-          <dd>{claim.stock.license_type}</dd>
-        {/if}
-      </dl>
-    {/if}
-
-    <!-- Assets used (comparison mode only) -->
-    {#if alternate && assetList}
-      <h2 class:alternate>
-        <span>Assets used</span>
-        <div class="icon">
-          <HelpIcon
-            size={helpSize}
-            content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-        </div>
-      </h2>
-      <div class="-mb-2">
-        {#each assetList as asset}
-          <div
-            class="asset-thumbnail"
-            style={`background-image: url("${asset.thumbnail_url}");`}>
-            {#if asset.claim_id}
-              <div class="info-container" use:tippy={tippyProps}>
-                <div class="info">
-                  <Icon size="m" name="workflow:Info" class="text-white" />
-                </div>
-              </div>
-            {/if}
-          </div>
-        {/each}
-      </div>
-    {/if}
-
-    <!-- How this was verified -->
-    <h2 class:alternate>
-      <span>How this was verified</span>
-      <div class="icon">
-        <HelpIcon
-          size={helpSize}
-          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-      </div>
-    </h2>
-    <dl class="attributes mt-3">
-      <dt>Produced with</dt>
-      <dd class="flex items-center">
-        <span>{claim.produced_with}</span>
-        <img
-          src={`images/svg/logos/${asFilename(claim.produced_with)}.svg`}
-          class="logo"
-          alt={claim.produced_with} />
-      </dd>
-      <dt>Signed by</dt>
-      <dd class="flex items-center">
-        <span>{claim.signed_by}</span>
-        <img
-          src={`images/svg/logos/${asFilename(claim.signed_by)}.svg`}
-          class="logo"
-          alt="Adobe" />
-      </dd>
-      <dt>Signed on</dt>
-      <dd class="text-right leading-tight">
-        {formatDate(signedOn)},
-        {formatTime(signedOn)}
-      </dd>
-    </dl>
-  </div>
+  <claim-info {claim} variant="lg" />
 </div>

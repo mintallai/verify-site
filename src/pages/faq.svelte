@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { url, metatags } from '@sveltech/routify';
+  import { url, metatags } from '@roxi/routify';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
   import Button from '../components/Button.svelte';

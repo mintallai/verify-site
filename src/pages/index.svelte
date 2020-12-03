@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { url } from '@sveltech/routify';
+  import { url } from '@roxi/routify';
   import { onMount } from 'svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
   import Icon from '../components/Icon.svelte';
   import AspectBox from '../components/AspectBox.svelte';
   import Button from '../components/Button.svelte';
-  import ImageInfo from '../components/ImageInfo.svelte';
   import { learnMoreUrl } from '../stores';
   import '@spectrum-web-components/theme/theme-lightest.js';
   import '@spectrum-web-components/theme/scale-large.js';
@@ -91,11 +90,7 @@
       <div class="mb-8 md:mb-0">
         <AspectBox ratio={422 / 500}>
           <div class="example">
-            {#if summary1?.type === 'claim'}
-              <div class="glyph">
-                <ImageInfo claim={summary1} />
-              </div>
-            {/if}
+            {#if summary1?.type === 'claim'}// TODO: Add ImageInfo here{/if}
           </div>
         </AspectBox>
       </div>
@@ -110,7 +105,7 @@
           on the image to preview, or go straight to the Verify inspect view
           below.
         </p>
-        <a href={$url('/view', { callout: 'anchor' })} class="view-cta">
+        <a href={$url('/inspect', { callout: 'anchor' })} class="view-cta">
           <div>Inspect Image</div>
           <div class="icon">
             <Icon
@@ -135,7 +130,7 @@
           Use Verify to see what assets were used to create an image, or explore
           further into its past.
         </p>
-        <a href={$url('/view', { callout: 'asset' })} class="view-cta">
+        <a href={$url('/inspect', { callout: 'asset' })} class="view-cta">
           <div>Inspect History</div>
           <div class="icon">
             <Icon
@@ -162,7 +157,7 @@
           Verify enables the comparison of different versions and assets used in
           an image's history, so changes over time can be easy to see.
         </p>
-        <a href={$url('/view', { callout: 'parent' })} class="view-cta">
+        <a href={$url('/inspect', { callout: 'parent' })} class="view-cta">
           <div>Compare History</div>
           <div class="icon">
             <Icon

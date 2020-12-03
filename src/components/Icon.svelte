@@ -11,6 +11,7 @@
     ColorPaletteIcon,
     FolderOpenOutlineIcon,
     GroupIcon,
+    ImageSearchIcon,
     InfoIcon,
     HelpOutlineIcon,
     ShapesIcon,
@@ -32,6 +33,7 @@
     ColorPaletteIcon,
     FolderOpenOutlineIcon,
     GroupIcon,
+    ImageSearchIcon,
     HelpOutlineIcon,
     InfoIcon,
     ShapesIcon,
@@ -43,6 +45,8 @@
 
 <script lang="ts">
   enum Sizes {
+    '4xl' = `4rem`,
+    '3xl' = `3rem`,
     '2xl' = `1.5rem`,
     xl = `1.25rem`,
     l = `1.125rem`,

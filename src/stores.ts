@@ -4,10 +4,6 @@ import mapValues from 'lodash/mapValues';
 import { addIdentifiers } from './lib/claim';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
-const API_BASE_URL = 'https://caiverifyservice-dev-or2.stage.cloud.adobe.io';
-const API_KEY = 'caiverify';
-// @ts-ignore
-const LOAD_DELAY = __delay__;
 
 export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
 
@@ -17,10 +13,13 @@ export const primaryId = writable<string>('');
 
 export const secondaryId = writable<string>('');
 
-export function navigateToId(newId: string): void {
+export function navigateToId(newId: string, clearBreadcrumbs = false): void {
   console.log('navigating to', newId, get(contentSourceIds));
   const currId = get(primaryId);
   contentSourceIds.update((ids) => {
+    if (clearBreadcrumbs) {
+      return [newId];
+    }
     if (ids.includes(newId)) {
       return ids.slice(0, ids.indexOf(newId) + 1);
     } else if (ids.length && newId !== currId) {
@@ -41,46 +40,18 @@ export function compareWithId(id: string): void {
   secondaryId.set(id);
 }
 
-function simulateDelay() {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, LOAD_DELAY);
-  });
-}
+export const summary = writable<ISummaryResponse | null>(null, (set) => {
+  return () => {};
+});
 
-async function fetchSummary(set: any): Promise<void> {
-  const [res] = await Promise.all([
-    fetch(`${API_BASE_URL}/claim/summary`, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'x-api-key': API_KEY,
-      },
-      body: JSON.stringify({
-        asset_url: 'http://path/file.jpg',
-      }),
-    }),
-    simulateDelay(),
-  ]);
-  const data = (await res.json()) as ISummaryResponse;
+export async function setSummary(data: ISummaryResponse) {
   data.claims = mapValues(data.claims, (claim, claim_id) => ({
     ...claim,
     claim_id,
   }));
-  navigateToId(`claim_id:${data.root_claim_id}`);
-  // compareWithId(`document_id:6A74374D486A33B24E05E4BAA83DDB73`);
-  // compareWithId('claim_id:c_adbe_1/cai.claim');
-  // setTimeout(() => {
-  //   navigateToId(`claim_id:c_tpic_1/cai.claim`);
-  // }, 1000);
-  set(data);
+  summary.set(data);
+  navigateToId(`claim_id:${data.root_claim_id}`, true);
 }
-
-export const summary = readable<ISummaryResponse | null>(null, (set) => {
-  fetchSummary(set);
-  return () => {};
-});
 
 export const assetsByIdentifier = derived<
   [typeof summary],

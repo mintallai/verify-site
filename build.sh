@@ -34,12 +34,9 @@ fi
 # in the "dist" folder, and if you want to publish an NPM package to the
 # Artifactory, it will be stored in the "dist-pub" folder.
 rm -rf dist dist-pub
-yarn install
-yarn build
-yarn run test
+# This should match the path below
+export TOOLKIT_WASM_SRC="/sdk/pkg/toolkit_bg.wasm"
 
-# Build third-party integration for squarespace
-pushd sdk/third-party
 # Set up authentication
 if [ -n "$PUBLIC_GITHUB_PACKAGE_TOKEN" ]; then
 cat > .npmrc << EOF
@@ -50,11 +47,18 @@ else
     echo "Github package token not found. Publishing cannot continue."
     exit 1
 fi
+
+yarn install
+yarn build
+yarn run test
+
+# Build third-party integration for squarespace, etc.
+pushd sdk/third-party
 yarn install
 yarn build
 popd
-mkdir -p dist/sdk/squarespace
-cp -R sdk/third-party/dist/ dist/sdk/squarespace
+mkdir -p dist/sdk
+cp -r sdk/third-party/dist/. dist/sdk/
 
 # Report dependencies to TESSA
 if [ -n "$TESSA2_API_KEY" ]; then

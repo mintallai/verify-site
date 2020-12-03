@@ -5,7 +5,6 @@
   import { crossfade } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import Asset from './Asset.svelte';
-  import HelpIcon from '../HelpIcon.svelte';
   import {
     contentSourceIds,
     assetsByIdentifier,
@@ -74,19 +73,25 @@
 
 <style lang="postcss">
   .active-bg {
-    @apply absolute bg-gray-200 rounded w-full z-0;
+    @apply absolute bg-gray-200 rounded w-full z-0 pointer-events-none;
     height: 112px;
+  }
+  .breadcrumb-item {
+    @apply relative;
+  }
+  .breadcrumb-item cai-tooltip {
+    @apply absolute z-10 cursor-pointer;
+    top: 10px;
+    right: 10px;
   }
 </style>
 
-<div class="relative">
+<div class="relative pb-4 border-b border-gray-200">
   <h2 class="mt-0">
-    <span>Content sources</span>
-    <div class="icon">
-      <HelpIcon
-        size="s"
-        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-    </div>
+    <span>Content record</span>
+    <cai-tooltip
+      class="ml-2"
+      content="The person who produced this content attached tamper-evident editing and activity data on export." />
   </h2>
   {#if $primaryId}
     <div
@@ -99,7 +104,15 @@
         in:add={{ key: asset._id }}
         out:remove|local={{ key: asset._id }}
         animate:flip
+        class="breadcrumb-item"
         class:current={asset._id === $primaryId}>
+        {#if index === 0}
+          <cai-tooltip
+            content="This is the content you started with."
+            class="info">
+            <cai-icon name="Pin" width="20px" height="20px" />
+          </cai-tooltip>
+        {/if}
         <Asset {asset} hasConnector={index > 0} />
       </div>
     {/each}
