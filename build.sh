@@ -36,12 +36,7 @@ fi
 rm -rf dist dist-pub
 # This should match the path below
 export TOOLKIT_WASM_SRC="/sdk/pkg/toolkit_bg.wasm"
-yarn install
-yarn build
-yarn run test
 
-# Build third-party integration for squarespace, etc.
-pushd sdk/third-party
 # Set up authentication
 if [ -n "$PUBLIC_GITHUB_PACKAGE_TOKEN" ]; then
 cat > .npmrc << EOF
@@ -52,6 +47,13 @@ else
     echo "Github package token not found. Publishing cannot continue."
     exit 1
 fi
+
+yarn install
+yarn build
+yarn run test
+
+# Build third-party integration for squarespace, etc.
+pushd sdk/third-party
 yarn install
 yarn build
 popd
