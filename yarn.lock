@@ -24,14 +24,14 @@
     js-tokens "^4.0.0"
 
 "@contentauth/toolkit@^0.1.1-alpha.47":
-  version "0.1.1-alpha.52"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.52/93a515b3e37c99f28e18dde41c60ce6d69d5fa785ee91e858397522cb139fcc3#0c83fd549e026eabff247817923238ce4892538e"
-  integrity sha512-LgKBHYJUujpuvnskk87sVxoxY5Y9EvuCi90JWw8jDmxGJZhSkAHwzpkHcFsPsOk5Ultqz4G0eSdSrfG6qajdUA==
+  version "0.1.1-alpha.53"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.53/d54c17a392f5e24e1ff0f61b8a8985187662d12608f2c247d46c0fb3ff927065#752df14690d2385a981043ceadbac0e1ffffd805"
+  integrity sha512-4efBXLYsmpbqesdcAIdzzqMZCf+qP3yYz2c3uv8PTbmDwCLgvyUyXh1ZJY5gxPcV/qmMk78uGOUHIxSDy17Mlw==
 
 "@contentauth/web-components@^0.1.1-alpha.47":
-  version "0.1.1-alpha.52"
-  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.52/1d5984142996412be60f2e6793cc32281d10850ff20411f5e97986c9e20ba2a5#217d2e863eb1176295f553e6c6a505fc99e36c35"
-  integrity sha512-7TqOOZrGe47Ew8IS7ocJ+K2G1pX0Mta01AOMED/I0zKnwOL8odVzws3LtaaCWKMA5viReO07gEDJvC4Ckt1y0g==
+  version "0.1.1-alpha.53"
+  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.53/f9ae9d655cd054d5b37a2c16b9b1e712196cb3299163d115339ad6197b6aef27#12bf637e964fb17c523a4aa45e261d85326c12c7"
+  integrity sha512-+idHump9tbmPLQyjc6X/xM7vWi87nWYLna7tma73O/K3jxpIcm6Grf/0L8APCo03vSMD1vZO9beJMO59h1uLxw==
   dependencies:
     "@popperjs/core" "^2.5.4"
     date-fns "^2.16.1"
@@ -288,6 +288,11 @@
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.4.tgz#32503197fca4168b10bf251c1d677a9b5b1c2415"
   integrity sha512-+Y900DGhe+f+4lRwHm9krsKfsiXcbdOhzTsLbytU4MiG8wE9xOw7CFKtgYKfqEAcUdWEGZRyuTxoyFl2Gx6Rdg==
+
+"@types/new-relic-browser@^0.1118.0":
+  version "0.1118.0"
+  resolved "https://registry.yarnpkg.com/@types/new-relic-browser/-/new-relic-browser-0.1118.0.tgz#7ed70448fb99dbfa4b278d6c0f2b959d169c78bb"
+  integrity sha512-Sz2N7HiD9yJvtBCWV9i+7kzBY/mjG0TdoeZm2ZbloS5nTpkcqdy5QmIijzA3BUDzv+gkwZmpQg5TVhdC4SiR5g==
 
 "@types/node@*":
   version "14.14.10"
@@ -3558,6 +3563,7 @@ sort-keys@^1.0.0:
     is-plain-obj "^1.0.0"
 
 "source-map-fast@npm:source-map@0.7.3", source-map@^0.7.3:
+  name source-map-fast
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
   integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
