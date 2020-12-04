@@ -59,24 +59,24 @@
     to-fast-properties "^2.0.0"
 
 "@contentauth/sdk@^0.1.1-alpha.46":
-  version "0.1.1-alpha.51"
-  resolved "https://npm.pkg.github.com/download/@contentauth/sdk/0.1.1-alpha.51/3edf2e5368be496de0fae2b849bab21231f9c097bf108a23ba5ac83f579aac81#c26613de0aed45be662b1193b2a02fe5414d3536"
-  integrity sha512-6ifZmwEK0RxT2PgtZns0qOZwfWd9pdptTYkegzTPW8Yb8UlN8yWXuEf3iAQXst/eS6psbBdA7iRPUVATXLJILg==
+  version "0.1.1-alpha.54"
+  resolved "https://npm.pkg.github.com/download/@contentauth/sdk/0.1.1-alpha.54/501ae2c049ddcce1406ae05802fc685230e9b3815640f24498690def7b6f99f1#e56c4115f3bacf26fe494777e541bf8eb2faf38a"
+  integrity sha512-nZpch+u+AiH+6RfMbSeWLQAAPRweFbN2KSxwPRUg9UDxHtCq91ECaalVvPU5uph3LVDOjkxYXsVObEUaC9UPDQ==
   dependencies:
-    "@contentauth/toolkit" "^0.1.1-alpha.51+44caf84"
+    "@contentauth/toolkit" "^0.1.1-alpha.54+b950cdf"
     make-error "^1.3.6"
     p-memoize "^4.0.1"
     p-queue "^6.6.2"
 
-"@contentauth/toolkit@^0.1.1-alpha.46", "@contentauth/toolkit@^0.1.1-alpha.51+44caf84":
-  version "0.1.1-alpha.51"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.51/0a067a0ccb0f799ffbef9eefae4a2ba210db769e34741939f46e96f55b53091a#64dea50fba9342761d82c4e137415d795feb7479"
-  integrity sha512-SF2+9Ymz0JQ2UANINpcyF2unlxSnGOgqcuA2drgKtZ49MDGbU8+7I0Vpawu/iJRdEDS8Pt+0o8hHMVokzHolhQ==
+"@contentauth/toolkit@^0.1.1-alpha.46", "@contentauth/toolkit@^0.1.1-alpha.54+b950cdf":
+  version "0.1.1-alpha.54"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.54/db24b302dce5ee6873213d873424960228182e97b85fcc524269065aa091e2a6#4bb33a02c0bc1a8d40232a4b3776a7eb3fb5065e"
+  integrity sha512-2hlQr6FQcS7F43Qtz6sN+8E3ARzprz0AhqMp8YPkTvqNNIv56HD5mGOPyE+Z+O/oGwkYQMt28elYZ1lCuzfzaw==
 
 "@contentauth/web-components@^0.1.1-alpha.46":
-  version "0.1.1-alpha.51"
-  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.51/e6c1f41bd91cb56de679cc2452916628f8945ba7770b9b02a4338883d6e7841c#3c6cebdf0e36e33ac24242bdf589f0dacb6fe658"
-  integrity sha512-flcjVUbpzGmnQXsk1VmZ5hqDBdCmiloiGYEpMV8j7YxLSVAFveBtr5r2VwohQxpEYjlBsItnzelbnxOan3qlPQ==
+  version "0.1.1-alpha.54"
+  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.54/5e9239216cabff92ad9e6a7fa69a7c5a0db2ab90ea56b774baa200b5606ccb10#71753eccab21c1c32ff9ff204b74ffb074e1eed2"
+  integrity sha512-vQJVu+6/ZdUy85Sp1BJNmMj7O4T/UubzMlAZk8MJ1cMTlpUpJeqbQoUo5y3DoZF4gVq8q08s+egAO3tfvQHRtw==
   dependencies:
     "@popperjs/core" "^2.5.4"
     date-fns "^2.16.1"
@@ -1006,9 +1006,9 @@ rollup-plugin-terser@^7.0.2:
     terser "^5.0.0"
 
 rollup@^2.34.0:
-  version "2.34.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.34.0.tgz#ecc7f1d4ce2cb88bb51bec2f56b984f3c35b8271"
-  integrity sha512-dW5iLvttZzdVehjEuNJ1bWvuMEJjOWGmnuFS82WeKHTGXDkRHQeq/ExdifkSyJv9dLcR86ysKRmrIDyR6O0X8g==
+  version "2.34.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.34.1.tgz#a387230df02c58b242794a213dfb68b42de2c8fb"
+  integrity sha512-tGveB6NU5x4MS/iXaIsjfUkEv4hxzJJ4o0FRy5LO62Ndx3R2cmE1qsLYlSfRkvHUUPqWiFoxEm8pRftzh1a5HA==
   optionalDependencies:
     fsevents "~2.1.2"
 
