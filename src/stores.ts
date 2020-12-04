@@ -1,11 +1,16 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import omit from 'lodash/omit';
+import reduce from 'lodash/reduce';
 import mapValues from 'lodash/mapValues';
 import { addIdentifiers } from './lib/claim';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
+const FAQ_URL =
+  'https://contentauthenticity.org/faq#block-yui_3_17_2_1_1606953206758_44130';
 
 export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
+
+export const faqUrl = readable<string>(FAQ_URL, () => {});
 
 export const contentSourceIds = writable<string[]>([]);
 
@@ -45,8 +50,23 @@ export const summary = writable<ISummaryResponse | null>(null, (set) => {
 });
 
 export async function setSummary(data: ISummaryResponse) {
+  // Grab map of references, since we may need to look up a claim title from
+  // refs in the case of an acquisition
+  const refs = reduce(
+    data.claims,
+    (acc, claim) => {
+      if (claim.references) {
+        acc = [...acc, ...claim.references];
+      }
+      return acc;
+    },
+    [],
+  );
   data.claims = mapValues(data.claims, (claim, claim_id) => ({
     ...claim,
+    title:
+      claim.title ||
+      refs.find((x) => x.title && x.claim_id === claim_id)?.title,
     claim_id,
   }));
   summary.set(data);

@@ -1,12 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
-  import { goto } from '@roxi/routify';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
   import Mousetrap from 'mousetrap';
-  import { getSummaryFromFile, getSummaryFromUrl } from '../lib/toolkit';
+  import {
+    getSummaryFromFile,
+    getSummaryFromUrl,
+    ToolkitError,
+  } from '../lib/toolkit';
   import About from '../components/About.svelte';
+  import Alert from '../components/Alert.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
   import Header from '../components/Header.svelte';
   import ContentSources from '../components/inspect/ContentSources.svelte';
@@ -15,6 +19,7 @@
   import Comparison from '../components/inspect/Comparison.svelte';
   import DragOverlay from '../components/inspect/DragOverlay.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
+  import { startTour } from '../lib/tour';
   import {
     summary,
     setSummary,
@@ -22,6 +27,7 @@
     secondaryId,
     primaryAsset,
     secondaryAsset,
+    learnMoreUrl,
   } from '../stores';
   import { getIdentifier } from '../lib/claim';
 
@@ -32,6 +38,7 @@
 
   let allowDragDrop = false;
   let isDraggingOver = false;
+  let error: ToolkitError;
 
   $: isLoading = $summary === null;
   $: primary = $primaryAsset;
@@ -41,11 +48,18 @@
   onMount(async () => {
     const params = new URLSearchParams(window.location.search?.substr(1));
     const source = params.get('source');
+    const tour = params.get('tour');
+    const forceTour = params.get('forceTour');
     if (source) {
-      const data = await getSummaryFromUrl(source);
-      setSummary(data);
+      try {
+        const data = await getSummaryFromUrl(source);
+        setSummary(data);
+        startTour({ summary: $summary, start: tour, force: forceTour });
+      } catch (err) {
+        error = err;
+      }
     } else {
-      $goto('/');
+      window.location.assign($learnMoreUrl);
     }
 
     const keyCommand = 'ctrl+shift+d';
@@ -79,13 +93,23 @@
   main {
     @apply grid absolute w-screen h-screen font-body;
     grid-template-columns: 320px auto 320px;
-    grid-template-rows: 80px auto;
+    grid-template-rows: 80px auto 55px;
   }
   section {
     @apply col-span-1 border-gray-200 max-h-full overflow-auto;
   }
   section.loading {
     @apply flex items-center justify-center;
+  }
+  footer {
+    @apply col-span-3 flex justify-center items-center text-xs border-t border-gray-200;
+  }
+  footer a {
+    @apply underline;
+  }
+  footer a::before {
+    @apply px-1;
+    content: '|';
   }
 </style>
 
@@ -98,7 +122,13 @@
     </div>
   {/if}
   <Header {allowDragDrop} />
-  {#if isLoading}
+  {#if error}
+    <section class="border-r" class:loading={isLoading} />
+    <Viewer />
+    <section class="border-l p-4">
+      <Alert severity="error" message="Sorry, something went wrong" />
+    </section>
+  {:else if isLoading}
     <section class="border-r" class:loading={isLoading}>
       <CircleLoader />
     </section>
@@ -156,4 +186,11 @@
       {/if}
     </section>
   {/if}
+  <footer>
+    <span>© __year__ Content Authenticity Initiative</span>
+    <a href="https://www.adobe.com/privacy.html" target="_blank">Privacy</a>
+    <a href="https://www.adobe.com/legal/terms.html" target="_blank">Terms of
+      use</a>
+    <a href="https://contentauthenticity.org/contact" target="_blank">Contact us</a>
+  </footer>
 </main>

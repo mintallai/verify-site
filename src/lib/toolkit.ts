@@ -6,7 +6,8 @@ const JPEG_MIME_TYPE = 'image/jpeg';
 
 let toolkit: any;
 
-export enum WasmError {
+export enum ToolkitError {
+  FetchError = 'FETCH_ERROR',
   InvalidFile = 'INVALID_FILE',
 }
 
@@ -19,7 +20,7 @@ function fileAsArrayBuffer(file: File): Promise<Uint8Array> {
       });
       reader.readAsArrayBuffer(file);
     } else {
-      reject(new Error(WasmError.InvalidFile));
+      reject(new Error(ToolkitError.InvalidFile));
     }
   });
 }
@@ -46,6 +47,12 @@ export async function getSummaryFromUrl(
 ): Promise<ISummaryResponse> {
   await loadToolkit();
   const res = await fetch(url);
-  const arrayBuffer = await res.arrayBuffer();
-  return get_summary_from_array_buffer(arrayBuffer, false);
+  if (res.ok) {
+    if (res.headers.get('Content-Type') === JPEG_MIME_TYPE) {
+      const arrayBuffer = await res.arrayBuffer();
+      return get_summary_from_array_buffer(arrayBuffer, false);
+    }
+    throw new Error(ToolkitError.InvalidFile);
+  }
+  throw new Error(ToolkitError.FetchError);
 }

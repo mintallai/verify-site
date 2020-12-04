@@ -1,7 +1,7 @@
 <script lang="ts">
   import { url } from '@roxi/routify';
   import Button from './Button.svelte';
-  import { learnMoreUrl } from '../stores';
+  import { learnMoreUrl, faqUrl } from '../stores';
 
   export let allowDragDrop = false;
 </script>
@@ -26,7 +26,7 @@
 
 <header class="flex" class:allowDragDrop>
   <div class="flex-shrink">
-    <a href={$url('/')} class="flex flex-start select-none">
+    <a href={$learnMoreUrl} target="_blank" class="flex flex-start select-none">
       <h1 class="font-black text-2xl leading-none">Verify</h1>
       <div class="beta">Beta</div>
     </a>
@@ -35,7 +35,9 @@
     <div class="dnd">Drag and drop enabled</div>
   {/if}
   <div class="flex-grow text-right">
-    <a href={$url('/faq')} class="font-bold text-sm tracking-tight"> FAQ </a>
+    <a href={$faqUrl} target="_blank" class="font-bold text-sm tracking-tight">
+      FAQ
+    </a>
   </div>
   <div class="ml-5">
     <Button href={$learnMoreUrl} outline={true}>Learn More</Button>

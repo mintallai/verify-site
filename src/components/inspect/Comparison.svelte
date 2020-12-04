@@ -38,7 +38,7 @@
 
 <style lang="postcss">
   .selector {
-    @apply grid grid-cols-2 pb-5;
+    @apply grid grid-cols-2 mb-5;
     grid-gap: 2px;
   }
   .selector button {
@@ -54,7 +54,10 @@
   class="bg-gray-100 flex flex-col items-center justify-center overflow-hidden"
   bind:clientWidth={width}
   bind:clientHeight={height}>
-  <div class="selector" bind:clientHeight={selectorHeight}>
+  <div
+    id="compare-selector"
+    class="selector"
+    bind:clientHeight={selectorHeight}>
     <button
       class="rounded-l-full"
       class:selected={mode === CompareMode.Split}
