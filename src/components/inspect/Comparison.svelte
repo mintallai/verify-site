@@ -38,7 +38,7 @@
 
 <style lang="postcss">
   .selector {
-    @apply grid grid-cols-2 pb-5;
+    @apply grid grid-cols-2 mb-5;
     grid-gap: 2px;
   }
   .selector button {

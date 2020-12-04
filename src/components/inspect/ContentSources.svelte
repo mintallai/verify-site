@@ -87,7 +87,7 @@
 </style>
 
 <div class="relative pb-4 border-b border-gray-200">
-  <h2 class="my-0">
+  <h2 class="my-0 mb-4">
     <span>Content record</span>
     <cai-tooltip
       class="ml-2"

@@ -1,4 +1,5 @@
 import childProcess from 'child_process';
+import fs from 'fs';
 import svelte from 'rollup-plugin-svelte-hot';
 import Hmr from 'rollup-plugin-hot';
 import resolve from '@rollup/plugin-node-resolve';
@@ -13,6 +14,7 @@ import { typescript as embeddedTypescript } from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 
 const year = new Date().getFullYear();
+const newrelic = fs.readFileSync('etc/newrelic.html');
 const banner = `
 /*************************************************************************
  * Copyright ${year} Adobe. All Rights Reserved.
@@ -169,6 +171,7 @@ function baseConfig(config, ctx) {
     const bundleTag = '<script defer src="/build/bundle.js"></script>';
     return contents
       .toString()
+      .replace('__NEW_RELIC__', newrelic)
       .replace('__SCRIPT__', dynamicImports ? scriptTag : bundleTag);
   }
 }

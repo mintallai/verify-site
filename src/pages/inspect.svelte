@@ -19,7 +19,7 @@
   import Comparison from '../components/inspect/Comparison.svelte';
   import DragOverlay from '../components/inspect/DragOverlay.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
-  import { createTour } from '../lib/tour';
+  import { startTour } from '../lib/tour';
   import {
     summary,
     setSummary,
@@ -48,11 +48,13 @@
   onMount(async () => {
     const params = new URLSearchParams(window.location.search?.substr(1));
     const source = params.get('source');
+    const tour = params.get('tour');
+    const forceTour = params.get('forceTour');
     if (source) {
       try {
         const data = await getSummaryFromUrl(source);
         setSummary(data);
-        createTour({ summary: $summary }).start();
+        startTour({ summary: $summary, start: tour, force: forceTour });
       } catch (err) {
         error = err;
       }
@@ -100,7 +102,7 @@
     @apply flex items-center justify-center;
   }
   footer {
-    @apply col-span-3 flex justify-center items-center text-xs border-t border-gray-350;
+    @apply col-span-3 flex justify-center items-center text-xs border-t border-gray-200;
   }
   footer a {
     @apply underline;

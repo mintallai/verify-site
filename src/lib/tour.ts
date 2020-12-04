@@ -1,8 +1,10 @@
 import Shepherd from 'shepherd.js';
 import delay from 'delay';
+import store from 'store2';
 import TourStep from '../components/inspect/TourStep.svelte';
 import { navigateToId, compareWithId, secondaryId } from '../stores';
 
+const COMPLETE_LOCALSTORAGE_KEY = 'hasSeenTour';
 const DELAY_MS = 500;
 
 function createComponent(tour, props) {
@@ -55,26 +57,25 @@ async function gotoCompare(summary) {
 }
 
 export function createTour({ summary }) {
-  console.log('summary', summary);
   const tour = new Shepherd.Tour({
     defaultStepOptions: {
       popperOptions: {
-        modifiers: [
-          { name: 'offset', options: { offset: [-10, 7] } },
-          {
-            name: 'arrow',
-            enabled: false,
-          },
-        ],
+        modifiers: [{ name: 'offset', options: { offset: [8, 7] } }],
       },
     },
+    useModalOverlay: true,
+  });
+
+  tour.on('complete', () => {
+    console.debug('Tour completed');
+    store.set(COMPLETE_LOCALSTORAGE_KEY, Date.now());
   });
 
   tour.addStep({
     id: 'step-1',
     attachTo: {
       element: '#record-0',
-      on: 'right-start',
+      on: 'right',
     },
     beforeShowPromise: () => gotoRootClaim(summary),
     text: () =>
@@ -83,7 +84,7 @@ export function createTour({ summary }) {
         stepNum: 1,
         stepTotal: 3,
         content:
-          'No matter where the content shows up on the internet, the icon tells you that its record was confirmed.',
+          'No matter where the content shows up on the internet, the info icon tells you that its record was confirmed.',
       }),
   });
 
@@ -91,7 +92,7 @@ export function createTour({ summary }) {
     id: 'step-2',
     attachTo: {
       element: '#record-1',
-      on: 'auto-start',
+      on: 'right',
     },
     beforeShowPromise: () => gotoParentClaim(summary),
     text: () =>
@@ -111,13 +112,7 @@ export function createTour({ summary }) {
       on: 'left-start',
     },
     popperOptions: {
-      modifiers: [
-        { name: 'offset', options: { offset: [-4, 7] } },
-        {
-          name: 'arrow',
-          enabled: false,
-        },
-      ],
+      modifiers: [{ name: 'offset', options: { offset: [-4, 7] } }],
     },
     beforeShowPromise: () => gotoCompare(summary),
     text: () =>
@@ -131,4 +126,18 @@ export function createTour({ summary }) {
   });
 
   return tour;
+}
+
+export function startTour({ summary, start, force }) {
+  const hasSeenTour = store.get(COMPLETE_LOCALSTORAGE_KEY);
+  if (!hasSeenTour || force) {
+    const tour = createTour({ summary });
+    const stepIds = tour.steps.map((s) => s.id);
+    if (start) {
+      tour.start();
+      if (stepIds.includes(start)) {
+        tour.show(start);
+      }
+    }
+  }
 }
