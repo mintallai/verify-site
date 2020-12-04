@@ -24,14 +24,14 @@
     js-tokens "^4.0.0"
 
 "@contentauth/toolkit@^0.1.1-alpha.47":
-  version "0.1.1-alpha.51"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.51/0a067a0ccb0f799ffbef9eefae4a2ba210db769e34741939f46e96f55b53091a#64dea50fba9342761d82c4e137415d795feb7479"
-  integrity sha512-SF2+9Ymz0JQ2UANINpcyF2unlxSnGOgqcuA2drgKtZ49MDGbU8+7I0Vpawu/iJRdEDS8Pt+0o8hHMVokzHolhQ==
+  version "0.1.1-alpha.52"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.52/93a515b3e37c99f28e18dde41c60ce6d69d5fa785ee91e858397522cb139fcc3#0c83fd549e026eabff247817923238ce4892538e"
+  integrity sha512-LgKBHYJUujpuvnskk87sVxoxY5Y9EvuCi90JWw8jDmxGJZhSkAHwzpkHcFsPsOk5Ultqz4G0eSdSrfG6qajdUA==
 
 "@contentauth/web-components@^0.1.1-alpha.47":
-  version "0.1.1-alpha.51"
-  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.51/e6c1f41bd91cb56de679cc2452916628f8945ba7770b9b02a4338883d6e7841c#3c6cebdf0e36e33ac24242bdf589f0dacb6fe658"
-  integrity sha512-flcjVUbpzGmnQXsk1VmZ5hqDBdCmiloiGYEpMV8j7YxLSVAFveBtr5r2VwohQxpEYjlBsItnzelbnxOan3qlPQ==
+  version "0.1.1-alpha.52"
+  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.52/1d5984142996412be60f2e6793cc32281d10850ff20411f5e97986c9e20ba2a5#217d2e863eb1176295f553e6c6a505fc99e36c35"
+  integrity sha512-7TqOOZrGe47Ew8IS7ocJ+K2G1pX0Mta01AOMED/I0zKnwOL8odVzws3LtaaCWKMA5viReO07gEDJvC4Ckt1y0g==
   dependencies:
     "@popperjs/core" "^2.5.4"
     date-fns "^2.16.1"
@@ -3081,14 +3081,13 @@ postcss@^7.0.11, postcss@^7.0.18, postcss@^7.0.32:
     supports-color "^6.1.0"
 
 postcss@^8.1.4:
-  version "8.1.13"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.1.13.tgz#5d2aa2f96b3eaab5edc2ef488b4bd636c680f712"
-  integrity sha512-D++wck3XhQkICYfysZRx90JCDgaTTdq8YxLswB9cjBzfxwcVcQjn3LsjXon0PQ6TIOof2IGWLRHhSgXZuJct4w==
+  version "8.1.14"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.1.14.tgz#77d6a5db2fdc0afa918e24af5323a53fb8727f2e"
+  integrity sha512-KatkyVPBKfENS+c3dpXJoDXnDD5UZs5exAnDksLqaRJPKwYphEPZt4N0m0i049v2/BtWVQibAhxW4ilXXcolpA==
   dependencies:
     colorette "^1.2.1"
     nanoid "^3.1.20"
     source-map "^0.6.1"
-    vfile-location "^3.2.0"
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -3559,7 +3558,6 @@ sort-keys@^1.0.0:
     is-plain-obj "^1.0.0"
 
 "source-map-fast@npm:source-map@0.7.3", source-map@^0.7.3:
-  name source-map-fast
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
   integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
@@ -3746,9 +3744,9 @@ supports-color@^7.0.0, supports-color@^7.1.0:
     has-flag "^4.0.0"
 
 svelte-check@^1.0.22:
-  version "1.1.18"
-  resolved "https://registry.yarnpkg.com/svelte-check/-/svelte-check-1.1.18.tgz#bd7dad3570d21597598b9679007c2dcd55fd8264"
-  integrity sha512-iTznvazrojBPjzhShlmPD607nGaYS0WbhWHdVKlHTUnmwN787St/0MqrZ2prFYLKNFv6iJxO4JPu/igZsju0Uw==
+  version "1.1.19"
+  resolved "https://registry.yarnpkg.com/svelte-check/-/svelte-check-1.1.19.tgz#f70c1222dbcb22aaa4ed784622b15749dd64bcf0"
+  integrity sha512-Ej0hM800sJ0PfJk0OFqhh2Pa4JOgkKjtY4fk5eC21iWCH5PH8BTKdzSOufi7MA5gY4j7zgpX6Wym37e4myZ8KA==
   dependencies:
     chalk "^4.0.0"
     chokidar "^3.4.1"
@@ -4032,11 +4030,6 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
-
-vfile-location@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/vfile-location/-/vfile-location-3.2.0.tgz#d8e41fbcbd406063669ebf6c33d56ae8721d0f3c"
-  integrity sha512-aLEIZKv/oxuCDZ8lkJGhuhztf/BW4M+iHdCwglA/eWc+vtuRFJj8EtgceYFX4LRjOhCAAiNHsKGssC6onJ+jbA==
 
 void-elements@3.1.0:
   version "3.1.0"
