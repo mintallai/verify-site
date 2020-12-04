@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
-  import { goto } from '@roxi/routify';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
   import Mousetrap from 'mousetrap';
@@ -15,6 +14,7 @@
   import Comparison from '../components/inspect/Comparison.svelte';
   import DragOverlay from '../components/inspect/DragOverlay.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
+  import tour from '../lib/tour';
   import {
     summary,
     setSummary,
@@ -22,6 +22,7 @@
     secondaryId,
     primaryAsset,
     secondaryAsset,
+    learnMoreUrl,
   } from '../stores';
   import { getIdentifier } from '../lib/claim';
 
@@ -44,8 +45,9 @@
     if (source) {
       const data = await getSummaryFromUrl(source);
       setSummary(data);
+      tour.start();
     } else {
-      $goto('/');
+      window.location.assign($learnMoreUrl);
     }
 
     const keyCommand = 'ctrl+shift+d';
@@ -79,13 +81,23 @@
   main {
     @apply grid absolute w-screen h-screen font-body;
     grid-template-columns: 320px auto 320px;
-    grid-template-rows: 80px auto;
+    grid-template-rows: 80px auto 55px;
   }
   section {
     @apply col-span-1 border-gray-200 max-h-full overflow-auto;
   }
   section.loading {
     @apply flex items-center justify-center;
+  }
+  footer {
+    @apply col-span-3 flex justify-center items-center text-xs border-t border-gray-350;
+  }
+  footer a {
+    @apply underline;
+  }
+  footer a::before {
+    @apply px-1;
+    content: '|';
   }
 </style>
 
@@ -156,4 +168,11 @@
       {/if}
     </section>
   {/if}
+  <footer>
+    <span>© __year__ Content Authenticity Initiative</span>
+    <a href="https://www.adobe.com/privacy.html" target="_blank">Privacy</a>
+    <a href="https://www.adobe.com/legal/terms.html" target="_blank">Terms of
+      use</a>
+    <a href="https://contentauthenticity.org/contact" target="_blank">Contact us</a>
+  </footer>
 </main>

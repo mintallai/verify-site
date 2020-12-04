@@ -4,8 +4,12 @@ import mapValues from 'lodash/mapValues';
 import { addIdentifiers } from './lib/claim';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
+const FAQ_URL =
+  'https://contentauthenticity.org/faq#block-yui_3_17_2_1_1606953206758_44130';
 
 export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
+
+export const faqUrl = readable<string>(FAQ_URL, () => {});
 
 export const contentSourceIds = writable<string[]>([]);
 
