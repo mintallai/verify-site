@@ -69,6 +69,7 @@ export async function setSummary(data: ISummaryResponse) {
       refs.find((x) => x.title && x.claim_id === claim_id)?.title,
     claim_id,
   }));
+  console.debug('Setting summary', data);
   summary.set(data);
   navigateToId(`claim_id:${data.root_claim_id}`, true);
 }

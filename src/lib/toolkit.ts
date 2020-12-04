@@ -1,7 +1,13 @@
 import init, {
   get_summary_from_array_buffer,
 } from '@contentauth/toolkit/pkg/web/toolkit';
-import newrelic from 'new-relic-browser';
+
+// TODO: Update this with newrelic typescript defs
+declare global {
+  interface Window {
+    newrelic: any;
+  }
+}
 
 const JPEG_MIME_TYPE = 'image/jpeg';
 
@@ -55,11 +61,11 @@ export async function getSummaryFromUrl(
       return get_summary_from_array_buffer(arrayBuffer, false);
     }
     const invalidFileError = new Error(ToolkitError.InvalidFile);
-    newrelic.noticeError(invalidFileError, { url, contentType });
+    window.newrelic?.noticeError(invalidFileError, { url, contentType });
     throw invalidFileError;
   }
   const fetchError = new Error(ToolkitError.FetchError);
-  newrelic.noticeError(fetchError, {
+  window.newrelic?.noticeError(fetchError, {
     url,
     status: res.status,
     statusText: res.statusText,
