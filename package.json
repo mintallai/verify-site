@@ -64,6 +64,7 @@
     "@spectrum-web-components/icons-workflow": "^0.3.3",
     "@spectrum-web-components/theme": "^0.6.1",
     "date-fns": "^2.16.1",
+    "delay": "^4.4.0",
     "drag-drop": "^6.1.0",
     "html-parse-stringify": "^2.0.0",
     "interactjs": "^1.9.22",

@@ -4,8 +4,13 @@
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
   import Mousetrap from 'mousetrap';
-  import { getSummaryFromFile, getSummaryFromUrl } from '../lib/toolkit';
+  import {
+    getSummaryFromFile,
+    getSummaryFromUrl,
+    ToolkitError,
+  } from '../lib/toolkit';
   import About from '../components/About.svelte';
+  import Alert from '../components/Alert.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
   import Header from '../components/Header.svelte';
   import ContentSources from '../components/inspect/ContentSources.svelte';
@@ -14,7 +19,7 @@
   import Comparison from '../components/inspect/Comparison.svelte';
   import DragOverlay from '../components/inspect/DragOverlay.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
-  import tour from '../lib/tour';
+  import { createTour } from '../lib/tour';
   import {
     summary,
     setSummary,
@@ -33,6 +38,7 @@
 
   let allowDragDrop = false;
   let isDraggingOver = false;
+  let error: ToolkitError;
 
   $: isLoading = $summary === null;
   $: primary = $primaryAsset;
@@ -43,9 +49,13 @@
     const params = new URLSearchParams(window.location.search?.substr(1));
     const source = params.get('source');
     if (source) {
-      const data = await getSummaryFromUrl(source);
-      setSummary(data);
-      tour.start();
+      try {
+        const data = await getSummaryFromUrl(source);
+        setSummary(data);
+        createTour({ summary: $summary }).start();
+      } catch (err) {
+        error = err;
+      }
     } else {
       window.location.assign($learnMoreUrl);
     }
@@ -110,7 +120,13 @@
     </div>
   {/if}
   <Header {allowDragDrop} />
-  {#if isLoading}
+  {#if error}
+    <section class="border-r" class:loading={isLoading} />
+    <Viewer />
+    <section class="border-l p-4">
+      <Alert severity="error" message="Sorry, something went wrong" />
+    </section>
+  {:else if isLoading}
     <section class="border-r" class:loading={isLoading}>
       <CircleLoader />
     </section>

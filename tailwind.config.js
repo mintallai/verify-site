@@ -17,11 +17,14 @@ module.exports = {
     extend: {
       colors: {
         blue: {
-          '500': '#2680EB',
+          '500': '#2680eb',
         },
         purple: {
           '200': 'rgba(85, 72, 237, 0.1)',
           '500': '#5548ed',
+        },
+        red: {
+          '500': '#d7373f',
         },
         gray: {
           '100': '#fafafa',

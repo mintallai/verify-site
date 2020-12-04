@@ -8,6 +8,7 @@
   const dispatch = createEventDispatcher();
 
   $: alternate = isComparing || isPopup;
+  $: variant = isComparing ? 'sm' : 'lg';
 </script>
 
 <style lang="postcss">
@@ -55,5 +56,5 @@
       style={`background-image: url("${claim.thumbnail_url}");`} />
   {/if}
 
-  <claim-info {claim} variant="lg" />
+  <claim-info {claim} {variant} />
 </div>

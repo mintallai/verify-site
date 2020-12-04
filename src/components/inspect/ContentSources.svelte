@@ -93,9 +93,9 @@
       class="ml-2"
       content="The person who produced this content attached tamper-evident editing and activity data on export." />
   </h2>
-  <div class="mt-3 mb-4 leading-snug text-gray-700">
+  <!-- <div class="mt-3 mb-4 leading-snug text-gray-700">
     Select one of these elements to view more of the content record.
-  </div>
+  </div> -->
   {#if $primaryId}
     <div
       class="active-bg"
