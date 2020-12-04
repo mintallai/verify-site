@@ -35,9 +35,9 @@
       content="Images and anything else the producer used to make the selected content." />
   </h2>
   <div class="mb-3 leading-snug text-gray-700">
-    {#if assetList.length}
-      Select one of these elements to view more of the content record.
-    {:else}This is an original source. No additional elements were used.{/if}
+    {#if !assetList.length}
+      This is an original source. No additional elements were used.
+    {/if}
   </div>
   <div class="container">
     {#each assetList as asset (asset._id)}

@@ -42,7 +42,8 @@
     {#if isComparing}
       <h2 class="filename">
         <div>
-          <div class="font-bold text-xs uppercase text-gray-500 leading-none">
+          <div
+            class="font-bold text-xxs uppercase text-gray-500 leading-none mb-1">
             File name
           </div>
           <div class="compare-title">{claim.title}</div>

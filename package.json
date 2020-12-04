@@ -14,7 +14,7 @@
     "build": "routify -b && rollup -c rollup.config.js",
     "serve": "spassr --serve-spa --serve-ssr",
     "export": "routify export",
-    "rollup": "cross-env TOOLKIT_WASM_SRC=https://verify-dev.contentauthenticity.org/sdk/squarespace/dist/pkg/toolkit_bg.wasm rollup -c rollup.config.js -w",
+    "rollup": "cross-env TOOLKIT_WASM_SRC=https://verify-dev.contentauthenticity.org/sdk/pkg/toolkit_bg.wasm rollup -c rollup.config.js -w",
     "nollup": "nollup -c rollup.config.js",
     "routify": "routify",
     "test": "echo \"Tests pending\" && exit 0"
@@ -28,6 +28,7 @@
     "@tsconfig/svelte": "^1.0.10",
     "@types/lodash": "^4.14.161",
     "@types/mousetrap": "^1.6.4",
+    "@types/new-relic-browser": "^0.1118.0",
     "autoprefixer": "^9.8.6",
     "cross-env": "^7.0.2",
     "cssnano": "^4.1.10",

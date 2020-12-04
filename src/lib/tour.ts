@@ -101,7 +101,7 @@ export function createTour({ summary }) {
         stepNum: 2,
         stepTotal: 3,
         content:
-          'The most recent version appears first in the content record. Previous versions and any assets used to produce this content follow.',
+          'The most recent version appears first in the content record, followed by previous versions and any component elements, like other images.',
       }),
   });
 
@@ -121,7 +121,7 @@ export function createTour({ summary }) {
         stepNum: 3,
         stepTotal: 3,
         content:
-          'Select a version or asset used to view its own content record. Or compare it to another entry in the content record in a slider or split-screen view.',
+          'Select an image to view its own content record. Or compare it to another entry in the content record in a slider or split-screen view.',
       }),
   });
 

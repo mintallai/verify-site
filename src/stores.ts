@@ -19,7 +19,7 @@ export const primaryId = writable<string>('');
 export const secondaryId = writable<string>('');
 
 export function navigateToId(newId: string, clearBreadcrumbs = false): void {
-  console.log('navigating to', newId, get(contentSourceIds));
+  console.debug('Navigating to', newId, get(contentSourceIds));
   const currId = get(primaryId);
   contentSourceIds.update((ids) => {
     if (clearBreadcrumbs) {
@@ -41,7 +41,7 @@ export function navigateToId(newId: string, clearBreadcrumbs = false): void {
 }
 
 export function compareWithId(id: string): void {
-  console.log('comparing with', id);
+  console.debug('Comparing with', id);
   secondaryId.set(id);
 }
 
@@ -69,6 +69,7 @@ export async function setSummary(data: ISummaryResponse) {
       refs.find((x) => x.title && x.claim_id === claim_id)?.title,
     claim_id,
   }));
+  console.debug('Setting summary', data);
   summary.set(data);
   navigateToId(`claim_id:${data.root_claim_id}`, true);
 }

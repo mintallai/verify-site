@@ -2,6 +2,13 @@ import init, {
   get_summary_from_array_buffer,
 } from '@contentauth/toolkit/pkg/web/toolkit';
 
+// TODO: Update this with newrelic typescript defs
+declare global {
+  interface Window {
+    newrelic: any;
+  }
+}
+
 const JPEG_MIME_TYPE = 'image/jpeg';
 
 let toolkit: any;
@@ -48,11 +55,20 @@ export async function getSummaryFromUrl(
   await loadToolkit();
   const res = await fetch(url);
   if (res.ok) {
-    if (res.headers.get('Content-Type') === JPEG_MIME_TYPE) {
+    const contentType = res.headers.get('Content-Type');
+    if (contentType === JPEG_MIME_TYPE) {
       const arrayBuffer = await res.arrayBuffer();
       return get_summary_from_array_buffer(arrayBuffer, false);
     }
-    throw new Error(ToolkitError.InvalidFile);
+    const invalidFileError = new Error(ToolkitError.InvalidFile);
+    window.newrelic?.noticeError(invalidFileError, { url, contentType });
+    throw invalidFileError;
   }
-  throw new Error(ToolkitError.FetchError);
+  const fetchError = new Error(ToolkitError.FetchError);
+  window.newrelic?.noticeError(fetchError, {
+    url,
+    status: res.status,
+    statusText: res.statusText,
+  });
+  throw fetchError;
 }

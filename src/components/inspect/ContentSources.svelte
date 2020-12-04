@@ -86,39 +86,41 @@
   }
 </style>
 
-<div class="relative pb-4 border-b border-gray-200">
+<div class="pb-4 border-b border-gray-200">
   <h2 class="my-0 mb-4">
     <span>Content record</span>
     <cai-tooltip
       class="ml-2"
-      content="The person who produced this content attached tamper-evident editing and activity data on export." />
+      content="Tamper-evident editing and activity data attached on export, including additional images and anything else used to make the selected content." />
   </h2>
-  <!-- <div class="mt-3 mb-4 leading-snug text-gray-700">
-    Select one of these elements to view more of the content record.
-  </div> -->
-  {#if $primaryId}
-    <div
-      class="active-bg"
-      style="top: {$bgStyles.top}px; width: {$bgStyles.width}px;" />
-  {/if}
-  <div bind:this={container} class="grid">
-    {#each breadcrumbList as asset, index (asset._id)}
+  <div class="mt-3 mb-4 leading-snug text-gray-700">
+    Select an image to explore the content record.
+  </div>
+  <div class="relative">
+    {#if $primaryId}
       <div
-        in:add={{ key: asset._id }}
-        out:remove|local={{ key: asset._id }}
-        animate:flip
-        id={`record-${index}`}
-        class="breadcrumb-item"
-        class:current={asset._id === $primaryId}>
-        {#if index === 0}
-          <cai-tooltip
-            content="This is the content you started with."
-            class="info">
-            <cai-icon name="Pin" width="20px" height="20px" />
-          </cai-tooltip>
-        {/if}
-        <Asset {asset} hasConnector={index > 0} />
-      </div>
-    {/each}
+        class="active-bg"
+        style="top: {$bgStyles.top}px; width: {$bgStyles.width}px;" />
+    {/if}
+    <div bind:this={container} class="grid">
+      {#each breadcrumbList as asset, index (asset._id)}
+        <div
+          in:add={{ key: asset._id }}
+          out:remove|local={{ key: asset._id }}
+          animate:flip
+          id={`record-${index}`}
+          class="breadcrumb-item"
+          class:current={asset._id === $primaryId}>
+          {#if index === 0}
+            <cai-tooltip
+              content="This is the content you started with."
+              class="info">
+              <cai-icon name="Pin" width="20px" height="20px" />
+            </cai-tooltip>
+          {/if}
+          <Asset {asset} hasConnector={index > 0} />
+        </div>
+      {/each}
+    </div>
   </div>
 </div>
