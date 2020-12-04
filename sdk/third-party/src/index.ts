@@ -68,7 +68,7 @@ async function decorateImage(img: HTMLImageElement, source: string) {
     const imageInfo = document.createElement('image-info') as ImageInfoElement;
     const params = new URLSearchParams();
     const moduleOrigin = parseUrl(moduleBase).origin;
-    params.append('callout', 'anchor');
+    params.append('tour', '1');
     params.append('source', source);
     imageInfo.summary = summary;
     imageInfo.href = `${moduleOrigin}/inspect?${params.toString()}`;
