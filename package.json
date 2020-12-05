@@ -76,7 +76,8 @@
     "svelte": "^3.23.2",
     "svelte-css-vars": "^0.0.1",
     "svelte-preprocess": "^4.1.1",
-    "tippy.js": "^6.2.6"
+    "tippy.js": "^6.2.6",
+    "toposort": "^2.0.2"
   },
   "routify": {
     "extensions": "svelte,html,svx,md",
