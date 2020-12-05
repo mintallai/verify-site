@@ -1,9 +1,22 @@
 <script lang="ts">
-  import { url } from '@roxi/routify';
   import Button from './Button.svelte';
-  import { learnMoreUrl, faqUrl } from '../stores';
+  import {
+    learnMoreUrl,
+    faqUrl,
+    summary,
+    navigateToId,
+    secondaryId,
+  } from '../stores';
 
   export let allowDragDrop = false;
+
+  function reset() {
+    const rootId = $summary?.root_claim_id;
+    if (rootId) {
+      secondaryId.set('');
+      navigateToId(`claim_id:${rootId}`);
+    }
+  }
 </script>
 
 <style lang="postcss">
@@ -13,6 +26,9 @@
   }
   header.allowDragDrop {
     @apply bg-purple-200;
+  }
+  .logo {
+    @apply flex select-none outline-none;
   }
   .beta {
     @apply inline-block bg-gray-200 text-gray-700 font-semibold text-xxs rounded px-2 py-0 ml-3;
@@ -26,10 +42,10 @@
 
 <header class="flex" class:allowDragDrop>
   <div class="flex-shrink">
-    <a href={$learnMoreUrl} target="_blank" class="flex flex-start select-none">
+    <button on:click={reset} class="logo">
       <h1 class="font-black text-2xl leading-none">Verify</h1>
       <div class="beta">Beta</div>
-    </a>
+    </button>
   </div>
   {#if allowDragDrop}
     <div class="dnd">Drag and drop enabled</div>
