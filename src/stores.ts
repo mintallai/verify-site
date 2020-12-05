@@ -1,8 +1,10 @@
 import { readable, writable, derived, get } from 'svelte/store';
+import toposort from 'toposort';
+import size from 'lodash/size';
 import omit from 'lodash/omit';
 import reduce from 'lodash/reduce';
 import mapValues from 'lodash/mapValues';
-import { addIdentifiers } from './lib/claim';
+import { addIdentifiers, getIdentifier } from './lib/claim';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL =
@@ -97,6 +99,51 @@ export const assetsByIdentifier = derived<
     }
   });
 });
+
+// FIXME: This needs to work for references as well - right now only claims are working
+export const sortedAssets = derived<[typeof summary], ViewableItem[]>(
+  [summary],
+  ([$summary]) => {
+    if (size($summary?.claims)) {
+      const { claims } = $summary;
+      const nodes = Object.keys(claims);
+      const edges = reduce(
+        claims,
+        (acc, claim) => {
+          const deps = (claim.references || [])
+            .filter((ref) => !!ref.claim_id)
+            .map((ref) => {
+              return [claim.claim_id, ref.claim_id];
+            });
+          return [...acc, ...deps];
+        },
+        [],
+      );
+      const sorted = toposort.array(nodes, edges);
+      return sorted.map((id) => {
+        const item = claims[id];
+        const _id = getIdentifier(item);
+        if (item.claim_id) {
+          const claim = $summary.claims[item.claim_id];
+          return {
+            ...claim,
+            type: 'claim',
+            _id,
+          } as ViewableItem;
+        } else {
+          const ref = omit(item, ['claim_id', 'id']);
+          return {
+            ...ref,
+            type: 'reference',
+            _id,
+          } as ViewableItem;
+        }
+      });
+    } else {
+      return [];
+    }
+  },
+);
 
 export const primaryAsset = derived<
   [typeof assetsByIdentifier, typeof primaryId],

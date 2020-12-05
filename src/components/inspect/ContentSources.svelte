@@ -5,12 +5,7 @@
   import { crossfade } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import Asset from './Asset.svelte';
-  import {
-    contentSourceIds,
-    assetsByIdentifier,
-    primaryId,
-  } from '../../stores';
-  import { getBreadcrumbList } from '../../lib/claim';
+  import { sortedAssets, primaryId } from '../../stores';
 
   const [add, remove] = crossfade({
     fallback(node) {
@@ -67,8 +62,6 @@
   onDestroy(() => {
     resizeObserver?.disconnect();
   });
-
-  $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
 </script>
 
 <style lang="postcss">
@@ -86,7 +79,7 @@
   }
 </style>
 
-<div class="pb-4 border-b border-gray-200">
+<div class="pb-4">
   <h2 class="my-0 mb-4">
     <span>Content record</span>
     <cai-tooltip
@@ -103,7 +96,7 @@
         style="top: {$bgStyles.top}px; width: {$bgStyles.width}px;" />
     {/if}
     <div bind:this={container} class="grid">
-      {#each breadcrumbList as asset, index (asset._id)}
+      {#each $sortedAssets as asset, index (asset._id)}
         <div
           in:add={{ key: asset._id }}
           out:remove|local={{ key: asset._id }}

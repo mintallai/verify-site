@@ -140,11 +140,6 @@
     <section class="border-r p-4">
       {#if !isComparing}
         <ContentSources />
-        {#if primary?.type === 'claim'}
-          <div in:fade|local={{ duration: 200 }}>
-            <Assets claim={primary} />
-          </div>
-        {/if}
       {:else if primary?.type === 'claim'}
         <About
           claim={primary}
