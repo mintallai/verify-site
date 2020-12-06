@@ -52,6 +52,7 @@
     if (source) {
       try {
         const data = await getSummaryFromUrl(source);
+        window.newrelic?.setCustomAttribute('source', source);
         setSummary(data);
         startTour({ summary: $summary, start: tour, force: forceTour });
       } catch (err) {

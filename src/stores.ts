@@ -20,7 +20,11 @@ export const primaryId = writable<string>('');
 
 export const secondaryId = writable<string>('');
 
-export function navigateToId(newId: string, clearBreadcrumbs = false): void {
+export function navigateToId(
+  newId: string,
+  clearBreadcrumbs = false,
+  logEvent = true,
+): void {
   console.debug(
     'Navigating to',
     newId,
@@ -45,11 +49,20 @@ export function navigateToId(newId: string, clearBreadcrumbs = false): void {
     }
   });
   primaryId.set(newId);
+  if (logEvent) {
+    window.newrelic?.addPageAction('navigateToId', { id: newId });
+  }
 }
 
-export function compareWithId(id: string): void {
+export function compareWithId(id: string, logEvent = true): void {
   console.debug('Comparing with', id);
   secondaryId.set(id);
+  if (logEvent) {
+    window.newrelic?.addPageAction('compareWithId', {
+      id: get(primaryId),
+      comparingWith: id,
+    });
+  }
 }
 
 export const summary = writable<ISummaryResponse | null>(null, (set) => {
@@ -76,7 +89,6 @@ export async function setSummary(data: ISummaryResponse) {
       refs.find((x) => x.title && x.claim_id === claim_id)?.title,
     claim_id,
   }));
-  console.debug('Setting summary', data);
   summary.set(data);
   navigateToRoot();
 }
@@ -92,12 +104,11 @@ export const rootClaimId = derived<[typeof summary], string | null>(
   },
 );
 
-export function navigateToRoot(): void {
+export function navigateToRoot(logEvent = true): void {
   const rootId = get(rootClaimId);
   if (rootId) {
     secondaryId.set('');
-    console.log('rootId', rootId);
-    navigateToId(rootId, true);
+    navigateToId(rootId, true, logEvent);
   }
 }
 

@@ -6,10 +6,6 @@
 </script>
 
 <style lang="postcss">
-  .active-bg {
-    @apply absolute bg-gray-200 rounded w-full z-0 pointer-events-none;
-    height: 112px;
-  }
   .breadcrumb-item {
     @apply relative;
   }
