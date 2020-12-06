@@ -33,6 +33,7 @@
   function setMode(newMode: CompareMode) {
     mode = newMode;
     store.local.set(STORAGE_MODE_KEY, mode);
+    window.newrelic?.addPageAction('setCompareMode', { compareMode: mode });
   }
 </script>
 

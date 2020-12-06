@@ -59,24 +59,24 @@
     to-fast-properties "^2.0.0"
 
 "@contentauth/sdk@^0.1.1-alpha.46":
-  version "0.1.1-alpha.61"
-  resolved "https://npm.pkg.github.com/download/@contentauth/sdk/0.1.1-alpha.61/d79cc8baaf5358d19b6396e754659dba397dbf143a0b16180e5130775f4ae9b2#b8c1c3023b10e09d5ab6fb403a90ca8840c0ffd1"
-  integrity sha512-NVqZhJKMSbdqpDSoaLQqdcn9MeE656zHm9gJmBLR9XOcbl4vXdia/JiWC0dnHQMY6wShcHSQYRs21v2hzUwqQg==
+  version "0.1.1-alpha.62"
+  resolved "https://npm.pkg.github.com/download/@contentauth/sdk/0.1.1-alpha.62/a329f6f70bb6e40dd38a9f714370a238b84ffec7b9b297489ab653aa0c482aed#c66a834772e6e2dff65d8754b067e24a1d0791ca"
+  integrity sha512-9CUtwXQPcbOsvjE8Cji/vxj7bRwbYYvEYFSluTLRKXSq2lPL7dY+oGDi4hGX+sNdc6J7A33FmKRGodY5v+E99w==
   dependencies:
-    "@contentauth/toolkit" "^0.1.1-alpha.61+5e7f36c"
+    "@contentauth/toolkit" "^0.1.1-alpha.62+13e5991"
     make-error "^1.3.6"
     p-memoize "^4.0.1"
     p-queue "^6.6.2"
 
-"@contentauth/toolkit@^0.1.1-alpha.46", "@contentauth/toolkit@^0.1.1-alpha.61+5e7f36c":
-  version "0.1.1-alpha.61"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.61/0198c9cab39db02b58216078f9bda5eda61f9de3f7855a142a8037428e15a99d#525601783c0b026cc676df493cc62f6d4137ecba"
-  integrity sha512-bRCzCZJyxJSorYrBOUTRL0c/RhBhdXQKn7xPU2kGNXMj8O1vbaK7TTZwlKMWQOkYeVtMxrSUkXICmVeiMep+IQ==
+"@contentauth/toolkit@^0.1.1-alpha.46", "@contentauth/toolkit@^0.1.1-alpha.62+13e5991":
+  version "0.1.1-alpha.62"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.62/28bc121fb2d672ae3fb0989bc94222205be1cffc2e54f12d3748b9b43c28ec5c#bc8eaed957275cbe06e9f0d87a9b395323266a41"
+  integrity sha512-MA9AihkwHPawzl4uaMV0Sh0RyLAnV7zSl6bULnIKTyBYQqvolLSAt+rRvVd0vVCtUVuR6HKrDs+rp5+koJZjOQ==
 
 "@contentauth/web-components@^0.1.1-alpha.46":
-  version "0.1.1-alpha.61"
-  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.61/002c5cc6285ad6d3e41280473226bd765e1630fd4c5aed2a4fc81840c9e8003e#4c5f4ae4904828f730fb4ef97604fdb9bd74bbaf"
-  integrity sha512-5t61K+c9DbqCViN7ExsOHWUOxajRnKFFLHcE6kYTaxeoDDi6li35a8nqPN4LFCBnUKnMlP76Tn4QcLM5m7Ik3A==
+  version "0.1.1-alpha.62"
+  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.62/b6439aa35ac0ff4dcfde3580f8bb0e6e6c5e0a3787283a47cb75042874aaced5#0e95f20ef9e7f47ae3572c248276c57b824f00eb"
+  integrity sha512-Xv6LUDD8FDNdBs7vZhgoYcYKF7DCHj+x2+XP/pT1qm/6OOxyHGchStqa6izfw52ODTGJrgjW921XOab3T25EeA==
   dependencies:
     "@popperjs/core" "^2.5.4"
     date-fns "^2.16.1"

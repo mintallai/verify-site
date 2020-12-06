@@ -28,7 +28,7 @@
 
 <header class="flex" class:allowDragDrop>
   <div class="flex-shrink">
-    <button on:click={navigateToRoot} class="logo">
+    <button on:click={() => navigateToRoot()} class="logo">
       <h1 class="font-black text-2xl leading-none">Verify</h1>
       <div class="beta">Beta</div>
     </button>

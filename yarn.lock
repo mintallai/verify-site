@@ -24,14 +24,14 @@
     js-tokens "^4.0.0"
 
 "@contentauth/toolkit@^0.1.1-alpha.47":
-  version "0.1.1-alpha.61"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.61/0198c9cab39db02b58216078f9bda5eda61f9de3f7855a142a8037428e15a99d#525601783c0b026cc676df493cc62f6d4137ecba"
-  integrity sha512-bRCzCZJyxJSorYrBOUTRL0c/RhBhdXQKn7xPU2kGNXMj8O1vbaK7TTZwlKMWQOkYeVtMxrSUkXICmVeiMep+IQ==
+  version "0.1.1-alpha.62"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.62/28bc121fb2d672ae3fb0989bc94222205be1cffc2e54f12d3748b9b43c28ec5c#bc8eaed957275cbe06e9f0d87a9b395323266a41"
+  integrity sha512-MA9AihkwHPawzl4uaMV0Sh0RyLAnV7zSl6bULnIKTyBYQqvolLSAt+rRvVd0vVCtUVuR6HKrDs+rp5+koJZjOQ==
 
 "@contentauth/web-components@^0.1.1-alpha.47":
-  version "0.1.1-alpha.61"
-  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.61/002c5cc6285ad6d3e41280473226bd765e1630fd4c5aed2a4fc81840c9e8003e#4c5f4ae4904828f730fb4ef97604fdb9bd74bbaf"
-  integrity sha512-5t61K+c9DbqCViN7ExsOHWUOxajRnKFFLHcE6kYTaxeoDDi6li35a8nqPN4LFCBnUKnMlP76Tn4QcLM5m7Ik3A==
+  version "0.1.1-alpha.62"
+  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.62/b6439aa35ac0ff4dcfde3580f8bb0e6e6c5e0a3787283a47cb75042874aaced5#0e95f20ef9e7f47ae3572c248276c57b824f00eb"
+  integrity sha512-Xv6LUDD8FDNdBs7vZhgoYcYKF7DCHj+x2+XP/pT1qm/6OOxyHGchStqa6izfw52ODTGJrgjW921XOab3T25EeA==
   dependencies:
     "@popperjs/core" "^2.5.4"
     date-fns "^2.16.1"

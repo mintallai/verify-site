@@ -39,7 +39,7 @@ function getParentRef(summary) {
 }
 
 async function gotoRootClaim(summary) {
-  navigateToId(`claim_id:${summary.root_claim_id}`);
+  navigateToId(`claim_id:${summary.root_claim_id}`, false, false);
   return delay(DELAY_MS);
 }
 
@@ -47,7 +47,7 @@ async function gotoParentClaim(summary) {
   const parentRef = getParentRef(summary);
   if (parentRef) {
     secondaryId.set('');
-    navigateToId(`claim_id:${parentRef.claim_id}`);
+    navigateToId(`claim_id:${parentRef.claim_id}`, false, false);
     await delay(DELAY_MS);
   }
 }
@@ -55,8 +55,8 @@ async function gotoParentClaim(summary) {
 async function gotoCompare(summary) {
   const parentRef = getParentRef(summary);
   if (parentRef) {
-    navigateToId(`claim_id:${parentRef.claim_id}`);
-    compareWithId(`claim_id:${summary.root_claim_id}`);
+    navigateToId(`claim_id:${parentRef.claim_id}`, false, false);
+    compareWithId(`claim_id:${summary.root_claim_id}`, false);
     await delay(DELAY_MS);
   }
 }
@@ -77,7 +77,8 @@ export function createTour({ summary }) {
   tour.on('complete', () => {
     console.debug('Tour completed');
     store.set(COMPLETE_LOCALSTORAGE_KEY, Date.now());
-    navigateToRoot();
+    navigateToRoot(false);
+    window.newrelic?.addPageAction('finishedTour');
   });
 
   tour.addStep({
