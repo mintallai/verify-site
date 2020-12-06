@@ -14,7 +14,6 @@
   import CircleLoader from '../components/CircleLoader.svelte';
   import Header from '../components/Header.svelte';
   import ContentSources from '../components/inspect/ContentSources.svelte';
-  import Assets from '../components/inspect/Assets.svelte';
   import NoInfo from '../components/inspect/NoInfo.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
   import DragOverlay from '../components/inspect/DragOverlay.svelte';

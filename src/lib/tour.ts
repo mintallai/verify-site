@@ -2,7 +2,12 @@ import Shepherd from 'shepherd.js';
 import delay from 'delay';
 import store from 'store2';
 import TourStep from '../components/inspect/TourStep.svelte';
-import { navigateToId, compareWithId, secondaryId } from '../stores';
+import {
+  navigateToId,
+  compareWithId,
+  secondaryId,
+  navigateToRoot,
+} from '../stores';
 
 const COMPLETE_LOCALSTORAGE_KEY = 'hasSeenTour';
 const DELAY_MS = 500;
@@ -60,7 +65,10 @@ export function createTour({ summary }) {
   const tour = new Shepherd.Tour({
     defaultStepOptions: {
       popperOptions: {
-        modifiers: [{ name: 'offset', options: { offset: [8, 7] } }],
+        modifiers: [
+          { name: 'offset', options: { offset: [8, 7] } },
+          { name: 'preventOverflow', enabled: false },
+        ],
       },
     },
     useModalOverlay: true,
@@ -69,6 +77,7 @@ export function createTour({ summary }) {
   tour.on('complete', () => {
     console.debug('Tour completed');
     store.set(COMPLETE_LOCALSTORAGE_KEY, Date.now());
+    navigateToRoot();
   });
 
   tour.addStep({

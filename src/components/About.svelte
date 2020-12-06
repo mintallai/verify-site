@@ -1,17 +1,31 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-  import { faqUrl } from '../stores';
+  import { createEventDispatcher, afterUpdate } from 'svelte';
+  import { faqUrl, rootClaimId } from '../stores';
+  import { getIdentifier } from '../lib/claim';
   import Alert from './Alert.svelte';
   import Icon from './Icon.svelte';
+
+  type TooltipElement = HTMLElement & {
+    getPopper: any;
+  };
 
   export let claim: IClaimSummary;
   export let isComparing: boolean = false;
   export let isPopup: boolean = false;
+  let element: HTMLElement;
   const dispatch = createEventDispatcher();
 
   $: alternate = isComparing || isPopup;
   $: variant = isComparing ? 'sm' : 'lg';
   $: isSecureCapture = /truepic/i.test(claim?.produced_with);
+
+  afterUpdate(() => {
+    // We need to force tooltip repositioning if the alert components shows/hides
+    element
+      ?.querySelector('claim-info')
+      ?.shadowRoot?.querySelectorAll('cai-tooltip')
+      ?.forEach((el: TooltipElement) => el?.getPopper()?.update());
+  });
 </script>
 
 <style lang="postcss">
@@ -36,11 +50,16 @@
   }
 </style>
 
-<div>
+<div bind:this={element}>
   <!-- Compare header -->
   {#if alternate}
     {#if isComparing}
       <h2 class="filename">
+        {#if getIdentifier(claim) === $rootClaimId}
+          <div class="mr-2">
+            <cai-icon name="Pin" width="20px" height="20px" />
+          </div>
+        {/if}
         <div>
           <div
             class="font-bold text-xs uppercase text-gray-500 leading-none mb-1">
