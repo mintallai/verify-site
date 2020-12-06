@@ -21,7 +21,12 @@ export const primaryId = writable<string>('');
 export const secondaryId = writable<string>('');
 
 export function navigateToId(newId: string, clearBreadcrumbs = false): void {
-  console.debug('Navigating to', newId, get(contentSourceIds));
+  console.debug(
+    'Navigating to',
+    newId,
+    clearBreadcrumbs,
+    get(contentSourceIds),
+  );
   const currId = get(primaryId);
   contentSourceIds.update((ids) => {
     if (clearBreadcrumbs) {
@@ -73,7 +78,27 @@ export async function setSummary(data: ISummaryResponse) {
   }));
   console.debug('Setting summary', data);
   summary.set(data);
-  navigateToId(`claim_id:${data.root_claim_id}`, true);
+  navigateToRoot();
+}
+
+export const rootClaimId = derived<[typeof summary], string | null>(
+  [summary],
+  ([$summary]) => {
+    const rootId = $summary?.root_claim_id;
+    if (rootId) {
+      return `claim_id:${rootId}`;
+    }
+    return null;
+  },
+);
+
+export function navigateToRoot(): void {
+  const rootId = get(rootClaimId);
+  if (rootId) {
+    secondaryId.set('');
+    console.log('rootId', rootId);
+    navigateToId(rootId, true);
+  }
 }
 
 export const assetsByIdentifier = derived<

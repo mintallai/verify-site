@@ -24,14 +24,14 @@
     js-tokens "^4.0.0"
 
 "@contentauth/toolkit@^0.1.1-alpha.47":
-  version "0.1.1-alpha.59"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.59/585c2c79c5179fcc6b89f3d3b4a649b5362dba78f67b2cd936b4ca44fe18a029#42ec142f51f45d786df706ded44a8bfe16710b1a"
-  integrity sha512-gYhH/FE87ZKrU2zkni7NbKuXbuSp0by9V7nsLYfWuyQwGMMhlS9DWfPtfvT9c/Ti2YCSwQuPJXJxdSEVUYVjrA==
+  version "0.1.1-alpha.61"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1-alpha.61/0198c9cab39db02b58216078f9bda5eda61f9de3f7855a142a8037428e15a99d#525601783c0b026cc676df493cc62f6d4137ecba"
+  integrity sha512-bRCzCZJyxJSorYrBOUTRL0c/RhBhdXQKn7xPU2kGNXMj8O1vbaK7TTZwlKMWQOkYeVtMxrSUkXICmVeiMep+IQ==
 
 "@contentauth/web-components@^0.1.1-alpha.47":
-  version "0.1.1-alpha.59"
-  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.59/4cece37bd7c72ed1f092032dae59affe86de8ca55425164b1a2147caffd44129#1653e0f0549f154286ead97f51a306dec1ea5ad3"
-  integrity sha512-FiOFNQRqbLv8rKrOL2LX1kdXWpDQbFtMSmLYOk3ybNIpbhL/719H+U0MmPuzp7FCl7KDdBaY0AZP/4m6nrT7Tw==
+  version "0.1.1-alpha.61"
+  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1-alpha.61/002c5cc6285ad6d3e41280473226bd765e1630fd4c5aed2a4fc81840c9e8003e#4c5f4ae4904828f730fb4ef97604fdb9bd74bbaf"
+  integrity sha512-5t61K+c9DbqCViN7ExsOHWUOxajRnKFFLHcE6kYTaxeoDDi6li35a8nqPN4LFCBnUKnMlP76Tn4QcLM5m7Ik3A==
   dependencies:
     "@popperjs/core" "^2.5.4"
     date-fns "^2.16.1"
@@ -3406,9 +3406,9 @@ rollup-pluginutils@^2.8.2:
     estree-walker "^0.6.1"
 
 rollup@^2.18.1:
-  version "2.34.1"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.34.1.tgz#a387230df02c58b242794a213dfb68b42de2c8fb"
-  integrity sha512-tGveB6NU5x4MS/iXaIsjfUkEv4hxzJJ4o0FRy5LO62Ndx3R2cmE1qsLYlSfRkvHUUPqWiFoxEm8pRftzh1a5HA==
+  version "2.34.2"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.34.2.tgz#fa73e05c64df587e9ed4dc80d7d4e7d4a43f8908"
+  integrity sha512-mvtQLqu3cNeoctS+kZ09iOPxrc1P1/Bt1z15enuQ5feyKOdM3MJAVFjjsygurDpSWn530xB4AlA83TWIzRstXA==
   optionalDependencies:
     fsevents "~2.1.2"
 

@@ -1,22 +1,8 @@
 <script lang="ts">
   import Button from './Button.svelte';
-  import {
-    learnMoreUrl,
-    faqUrl,
-    summary,
-    navigateToId,
-    secondaryId,
-  } from '../stores';
+  import { learnMoreUrl, faqUrl, navigateToRoot } from '../stores';
 
   export let allowDragDrop = false;
-
-  function reset() {
-    const rootId = $summary?.root_claim_id;
-    if (rootId) {
-      secondaryId.set('');
-      navigateToId(`claim_id:${rootId}`);
-    }
-  }
 </script>
 
 <style lang="postcss">
@@ -42,7 +28,7 @@
 
 <header class="flex" class:allowDragDrop>
   <div class="flex-shrink">
-    <button on:click={reset} class="logo">
+    <button on:click={navigateToRoot} class="logo">
       <h1 class="font-black text-2xl leading-none">Verify</h1>
       <div class="beta">Beta</div>
     </button>

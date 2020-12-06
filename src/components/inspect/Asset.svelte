@@ -2,12 +2,12 @@
   import { scale } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
   import cssVars from 'svelte-css-vars';
-  import Button from '../Button.svelte';
   import { navigateToId, compareWithId, primaryId } from '../../stores';
 
   let hover: boolean;
   export let asset: ViewableItem;
   export let hasConnector: boolean = false;
+  export let current: boolean = false;
 
   function scaleIn(node: HTMLElement, _params: any) {
     const existingTransform = getComputedStyle(node).transform.replace(
@@ -41,10 +41,13 @@
     height: 155px;
   }
   .item {
-    @apply p-2 grid gap-3 max-w-full;
+    @apply rounded p-2 grid gap-3 max-w-full bg-transparent transition-colors;
     grid-template-columns: 94px auto;
     min-height: 0;
     min-width: 0;
+  }
+  .item.current {
+    @apply bg-gray-200;
   }
   .compare {
     @apply flex items-center justify-center border-t border-gray-350 text-purple-500 text-sm;
@@ -89,7 +92,7 @@
   {#if hasConnector}
     <div class="connector" in:scaleIn />
   {/if}
-  <div class="item">
+  <div class="item" class:current>
     {#if asset.type === 'claim'}
       <div
         class="thumbnail"
