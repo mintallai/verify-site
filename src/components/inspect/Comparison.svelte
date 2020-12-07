@@ -41,6 +41,8 @@
   .selector {
     @apply grid grid-cols-2 mb-5 mt-3;
     grid-gap: 2px;
+    /* Needed to keep Safari from taking up the full height */
+    height: 40px;
   }
   .selector button {
     @apply bg-gray-200 text-center font-bold text-sm py-2 outline-none transition-colors duration-150;
