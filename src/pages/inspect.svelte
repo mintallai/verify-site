@@ -39,6 +39,7 @@
   let allowDragDrop = false;
   let isDraggingOver = false;
   let error: ToolkitError;
+  let tour: ReturnType<typeof startTour>;
   let winW = 0;
   let winH = 0;
 
@@ -47,18 +48,30 @@
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
   $: showMobileOverlay = winW < 1024 || winH < 400;
+  $: {
+    // Cancel the tour if the overlay is showing
+    if (tour && tour.isActive() && showMobileOverlay) {
+      tour.cancel();
+    }
+  }
 
   onMount(async () => {
     const params = new URLSearchParams(window.location.search?.substr(1));
     const source = params.get('source');
-    const tour = params.get('tour');
+    const tourFlag = params.get('tour');
     const forceTour = params.get('forceTour');
     if (source) {
       try {
         const data = await getSummaryFromUrl(source);
         window.newrelic?.setCustomAttribute('source', source);
         setSummary(data);
-        startTour({ summary: $summary, start: tour, force: forceTour });
+        if (!showMobileOverlay) {
+          tour = startTour({
+            summary: $summary,
+            start: tourFlag,
+            force: forceTour,
+          });
+        }
       } catch (err) {
         error = err;
       }
