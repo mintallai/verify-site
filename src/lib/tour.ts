@@ -143,5 +143,6 @@ export function startTour({ summary, start, force }) {
         tour.show(start);
       }
     }
+    return tour;
   }
 }

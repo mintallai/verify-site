@@ -8,6 +8,7 @@
 <style lang="postcss">
   header {
     @apply col-span-3 border-gray-200 border-b px-5 flex items-center justify-between;
+    max-width: 100vw;
     height: 80px;
   }
   header.allowDragDrop {

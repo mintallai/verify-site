@@ -7,7 +7,7 @@
 
 <style lang="postcss">
   .alert {
-    @apply flex border rounded text-sm p-3;
+    @apply flex border rounded text-base p-3 pr-4;
   }
   cai-icon {
     @apply mr-2;

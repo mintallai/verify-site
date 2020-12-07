@@ -81,7 +81,7 @@
     <div class="mb-4">
       <Alert
         severity="info"
-        message={`This photo was captured by a secure device. <a href="${getFaqUrl('block-yui_3_17_2_1_1607115018705_17736')}" target="_blank" style="text-decoration: underline;">Learn more</a>`} />
+        message={`This is an original photo, taken on a secure device. <a href="${getFaqUrl('block-yui_3_17_2_1_1607115018705_17736')}" target="_blank" style="text-decoration: underline;">Learn more</a>`} />
     </div>
   {/if}
 

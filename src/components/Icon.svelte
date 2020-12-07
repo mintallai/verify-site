@@ -9,6 +9,7 @@
     ChevronRightIcon,
     CloseIcon,
     ColorPaletteIcon,
+    DeviceDesktopIcon,
     FolderOpenOutlineIcon,
     GroupIcon,
     ImageSearchIcon,
@@ -31,6 +32,7 @@
     ChevronRightIcon,
     CloseIcon,
     ColorPaletteIcon,
+    DeviceDesktopIcon,
     FolderOpenOutlineIcon,
     GroupIcon,
     ImageSearchIcon,
@@ -46,7 +48,7 @@
 <script lang="ts">
   enum Sizes {
     '4xl' = `4rem`,
-    '3xl' = `3rem`,
+    '3xl' = `2.5rem`,
     '2xl' = `1.5rem`,
     xl = `1.25rem`,
     l = `1.125rem`,
