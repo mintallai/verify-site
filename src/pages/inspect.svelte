@@ -14,6 +14,7 @@
   import CircleLoader from '../components/CircleLoader.svelte';
   import Header from '../components/Header.svelte';
   import ContentSources from '../components/inspect/ContentSources.svelte';
+  import Icon from '../components/Icon.svelte';
   import NoInfo from '../components/inspect/NoInfo.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
   import DragOverlay from '../components/inspect/DragOverlay.svelte';
@@ -38,11 +39,14 @@
   let allowDragDrop = false;
   let isDraggingOver = false;
   let error: ToolkitError;
+  let winW = 0;
+  let winH = 0;
 
   $: isLoading = $summary === null;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
+  $: showMobileOverlay = winW < 1024 || winH < 400;
 
   onMount(async () => {
     const params = new URLSearchParams(window.location.search?.substr(1));
@@ -103,6 +107,7 @@
   }
   footer {
     @apply col-span-3 flex justify-center items-center text-xs border-t border-gray-200;
+    max-width: 100vw;
   }
   footer a {
     @apply underline;
@@ -111,9 +116,33 @@
     @apply px-1;
     content: '|';
   }
+  .mobile-overlay {
+    @apply fixed flex justify-center items-center left-0 right-0 bg-white z-50;
+    top: 80px;
+    bottom: 55px;
+  }
+  .mobile-overlay .content {
+    @apply flex flex-col justify-center items-center text-center text-xl leading-snug;
+    max-width: 354px;
+  }
 </style>
 
+<svelte:window bind:innerWidth={winW} bind:innerHeight={winH} />
 <main>
+  {#if showMobileOverlay}
+    <div transition:fade={{ duration: 500 }} class="mobile-overlay">
+      <div class="content">
+        <Icon
+          size="3xl"
+          name="workflow:DeviceDesktop"
+          class="text-purple-500 mb-3" />
+        <div>
+          Increase the size of your browser window to view. If you’re on a
+          mobile device, open this page on a computer.
+        </div>
+      </div>
+    </div>
+  {/if}
   {#if isDraggingOver}
     <div
       transition:fade={{ duration: 200 }}
