@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher, afterUpdate } from 'svelte';
-  import { faqUrl, rootClaimId } from '../stores';
+  import { getFaqUrl, rootClaimId } from '../stores';
   import { getIdentifier } from '../lib/claim';
   import Alert from './Alert.svelte';
   import Icon from './Icon.svelte';
@@ -81,7 +81,7 @@
     <div class="mb-4">
       <Alert
         severity="info"
-        message={`This photo was captured by a secure device. <a href="${$faqUrl}" target="_blank" style="text-decoration: underline;">Learn more</a>`} />
+        message={`This photo was captured by a secure device. <a href="${getFaqUrl('block-yui_3_17_2_1_1607115018705_17736')}" target="_blank" style="text-decoration: underline;">Learn more</a>`} />
     </div>
   {/if}
 

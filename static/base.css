@@ -104,7 +104,6 @@
     position: absolute;
     width: 16px;
     height: 16px;
-    top: 8px;
     z-index: -1;
   }
   .shepherd-arrow:before {

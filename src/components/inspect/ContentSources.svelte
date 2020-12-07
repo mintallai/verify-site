@@ -29,10 +29,7 @@
   <div class="relative">
     <div bind:this={container} class="grid">
       {#each $sortedAssets as asset, index (asset._id)}
-        <div
-          id={`record-${index}`}
-          class="breadcrumb-item"
-          class:current={asset._id === $primaryId}>
+        <div class="breadcrumb-item" class:current={asset._id === $primaryId}>
           {#if index === 0}
             <cai-tooltip
               content="This is the content you started with."
@@ -42,6 +39,7 @@
           {/if}
           <Asset
             {asset}
+            id={`record-${index}`}
             current={asset._id === $primaryId}
             hasConnector={index > 0} />
         </div>
