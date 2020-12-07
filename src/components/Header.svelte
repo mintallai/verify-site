@@ -1,6 +1,6 @@
 <script lang="ts">
   import Button from './Button.svelte';
-  import { learnMoreUrl, faqUrl, navigateToRoot } from '../stores';
+  import { learnMoreUrl, getFaqUrl, navigateToRoot } from '../stores';
 
   export let allowDragDrop = false;
 </script>
@@ -37,7 +37,10 @@
     <div class="dnd">Drag and drop enabled</div>
   {/if}
   <div class="flex-grow text-right">
-    <a href={$faqUrl} target="_blank" class="font-bold text-sm tracking-tight">
+    <a
+      href={getFaqUrl()}
+      target="_blank"
+      class="font-bold text-sm tracking-tight">
       FAQ
     </a>
   </div>

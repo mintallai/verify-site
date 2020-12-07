@@ -65,10 +65,7 @@ export function createTour({ summary }) {
   const tour = new Shepherd.Tour({
     defaultStepOptions: {
       popperOptions: {
-        modifiers: [
-          { name: 'offset', options: { offset: [8, 7] } },
-          { name: 'preventOverflow', enabled: false },
-        ],
+        modifiers: [{ name: 'offset', options: { offset: [0, 7] } }],
       },
     },
     useModalOverlay: true,
@@ -120,9 +117,6 @@ export function createTour({ summary }) {
     attachTo: {
       element: '#compare-selector',
       on: 'left-start',
-    },
-    popperOptions: {
-      modifiers: [{ name: 'offset', options: { offset: [-4, 7] } }],
     },
     beforeShowPromise: () => gotoCompare(summary),
     text: () =>

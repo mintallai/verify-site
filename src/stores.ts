@@ -7,18 +7,20 @@ import mapValues from 'lodash/mapValues';
 import { addIdentifiers, getIdentifier } from './lib/claim';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
-const FAQ_URL =
-  'https://contentauthenticity.org/faq#block-yui_3_17_2_1_1606953206758_44130';
+const FAQ_URL = 'https://contentauthenticity.org/faq';
+const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 
 export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
-
-export const faqUrl = readable<string>(FAQ_URL, () => {});
 
 export const contentSourceIds = writable<string[]>([]);
 
 export const primaryId = writable<string>('');
 
 export const secondaryId = writable<string>('');
+
+export function getFaqUrl(id = FAQ_VERIFY_SECTION_ID): string {
+  return `${FAQ_URL}#${id}`;
+}
 
 export function navigateToId(
   newId: string,

@@ -6,6 +6,7 @@
 
   let hover: boolean;
   export let asset: ViewableItem;
+  export let id: string;
   export let hasConnector: boolean = false;
   export let current: boolean = false;
 
@@ -92,7 +93,7 @@
   {#if hasConnector}
     <div class="connector" in:scaleIn />
   {/if}
-  <div class="item" class:current>
+  <div {id} class="item" class:current>
     {#if asset.type === 'claim'}
       <div
         class="thumbnail"
