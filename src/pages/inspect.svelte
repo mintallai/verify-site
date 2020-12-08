@@ -224,7 +224,7 @@
     </section>
   {/if}
   <footer>
-    <span>© __year__ Content Authenticity Initiative</span>
+    <span>© __year__ Adobe</span>
     <a href="https://www.adobe.com/privacy.html" target="_blank">Privacy</a>
     <a href="https://www.adobe.com/legal/terms.html" target="_blank">Terms of
       use</a>
