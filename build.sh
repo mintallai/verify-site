@@ -35,7 +35,7 @@ fi
 # Artifactory, it will be stored in the "dist-pub" folder.
 rm -rf dist dist-pub
 # This should match the path below
-export TOOLKIT_WASM_SRC="/sdk/pkg/toolkit_bg.wasm"
+export TOOLKIT_WASM_SRC="/toolkit/toolkit_bg.wasm"
 
 # Set up authentication
 if [ -n "$PUBLIC_GITHUB_PACKAGE_TOKEN" ]; then

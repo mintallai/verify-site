@@ -14,7 +14,7 @@
     "build": "routify -b && rollup -c rollup.config.js",
     "serve": "spassr --serve-spa --serve-ssr",
     "export": "routify export",
-    "rollup": "cross-env TOOLKIT_WASM_SRC=https://verify-dev.contentauthenticity.org/sdk/pkg/toolkit_bg.wasm rollup -c rollup.config.js -w",
+    "rollup": "rollup -c rollup.config.js -w",
     "nollup": "nollup -c rollup.config.js",
     "routify": "routify",
     "test": "echo \"Tests pending\" && exit 0"
