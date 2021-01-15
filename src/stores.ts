@@ -74,6 +74,9 @@ export const summary = writable<ISummaryResponse | null>(null, (set) => {
 export async function setSummary(data: ISummaryResponse) {
   // Grab map of references, since we may need to look up a claim title from
   // refs in the case of an acquisition
+  console.info('Summary data', data);
+  // @ts-ignore
+  window.summaryData = JSON.stringify(data);
   const refs = reduce(
     data.claims,
     (acc, claim) => {
