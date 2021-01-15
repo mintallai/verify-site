@@ -122,6 +122,7 @@ function baseConfig(config, ctx) {
             dest: `${distDir}/toolkit`,
           },
         ],
+        copyOnce: true,
         flatten: true,
         verbose: true,
       }),

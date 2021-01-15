@@ -94,6 +94,7 @@ export async function setSummary(data: ISummaryResponse) {
       refs.find((x) => x.title && x.claim_id === claim_id)?.title,
     claim_id,
   }));
+  console.log('data', data);
   summary.set(data);
   navigateToRoot();
 }

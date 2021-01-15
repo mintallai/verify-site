@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-const JPEG_MIME_TYPE = 'image/jpeg';
+const JPEG_MIME_TYPE = /^image\/jpeg/;
 
 let toolkit: any;
 
@@ -20,7 +20,7 @@ export enum ToolkitError {
 
 function fileAsArrayBuffer(file: File): Promise<Uint8Array> {
   return new Promise((resolve, reject) => {
-    if (file.type === JPEG_MIME_TYPE) {
+    if (JPEG_MIME_TYPE.test(file.type)) {
       const reader = new FileReader();
       reader.addEventListener('load', (evt: any) => {
         resolve(new Uint8Array(evt.target.result));
@@ -56,7 +56,7 @@ export async function getSummaryFromUrl(
   const res = await fetch(url);
   if (res.ok) {
     const contentType = res.headers.get('Content-Type');
-    if (contentType === JPEG_MIME_TYPE) {
+    if (JPEG_MIME_TYPE.test(contentType)) {
       const arrayBuffer = await res.arrayBuffer();
       return get_summary_from_array_buffer(arrayBuffer, false);
     }

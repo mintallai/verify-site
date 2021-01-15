@@ -24,9 +24,9 @@
     js-tokens "^4.0.0"
 
 "@contentauth/toolkit@^0.1.1-alpha.47":
-  version "0.1.1"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.1/86c0b2a1a2943a4cb5a29f1eb72a70ab113a216c1917a3b873585ce641a29e4e#1abfed52c79e878a47a0eee71201f69282b0f253"
-  integrity sha512-GlDefUoQCNNBI7UU48hD90ivBEjhnVyEnplG7avxBO7fSaY+qc74wLuDFh5ql9aofFuKvw8WzfSoeHBVxNDXUQ==
+  version "0.1.2"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.2/d5acdbbbc0741cbd905db62e666522c8107ca875c87940a67dbe9de5da9e577d#bb416124a071e139fe7648019d412e37b187c338"
+  integrity sha512-rp0ItaDLlw4RsRcuCzbitB6uqdb2145PxCHUgtNvi/chez3vfynXzrgaNfW+F1PDLi1BfiugaS4bKlh1G0PHAA==
 
 "@contentauth/web-components@^0.1.1-alpha.47":
   version "0.1.1"
@@ -3585,6 +3585,7 @@ sort-keys@^1.0.0:
     is-plain-obj "^1.0.0"
 
 "source-map-fast@npm:source-map@0.7.3", source-map@^0.7.3:
+  name source-map-fast
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
   integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
