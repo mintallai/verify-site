@@ -13,9 +13,11 @@
 </script>
 
 <div class="container">
-  <div class="home" on:click={() => navigateToId(homeId)}>
-    <Icon size="s" name="workflow:Home" class="text-black" />
-  </div>
+  {#if homeId}
+    <div class="home" on:click={() => navigateToId(homeId)}>
+      <Icon size="s" name="workflow:Home" class="text-black" />
+    </div>
+  {/if}
   <div class="breadcrumbs">
     {#each breadcrumbList as asset, index (asset._id)}
       {#if index > 0}

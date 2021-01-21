@@ -3,12 +3,7 @@
   import { fade } from 'svelte/transition';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
-  import Mousetrap from 'mousetrap';
-  import {
-    getSummaryFromFile,
-    getSummaryFromUrl,
-    ToolkitError,
-  } from '../lib/toolkit';
+  import { getSummaryFromUrl, ToolkitError } from '../lib/toolkit';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
@@ -18,17 +13,17 @@
   import Icon from '../components/Icon.svelte';
   import NoInfo from '../components/inspect/NoInfo.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
-  import DragOverlay from '../components/inspect/DragOverlay.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
+  import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
+    urlParams,
     summary,
     setSummary,
     navigateToId,
     secondaryId,
     primaryAsset,
     secondaryAsset,
-    learnMoreUrl,
   } from '../stores';
   import { getIdentifier } from '../lib/claim';
 
@@ -37,13 +32,14 @@
     secondaryId.set('');
   }
 
-  let allowDragDrop = false;
   let isDraggingOver = false;
   let error: ToolkitError;
   let tour: ReturnType<typeof startTour>;
   let winW = 0;
   let winH = 0;
 
+  $: source = $urlParams.source;
+  $: hasContent = source || $summary;
   $: isLoading = $summary === null;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
@@ -57,10 +53,7 @@
   }
 
   onMount(async () => {
-    const params = new URLSearchParams(window.location.search?.substr(1));
-    const source = params.get('source');
-    const tourFlag = params.get('tour');
-    const forceTour = params.get('forceTour');
+    const { tourFlag, forceTourFlag } = $urlParams;
     if (source) {
       try {
         const data = await getSummaryFromUrl(source);
@@ -70,38 +63,34 @@
           tour = startTour({
             summary: $summary,
             start: tourFlag,
-            force: forceTour,
+            force: forceTourFlag,
           });
         }
       } catch (err) {
         error = err;
       }
-    } else {
-      window.location.assign($learnMoreUrl);
     }
 
-    const keyCommand = 'ctrl+shift+d';
-    Mousetrap.bind(keyCommand, () => {
-      allowDragDrop = !allowDragDrop;
-      console.log('Drag and drop enabled set to', allowDragDrop);
-    });
-
+    // This stops the drag state from rapidly changing during drag
+    // They also use this pattern in the dragDrop library
+    let dragTimeout;
     const cleanupDragDrop = dragDrop('main', {
       async onDrop(files: File[]) {
-        if (allowDragDrop && files.length) {
-          const data = await getSummaryFromFile(files[0]);
-          setSummary(data);
-        }
+        clearTimeout(dragTimeout);
+        isDraggingOver = false;
+        processFiles(files);
       },
       onDragOver() {
-        if (allowDragDrop) isDraggingOver = true;
+        clearTimeout(dragTimeout);
+        isDraggingOver = true;
       },
       onDragLeave() {
-        if (allowDragDrop) isDraggingOver = false;
+        dragTimeout = setTimeout(() => {
+          isDraggingOver = false;
+        }, 50);
       },
     });
     return () => {
-      Mousetrap.unbind(keyCommand);
       cleanupDragDrop();
     };
   });
@@ -124,80 +113,81 @@
       </div>
     </div>
   {/if}
-  {#if isDraggingOver}
-    <div
-      transition:fade={{ duration: 200 }}
-      class="fixed inset-0 z-20 pointer-events-none"
-    >
-      <DragOverlay />
-    </div>
-  {/if}
-  <Header {allowDragDrop} />
+  <Header />
   <Breadcrumb />
-  {#if error}
-    <section class="border-r" class:loading={isLoading} />
-    <Viewer />
-    <section class="border-l p-4">
-      <Alert severity="error" message="Sorry, something went wrong" />
-    </section>
-  {:else if isLoading}
-    <section class="border-r" class:loading={isLoading}>
-      <CircleLoader />
-    </section>
-    <Viewer isLoading={true} />
-    <section class="border-l" class:loading={isLoading}>
-      <CircleLoader />
-    </section>
-  {:else if primary}
-    <section class="border-r p-4">
-      {#if !isComparing}
-        <ContentSources claim={primary?.type === 'claim' ? primary : null} />
-      {:else if primary?.type === 'claim'}
-        <About
-          claim={primary}
-          {isComparing}
-          on:close={partial(handleClose, secondary)}
-        />
-      {:else if primary?.type === 'reference'}
-        <NoInfo
-          ingredient={primary}
-          {isComparing}
-          on:close={partial(handleClose, primary)}
+  {#if hasContent}
+    {#if error}
+      <section class="border-r" class:loading={isLoading} />
+      <Viewer />
+      <section class="border-l p-4">
+        <Alert severity="error" message="Sorry, something went wrong" />
+      </section>
+    {:else if isLoading}
+      <section class="border-r" class:loading={isLoading}>
+        <CircleLoader />
+      </section>
+      <Viewer isLoading={true} isDragging={isDraggingOver} />
+      <section class="border-l" class:loading={isLoading}>
+        <CircleLoader />
+      </section>
+    {:else if primary}
+      <section class="border-r p-4">
+        {#if !isComparing}
+          <ContentSources claim={primary?.type === 'claim' ? primary : null} />
+        {:else if primary?.type === 'claim'}
+          <About
+            claim={primary}
+            {isComparing}
+            on:close={partial(handleClose, secondary)}
+          />
+        {:else if primary?.type === 'reference'}
+          <NoInfo
+            ingredient={primary}
+            {isComparing}
+            on:close={partial(handleClose, primary)}
+          />
+        {/if}
+      </section>
+      {#if isComparing}
+        <Comparison {primary} {secondary} />
+      {:else}
+        <Viewer
+          thumbnailURL={primary.thumbnail_url}
+          isDragging={isDraggingOver}
         />
       {/if}
-    </section>
-    {#if isComparing}
-      <Comparison {primary} {secondary} />
-    {:else}
-      <Viewer thumbnailURL={primary.thumbnail_url} />
+      <section class="border-l p-4">
+        {#if !isComparing && primary?.type === 'claim'}
+          <About
+            claim={primary}
+            {isComparing}
+            on:close={partial(handleClose, secondary)}
+          />
+        {:else if !isComparing && primary?.type === 'reference'}
+          <NoInfo
+            ingredient={primary}
+            {isComparing}
+            on:close={partial(handleClose, primary)}
+          />
+        {:else if secondary?.type === 'claim'}
+          <About
+            claim={secondary}
+            {isComparing}
+            on:close={partial(handleClose, primary)}
+          />
+        {:else if secondary?.type === 'reference'}
+          <NoInfo
+            ingredient={secondary}
+            {isComparing}
+            on:close={partial(handleClose, primary)}
+          />
+        {/if}
+      </section>
     {/if}
-    <section class="border-l p-4">
-      {#if !isComparing && primary?.type === 'claim'}
-        <About
-          claim={primary}
-          {isComparing}
-          on:close={partial(handleClose, secondary)}
-        />
-      {:else if !isComparing && primary?.type === 'reference'}
-        <NoInfo
-          ingredient={primary}
-          {isComparing}
-          on:close={partial(handleClose, primary)}
-        />
-      {:else if secondary?.type === 'claim'}
-        <About
-          claim={secondary}
-          {isComparing}
-          on:close={partial(handleClose, primary)}
-        />
-      {:else if secondary?.type === 'reference'}
-        <NoInfo
-          ingredient={secondary}
-          {isComparing}
-          on:close={partial(handleClose, primary)}
-        />
-      {/if}
-    </section>
+  {:else}
+    <section />
+    <Viewer isDragging={isDraggingOver} />
+    <section />
   {/if}
   <footer>
     <span>© __year__ Adobe</span>

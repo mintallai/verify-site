@@ -10,6 +10,21 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 
+interface IUrlParams {
+  source: string;
+  tourFlag: boolean;
+  forceTourFlag: boolean;
+}
+
+export const urlParams = readable<IUrlParams>(null, (set) => {
+  const params = new URLSearchParams(window.location.search?.substr(1));
+  set({
+    source: params.get('source'),
+    tourFlag: !!params.get('tour'),
+    forceTourFlag: !!params.get('forceTour'),
+  });
+});
+
 export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
 
 export const contentSourceIds = writable<string[]>([]);
@@ -71,32 +86,36 @@ export const summary = writable<ISummaryResponse | null>(null, (set) => {
   return () => {};
 });
 
-export async function setSummary(data: ISummaryResponse) {
-  // Grab map of references, since we may need to look up a claim title from
-  // refs in the case of an acquisition
-  console.info('Summary data', data);
-  // @ts-ignore
-  window.summaryData = JSON.stringify(data);
-  const refs = reduce(
-    data.claims,
-    (acc, claim) => {
-      if (claim.references) {
-        acc = [...acc, ...claim.references];
-      }
-      return acc;
-    },
-    [],
-  );
-  data.claims = mapValues(data.claims, (claim, claim_id) => ({
-    ...claim,
-    title:
-      claim.title ||
-      refs.find((x) => x.title && x.claim_id === claim_id)?.title,
-    claim_id,
-  }));
-  console.log('data', data);
-  summary.set(data);
-  navigateToRoot();
+export async function setSummary(data: ISummaryResponse | null) {
+  if (data) {
+    // Grab map of references, since we may need to look up a claim title from
+    // refs in the case of an acquisition
+    console.info('Summary data', data);
+    // @ts-ignore
+    window.summaryData = JSON.stringify(data);
+    const refs = reduce(
+      data.claims,
+      (acc, claim) => {
+        if (claim.references) {
+          acc = [...acc, ...claim.references];
+        }
+        return acc;
+      },
+      [],
+    );
+    data.claims = mapValues(data.claims, (claim, claim_id) => ({
+      ...claim,
+      title:
+        claim.title ||
+        refs.find((x) => x.title && x.claim_id === claim_id)?.title,
+      claim_id,
+    }));
+    console.log('data', data);
+    summary.set(data);
+    navigateToRoot();
+  } else {
+    summary.set(null);
+  }
 }
 
 export const rootClaimId = derived<[typeof summary], string | null>(
@@ -122,24 +141,27 @@ export const assetsByIdentifier = derived<
   [typeof summary],
   { [identifier: string]: ViewableItem }
 >([summary], ([$summary]) => {
-  const grouped = addIdentifiers($summary?.claims);
-  return mapValues(grouped, ([item], _id) => {
-    if (item.claim_id) {
-      const claim = $summary.claims[item.claim_id];
-      return {
-        ...claim,
-        type: 'claim',
-        _id,
-      } as ViewableItem;
-    } else {
-      const ref = omit(item, ['claim_id', 'id']);
-      return {
-        ...ref,
-        type: 'reference',
-        _id,
-      } as ViewableItem;
-    }
-  });
+  if ($summary) {
+    const grouped = addIdentifiers($summary?.claims);
+    return mapValues(grouped, ([item], _id) => {
+      if (item.claim_id) {
+        const claim = $summary.claims[item.claim_id];
+        return {
+          ...claim,
+          type: 'claim',
+          _id,
+        } as ViewableItem;
+      } else {
+        const ref = omit(item, ['claim_id', 'id']);
+        return {
+          ...ref,
+          type: 'reference',
+          _id,
+        } as ViewableItem;
+      }
+    });
+  }
+  return {};
 });
 
 // FIXME: This needs to work for references as well - right now only claims are working
