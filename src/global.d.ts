@@ -5,6 +5,12 @@ declare module 'html-parse-stringify' {
 
 declare module 'svelte-css-vars';
 
+interface IUrlParams {
+  source: string;
+  tourFlag: boolean;
+  forceTourFlag: boolean;
+}
+
 declare interface IEditSummary {
   categories: string[];
 }

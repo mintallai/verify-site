@@ -5,16 +5,11 @@ import omit from 'lodash/omit';
 import reduce from 'lodash/reduce';
 import mapValues from 'lodash/mapValues';
 import { addIdentifiers, getIdentifier } from './lib/claim';
+import { supportDemoImages } from './lib/demo';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
-
-interface IUrlParams {
-  source: string;
-  tourFlag: boolean;
-  forceTourFlag: boolean;
-}
 
 export const urlParams = readable<IUrlParams>(null, (set) => {
   const params = new URLSearchParams(window.location.search?.substr(1));
@@ -91,8 +86,10 @@ export async function setSummary(data: ISummaryResponse | null) {
     // Grab map of references, since we may need to look up a claim title from
     // refs in the case of an acquisition
     console.info('Summary data', data);
-    // @ts-ignore
+    // @ts-ignore - For debugging
     window.summaryData = JSON.stringify(data);
+    // Temporary
+    data = supportDemoImages(data, get(urlParams));
     const refs = reduce(
       data.claims,
       (acc, claim) => {
