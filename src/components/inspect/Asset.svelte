@@ -158,7 +158,7 @@
   .connector {
     @apply absolute bg-gray-400;
     width: 2px;
-    height: 25px;
+    height: 24px;
     top: -14px;
     left: 54px;
     transform-origin: top;

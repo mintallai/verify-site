@@ -23,15 +23,15 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@contentauth/toolkit@^0.1.1-alpha.47":
-  version "0.1.2"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.2/d5acdbbbc0741cbd905db62e666522c8107ca875c87940a67dbe9de5da9e577d#bb416124a071e139fe7648019d412e37b187c338"
-  integrity sha512-rp0ItaDLlw4RsRcuCzbitB6uqdb2145PxCHUgtNvi/chez3vfynXzrgaNfW+F1PDLi1BfiugaS4bKlh1G0PHAA==
+"@contentauth/toolkit@0.1.3":
+  version "0.1.3"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.3/e063b72950a0692873b37b98aea46138cd274c255cd58500aeaf5e0630d948cc#ea8e241810f37efacadf9c8c7f05c8edbcba369c"
+  integrity sha512-szexHzbkIdY4BGvpgCAg9isWKCMUGPLZcH3U17Whu0wnkYfNd83jQpCMhGtZ/tBrTKgOuXm4pZ3zFCCs2D0XEQ==
 
-"@contentauth/web-components@^0.1.1-alpha.47":
-  version "0.1.1"
-  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.1/500498c6aa2f1cd4e49f14d94bcc6d3ec161e33760910b7d70e7be9036eaeef3#29198d6063f72115e93eb5967c8593492d05ae3e"
-  integrity sha512-h9/EApp1uPHXgIcPnjryLkRx3fzMvaAM2J49p7MNSJDWxDOTvcS8h4oDiwEnzBnL51CeHZQLzZ/9W9T3/cZEGg==
+"@contentauth/web-components@^0.1.2":
+  version "0.1.2"
+  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.2/b7fd565e842b465bb8ac373516037e66220ee7f1969114c3174f2f42f37c5218#cc80ab8068b4d06f1acffbd90773347491039d02"
+  integrity sha512-PFoA3ZfLGwfdPZNqQFohDjyqwgJSNVjp8Qj3wt9QnPI/U5j8ICuNr40lKuHH3hr1TrzuBLlu2e7IT1vtvDigwg==
   dependencies:
     "@popperjs/core" "^2.5.4"
     date-fns "^2.16.1"

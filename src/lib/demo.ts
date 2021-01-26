@@ -17,6 +17,15 @@ export function supportDemoImages(
           claim.signed_on = '2020-11-16T15:29:10Z';
         }
       }
+      // Add CAPTURE category for truepic
+      if (!claim.edits) {
+        claim.edits = {
+          categories: [],
+        };
+      }
+      if (/truepic/i.test(claim?.produced_with)) {
+        claim.edits.categories = [...claim.edits.categories, 'CAPTURE'];
+      }
       return claim;
     });
   }
