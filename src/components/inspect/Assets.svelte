@@ -25,8 +25,6 @@
   });
 
   $: assetList = getAssetList(claim, $assetsByIdentifier);
-
-  console.log('assetList', assetList);
 </script>
 
 <div>

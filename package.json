@@ -55,7 +55,7 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
-    "@contentauth/toolkit": "0.1.3",
+    "@contentauth/toolkit": "^0.1.4",
     "@contentauth/web-components": "^0.1.2",
     "@roxi/routify": "^2.7.3",
     "@spectrum-web-components/circle-loader": "^0.3.1",
