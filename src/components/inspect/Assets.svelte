@@ -32,7 +32,8 @@
     <span>Content elements</span>
     <cai-tooltip
       class="ml-2"
-      content="Images and anything else the producer used to make the selected content." />
+      content="Images and anything else the producer used to make the selected content."
+    />
   </h2>
   <div class="mb-3 leading-snug text-gray-700">
     {#if !assetList.length}
@@ -44,7 +45,8 @@
       <div
         in:add={{ key: asset._id }}
         out:remove|local={{ key: asset._id }}
-        animate:flip>
+        animate:flip
+      >
         <Asset {asset} />
       </div>
     {/each}

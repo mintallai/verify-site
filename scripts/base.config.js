@@ -115,6 +115,17 @@ function baseConfig(config, ctx) {
         copyOnce: true,
         flatten: false,
       }),
+      copy({
+        targets: [
+          {
+            src: [`node_modules/@contentauth/toolkit/pkg/web/**/*`],
+            dest: `${distDir}/toolkit`,
+          },
+        ],
+        copyOnce: true,
+        flatten: true,
+        verbose: true,
+      }),
       typeCheck(),
       svelte(svelteConfig),
 
@@ -127,7 +138,7 @@ function baseConfig(config, ctx) {
       replace({
         'process.env.NODE_ENV': production ? '"production"' : '"development"',
         __toolkit_wasm_src__:
-          process.env.TOOLKIT_WASM_SRC || '/sdk/pkg/toolkit_bg.wasm',
+          process.env.TOOLKIT_WASM_SRC || '/toolkit/toolkit_bg.wasm',
         __delay__: production ? '3000' : '100',
         __year__: new Date().getFullYear(),
       }),
