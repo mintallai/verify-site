@@ -1,6 +1,6 @@
 import mapValues from 'lodash/mapValues';
 
-const demoUrlRegexp = /^https?:\/\/[^\/]+\/sdk\/squarespace\/dist\/static\/sample-images\/SNL_\d+_\d+_\w\.jpg$/;
+const demoUrlRegexp = /^https?:\/\/[^\/]+\/sdk\/static\/sample-images\/SNL_\d+_\d+_\w\.jpg$/;
 
 // This is to support the case study demo images
 export function supportDemoImages(
