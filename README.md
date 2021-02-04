@@ -15,9 +15,7 @@ yarn dev
 
 _(This policy should be applied to all future **hosted services** from the CAI team. This policy does not apply to library and application projects. A separate policy is being drafted as of this writing.)_
 
-This project is built and deployed using [Ethos and Moonbeam](https://wiki.corp.adobe.com/display/ethos/Ethos+-+More+About+Ethos).
-
-Moonbeam is a highly-opinionated CI/CD pipeline. A brief summary of their policies, which we follow, is here:
+This project is built and deployed using [Ethos and Moonbeam](https://wiki.corp.adobe.com/display/ethos/Ethos+-+More+About+Ethos). Moonbeam is a highly-opinionated CI/CD pipeline. Our policies for this project (below) are based on Moonbeam's conventions:
 
 * **The `master` branch reflects what is currently deployed to production.** (Changing the Moonbeam default branch name is blocked by [Jira EON-9110: Support Github's future support of removing "master" as default branch](https://jira.corp.adobe.com/browse/EON-9110). Please go cast a vote for this to be addressed.)
 
