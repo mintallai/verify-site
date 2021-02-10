@@ -4,13 +4,23 @@ import { setSummary } from '../stores';
 const VALID_TYPES = ['image/jpeg'];
 
 export async function processFiles(files: File[] | FileList) {
-  const validFiles = Array.from(files).filter((file) =>
+  const fileArray = Array.from(files);
+  const validFiles = fileArray.filter((file) =>
     VALID_TYPES.includes(file.type),
   );
   if (validFiles.length) {
+    const file = validFiles[0];
     setSummary(null);
-    const data = await getSummaryFromFile(validFiles[0]);
+    window.newrelic?.addPageAction('loadedUserFile', {
+      type: file.type,
+    });
+    const data = await getSummaryFromFile(file);
     setSummary(data);
+  } else if (fileArray.length) {
+    const invalidTypeError = new Error('INVALID_TYPE');
+    window.newrelic?.noticeError(invalidTypeError, {
+      type: fileArray[0]?.type,
+    });
   }
 }
 

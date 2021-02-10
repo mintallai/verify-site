@@ -3,6 +3,8 @@ groups:
     - dkozma
     - scouten
     - andyp
+    - klein
+    - gpeacock
 
 features:
   everything:

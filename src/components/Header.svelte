@@ -8,6 +8,7 @@
   } from '../stores';
 
   function upload(evt) {
+    window.newrelic?.addPageAction('uploadClick');
     window.location.assign('/inspect');
     evt.preventDefault();
   }
