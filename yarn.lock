@@ -23,15 +23,15 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@contentauth/toolkit@^0.1.4":
-  version "0.1.4"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.4/fa7a8eef16c34081002a5a7f8a265735748b8163dd8c4ddc16c05b5af0c5048f#b6eddf9230b7bdf0837d4a54cf36534d4bc131e7"
-  integrity sha512-ZknLuFVeY22zd0gGSYjTrBeUZxe7Li5Wge2r/R0MRRWL0kInYyM5Bu2t43ZFcHXc597KVkmPUn6I3dkqcso0VA==
+"@contentauth/toolkit@^0.1.5":
+  version "0.1.5"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.5/3bcef1718c04e595bb5545793298921fa26060080742efb77ddd0ed133f1f325#3d0a575ba0d34d684e557f105ef8e0109bc903f2"
+  integrity sha1-PQpXW6DTTWhOVX8QXvjgEJvJA/I=
 
 "@contentauth/web-components@^0.1.2":
   version "0.1.2"
   resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.2/b7fd565e842b465bb8ac373516037e66220ee7f1969114c3174f2f42f37c5218#cc80ab8068b4d06f1acffbd90773347491039d02"
-  integrity sha512-PFoA3ZfLGwfdPZNqQFohDjyqwgJSNVjp8Qj3wt9QnPI/U5j8ICuNr40lKuHH3hr1TrzuBLlu2e7IT1vtvDigwg==
+  integrity sha1-zICrgGi00G8az/vZB3M0dJEDnQI=
   dependencies:
     "@popperjs/core" "^2.5.4"
     date-fns "^2.16.1"
