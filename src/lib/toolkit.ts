@@ -46,7 +46,7 @@ export async function getSummaryFromFile(
 ): Promise<ISummaryResponse> {
   await loadToolkit();
   const arrayBuffer = await fileAsArrayBuffer(file);
-  return get_summary_from_array_buffer(arrayBuffer, false);
+  return get_summary_from_array_buffer(arrayBuffer, true);
 }
 
 export async function getSummaryFromUrl(
@@ -58,7 +58,7 @@ export async function getSummaryFromUrl(
     const contentType = res.headers.get('Content-Type');
     if (JPEG_MIME_TYPE.test(contentType)) {
       const arrayBuffer = await res.arrayBuffer();
-      return get_summary_from_array_buffer(arrayBuffer, false);
+      return get_summary_from_array_buffer(arrayBuffer, true);
     }
     const invalidFileError = new Error(ToolkitError.InvalidFile);
     window.newrelic?.noticeError(invalidFileError, { url, contentType });
