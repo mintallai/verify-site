@@ -7,29 +7,6 @@
   const dispatch = createEventDispatcher();
 </script>
 
-<style lang="postcss">
-  .info {
-    @apply border-gray-500 border text-center rounded px-2 py-3 mt-2;
-    font-size: 13px;
-  }
-  h2.filename {
-    @apply mt-0 mb-3;
-  }
-  .compare-title {
-    @apply font-bold text-xl truncate mb-1;
-    max-width: 240px;
-  }
-  .compare-thumbnail {
-    @apply w-full border border-gray-350 bg-white rounded bg-contain bg-center bg-no-repeat mb-5;
-    height: 280px;
-  }
-  .close {
-    @apply bg-gray-200 rounded-full cursor-pointer flex items-center justify-center;
-    width: 28px;
-    height: 28px;
-  }
-</style>
-
 <div>
   {#if isComparing}
     <h2 class="filename">
@@ -48,6 +25,30 @@
   {/if}
   <div
     class="compare-thumbnail"
-    style={`background-image: url("${ingredient.thumbnail_url}");`} />
+    style={`background-image: url("${ingredient.thumbnail_url}");`}
+  />
   <div class="info">This image has no attribution or history data.</div>
 </div>
+
+<style lang="postcss">
+  .info {
+    @apply border-gray-500 border text-center rounded px-2 py-3 mt-2;
+    font-size: 13px;
+  }
+  h2.filename {
+    @apply mt-0 mb-3;
+  }
+  .compare-title {
+    @apply font-bold text-xl truncate mb-1;
+    max-width: 240px;
+  }
+  .compare-thumbnail {
+    @apply w-full border border-gray-300 bg-white rounded bg-contain bg-center bg-no-repeat mb-5;
+    height: 280px;
+  }
+  .close {
+    @apply bg-gray-200 rounded-full cursor-pointer flex items-center justify-center;
+    width: 28px;
+    height: 28px;
+  }
+</style>

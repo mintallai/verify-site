@@ -35,7 +35,7 @@
       content="Images and anything else the producer used to make the selected content."
     />
   </h2>
-  <div class="mb-3 leading-snug text-gray-700">
+  <div class="mb-3 leading-small text-gray-700">
     {#if !assetList.length}
       This is an original source. No additional elements were used.
     {/if}

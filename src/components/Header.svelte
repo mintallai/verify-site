@@ -46,7 +46,7 @@
     @apply flex select-none outline-none;
   }
   .beta {
-    @apply inline-block bg-gray-200 text-gray-700 font-semibold text-xxs rounded px-2 py-0 ml-3;
+    @apply inline-block bg-gray-200 text-gray-700 font-semi-bold text-xxs rounded px-2 py-0 ml-3;
     line-height: 1.4375rem;
   }
   .links {

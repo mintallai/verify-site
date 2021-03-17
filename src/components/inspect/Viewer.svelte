@@ -54,7 +54,7 @@
         <Icon
           size="3xl"
           name="workflow:FolderOpenOutline"
-          class="text-purple-500"
+          class="text-blue-500"
         />
         {#if source || $summary}
           <div class="upload-text">Drop your JPG here</div>
@@ -92,7 +92,7 @@
     min-width: 256px;
   }
   .upload .inner {
-    @apply border-2 border-purple-500 bg-gray-100 border-dashed shadow-none relative;
+    @apply border-2 border-blue-500 bg-gray-100 border-dashed shadow-none relative;
   }
   .dragging .inner {
     @apply border-4;
@@ -104,6 +104,6 @@
     @apply font-bold text-xl mt-2;
   }
   .upload-text span {
-    @apply text-purple-500 cursor-pointer;
+    @apply text-blue-500 cursor-pointer;
   }
 </style>

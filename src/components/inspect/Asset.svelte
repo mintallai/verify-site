@@ -55,7 +55,8 @@
         >
           <cai-tooltip
             content="This image has attribution and history data."
-            class="info">
+            class="info"
+          >
             <cai-icon name="InfoCircle_Purple" width="20px" height="20px" />
           </cai-tooltip>
         </div>
@@ -115,7 +116,7 @@
     min-width: 0;
   }
   .hover .item {
-    @apply border-gray-350;
+    @apply border-gray-300;
   }
   .item.current {
     @apply bg-gray-200 border border-gray-200;
@@ -129,7 +130,7 @@
     flex: 0 0 20px;
   }
   .thumbnail {
-    @apply relative border border-gray-350 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
+    @apply relative border border-gray-300 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
     flex: 0 0 94px;
     width: 94px;
     height: 94px;

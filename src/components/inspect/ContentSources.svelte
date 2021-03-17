@@ -22,7 +22,7 @@
       content="Tamper-evident editing and activity data attached on export, including additional images and anything else used to make the selected content."
     />
   </h2>
-  <div class="mt-3 mb-4 leading-snug text-gray-700">
+  <div class="mt-3 mb-4 leading-small text-gray-700">
     Select one of these elements to view more of the content record.
   </div>
   <div class="relative">

@@ -28,6 +28,49 @@
   });
 </script>
 
+<div bind:this={element}>
+  <!-- Compare header -->
+  {#if alternate}
+    {#if isComparing}
+      <h2 class="filename">
+        {#if getIdentifier(claim) === $rootClaimId}
+          <div class="mr-2">
+            <cai-icon name="Pin" width="20px" height="20px" />
+          </div>
+        {/if}
+        <div>
+          <div
+            class="font-bold text-xs uppercase text-gray-500 leading-none mb-1"
+          >
+            File name
+          </div>
+          <div class="compare-title">{claim.title}</div>
+        </div>
+        <div class="flex-grow flex justify-end">
+          <div class="close" on:click={() => dispatch('close', { claim })}>
+            <Icon size="m" name="workflow:Close" class="text-gray-400" />
+          </div>
+        </div>
+      </h2>
+    {/if}
+    <div
+      class="compare-thumbnail"
+      style={`background-image: url("${claim.thumbnail_url}");`}
+    />
+  {:else if isSecureCapture}
+    <div class="mb-4">
+      <Alert
+        severity="info"
+        message={`This is an original photo, taken on a secure device. <a href="${getFaqUrl(
+          'block-yui_3_17_2_1_1607115018705_17736',
+        )}" target="_blank" style="text-decoration: underline;">Learn more</a>`}
+      />
+    </div>
+  {/if}
+
+  <claim-info {claim} {variant} />
+</div>
+
 <style lang="postcss">
   h2.filename {
     @apply mt-0 mb-3;
@@ -45,45 +88,7 @@
     max-width: 240px;
   }
   .compare-thumbnail {
-    @apply w-full border border-gray-350 bg-white rounded bg-contain bg-center bg-no-repeat mb-4;
+    @apply w-full border border-gray-300 bg-white rounded bg-contain bg-center bg-no-repeat mb-4;
     height: 280px;
   }
 </style>
-
-<div bind:this={element}>
-  <!-- Compare header -->
-  {#if alternate}
-    {#if isComparing}
-      <h2 class="filename">
-        {#if getIdentifier(claim) === $rootClaimId}
-          <div class="mr-2">
-            <cai-icon name="Pin" width="20px" height="20px" />
-          </div>
-        {/if}
-        <div>
-          <div
-            class="font-bold text-xs uppercase text-gray-500 leading-none mb-1">
-            File name
-          </div>
-          <div class="compare-title">{claim.title}</div>
-        </div>
-        <div class="flex-grow flex justify-end">
-          <div class="close" on:click={() => dispatch('close', { claim })}>
-            <Icon size="m" name="workflow:Close" class="text-gray-400" />
-          </div>
-        </div>
-      </h2>
-    {/if}
-    <div
-      class="compare-thumbnail"
-      style={`background-image: url("${claim.thumbnail_url}");`} />
-  {:else if isSecureCapture}
-    <div class="mb-4">
-      <Alert
-        severity="info"
-        message={`This is an original photo, taken on a secure device. <a href="${getFaqUrl('block-yui_3_17_2_1_1607115018705_17736')}" target="_blank" style="text-decoration: underline;">Learn more</a>`} />
-    </div>
-  {/if}
-
-  <claim-info {claim} {variant} />
-</div>

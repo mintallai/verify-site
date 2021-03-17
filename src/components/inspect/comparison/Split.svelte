@@ -43,6 +43,31 @@
   };
 </script>
 
+<div
+  class="inner"
+  class:layout-stacked={layout === Layout.Stacked}
+  class:layout-sideBySide={layout === Layout.SideBySide}
+  use:cssVars={styles}
+>
+  <div class="primary thumbnail" class:invisible={!layout}>
+    <img
+      use:tippy={{ content: primary.title, ...tippyOpts }}
+      src={primary.thumbnail_url}
+      alt=""
+      on:load={partial(processImage, 'primary')}
+    />
+  </div>
+  <div class="divider" />
+  <div class="secondary thumbnail" class:invisible={!layout}>
+    <img
+      use:tippy={{ content: secondary.title, ...tippyOpts }}
+      src={secondary.thumbnail_url}
+      alt=""
+      on:load={partial(processImage, 'secondary')}
+    />
+  </div>
+</div>
+
 <style lang="postcss">
   .inner {
     @apply flex rounded-md overflow-hidden bg-white shadow-md pointer-events-none;
@@ -64,29 +89,7 @@
     flex: 0 0 calc((var(--width) / 2) - 0.5px);
   }
   .divider {
-    @apply bg-gray-350;
+    @apply bg-gray-300;
     flex: 0 0 1px;
   }
 </style>
-
-<div
-  class="inner"
-  class:layout-stacked={layout === Layout.Stacked}
-  class:layout-sideBySide={layout === Layout.SideBySide}
-  use:cssVars={styles}>
-  <div class="primary thumbnail" class:invisible={!layout}>
-    <img
-      use:tippy={{ content: primary.title, ...tippyOpts }}
-      src={primary.thumbnail_url}
-      alt=""
-      on:load={partial(processImage, 'primary')} />
-  </div>
-  <div class="divider" />
-  <div class="secondary thumbnail" class:invisible={!layout}>
-    <img
-      use:tippy={{ content: secondary.title, ...tippyOpts }}
-      src={secondary.thumbnail_url}
-      alt=""
-      on:load={partial(processImage, 'secondary')} />
-  </div>
-</div>

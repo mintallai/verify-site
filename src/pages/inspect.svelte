@@ -104,7 +104,7 @@
         <Icon
           size="3xl"
           name="workflow:DeviceDesktop"
-          class="text-purple-500 mb-3"
+          class="text-blue-500 mb-3"
         />
         <div>
           Increase the size of your browser window to view. If you’re on a
@@ -203,7 +203,7 @@
 
 <style lang="postcss">
   main {
-    @apply grid absolute w-screen h-screen font-body;
+    @apply grid absolute w-screen h-screen font-base;
     grid-template-columns: 320px auto 320px;
     grid-template-rows: 80px 60px auto 55px;
   }
@@ -230,7 +230,7 @@
     bottom: 55px;
   }
   .mobile-overlay .content {
-    @apply flex flex-col justify-center items-center text-center text-xl leading-snug;
+    @apply flex flex-col justify-center items-center text-center text-xl leading-small;
     max-width: 354px;
   }
 </style>
