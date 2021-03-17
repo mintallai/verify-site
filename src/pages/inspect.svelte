@@ -97,7 +97,7 @@
 </script>
 
 <svelte:window bind:innerWidth={winW} bind:innerHeight={winH} />
-<main>
+<main class="theme-light">
   {#if showMobileOverlay}
     <div transition:fade={{ duration: 500 }} class="mobile-overlay">
       <div class="content">

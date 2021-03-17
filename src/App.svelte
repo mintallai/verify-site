@@ -7,8 +7,8 @@
 <Router {routes} />
 
 <style global>
-  @import 'tailwindcss/base';
   @import '../static/spectrum-vars.css';
+  @import 'tailwindcss/base';
   @import '../static/base.css';
   @import 'tailwindcss/components';
   @import 'tailwindcss/utilities';
