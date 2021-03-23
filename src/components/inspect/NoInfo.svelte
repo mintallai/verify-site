@@ -18,7 +18,7 @@
       </div>
       <div class="flex-grow flex justify-end">
         <div class="close" on:click={() => dispatch('close', { ingredient })}>
-          <Icon size="m" name="workflow:Close" class="text-gray-400" />
+          <Icon size="m" name="Close" class="text-gray-400" />
         </div>
       </div>
     </h2>

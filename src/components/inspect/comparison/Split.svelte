@@ -18,7 +18,7 @@
     secondary: null,
   };
 
-  function processImage(id, evt) {
+  function processImage(id: string, evt: Event) {
     const { naturalWidth, naturalHeight } = evt.target as HTMLImageElement;
     aspectRatios = { ...aspectRatios, [id]: naturalWidth / naturalHeight };
   }

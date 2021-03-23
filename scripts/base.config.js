@@ -182,7 +182,7 @@ function baseConfig(config, ctx) {
     const bundleTag = '<script defer src="/build/bundle.js"></script>';
     return contents
       .toString()
-      .replace('__NEW_RELIC__', newrelic)
+      .replace('__NEW_RELIC__', production ? newrelic : '')
       .replace('__SCRIPT__', dynamicImports ? scriptTag : bundleTag);
   }
 }

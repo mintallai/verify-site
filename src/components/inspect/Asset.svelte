@@ -6,7 +6,7 @@
   let hover: boolean;
   export let asset: ViewableItem;
   export let id: string;
-  export let mini: boolean = false;
+  export let indented: boolean = false;
   export let hasConnector: boolean = false;
   export let current: boolean = false;
 
@@ -34,7 +34,7 @@
 
 <div
   class="container"
-  class:mini
+  class:indented
   class:hover
   on:mouseenter={() => (hover = isCurrent ? false : true)}
   on:mouseleave={() => (hover = false)}
@@ -44,62 +44,39 @@
     <div class="connector" in:scaleIn />
   {/if}
   <div {id} class="item" class:current>
-    {#if asset.type === 'claim'}
-      <div class="thumbnail-wrapper">
-        {#if mini}
-          <img src="/images/svg/nested-arrow.svg" alt="" class="nested" />
-        {/if}
-        <div
-          class="thumbnail"
-          use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}
-        >
-          <cai-tooltip
-            content="This image has attribution and history data."
-            class="info"
-          >
-            <cai-icon name="InfoCircle_Purple" width="20px" height="20px" />
-          </cai-tooltip>
-        </div>
+    {#if indented}
+      <div class="indent-arrow">
+        <img src="/images/svg/nested-arrow.svg" alt="" />
       </div>
-      <div>
+    {/if}
+    {#if asset.type === 'claim'}
+      <div
+        class="thumbnail"
+        use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}
+      >
+        <cai-tooltip
+          content="This image has attribution and history data."
+          class="info"
+        >
+          <cai-icon name="InfoCircle_Purple" width="20px" height="20px" />
+        </cai-tooltip>
+      </div>
+      <div class="flex items-center">
         <dl class="attributes multiline overflow-hidden self-center">
           <dt>File Name</dt>
           <dd class="file-name" title={asset.title}>{asset.title}</dd>
         </dl>
-        {#if current}
-          <div class="selected">Selected</div>
-        {:else}
-          <div class="actions">
-            <span>View</span>
-            <span>·</span>
-            <span on:click={() => compareWithId(asset._id)}>Compare</span>
-          </div>
-        {/if}
       </div>
     {:else}
-      <div class="thumbnail-wrapper">
-        {#if mini}
-          <img src="/images/svg/nested-arrow.svg" alt="" class="nested" />
-        {/if}
-        <div
-          class="thumbnail"
-          use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}
-        />
-      </div>
+      <div
+        class="thumbnail"
+        use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}
+      />
       <div>
         <dl class="attributes multiline overflow-hidden self-center">
           <dt>File Name</dt>
           <dd class="file-name" title={asset.title}>{asset.title}</dd>
         </dl>
-        {#if current}
-          <div class="selected">Selected</div>
-        {:else}
-          <div class="actions">
-            <span>View</span>
-            <span>·</span>
-            <span on:click={() => compareWithId(asset._id)}>Compare</span>
-          </div>
-        {/if}
       </div>
     {/if}
   </div>
@@ -110,51 +87,47 @@
     @apply relative mb-1 transition duration-200 z-0 cursor-pointer;
   }
   .item {
-    @apply rounded p-2 grid gap-3 max-w-full bg-transparent transition duration-200 border border-transparent;
-    grid-template-columns: 94px auto;
+    @apply rounded grid gap-3 max-w-full bg-transparent transition duration-200;
+    grid-template-columns: 72px auto;
     min-height: 0;
     min-width: 0;
   }
   .hover .item {
     @apply border-gray-300;
   }
-  .item.current {
-    @apply bg-gray-200 border border-gray-200;
+  .indented .item {
+    grid-template-columns: 36px 72px auto;
   }
-  .mini .thumbnail-wrapper {
-    @apply flex justify-between items-center;
+  .indent-arrow {
+    @apply flex items-center justify-center;
   }
-  img.nested {
+  .indent-arrow img {
     width: 20px;
     height: 20px;
-    flex: 0 0 20px;
   }
   .thumbnail {
-    @apply relative border border-gray-300 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
-    flex: 0 0 94px;
-    width: 94px;
-    height: 94px;
+    @apply relative border-transparent bg-gray-200 rounded bg-contain bg-center bg-no-repeat;
+    flex: 0 0 72px;
+    width: 72px;
+    height: 72px;
     background-image: var(--backgroundImage);
   }
-  .mini .thumbnail {
-    flex: 0 0 60px;
-    width: 60px;
-    height: 60px;
+  .item.current .thumbnail {
+    @apply shadow-selected;
+  }
+  .indented .thumbnail {
+    flex: 0 0 72px;
+    width: 72px;
+    height: 72px;
   }
   .info {
     @apply absolute;
-    top: 1px;
-    right: 1px;
+    top: 4px;
+    right: 4px;
   }
   .file-name {
     @apply truncate;
     max-width: 170px;
-  }
-  .selected {
-    @apply italic text-sm text-gray-700;
-  }
-  .actions {
-    @apply text-xs font-bold text-gray-700;
   }
   .connector {
     @apply absolute bg-gray-400;

@@ -4,6 +4,8 @@
   import { getIdentifier } from '../lib/claim';
   import Alert from './Alert.svelte';
   import Icon from './Icon.svelte';
+  import '@contentauth/web-components/dist/components/ContentProducer';
+  import '@contentauth/web-components/dist/themes/spectrum';
 
   type TooltipElement = HTMLElement & {
     getPopper: any;
@@ -48,7 +50,7 @@
         </div>
         <div class="flex-grow flex justify-end">
           <div class="close" on:click={() => dispatch('close', { claim })}>
-            <Icon size="m" name="workflow:Close" class="text-gray-400" />
+            <Icon size="m" name="Close" class="text-gray-400" />
           </div>
         </div>
       </h2>
@@ -68,7 +70,14 @@
     </div>
   {/if}
 
-  <claim-info {claim} {variant} />
+  <div>
+    <cai-content-producer
+      producedby={claim.produced_by}
+      producedwith={claim.produced_with}
+      signedon={claim.signed_on}
+      class="theme-spectrum"
+    />
+  </div>
 </div>
 
 <style lang="postcss">

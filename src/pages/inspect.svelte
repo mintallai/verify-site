@@ -73,7 +73,7 @@
 
     // This stops the drag state from rapidly changing during drag
     // They also use this pattern in the dragDrop library
-    let dragTimeout;
+    let dragTimeout: number | undefined;
     const cleanupDragDrop = dragDrop('main', {
       async onDrop(files: File[]) {
         clearTimeout(dragTimeout);
@@ -101,11 +101,7 @@
   {#if showMobileOverlay}
     <div transition:fade={{ duration: 500 }} class="mobile-overlay">
       <div class="content">
-        <Icon
-          size="3xl"
-          name="workflow:DeviceDesktop"
-          class="text-blue-500 mb-3"
-        />
+        <Icon size="3xl" name="DeviceDesktop" class="text-blue-500 mb-3" />
         <div>
           Increase the size of your browser window to view. If you’re on a
           mobile device, open this page on a computer.
@@ -117,21 +113,21 @@
   <Breadcrumb />
   {#if hasContent}
     {#if error}
-      <section class="border-r" class:loading={isLoading} />
+      <section class="border-r-2" class:loading={isLoading} />
       <Viewer />
-      <section class="border-l p-4">
+      <section class="border-l-2 p-4">
         <Alert severity="error" message="Sorry, something went wrong" />
       </section>
     {:else if isLoading}
-      <section class="border-r" class:loading={isLoading}>
+      <section class="border-r-2" class:loading={isLoading}>
         <CircleLoader />
       </section>
       <Viewer isLoading={true} isDragging={isDraggingOver} />
-      <section class="border-l" class:loading={isLoading}>
+      <section class="border-l-2" class:loading={isLoading}>
         <CircleLoader />
       </section>
     {:else if primary}
-      <section class="border-r p-4">
+      <section class="border-r-2 p-4">
         {#if !isComparing}
           <ContentSources claim={primary?.type === 'claim' ? primary : null} />
         {:else if primary?.type === 'claim'}
@@ -156,7 +152,7 @@
           isDragging={isDraggingOver}
         />
       {/if}
-      <section class="border-l p-4">
+      <section class="border-l-2 p-4">
         {#if !isComparing && primary?.type === 'claim'}
           <About
             claim={primary}
@@ -190,7 +186,7 @@
     <section />
   {/if}
   <footer>
-    <span>© __year__ Adobe</span>
+    <span>Copyright © __year__ Adobe. All rights reserved.</span>
     <a href="https://www.adobe.com/privacy.html" target="_blank">Privacy</a>
     <a href="https://www.adobe.com/legal/terms.html" target="_blank"
       >Terms of use</a
@@ -214,7 +210,7 @@
     @apply flex items-center justify-center;
   }
   footer {
-    @apply col-span-3 flex justify-center items-center text-xs border-t border-gray-200;
+    @apply col-span-3 flex justify-center items-center text-75 border-t-2 border-gray-200;
     max-width: 100vw;
   }
   footer a {

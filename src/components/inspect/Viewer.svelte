@@ -51,11 +51,7 @@
   <div class="inner" use:cssVars={styles}>
     {#if uploadMode}
       <div class="upload-content" in:fade>
-        <Icon
-          size="3xl"
-          name="workflow:FolderOpenOutline"
-          class="text-blue-500"
-        />
+        <Icon size="3xl" name="FolderOpenOutline" class="text-blue-500" />
         {#if source || $summary}
           <div class="upload-text">Drop your JPG here</div>
         {:else}
@@ -80,13 +76,13 @@
 
 <style lang="postcss">
   .viewer {
-    @apply w-full bg-gray-100 flex items-center justify-center overflow-hidden;
+    @apply w-full bg-gray-75 flex items-center justify-center overflow-hidden;
   }
   .viewer.no-source {
     @apply bg-white;
   }
   .inner {
-    @apply flex justify-center rounded-md overflow-hidden bg-white shadow-md border-0 border-transparent transition-all duration-100;
+    @apply flex justify-center rounded-md overflow-hidden border-0 border-transparent transition-all duration-100;
     width: var(--width);
     height: var(--height);
     min-width: 256px;

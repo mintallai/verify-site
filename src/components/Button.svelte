@@ -35,13 +35,16 @@
 
 <style lang="postcss">
   .button {
-    @apply inline-block bg-blue-500 text-sm text-white font-bold px-6 py-2 rounded-full;
+    @apply inline-block bg-blue-500 text-sm text-white font-bold px-4 py-1.5 rounded-full transition-colors duration-200;
   }
   .button.full {
     @apply w-full;
   }
   .button.outline {
-    @apply bg-white border-black border-2 text-black;
+    @apply bg-white border-gray-800 border-2 text-gray-800;
+  }
+  .button.outline:hover {
+    @apply text-white bg-gray-800;
   }
   .secondary {
     @apply bg-gray-200 text-blue-500;

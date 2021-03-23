@@ -15,14 +15,14 @@
 <div class="container">
   {#if homeId}
     <div class="home" on:click={() => navigateToId(homeId)}>
-      <Icon size="s" name="workflow:Home" class="text-black" />
+      <Icon size="s" name="Home" class="text-black" />
     </div>
   {/if}
   <div class="breadcrumbs">
     {#each breadcrumbList as asset, index (asset._id)}
       {#if index > 0}
         <div class="separator">
-          <Icon size="s" name="workflow:ChevronRight" class="text-gray-700" />
+          <Icon size="s" name="ChevronRight" class="text-gray-700" />
         </div>
       {/if}
       <div
@@ -38,7 +38,7 @@
 
 <style lang="postcss">
   .container {
-    @apply col-span-3 flex items-center border-b border-gray-200 px-5 max-w-full;
+    @apply col-span-3 flex items-center border-b-2 border-gray-200 px-5 max-w-full;
     height: 60px;
   }
   .home {

@@ -21,8 +21,9 @@
     UploadToCloudIcon,
     VideoOutlineIcon,
   } from '@spectrum-web-components/icons-workflow/lib/icons';
+</script>
 
-  const IconsUI = {};
+<script lang="ts">
   const IconsWorkflow = {
     ActionsIcon,
     AlertIcon,
@@ -45,9 +46,7 @@
     UploadToCloudIcon,
     VideoOutlineIcon,
   };
-</script>
 
-<script lang="ts">
   enum Sizes {
     '4xl' = `4rem`,
     '3xl' = `2.5rem`,
@@ -65,18 +64,7 @@
   let svg = '';
 
   $: {
-    const [library, icon] = name.split(':');
-    let iconFn: (args: any) => any;
-    if (library === 'ui') {
-      iconFn = IconsUI[`${icon}Icon`];
-    } else if (library === 'workflow') {
-      iconFn = IconsWorkflow[`${icon}Icon`];
-    } else {
-      console.error(
-        `Icon library must be either "ui" or "workflow". Received:`,
-        library,
-      );
-    }
+    const iconFn = IconsWorkflow[`${name}Icon`];
     if (iconFn) {
       svg = iconFn({
         width: dims,
@@ -84,8 +72,8 @@
       });
     } else {
       console.error(
-        `Icon "${icon}" not found. Available options are:`,
-        Object.keys(library === 'workflow' ? IconsWorkflow : IconsUI),
+        `Icon "${name}" not found. Available options are:`,
+        Object.keys(IconsWorkflow),
       );
     }
   }
