@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@contentauth/toolkit@^0.1.5":
-  version "0.1.5"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.5/3bcef1718c04e595bb5545793298921fa26060080742efb77ddd0ed133f1f325#3d0a575ba0d34d684e557f105ef8e0109bc903f2"
-  integrity sha1-PQpXW6DTTWhOVX8QXvjgEJvJA/I=
+"@contentauth/toolkit@0.1.7":
+  version "0.1.7"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.7/6fcf9c968ec772c0eb34913620fc5b246ec86f91f09cbb366a2faec1670f45c2#bcf043c176ae47f2d1c67b857800f2efe4e2adfa"
+  integrity sha512-mt5+zAVXSidIsxwlUtZgQsVBSGg+acL6GZoe8RM72ftubdYOpAShjYC+ROzPE2OXSlrX35AVmmDj6N2yWWbHNQ==
 
 "@contentauth/web-components@^0.1.2":
   version "0.1.2"
@@ -1117,6 +1117,14 @@ deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
   integrity sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
+
+deepdash@^5.3.5:
+  version "5.3.5"
+  resolved "https://registry.yarnpkg.com/deepdash/-/deepdash-5.3.5.tgz#611bec9c1f2829832d21971dcbefe712e408647d"
+  integrity sha512-1ZdPPCI1pCEqeAWGSw+Nbpb/2iIV4w3sGPc22H/PDtcApb8+psTzPIoOVD040iBaT2wqZab29Kjrz6G+cd5mqQ==
+  dependencies:
+    lodash "^4.17.20"
+    lodash-es "^4.17.20"
 
 deepmerge@^4.2.2:
   version "4.2.2"
@@ -2254,6 +2262,11 @@ locate-path@^5.0.0:
   integrity sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==
   dependencies:
     p-locate "^4.1.0"
+
+lodash-es@^4.17.20:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
 
 lodash.memoize@^4.1.2:
   version "4.1.2"

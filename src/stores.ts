@@ -5,6 +5,7 @@ import omit from 'lodash/omit';
 import reduce from 'lodash/reduce';
 import mapValues from 'lodash/mapValues';
 import { addIdentifiers, getIdentifier } from './lib/claim';
+import { logVerificationErrors } from './lib/util/debug';
 import { supportDemoImages } from './lib/demo';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
@@ -131,6 +132,7 @@ export async function setSummary(data: ISummaryResponse | null) {
     // Grab map of references, since we may need to look up a claim title from
     // refs in the case of an acquisition
     console.info('Summary data', data);
+    logVerificationErrors(data);
     // @ts-ignore - For debugging
     window.summaryData = JSON.stringify(data);
     // Temporary
