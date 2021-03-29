@@ -2,10 +2,12 @@
   import { createEventDispatcher, afterUpdate } from 'svelte';
   import { getFaqUrl, rootClaimId } from '../stores';
   import { getIdentifier } from '../lib/claim';
+  import upperFirst from 'lodash/upperFirst';
   import Alert from './Alert.svelte';
-  import Icon from './Icon.svelte';
+  import ProviderIcon from './inspect/ProviderIcon.svelte';
   import '@contentauth/web-components/dist/components/panels/ContentProducer';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
+  import '@contentauth/web-components/dist/components/panels/Providers';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
 
@@ -20,7 +22,6 @@
   const dispatch = createEventDispatcher();
 
   $: alternate = isComparing || isPopup;
-  $: variant = isComparing ? 'sm' : 'lg';
   $: isSecureCapture = /truepic/i.test(claim?.produced_with);
 
   afterUpdate(() => {
@@ -50,11 +51,6 @@
           </div>
           <div class="compare-title">{claim.title}</div>
         </div>
-        <div class="flex-grow flex justify-end">
-          <div class="close" on:click={() => dispatch('close', { claim })}>
-            <Icon size="m" name="Close" class="text-gray-400" />
-          </div>
-        </div>
       </h2>
     {/if}
     <div
@@ -72,7 +68,7 @@
     </div>
   {/if}
 
-  <div class="about">
+  <div class="info">
     <div>
       <cai-content-producer
         producedby={claim.produced_by}
@@ -80,23 +76,62 @@
         signedon={claim.signed_on}
         class="theme-spectrum"
       >
-        <div slot="help">
-          <cai-tooltip class="theme-spectrum">
-            <div slot="content">This is some content</div>
-          </cai-tooltip>
-        </div>
+        <cai-tooltip class="theme-spectrum" slot="help">
+          <div slot="content">How the selected content was produced.</div>
+        </cai-tooltip>
+        <ProviderIcon
+          provider={claim.produced_with}
+          slotName="produced-with-icon"
+        />
       </cai-content-producer>
     </div>
     <div>
       <cai-edits-activity
-        categories={JSON.stringify(claim.edits?.categories)}
+        categories={claim.edits?.categories}
         class="theme-spectrum"
-      />
+      >
+        <cai-tooltip class="theme-spectrum" slot="help">
+          <div slot="content">
+            Categories of actions taken on this content, sorted alphabetically.
+          </div>
+        </cai-tooltip>
+      </cai-edits-activity>
+    </div>
+    <div>
+      <cai-providers
+        identifiedby={upperFirst(claim.signed_by ?? '')}
+        signedby={upperFirst(claim.signed_by ?? '')}
+        class="theme-spectrum"
+      >
+        <cai-tooltip class="theme-spectrum" slot="help">
+          <div slot="content">
+            Cryptographic signatures assuring that this content record wasn’t
+            tampered with.
+          </div>
+        </cai-tooltip>
+        <ProviderIcon
+          provider={claim.signed_by}
+          slotName="identified-by-icon"
+        />
+        <ProviderIcon provider={claim.signed_by} slotName="signed-by-icon" />
+      </cai-providers>
     </div>
   </div>
 </div>
 
 <style lang="postcss">
+  .info {
+    display: grid;
+  }
+  .info > div {
+    @apply py-4 border-b border-gray-300;
+  }
+  .info > div:first-child {
+    @apply pt-0;
+  }
+  .info > div:last-child {
+    @apply border-none pb-0;
+  }
   h2.filename {
     @apply mt-0 mb-3;
   }
