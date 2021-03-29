@@ -3,7 +3,6 @@
   import { fade } from 'svelte/transition';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
-  import Icon from '../Icon.svelte';
   import { urlParams, summary } from '../../stores';
   import { loadFile } from '../../lib/file';
 
@@ -51,12 +50,34 @@
   <div class="inner" use:cssVars={styles}>
     {#if uploadMode}
       <div class="upload-content" in:fade>
-        <Icon size="3xl" name="FolderOpenOutline" class="text-blue-500" />
+        <svg
+          width="58"
+          height="99"
+          xmlns="http://www.w3.org/2000/svg"
+          class="drop-file"
+        >
+          <g
+            stroke="currentColor"
+            stroke-width="3"
+            fill="none"
+            fill-rule="evenodd"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M21.216 73.125H3.5a2 2 0 01-2-2V3.5a2 2 0 012-2h31.443M55.942 27.41v43.714a2 2 0 01-2 2H34.216"
+            />
+            <path
+              d="M55.942 22.5h-21v-21zM27.722 55.316V96.06M17.942 87.762l9.146 9.277a.998.998 0 001.424 0l9.146-9.277"
+            />
+          </g>
+        </svg>
         {#if source || $summary}
-          <div class="upload-text">Drop your JPG here</div>
+          <div class="upload-text">Drop your file</div>
         {:else}
-          <div class="upload-text">
-            Drag and drop a JPG or <span on:click={browseFile}>browse</span>
+          <div class="upload-text">Drag and drop your file</div>
+          <div class="upload-action">
+            <span on:click={browseFile}>Select a JPG</span> from your computer
           </div>
         {/if}
       </div>
@@ -82,24 +103,34 @@
     @apply bg-white;
   }
   .inner {
-    @apply flex justify-center rounded-md overflow-hidden border-0 border-transparent transition-all duration-100;
+    @apply flex justify-center rounded-md overflow-hidden border-0 border-transparent transition-all duration-200;
     width: var(--width);
     height: var(--height);
     min-width: 256px;
   }
+  svg.drop-file {
+    @apply text-gray-500 transition-all duration-200;
+  }
   .upload .inner {
-    @apply border-2 border-blue-500 bg-gray-100 border-dashed shadow-none relative;
+    @apply border-2 border-gray-300 bg-gray-100 text-gray-700 bg-opacity-100 border-dashed shadow-none relative transition-all duration-200;
   }
   .dragging .inner {
-    @apply border-4;
+    @apply border-2 border-blue-500 border-solid text-blue-500;
+    background-color: rgba(20, 115, 230, 0.1);
+  }
+  .dragging .inner svg.drop-file {
+    @apply text-blue-500;
   }
   .upload-content {
-    @apply absolute inset-0 bg-gray-100 flex justify-center items-center flex-col;
+    @apply absolute inset-0 flex justify-center items-center flex-col;
   }
   .upload-text {
-    @apply font-bold text-xl mt-2;
+    @apply font-light text-700 mt-5;
   }
-  .upload-text span {
-    @apply text-blue-500 cursor-pointer;
+  .upload-action {
+    @apply text-75;
+  }
+  .upload-action span {
+    @apply text-blue-500 cursor-pointer underline;
   }
 </style>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from './Button.svelte';
+  import '@contentauth/web-components/dist/icons/color/logos/adobe';
   import { learnMoreUrl, getFaqUrl, navigateToRoot } from '../stores';
 
   function upload(evt: Event) {
@@ -32,6 +33,7 @@
   <div class="ml-5">
     <Button href={$learnMoreUrl} outline={true}>Learn more</Button>
   </div>
+  <cai-icon-adobe class="ml-5" />
 </header>
 
 <style lang="postcss">
@@ -49,5 +51,9 @@
   }
   .links a {
     @apply ml-4 text-gray-800;
+  }
+  cai-icon-adobe {
+    --cai-icon-width: 24px;
+    --cai-icon-height: 24px;
   }
 </style>

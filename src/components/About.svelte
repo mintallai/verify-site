@@ -4,7 +4,9 @@
   import { getIdentifier } from '../lib/claim';
   import Alert from './Alert.svelte';
   import Icon from './Icon.svelte';
-  import '@contentauth/web-components/dist/components/ContentProducer';
+  import '@contentauth/web-components/dist/components/panels/ContentProducer';
+  import '@contentauth/web-components/dist/components/panels/EditsActivity';
+  import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
 
   type TooltipElement = HTMLElement & {
@@ -70,13 +72,27 @@
     </div>
   {/if}
 
-  <div>
-    <cai-content-producer
-      producedby={claim.produced_by}
-      producedwith={claim.produced_with}
-      signedon={claim.signed_on}
-      class="theme-spectrum"
-    />
+  <div class="about">
+    <div>
+      <cai-content-producer
+        producedby={claim.produced_by}
+        producedwith={claim.produced_with}
+        signedon={claim.signed_on}
+        class="theme-spectrum"
+      >
+        <div slot="help">
+          <cai-tooltip class="theme-spectrum">
+            <div slot="content">This is some content</div>
+          </cai-tooltip>
+        </div>
+      </cai-content-producer>
+    </div>
+    <div>
+      <cai-edits-activity
+        categories={JSON.stringify(claim.edits?.categories)}
+        class="theme-spectrum"
+      />
+    </div>
   </div>
 </div>
 
