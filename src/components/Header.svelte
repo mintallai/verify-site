@@ -1,7 +1,7 @@
 <script lang="ts">
   import Button from './Button.svelte';
-  import '@contentauth/web-components/dist/icons/color/logos/adobe';
   import { learnMoreUrl, getFaqUrl, navigateToRoot } from '../stores';
+  import '@contentauth/web-components/dist/icons/color/logos/adobe';
 
   function upload(evt: Event) {
     window.newrelic?.addPageAction('uploadClick');

@@ -74,7 +74,7 @@
     "mousetrap": "^1.6.5",
     "shepherd.js": "^8.1.0",
     "store2": "^2.12.0",
-    "svelte": "^3.35.0",
+    "svelte": "^3.36.0",
     "svelte-css-vars": "^0.0.1",
     "tippy.js": "^6.2.6",
     "toposort": "^2.0.2"

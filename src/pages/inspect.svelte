@@ -9,7 +9,7 @@
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
   import Header from '../components/Header.svelte';
-  import ContentSources from '../components/inspect/ContentSources.svelte';
+  import ContentRecord from '../components/inspect/ContentRecord.svelte';
   import Icon from '../components/Icon.svelte';
   import NoInfo from '../components/inspect/NoInfo.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
@@ -129,7 +129,7 @@
     {:else if primary}
       <section class="border-r-2 p-4">
         {#if !isComparing}
-          <ContentSources claim={primary?.type === 'claim' ? primary : null} />
+          <ContentRecord claim={primary?.type === 'claim' ? primary : null} />
         {:else if primary?.type === 'claim'}
           <About
             claim={primary}

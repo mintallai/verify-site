@@ -1,9 +1,9 @@
 <script lang="ts">
   import { createEventDispatcher, afterUpdate } from 'svelte';
   import { getFaqUrl, rootClaimId } from '../stores';
-  import { getIdentifier } from '../lib/claim';
+  import { getIdentifier, isSecureCapture } from '../lib/claim';
+  import compact from 'lodash/compact';
   import upperFirst from 'lodash/upperFirst';
-  import Alert from './Alert.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import '@contentauth/web-components/dist/components/panels/ContentProducer';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
@@ -22,8 +22,12 @@
   const dispatch = createEventDispatcher();
 
   $: alternate = isComparing || isPopup;
-  $: isSecureCapture = /truepic/i.test(claim?.produced_with);
+  $: categories = compact([
+    ...claim.edits?.categories,
+    isSecureCapture(claim) && 'CAPTURE',
+  ]);
 
+  /*
   afterUpdate(() => {
     // We need to force tooltip repositioning if the alert components shows/hides
     element
@@ -31,9 +35,11 @@
       ?.shadowRoot?.querySelectorAll('cai-tooltip')
       ?.forEach((el: TooltipElement) => el?.getPopper()?.update());
   });
+  */
 </script>
 
 <div bind:this={element}>
+  {JSON.stringify(claim)}
   <!-- Compare header -->
   {#if alternate}
     {#if isComparing}
@@ -57,15 +63,6 @@
       class="compare-thumbnail"
       style={`background-image: url("${claim.thumbnail_url}");`}
     />
-  {:else if isSecureCapture}
-    <div class="mb-4">
-      <Alert
-        severity="info"
-        message={`This is an original photo, taken on a secure device. <a href="${getFaqUrl(
-          'block-yui_3_17_2_1_1607115018705_17736',
-        )}" target="_blank" style="text-decoration: underline;">Learn more</a>`}
-      />
-    </div>
   {/if}
 
   <div class="info">
@@ -76,9 +73,6 @@
         signedon={claim.signed_on}
         class="theme-spectrum"
       >
-        <cai-tooltip class="theme-spectrum" slot="help">
-          <div slot="content">How the selected content was produced.</div>
-        </cai-tooltip>
         <ProviderIcon
           provider={claim.produced_with}
           slotName="produced-with-icon"
@@ -86,16 +80,7 @@
       </cai-content-producer>
     </div>
     <div>
-      <cai-edits-activity
-        categories={claim.edits?.categories}
-        class="theme-spectrum"
-      >
-        <cai-tooltip class="theme-spectrum" slot="help">
-          <div slot="content">
-            Categories of actions taken on this content, sorted alphabetically.
-          </div>
-        </cai-tooltip>
-      </cai-edits-activity>
+      <cai-edits-activity {categories} class="theme-spectrum" />
     </div>
     <div>
       <cai-providers
@@ -103,12 +88,6 @@
         signedby={upperFirst(claim.signed_by ?? '')}
         class="theme-spectrum"
       >
-        <cai-tooltip class="theme-spectrum" slot="help">
-          <div slot="content">
-            Cryptographic signatures assuring that this content record wasn’t
-            tampered with.
-          </div>
-        </cai-tooltip>
         <ProviderIcon
           provider={claim.signed_by}
           slotName="identified-by-icon"
@@ -137,11 +116,6 @@
   }
   h2:first-child {
     @apply mt-0;
-  }
-  .close {
-    @apply bg-gray-200 rounded-full cursor-pointer flex items-center justify-center;
-    width: 28px;
-    height: 28px;
   }
   .compare-title {
     @apply font-bold text-xl truncate mb-1;

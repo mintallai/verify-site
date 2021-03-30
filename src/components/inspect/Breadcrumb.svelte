@@ -7,6 +7,8 @@
     navigateToId,
   } from '../../stores';
   import { getBreadcrumbList } from '../../lib/claim';
+  import '@contentauth/web-components/dist/icons/monochrome/cai';
+  import '@contentauth/web-components/dist/components/Tooltip';
 
   $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
   $: homeId = breadcrumbList[0]?._id;
@@ -14,9 +16,12 @@
 
 <div class="container">
   {#if homeId}
-    <div class="home" on:click={() => navigateToId(homeId)}>
-      <Icon size="s" name="Home" class="text-black" />
-    </div>
+    <cai-tooltip class="theme-spectrum">
+      <div class="home" slot="trigger" on:click={() => navigateToId(homeId)}>
+        <cai-icon-cai />
+      </div>
+      <div slot="content">This is the content you started with.</div>
+    </cai-tooltip>
   {/if}
   <div class="breadcrumbs">
     {#each breadcrumbList as asset, index (asset._id)}
@@ -43,6 +48,8 @@
   }
   .home {
     @apply mr-2 cursor-pointer;
+    --cai-icon-width: 19px;
+    --cai-icon-height: 16px;
   }
   .breadcrumbs {
     @apply text-sm;

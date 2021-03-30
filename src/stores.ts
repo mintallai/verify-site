@@ -92,6 +92,7 @@ export function navigateToId(
       return ids;
     }
   });
+  console.debug('setting primaryId to', newId);
   primaryId.set(newId);
   if (logEvent) {
     window.newrelic?.addPageAction('navigateToId', { id: newId });

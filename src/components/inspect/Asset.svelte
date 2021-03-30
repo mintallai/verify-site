@@ -1,7 +1,8 @@
 <script lang="ts">
   import { quintOut } from 'svelte/easing';
-  import cssVars from 'svelte-css-vars';
   import { navigateToId, compareWithId, primaryId } from '../../stores';
+  import '@contentauth/web-components/dist/components/Tooltip';
+  import '@contentauth/web-components/dist/components/Thumbnail';
 
   let hover: boolean;
   export let asset: ViewableItem;
@@ -30,6 +31,15 @@
       hover = false;
     }
   }
+  $: badge =
+    asset.type === 'claim'
+      ? {
+          type: 'info',
+          helpText: 'This image has attribution and history data.',
+        }
+      : {
+          type: 'none',
+        };
 </script>
 
 <div
@@ -46,39 +56,33 @@
   <div {id} class="item" class:current>
     {#if indented}
       <div class="indent-arrow">
-        <img src="/images/svg/nested-arrow.svg" alt="" />
+        <svg viewBox="0 0 19 17" xmlns="http://www.w3.org/2000/svg">
+          <g
+            stroke="#A8A8A8"
+            stroke-width="2"
+            fill="none"
+            fill-rule="evenodd"
+            stroke-linecap="round"
+          >
+            <path d="M1.5 1v5a4 4 0 004 4h10" />
+            <path d="M11.25 4l6 6-6 6" />
+          </g>
+        </svg>
       </div>
     {/if}
-    {#if asset.type === 'claim'}
-      <div
-        class="thumbnail"
-        use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}
-      >
-        <cai-tooltip
-          content="This image has attribution and history data."
-          class="info"
-        >
-          <cai-icon name="InfoCircle_Purple" width="20px" height="20px" />
-        </cai-tooltip>
-      </div>
-      <div class="flex items-center">
-        <dl class="attributes multiline overflow-hidden self-center">
-          <dt>File Name</dt>
-          <dd class="file-name" title={asset.title}>{asset.title}</dd>
-        </dl>
-      </div>
-    {:else}
-      <div
-        class="thumbnail"
-        use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}
-      />
-      <div>
-        <dl class="attributes multiline overflow-hidden self-center">
-          <dt>File Name</dt>
-          <dd class="file-name" title={asset.title}>{asset.title}</dd>
-        </dl>
-      </div>
-    {/if}
+    <cai-thumbnail
+      src={asset.thumbnail_url}
+      selected={current}
+      badge={badge.type}
+      badgehelptext={badge.helpText}
+      class="theme-spectrum"
+    />
+    <div class="flex items-center">
+      <dl class="attributes multiline overflow-hidden self-center">
+        <dt>File Name</dt>
+        <dd class="file-name" title={asset.title}>{asset.title}</dd>
+      </dl>
+    </div>
   </div>
 </div>
 
@@ -99,42 +103,22 @@
     grid-template-columns: 36px 72px auto;
   }
   .indent-arrow {
-    @apply flex items-center justify-center;
+    @apply flex items-center justify-end;
   }
-  .indent-arrow img {
-    width: 20px;
-    height: 20px;
-  }
-  .thumbnail {
-    @apply relative border-transparent bg-gray-200 rounded bg-contain bg-center bg-no-repeat;
-    flex: 0 0 72px;
-    width: 72px;
-    height: 72px;
-    background-image: var(--backgroundImage);
-  }
-  .item.current .thumbnail {
-    @apply shadow-selected;
-  }
-  .indented .thumbnail {
-    flex: 0 0 72px;
-    width: 72px;
-    height: 72px;
-  }
-  .info {
-    @apply absolute;
-    top: 4px;
-    right: 4px;
+  .indent-arrow svg {
+    width: 19px;
+    height: 17px;
   }
   .file-name {
     @apply truncate;
     max-width: 170px;
   }
   .connector {
-    @apply absolute bg-gray-400;
+    @apply absolute bg-gray-600;
     width: 2px;
-    height: 24px;
-    top: -14px;
-    left: 54px;
+    height: 17px;
+    top: -20px;
+    left: 36px;
     transform-origin: top;
     z-index: 5;
   }

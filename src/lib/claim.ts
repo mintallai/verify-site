@@ -107,3 +107,7 @@ export function getBreadcrumbList(
     ? pickAssets($contentSourceIds, assetsByIdentifier)
     : [];
 }
+
+export function isSecureCapture(claim: IClaimSummary) {
+  return /truepic/i.test(claim?.produced_with);
+}

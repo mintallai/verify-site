@@ -14,32 +14,36 @@
   $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
 </script>
 
+{console.log('breadcrumbList', breadcrumbList)}
+
 <div class="pb-4">
   <h2 class="my-0 mb-2">
     <span>Content record</span>
-    <cai-tooltip
-      class="ml-2"
-      content="Tamper-evident editing and activity data attached on export, including additional images and anything else used to make the selected content."
-    />
+    <cai-tooltip class="theme-spectrum ml-2"
+      ><div slot="content">
+        Tamper-evident editing and activity data attached on export, including
+        additional images and anything else used to make the selected content.
+      </div>
+    </cai-tooltip>
   </h2>
   <div class="mb-4 leading-small text-gray-700">
     Select one of these elements to view more of the content record.
   </div>
   <div class="relative">
-    <div bind:this={container} class="grid space-y-2">
+    <div bind:this={container} class="grid space-y-4">
       {#each breadcrumbList as asset, index (asset._id)}
-        <div class:current={asset._id === $primaryId}>
-          <Asset
-            {asset}
-            id={`record-${index}`}
-            current={asset._id === $primaryId}
-            hasConnector={index > 0}
-          />
-        </div>
+        <Asset
+          {asset}
+          id={`record-${index}`}
+          current={asset._id === $primaryId}
+          hasConnector={index > 0}
+        />
       {/each}
       <div>
         {#each assetList as asset (asset._id)}
-          <Asset {asset} indented />
+          <div>
+            <Asset {asset} indented />
+          </div>
         {/each}
       </div>
     </div>
