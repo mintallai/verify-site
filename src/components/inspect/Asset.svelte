@@ -6,10 +6,10 @@
 
   let hover: boolean;
   export let asset: ViewableItem;
-  export let id: string;
   export let indented: boolean = false;
   export let hasConnector: boolean = false;
   export let current: boolean = false;
+  export let isCompareMode: boolean = false;
 
   function scaleIn(node: HTMLElement, _params: any) {
     const existingTransform = getComputedStyle(node).transform.replace(
@@ -26,6 +26,7 @@
   }
 
   $: isCurrent = asset._id === $primaryId;
+  $: compare = isCompareMode && !isCurrent;
   $: {
     if (isCurrent) {
       hover = false;
@@ -46,14 +47,16 @@
   class="container"
   class:indented
   class:hover
+  class:compare
   on:mouseenter={() => (hover = isCurrent ? false : true)}
   on:mouseleave={() => (hover = false)}
-  on:click={() => navigateToId(asset._id)}
+  on:click={() =>
+    isCompareMode ? compareWithId(asset._id) : navigateToId(asset._id)}
 >
   {#if hasConnector}
     <div class="connector" in:scaleIn />
   {/if}
-  <div {id} class="item" class:current>
+  <div class="item" class:current>
     {#if indented}
       <div class="indent-arrow">
         <svg viewBox="0 0 19 17" xmlns="http://www.w3.org/2000/svg">
@@ -77,12 +80,10 @@
       badgehelptext={badge.helpText}
       class="theme-spectrum"
     />
-    <div class="flex items-center">
-      <dl class="attributes multiline overflow-hidden self-center">
-        <dt>File Name</dt>
-        <dd class="file-name" title={asset.title}>{asset.title}</dd>
-      </dl>
-    </div>
+    <dl class="attributes multiline overflow-hidden self-center pr-2">
+      <dt>File Name</dt>
+      <dd class="file-name" title={asset.title}>{asset.title}</dd>
+    </dl>
   </div>
 </div>
 
@@ -91,13 +92,13 @@
     @apply relative mb-1 transition duration-200 z-0 cursor-pointer;
   }
   .item {
-    @apply rounded grid gap-3 max-w-full bg-transparent transition duration-200;
+    @apply grid gap-3 max-w-full bg-transparent transition-all duration-200 border-blue-500 border-r-0;
     grid-template-columns: 72px auto;
     min-height: 0;
     min-width: 0;
   }
-  .hover .item {
-    @apply border-gray-300;
+  .compare .item {
+    @apply border-r-4;
   }
   .indented .item {
     grid-template-columns: 36px 72px auto;

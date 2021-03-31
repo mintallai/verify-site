@@ -35,7 +35,7 @@
 
 <style lang="postcss">
   .button {
-    @apply inline-block bg-blue-500 text-sm text-white font-bold px-4 py-1.5 rounded-full transition-colors duration-200;
+    @apply inline-block bg-blue-500 text-sm text-white font-bold px-4 py-1.5 rounded-full transition duration-200 outline-none;
   }
   .button.full {
     @apply w-full;
@@ -47,7 +47,7 @@
     @apply text-white bg-gray-800;
   }
   .secondary {
-    @apply bg-gray-200 text-blue-500;
+    @apply bg-gray-100 text-gray-800;
   }
   .lg {
     @apply px-12 py-3 text-xl;

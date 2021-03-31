@@ -22,10 +22,9 @@
   const dispatch = createEventDispatcher();
 
   $: alternate = isComparing || isPopup;
-  $: categories = compact([
-    ...claim.edits?.categories,
-    isSecureCapture(claim) && 'CAPTURE',
-  ]);
+  $: categories = compact(
+    (claim.edits?.categories ?? []).concat(isSecureCapture(claim) && 'CAPTURE'),
+  );
 
   /*
   afterUpdate(() => {
@@ -39,33 +38,17 @@
 </script>
 
 <div bind:this={element}>
-  {JSON.stringify(claim)}
-  <!-- Compare header -->
-  {#if alternate}
-    {#if isComparing}
-      <h2 class="filename">
-        {#if getIdentifier(claim) === $rootClaimId}
-          <div class="mr-2">
-            <cai-icon name="Pin" width="20px" height="20px" />
-          </div>
-        {/if}
-        <div>
-          <div
-            class="font-bold text-xs uppercase text-gray-500 leading-none mb-1"
-          >
-            File name
-          </div>
-          <div class="compare-title">{claim.title}</div>
-        </div>
-      </h2>
-    {/if}
-    <div
-      class="compare-thumbnail"
-      style={`background-image: url("${claim.thumbnail_url}");`}
-    />
-  {/if}
-
   <div class="info">
+    {#if isComparing}
+      <div>
+        <div class="text-xs text-gray-700 uppercase leading-none mb-1">
+          File name
+        </div>
+        <div class="text-md text-gray-900 font-bold truncate">
+          {claim.title}
+        </div>
+      </div>
+    {/if}
     <div>
       <cai-content-producer
         producedby={claim.produced_by}
@@ -110,19 +93,5 @@
   }
   .info > div:last-child {
     @apply border-none pb-0;
-  }
-  h2.filename {
-    @apply mt-0 mb-3;
-  }
-  h2:first-child {
-    @apply mt-0;
-  }
-  .compare-title {
-    @apply font-bold text-xl truncate mb-1;
-    max-width: 240px;
-  }
-  .compare-thumbnail {
-    @apply w-full border border-gray-300 bg-white rounded bg-contain bg-center bg-no-repeat mb-4;
-    height: 280px;
   }
 </style>

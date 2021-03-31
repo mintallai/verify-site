@@ -11,7 +11,7 @@
     class="rounded-md overflow-hidden bg-white shadow-md p-12 flex justify-center items-center flex-col"
   >
     <div class="flex-shrink-0 mb-3">
-      <Icon size="4xl" name="ImageSearch" class="text-gray-400" />
+      <Icon size="4xl" name="workflow:ImageSearch" class="text-gray-400" />
     </div>
     <h2 class="m-0 mb-3">Drop your image file here to analyze</h2>
     <span>Only JPG files are accepted.</span>

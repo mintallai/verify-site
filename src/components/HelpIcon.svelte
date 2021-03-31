@@ -29,5 +29,5 @@
 </script>
 
 <div class={$$props.class} use:tippy={{ content, ...defaultOpts }}>
-  <Icon {size} name="HelpOutline" class="text-gray-400" />
+  <Icon {size} name="workflow:HelpOutline" class="text-gray-400" />
 </div>

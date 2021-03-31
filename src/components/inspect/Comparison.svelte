@@ -37,39 +37,11 @@
   }
 </script>
 
-<style lang="postcss">
-  .selector {
-    @apply grid grid-cols-2 mb-5 mt-3;
-    grid-gap: 2px;
-    /* Needed to keep Safari from taking up the full height */
-    height: 40px;
-  }
-  .selector button {
-    @apply bg-gray-200 text-center font-bold text-sm py-2 outline-none transition-colors duration-150;
-    width: 100px;
-  }
-  .selector button.selected {
-    @apply bg-gray-800 text-white;
-  }
-</style>
-
 <div
   class="bg-gray-100 flex flex-col items-center justify-center overflow-hidden"
   bind:clientWidth={width}
-  bind:clientHeight={height}>
-  <div
-    id="compare-selector"
-    class="selector"
-    bind:clientHeight={selectorHeight}>
-    <button
-      class="rounded-l-full"
-      class:selected={mode === CompareMode.Split}
-      on:click={() => setMode(CompareMode.Split)}>Split</button>
-    <button
-      class="rounded-r-full"
-      class:selected={mode === CompareMode.Slider}
-      on:click={() => setMode(CompareMode.Slider)}>Slider</button>
-  </div>
+  bind:clientHeight={height}
+>
   {#if !isLoading}
     {#if mode === CompareMode.Slider}
       <Slider {primary} {secondary} {side} />

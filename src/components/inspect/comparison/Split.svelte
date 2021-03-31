@@ -70,7 +70,7 @@
 
 <style lang="postcss">
   .inner {
-    @apply flex rounded-md overflow-hidden bg-white shadow-md pointer-events-none;
+    @apply flex pointer-events-none;
     width: var(--width);
     height: var(--height);
   }

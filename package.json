@@ -64,6 +64,7 @@
     "@spectrum-web-components/icon": "^0.6.0",
     "@spectrum-web-components/icons-ui": "^0.3.0",
     "@spectrum-web-components/icons-workflow": "^0.3.3",
+    "@spectrum-web-components/tabs": "^0.5.4",
     "@spectrum-web-components/theme": "^0.6.1",
     "date-fns": "^2.16.1",
     "delay": "^4.4.0",

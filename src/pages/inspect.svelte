@@ -101,7 +101,11 @@
   {#if showMobileOverlay}
     <div transition:fade={{ duration: 500 }} class="mobile-overlay">
       <div class="content">
-        <Icon size="3xl" name="DeviceDesktop" class="text-blue-500 mb-3" />
+        <Icon
+          size="3xl"
+          name="workflow:DeviceDesktop"
+          class="text-blue-500 mb-3"
+        />
         <div>
           Increase the size of your browser window to view. If you’re on a
           mobile device, open this page on a computer.
@@ -110,7 +114,7 @@
     </div>
   {/if}
   <Header />
-  <Breadcrumb />
+  <Breadcrumb {isComparing} on:back={partial(handleClose, secondary)} />
   {#if hasContent}
     {#if error}
       <section class="border-r-2" class:loading={isLoading} />
@@ -127,21 +131,25 @@
         <CircleLoader />
       </section>
     {:else if primary}
-      <section class="border-r-2 p-4">
+      <section class="border-r-2">
         {#if !isComparing}
           <ContentRecord claim={primary?.type === 'claim' ? primary : null} />
         {:else if primary?.type === 'claim'}
-          <About
-            claim={primary}
-            {isComparing}
-            on:close={partial(handleClose, secondary)}
-          />
+          <div class="p-4">
+            <About
+              claim={primary}
+              {isComparing}
+              on:close={partial(handleClose, secondary)}
+            />
+          </div>
         {:else if primary?.type === 'reference'}
-          <NoInfo
-            ingredient={primary}
-            {isComparing}
-            on:close={partial(handleClose, primary)}
-          />
+          <div class="p-4">
+            <NoInfo
+              ingredient={primary}
+              {isComparing}
+              on:close={partial(handleClose, primary)}
+            />
+          </div>
         {/if}
       </section>
       {#if isComparing}

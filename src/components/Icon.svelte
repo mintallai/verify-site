@@ -1,52 +1,28 @@
 <script lang="ts" context="module">
   import {
-    ActionsIcon,
-    AlertIcon,
-    AlgorithmIcon,
-    BrushIcon,
-    CameraIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
     CloseIcon,
-    ColorPaletteIcon,
     DeviceDesktopIcon,
-    FolderOpenOutlineIcon,
-    GroupIcon,
     HelpOutlineIcon,
-    HomeIcon,
-    ImageSearchIcon,
     InfoIcon,
-    ShapesIcon,
-    TextIcon,
-    UploadToCloudIcon,
-    VideoOutlineIcon,
   } from '@spectrum-web-components/icons-workflow/lib/icons';
+  import { ArrowLeftMediumIcon } from '@spectrum-web-components/icons-ui/lib/icons';
+
+  const IconsUI = {
+    ArrowLeftMediumIcon,
+  };
+  const IconsWorkflow = {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    CloseIcon,
+    DeviceDesktopIcon,
+    HelpOutlineIcon,
+    InfoIcon,
+  };
 </script>
 
 <script lang="ts">
-  const IconsWorkflow = {
-    ActionsIcon,
-    AlertIcon,
-    AlgorithmIcon,
-    BrushIcon,
-    CameraIcon,
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    CloseIcon,
-    ColorPaletteIcon,
-    DeviceDesktopIcon,
-    FolderOpenOutlineIcon,
-    GroupIcon,
-    HelpOutlineIcon,
-    HomeIcon,
-    ImageSearchIcon,
-    InfoIcon,
-    ShapesIcon,
-    TextIcon,
-    UploadToCloudIcon,
-    VideoOutlineIcon,
-  };
-
   enum Sizes {
     '4xl' = `4rem`,
     '3xl' = `2.5rem`,
@@ -64,7 +40,18 @@
   let svg = '';
 
   $: {
-    const iconFn = IconsWorkflow[`${name}Icon`];
+    const [library, icon] = name.split(':');
+    let iconFn: (args: any) => any;
+    if (library === 'ui') {
+      iconFn = IconsUI[`${icon}Icon`];
+    } else if (library === 'workflow') {
+      iconFn = IconsWorkflow[`${icon}Icon`];
+    } else {
+      console.error(
+        `Icon library must be either "ui" or "workflow". Received:`,
+        library,
+      );
+    }
     if (iconFn) {
       svg = iconFn({
         width: dims,
@@ -72,8 +59,8 @@
       });
     } else {
       console.error(
-        `Icon "${name}" not found. Available options are:`,
-        Object.keys(IconsWorkflow),
+        `Icon "${icon}" not found. Available options are:`,
+        Object.keys(library === 'workflow' ? IconsWorkflow : IconsUI),
       );
     }
   }

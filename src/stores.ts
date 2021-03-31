@@ -92,8 +92,8 @@ export function navigateToId(
       return ids;
     }
   });
-  console.debug('setting primaryId to', newId);
   primaryId.set(newId);
+  compareWithId('claim_id:claim_1'); // remove me
   if (logEvent) {
     window.newrelic?.addPageAction('navigateToId', { id: newId });
   }
