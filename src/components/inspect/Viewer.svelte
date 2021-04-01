@@ -5,10 +5,12 @@
   import CircleLoader from '../CircleLoader.svelte';
   import { urlParams, summary } from '../../stores';
   import { loadFile } from '../../lib/file';
+  import '@contentauth/web-components/dist/icons/monochrome/broken-image';
 
   export let thumbnailURL: string = null;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
+  export let isError: boolean = false;
 
   let fileInput: HTMLInputElement;
   let width = 0;
@@ -90,7 +92,11 @@
       />
     {:else}
       <div class="flex items-center justify-center">
-        <CircleLoader />
+        {#if isError}
+          <cai-icon-broken-image />
+        {:else}
+          <CircleLoader />
+        {/if}
       </div>
     {/if}
   </div>
@@ -121,5 +127,10 @@
   }
   .upload-content {
     @apply absolute inset-0 flex justify-center items-center flex-col;
+  }
+  cai-icon-broken-image {
+    @apply text-gray-600;
+    --cai-icon-width: 100px;
+    --cai-icon-height: 100px;
   }
 </style>

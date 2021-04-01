@@ -27,7 +27,8 @@
     The producer edited this asset without attaching complete content
     credentials. Other data may be available in the content record. <a
       class="link"
-      href="">Learn more</a
+      href="https://contentauthenticity.org/faq"
+      target="_blank">Learn more</a
     >
   </div>
 </div>

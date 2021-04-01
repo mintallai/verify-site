@@ -1,4 +1,6 @@
 <script lang="ts">
+  import '@contentauth/web-components/dist/icons/monochrome/alert-circle';
+
   type Severity = 'info' | 'error';
 
   export let message: string;
@@ -11,7 +13,7 @@
   class:info={severity === 'info'}
 >
   {#if severity === 'error'}
-    <cai-icon name="ErrorCircle" width="20px" height="20px" />
+    <cai-icon-alert-circle />
   {:else if severity === 'info'}
     <cai-icon name="InfoCircle_Purple" width="20px" height="20px" />
   {/if}
@@ -22,12 +24,15 @@
 
 <style lang="postcss">
   .alert {
-    @apply flex border rounded text-base p-3 pr-4;
+    @apply flex text-base text-white px-4 py-3;
+  }
+  cai-icon-alert-circle {
+    @apply text-white mr-3;
+    --cai-icon-width: 16px;
+    --cai-icon-height: 16px;
   }
   cai-icon {
     @apply mr-2;
-    width: 20px;
-    height: 20px;
   }
   .message {
     @apply leading-small;
@@ -36,6 +41,6 @@
     @apply border-blue-500;
   }
   .error {
-    @apply border-red-500;
+    @apply bg-red-500;
   }
 </style>

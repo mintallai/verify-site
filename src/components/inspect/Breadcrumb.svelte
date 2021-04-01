@@ -5,8 +5,10 @@
     contentSourceIds,
     assetsByIdentifier,
     primaryId,
-    secondaryId,
     navigateToId,
+    compareMode,
+    setCompareMode,
+    CompareMode,
   } from '../../stores';
   import { getBreadcrumbList } from '../../lib/claim';
   import '@spectrum-web-components/tabs/sp-tabs.js';
@@ -19,11 +21,15 @@
   export let source: ISourceInfo | null = null;
   const dispatch = createEventDispatcher();
 
+  function handleCompareChange() {
+    setCompareMode(this.selected);
+  }
+
   $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
   $: homeId = breadcrumbList[0]?._id;
 </script>
 
-<div class="container">
+<div id="breadcrumb-bar" class="container">
   {#if isComparing}
     <div class="absolute flex cursor-pointer" on:click={() => dispatch('back')}>
       <Icon
@@ -37,9 +43,9 @@
     </div>
     <div class="compare-tabs">
       <sp-theme color="light" scale="medium">
-        <sp-tabs selected="1">
-          <sp-tab label="Split " value="1" />
-          <sp-tab label="Slider" value="2" />
+        <sp-tabs selected={$compareMode} on:change={handleCompareChange}>
+          <sp-tab label="Split" value={CompareMode.Split} />
+          <sp-tab label="Slider" value={CompareMode.Slider} />
         </sp-tabs>
       </sp-theme>
     </div>

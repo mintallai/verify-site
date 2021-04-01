@@ -115,7 +115,7 @@ export function createTour({ summary }) {
   tour.addStep({
     id: 'step-3',
     attachTo: {
-      element: '#compare-selector',
+      element: '#breadcrumb-bar',
       on: 'left-start',
     },
     beforeShowPromise: () => gotoCompare(summary),

@@ -6,6 +6,7 @@
 
   let hover: boolean;
   export let asset: ViewableItem | null = null;
+  export let id: string | null = null;
   export let source: ISourceInfo | null = null;
   export let indented: boolean = false;
   export let hasConnector: boolean = false;
@@ -60,7 +61,7 @@
   {#if hasConnector}
     <div class="connector" in:scaleIn />
   {/if}
-  <div class="item" class:current>
+  <div {id} class="item" class:current>
     {#if indented}
       <div class="indent-arrow">
         <svg viewBox="0 0 19 17" xmlns="http://www.w3.org/2000/svg">

@@ -24,6 +24,10 @@ module.exports = merge(spectrumConfig, {
       opacity: {
         '0': '0',
       },
+      gradientColorStops: {
+        transparent: 'transparent',
+        white: '#fff',
+      },
     },
   },
   variants: {
@@ -31,5 +35,6 @@ module.exports = merge(spectrumConfig, {
     padding: ({ after }) => after(['first']),
     backgroundColor: ['hover'],
     textColor: ['hover'],
+    gradientColorStops: ['active'],
   },
 });

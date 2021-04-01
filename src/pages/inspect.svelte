@@ -11,7 +11,6 @@
   import Header from '../components/Header.svelte';
   import ContentRecord from '../components/inspect/ContentRecord.svelte';
   import Icon from '../components/Icon.svelte';
-  import NoInfo from '../components/inspect/NoInfo.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
   import NoContentCredentials from '../components/inspect/NoContentCredentials.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
@@ -130,9 +129,9 @@
   {#if hasContent}
     {#if error}
       <section class="border-r-2" class:loading={isLoading} />
-      <Viewer />
+      <Viewer isError={!!error} />
       <section class="border-l-2 p-4">
-        <Alert severity="error" message="Sorry, something went wrong" />
+        <Alert severity="error" message="Something went wrong" />
       </section>
     {:else if isLoading}
       <section class="border-r-2" class:loading={isLoading}>
@@ -161,12 +160,8 @@
             />
           </div>
         {:else if primary?.type === 'reference'}
-          <div class="p-4">
-            <NoInfo
-              ingredient={primary}
-              {isComparing}
-              on:close={partial(handleClose, primary)}
-            />
+          <div class="p-4 h-full flex items-middle justify-center">
+            <NoContentCredentials />
           </div>
         {/if}
       </section>
@@ -186,11 +181,7 @@
             on:close={partial(handleClose, secondary)}
           />
         {:else if !isComparing && primary?.type === 'reference'}
-          <NoInfo
-            ingredient={primary}
-            {isComparing}
-            on:close={partial(handleClose, primary)}
-          />
+          <NoContentCredentials />
         {:else if secondary?.type === 'claim'}
           <About
             claim={secondary}
@@ -198,11 +189,7 @@
             on:close={partial(handleClose, primary)}
           />
         {:else if secondary?.type === 'reference'}
-          <NoInfo
-            ingredient={secondary}
-            {isComparing}
-            on:close={partial(handleClose, primary)}
-          />
+          <NoContentCredentials />
         {/if}
       </section>
     {/if}

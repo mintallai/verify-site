@@ -4,6 +4,7 @@ import size from 'lodash/size';
 import omit from 'lodash/omit';
 import reduce from 'lodash/reduce';
 import mapValues from 'lodash/mapValues';
+import { local } from 'store2';
 import { addIdentifiers, getIdentifier } from './lib/claim';
 import { arrayBufferToBlobUrl } from './lib/util/data';
 import { supportDemoImages } from './lib/demo';
@@ -11,6 +12,7 @@ import { supportDemoImages } from './lib/demo';
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
+const STORAGE_MODE_KEY = 'compareMode';
 
 /**
  * Syncs the URL params to the state
@@ -49,6 +51,28 @@ export const primaryId = writable<string>('');
  * to compare with.
  */
 export const secondaryId = writable<string>('');
+
+export enum CompareMode {
+  Split = 'SPLIT',
+  Slider = 'SLIDER',
+}
+
+/**
+ * Specifies the active compare mode on the comparison view
+ */
+export const compareMode = writable<CompareMode>(
+  local.get(STORAGE_MODE_KEY) || CompareMode.Split,
+);
+
+/**
+ * Sets the comparison mode
+ * @param mode CompareMode
+ */
+export function setCompareMode(mode: CompareMode) {
+  compareMode.set(mode);
+  local.set(STORAGE_MODE_KEY, mode);
+  window.newrelic?.addPageAction('setCompareMode', { compareMode: mode });
+}
 
 /**
  * Returns the FAQ URL on the contentauthenticity.org site

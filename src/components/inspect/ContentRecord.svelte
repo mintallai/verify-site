@@ -33,35 +33,39 @@
       Select one of these elements to view more of the content record.
     </div>
   </div>
-  {#if claim}
-    <div class="relative pl-4">
-      <div bind:this={container} class="grid space-y-4">
-        {#each breadcrumbList as asset, index (asset._id)}
-          <Asset
-            {asset}
-            {isCompareMode}
-            current={asset._id === $primaryId}
-            hasConnector={index > 0}
-          />
+  <div class="relative pl-4">
+    <div bind:this={container} class="grid space-y-4">
+      {#each breadcrumbList as asset, index (asset._id)}
+        <Asset
+          {asset}
+          {isCompareMode}
+          id={`record-${index}`}
+          current={asset._id === $primaryId}
+          hasConnector={index > 0}
+        />
+      {/each}
+      <div class="grid space-y-4">
+        {#each assetList as asset (asset._id)}
+          <div>
+            <Asset {asset} {isCompareMode} indented />
+          </div>
         {/each}
-        <div class="grid space-y-4">
-          {#each assetList as asset (asset._id)}
-            <div>
-              <Asset {asset} {isCompareMode} indented />
-            </div>
-          {/each}
-        </div>
       </div>
     </div>
-    {#if combined.length > 0}
-      <div class="absolute bottom-0 pb-4 flex justify-center w-full">
+  </div>
+  {#if combined.length > 0}
+    <div
+      class="sticky bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent"
+    >
+      <div class="pointer-events-auto">
         <Button
           on:click={() => (isCompareMode = !isCompareMode)}
           secondary={!isCompareMode}>Compare records</Button
         >
       </div>
-    {/if}
-  {:else if source}
+    </div>
+  {/if}
+  {#if source && !claim}
     <div class="relative pl-4">
       <div bind:this={container} class="grid space-y-4">
         <Asset {source} current={true} />

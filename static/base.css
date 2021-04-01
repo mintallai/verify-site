@@ -92,7 +92,7 @@
   }
 
   .shepherd-element {
-    @apply bg-blue-500 rounded-md text-white outline-none transition opacity-0 invisible w-full px-1;
+    @apply font-base bg-blue-500 rounded-md text-white outline-none transition opacity-0 invisible w-full px-1;
     filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
     max-width: 285px;
     z-index: 9999;
