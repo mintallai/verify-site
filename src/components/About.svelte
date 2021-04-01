@@ -1,40 +1,24 @@
 <script lang="ts">
-  import { createEventDispatcher, afterUpdate } from 'svelte';
-  import { getFaqUrl, rootClaimId } from '../stores';
-  import { getIdentifier, isSecureCapture } from '../lib/claim';
   import compact from 'lodash/compact';
   import upperFirst from 'lodash/upperFirst';
+  import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
+  import { formatLocation, isSecureCapture } from '../lib/demo';
   import '@contentauth/web-components/dist/components/panels/ContentProducer';
+  import '@contentauth/web-components/dist/components/panels/ContentRecord';
+  import '@contentauth/web-components/dist/components/panels/CustomData';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/panels/Providers';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
 
-  type TooltipElement = HTMLElement & {
-    getPopper: any;
-  };
-
   export let claim: IClaimSummary;
   export let isComparing: boolean = false;
-  export let isPopup: boolean = false;
   let element: HTMLElement;
-  const dispatch = createEventDispatcher();
 
-  $: alternate = isComparing || isPopup;
   $: categories = compact(
     (claim.edits?.categories ?? []).concat(isSecureCapture(claim) && 'CAPTURE'),
   );
-
-  /*
-  afterUpdate(() => {
-    // We need to force tooltip repositioning if the alert components shows/hides
-    element
-      ?.querySelector('claim-info')
-      ?.shadowRoot?.querySelectorAll('cai-tooltip')
-      ?.forEach((el: TooltipElement) => el?.getPopper()?.update());
-  });
-  */
 </script>
 
 <div bind:this={element}>
@@ -65,6 +49,31 @@
     <div>
       <cai-panel-edits-activity {categories} class="theme-spectrum" />
     </div>
+    {#if claim.location}
+      <div>
+        <cai-panel-custom-data
+          header="Location"
+          helpText="Where this photo was taken."
+          class="theme-spectrum"
+        >
+          <span slot="content">{formatLocation(claim.location)}</span>
+        </cai-panel-custom-data>
+      </div>
+    {/if}
+    {#if isComparing && (claim.references || isSecureCapture)}
+      <div>
+        <cai-panel-content-record
+          references={claim.references}
+          class="theme-spectrum"
+        >
+          {#if isSecureCapture}
+            <div slot="no-references">
+              <OriginalCreation />
+            </div>
+          {/if}
+        </cai-panel-content-record>
+      </div>
+    {/if}
     <div>
       <cai-panel-providers
         identifiedby={upperFirst(claim.signed_by ?? '')}

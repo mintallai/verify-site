@@ -12,7 +12,9 @@
   import ContentRecord from '../components/inspect/ContentRecord.svelte';
   import Icon from '../components/Icon.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
-  import NoContentCredentials from '../components/inspect/NoContentCredentials.svelte';
+  import ContentCredentialsError, {
+    Status as ContentCredentialsStatus,
+  } from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
@@ -131,7 +133,7 @@
       <section class="border-r-2" class:loading={isLoading} />
       <Viewer isError={!!error} />
       <section class="border-l-2 p-4">
-        <Alert severity="error" message="Something went wrong" />
+        <Alert severity="error">Something went wrong</Alert>
       </section>
     {:else if isLoading}
       <section class="border-r-2" class:loading={isLoading}>
@@ -146,7 +148,9 @@
         <ContentRecord {source} />
       </section>
       <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
-      <section class="border-l-2 p-4"><NoContentCredentials /></section>
+      <section class="border-l-2 p-4">
+        <ContentCredentialsError status={ContentCredentialsStatus.None} />
+      </section>
     {:else if primary}
       <section class="border-r-2">
         {#if !isComparing}
@@ -161,7 +165,7 @@
           </div>
         {:else if primary?.type === 'reference'}
           <div class="p-4 h-full flex items-middle justify-center">
-            <NoContentCredentials />
+            <ContentCredentialsError />
           </div>
         {/if}
       </section>
@@ -181,7 +185,7 @@
             on:close={partial(handleClose, secondary)}
           />
         {:else if !isComparing && primary?.type === 'reference'}
-          <NoContentCredentials />
+          <ContentCredentialsError />
         {:else if secondary?.type === 'claim'}
           <About
             claim={secondary}
@@ -189,7 +193,7 @@
             on:close={partial(handleClose, primary)}
           />
         {:else if secondary?.type === 'reference'}
-          <NoContentCredentials />
+          <ContentCredentialsError />
         {/if}
       </section>
     {/if}

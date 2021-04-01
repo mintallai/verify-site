@@ -118,7 +118,6 @@ export function navigateToId(
     }
   });
   primaryId.set(newId);
-  // compareWithId('claim_id:claim_1'); // remove me
   if (logEvent) {
     window.newrelic?.addPageAction('navigateToId', { id: newId });
   }
