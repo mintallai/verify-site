@@ -7,6 +7,7 @@ import mapValues from 'lodash/mapValues';
 import { local } from 'store2';
 import { addIdentifiers, getIdentifier } from './lib/claim';
 import { arrayBufferToBlobUrl } from './lib/util/data';
+import { logVerificationErrors } from './lib/util/debug';
 import { supportDemoImages } from './lib/demo';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
@@ -192,6 +193,12 @@ export async function setSummary(result: ISummaryResult) {
   window.summaryData = JSON.stringify(data);
   setSource(result);
   if (data) {
+    // Grab map of references, since we may need to look up a claim title from
+    // refs in the case of an acquisition
+    console.info('Summary data', data);
+    logVerificationErrors(data);
+    // @ts-ignore - For debugging
+    window.summaryData = JSON.stringify(data);
     // Temporary
     data = supportDemoImages(data, get(urlParams));
     const refs = reduce(
