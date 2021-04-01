@@ -54,7 +54,7 @@
           width="58"
           height="99"
           xmlns="http://www.w3.org/2000/svg"
-          class="drop-file"
+          class="message-illustration"
         >
           <g
             stroke="currentColor"
@@ -73,11 +73,12 @@
           </g>
         </svg>
         {#if source || $summary}
-          <div class="upload-text">Drop your file</div>
+          <div class="message-heading">Drop your file</div>
         {:else}
-          <div class="upload-text">Drag and drop your file</div>
-          <div class="upload-action">
-            <span on:click={browseFile}>Select a JPG</span> from your computer
+          <div class="message-heading">Drag and drop your file</div>
+          <div class="message-text">
+            <span class="link" on:click={browseFile}>Select a JPG</span> from your
+            computer
           </div>
         {/if}
       </div>
@@ -108,9 +109,6 @@
     height: var(--height);
     min-width: 256px;
   }
-  svg.drop-file {
-    @apply text-gray-500 transition-all duration-200;
-  }
   .upload .inner {
     @apply border-2 border-gray-300 bg-gray-100 text-gray-700 bg-opacity-100 border-dashed shadow-none relative transition-all duration-200;
   }
@@ -118,19 +116,10 @@
     @apply border-2 border-blue-500 border-solid text-blue-500;
     background-color: rgba(20, 115, 230, 0.1);
   }
-  .dragging .inner svg.drop-file {
+  .dragging .inner .message-illustration {
     @apply text-blue-500;
   }
   .upload-content {
     @apply absolute inset-0 flex justify-center items-center flex-col;
-  }
-  .upload-text {
-    @apply font-light text-700 mt-5;
-  }
-  .upload-action {
-    @apply text-75;
-  }
-  .upload-action span {
-    @apply text-blue-500 cursor-pointer underline;
   }
 </style>

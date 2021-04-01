@@ -5,7 +5,8 @@
   import '@contentauth/web-components/dist/components/Thumbnail';
 
   let hover: boolean;
-  export let asset: ViewableItem;
+  export let asset: ViewableItem | null = null;
+  export let source: ISourceInfo | null = null;
   export let indented: boolean = false;
   export let hasConnector: boolean = false;
   export let current: boolean = false;
@@ -25,7 +26,7 @@
     };
   }
 
-  $: isCurrent = asset._id === $primaryId;
+  $: isCurrent = asset?._id === $primaryId;
   $: compare = isCompareMode && !isCurrent;
   $: {
     if (isCurrent) {
@@ -33,7 +34,7 @@
     }
   }
   $: badge =
-    asset.type === 'claim'
+    asset?.type === 'claim'
       ? {
           type: 'info',
           helpText: 'This image has attribution and history data.',
@@ -50,8 +51,11 @@
   class:compare
   on:mouseenter={() => (hover = isCurrent ? false : true)}
   on:mouseleave={() => (hover = false)}
-  on:click={() =>
-    isCompareMode ? compareWithId(asset._id) : navigateToId(asset._id)}
+  on:click={() => {
+    if (asset) {
+      isCompareMode ? compareWithId(asset._id) : navigateToId(asset._id);
+    }
+  }}
 >
   {#if hasConnector}
     <div class="connector" in:scaleIn />
@@ -73,17 +77,29 @@
         </svg>
       </div>
     {/if}
-    <cai-thumbnail
-      src={asset.thumbnail_url}
-      selected={current}
-      badge={badge.type}
-      badgehelptext={badge.helpText}
-      class="theme-spectrum"
-    />
-    <dl class="attributes multiline overflow-hidden self-center pr-2">
-      <dt>File Name</dt>
-      <dd class="file-name" title={asset.title}>{asset.title}</dd>
-    </dl>
+    {#if asset}
+      <cai-thumbnail
+        src={asset.thumbnail_url}
+        selected={current}
+        badge={badge.type}
+        badgehelptext={badge.helpText}
+        class="theme-spectrum"
+      />
+      <dl class="attributes multiline overflow-hidden self-center pr-2">
+        <dt>File Name</dt>
+        <dd class="file-name" title={asset.title}>{asset.title}</dd>
+      </dl>
+    {:else if source}
+      <cai-thumbnail
+        src={source.url}
+        selected={current}
+        class="theme-spectrum"
+      />
+      <dl class="attributes multiline overflow-hidden self-center pr-2">
+        <dt>File Name</dt>
+        <dd class="file-name" title={source.name}>{source.name}</dd>
+      </dl>
+    {/if}
   </div>
 </div>
 

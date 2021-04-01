@@ -13,11 +13,13 @@
   import Icon from '../components/Icon.svelte';
   import NoInfo from '../components/inspect/NoInfo.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
+  import NoContentCredentials from '../components/inspect/NoContentCredentials.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
     urlParams,
+    source as sourceStore,
     summary,
     setSummary,
     navigateToId,
@@ -38,13 +40,16 @@
   let winW = 0;
   let winH = 0;
 
-  $: source = $urlParams.source;
-  $: hasContent = source || $summary;
-  $: isLoading = $summary === null;
+  $: source = $sourceStore;
+  $: sourceParam = $urlParams.source;
+  $: hasContent = sourceParam || $summary || source;
+  $: isLoading = $summary === null && source === null;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
+  $: noMetadata = !!(source && !$summary);
   $: showMobileOverlay = winW < 1024 || winH < 400;
+  $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && showMobileOverlay) {
@@ -54,11 +59,11 @@
 
   onMount(async () => {
     const { tourFlag, forceTourFlag } = $urlParams;
-    if (source) {
+    if (sourceParam) {
       try {
-        const data = await getSummaryFromUrl(source);
-        window.newrelic?.setCustomAttribute('source', source);
-        setSummary(data);
+        const result = await getSummaryFromUrl(sourceParam);
+        window.newrelic?.setCustomAttribute('source', sourceParam);
+        setSummary(result);
         if (!showMobileOverlay) {
           tour = startTour({
             summary: $summary,
@@ -97,7 +102,7 @@
 </script>
 
 <svelte:window bind:innerWidth={winW} bind:innerHeight={winH} />
-<main class="theme-light">
+<main class="theme-light" class:has-breadcrumb-bar={hasBreadcrumbBar}>
   {#if showMobileOverlay}
     <div transition:fade={{ duration: 500 }} class="mobile-overlay">
       <div class="content">
@@ -114,7 +119,14 @@
     </div>
   {/if}
   <Header />
-  <Breadcrumb {isComparing} on:back={partial(handleClose, secondary)} />
+  {#if hasBreadcrumbBar}
+    <Breadcrumb
+      {isComparing}
+      {noMetadata}
+      {source}
+      on:back={partial(handleClose, secondary)}
+    />
+  {/if}
   {#if hasContent}
     {#if error}
       <section class="border-r-2" class:loading={isLoading} />
@@ -130,6 +142,12 @@
       <section class="border-l-2" class:loading={isLoading}>
         <CircleLoader />
       </section>
+    {:else if noMetadata}
+      <section class="border-r-2">
+        <ContentRecord {source} />
+      </section>
+      <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
+      <section class="border-l-2 p-4"><NoContentCredentials /></section>
     {:else if primary}
       <section class="border-r-2">
         {#if !isComparing}
@@ -209,6 +227,9 @@
   main {
     @apply grid absolute w-screen h-screen font-base;
     grid-template-columns: 320px auto 320px;
+    grid-template-rows: 80px auto 55px;
+  }
+  main.has-breadcrumb-bar {
     grid-template-rows: 80px 60px auto 55px;
   }
   section {

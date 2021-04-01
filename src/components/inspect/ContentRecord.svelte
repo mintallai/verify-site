@@ -8,7 +8,8 @@
   } from '../../stores';
   import { getAssetList, getBreadcrumbList } from '../../lib/claim';
 
-  export let claim: IClaimSummary | null;
+  export let claim: IClaimSummary | null = null;
+  export let source: ISourceInfo | null = null;
   let container: any;
   let isCompareMode = false;
 
@@ -32,31 +33,39 @@
       Select one of these elements to view more of the content record.
     </div>
   </div>
-  <div class="relative pl-4">
-    <div bind:this={container} class="grid space-y-4">
-      {#each breadcrumbList as asset, index (asset._id)}
-        <Asset
-          {asset}
-          {isCompareMode}
-          current={asset._id === $primaryId}
-          hasConnector={index > 0}
-        />
-      {/each}
-      <div class="grid space-y-4">
-        {#each assetList as asset (asset._id)}
-          <div>
-            <Asset {asset} {isCompareMode} indented />
-          </div>
+  {#if claim}
+    <div class="relative pl-4">
+      <div bind:this={container} class="grid space-y-4">
+        {#each breadcrumbList as asset, index (asset._id)}
+          <Asset
+            {asset}
+            {isCompareMode}
+            current={asset._id === $primaryId}
+            hasConnector={index > 0}
+          />
         {/each}
+        <div class="grid space-y-4">
+          {#each assetList as asset (asset._id)}
+            <div>
+              <Asset {asset} {isCompareMode} indented />
+            </div>
+          {/each}
+        </div>
       </div>
     </div>
-  </div>
-  {#if combined.length > 0}
-    <div class="absolute bottom-0 pb-4 flex justify-center w-full">
-      <Button
-        on:click={() => (isCompareMode = !isCompareMode)}
-        secondary={!isCompareMode}>Compare records</Button
-      >
+    {#if combined.length > 0}
+      <div class="absolute bottom-0 pb-4 flex justify-center w-full">
+        <Button
+          on:click={() => (isCompareMode = !isCompareMode)}
+          secondary={!isCompareMode}>Compare records</Button
+        >
+      </div>
+    {/if}
+  {:else if source}
+    <div class="relative pl-4">
+      <div bind:this={container} class="grid space-y-4">
+        <Asset {source} current={true} />
+      </div>
     </div>
   {/if}
 </div>

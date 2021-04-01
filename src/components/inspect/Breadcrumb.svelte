@@ -15,6 +15,8 @@
   import '@contentauth/web-components/dist/components/Tooltip';
 
   export let isComparing: boolean = false;
+  export let noMetadata: boolean = false;
+  export let source: ISourceInfo | null = null;
   const dispatch = createEventDispatcher();
 
   $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
@@ -42,29 +44,43 @@
       </sp-theme>
     </div>
   {:else}
-    {#if homeId}
+    {#if homeId || noMetadata}
       <cai-tooltip class="theme-spectrum">
-        <div class="home" slot="trigger" on:click={() => navigateToId(homeId)}>
+        <div
+          class="home"
+          slot="trigger"
+          on:click={() => !noMetadata && navigateToId(homeId)}
+        >
           <cai-icon-cai />
         </div>
         <div slot="content">This is the content you started with.</div>
       </cai-tooltip>
     {/if}
     <div class="breadcrumbs">
-      {#each breadcrumbList as asset, index (asset._id)}
-        {#if index > 0}
-          <div class="separator">
-            <Icon size="s" name="workflow:ChevronRight" class="text-gray-800" />
-          </div>
-        {/if}
-        <div
-          class="breadcrumb-item"
-          class:current={asset._id === $primaryId}
-          on:click={() => navigateToId(asset._id)}
-        >
-          {asset.title}
+      {#if noMetadata && source}
+        <div class="breadcrumb-item" class:current={true}>
+          {source.name}
         </div>
-      {/each}
+      {:else if breadcrumbList}
+        {#each breadcrumbList as asset, index (asset._id)}
+          {#if index > 0}
+            <div class="separator">
+              <Icon
+                size="s"
+                name="workflow:ChevronRight"
+                class="text-gray-800"
+              />
+            </div>
+          {/if}
+          <div
+            class="breadcrumb-item"
+            class:current={asset._id === $primaryId}
+            on:click={() => navigateToId(asset._id)}
+          >
+            {asset.title}
+          </div>
+        {/each}
+      {/if}
     </div>
   {/if}
 </div>

@@ -50,7 +50,7 @@
       </div>
     {/if}
     <div>
-      <cai-content-producer
+      <cai-panel-content-producer
         producedby={claim.produced_by}
         producedwith={claim.produced_with}
         signedon={claim.signed_on}
@@ -60,13 +60,13 @@
           provider={claim.produced_with}
           slotName="produced-with-icon"
         />
-      </cai-content-producer>
+      </cai-panel-content-producer>
     </div>
     <div>
-      <cai-edits-activity {categories} class="theme-spectrum" />
+      <cai-panel-edits-activity {categories} class="theme-spectrum" />
     </div>
     <div>
-      <cai-providers
+      <cai-panel-providers
         identifiedby={upperFirst(claim.signed_by ?? '')}
         signedby={upperFirst(claim.signed_by ?? '')}
         class="theme-spectrum"
@@ -76,7 +76,7 @@
           slotName="identified-by-icon"
         />
         <ProviderIcon provider={claim.signed_by} slotName="signed-by-icon" />
-      </cai-providers>
+      </cai-panel-providers>
     </div>
   </div>
 </div>

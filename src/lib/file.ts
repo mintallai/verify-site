@@ -14,8 +14,8 @@ export async function processFiles(files: File[] | FileList) {
     window.newrelic?.addPageAction('loadedUserFile', {
       type: file.type,
     });
-    const data = await getSummaryFromFile(file);
-    setSummary(data);
+    const result = await getSummaryFromFile(file);
+    setSummary(result);
   } else if (fileArray.length) {
     const invalidTypeError = new Error('INVALID_TYPE');
     window.newrelic?.noticeError(invalidTypeError, {
