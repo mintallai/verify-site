@@ -1,7 +1,6 @@
 <script lang="ts">
   import Router from '@roxi/routify/runtime/Router.svelte';
   import { routes } from '../.routify/routes';
-  import '@contentauth/web-components/dist/ClaimInfo';
 </script>
 
 <Router {routes} />
