@@ -1,12 +1,14 @@
 <script lang="ts">
   import Asset from './Asset.svelte';
   import Button from '../Button.svelte';
+  import OriginalCreation from './OriginalCreation.svelte';
   import {
     contentSourceIds,
     assetsByIdentifier,
     primaryId,
   } from '../../stores';
   import { getAssetList, getBreadcrumbList } from '../../lib/claim';
+  import { isSecureCapture } from '../../lib/demo';
 
   export let claim: IClaimSummary | null = null;
   export let source: ISourceInfo | null = null;
@@ -53,6 +55,11 @@
       </div>
     </div>
   </div>
+  {#if isSecureCapture(claim)}
+    <div class="mx-4">
+      <OriginalCreation />
+    </div>
+  {/if}
   {#if combined.length > 0}
     <div
       class="sticky bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent"
