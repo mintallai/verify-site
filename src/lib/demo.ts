@@ -23,7 +23,7 @@ export function supportDemoImages(
           categories: [],
         };
       }
-      if (/truepic/i.test(claim?.produced_with)) {
+      if (isSecureCapture(claim)) {
         claim.edits.categories = [...claim.edits.categories, 'CAPTURE'];
       }
       return claim;
@@ -58,5 +58,5 @@ export function formatLocation(location: string): string {
 }
 
 export function isSecureCapture(claim: IClaimSummary) {
-  return /truepic/i.test(claim.produced_with);
+  return /truepic/i.test(claim?.produced_with ?? '');
 }

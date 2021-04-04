@@ -4,6 +4,13 @@ const spectrumConfig = require('./tailwind.config.spectrum');
 module.exports = merge(spectrumConfig, {
   purge: [],
   theme: {
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
+    },
     extend: {
       boxShadow: {
         sm: '0 0 4px 0 rgba(0, 0, 0, 0.40)',

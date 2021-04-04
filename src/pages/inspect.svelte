@@ -9,6 +9,7 @@
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
   import Header from '../components/Header.svelte';
+  import Footer from '../components/Footer.svelte';
   import ContentRecord from '../components/inspect/ContentRecord.svelte';
   import Icon from '../components/Icon.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
@@ -104,7 +105,7 @@
 
 <svelte:window bind:innerWidth={winW} bind:innerHeight={winH} />
 <main class="theme-light" class:has-breadcrumb-bar={hasBreadcrumbBar}>
-  {#if showMobileOverlay}
+  {#if false && showMobileOverlay}
     <div transition:fade={{ duration: 500 }} class="mobile-overlay">
       <div class="content">
         <Icon
@@ -130,29 +131,29 @@
   {/if}
   {#if hasContent}
     {#if error}
-      <section class="border-r-2" class:loading={isLoading} />
+      <section class="left-col" class:loading={isLoading} />
       <Viewer isError={!!error} />
-      <section class="border-l-2 p-4">
+      <section class="right-col p-4">
         <Alert severity="error">Something went wrong</Alert>
       </section>
     {:else if isLoading}
-      <section class="border-r-2" class:loading={isLoading}>
+      <section class="left-col" class:loading={isLoading}>
         <CircleLoader />
       </section>
       <Viewer isLoading={true} isDragging={isDraggingOver} />
-      <section class="border-l-2" class:loading={isLoading}>
+      <section class="right-col" class:loading={isLoading}>
         <CircleLoader />
       </section>
     {:else if noMetadata}
-      <section class="border-r-2">
+      <section class="left-col">
         <ContentRecord {source} />
       </section>
       <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
-      <section class="border-l-2 p-4">
+      <section class="right-col p-4">
         <ContentCredentialsError status={ContentCredentialsStatus.None} />
       </section>
     {:else if primary}
-      <section class="border-r-2">
+      <section class="left-col">
         {#if !isComparing}
           <ContentRecord claim={primary?.type === 'claim' ? primary : null} />
         {:else if primary?.type === 'claim'}
@@ -177,7 +178,7 @@
           isDragging={isDraggingOver}
         />
       {/if}
-      <section class="border-l-2 p-4">
+      <section class="right-col p-4">
         {#if !isComparing && primary?.type === 'claim'}
           <About
             claim={primary}
@@ -202,21 +203,12 @@
     <Viewer isDragging={isDraggingOver} />
     <section />
   {/if}
-  <footer>
-    <span>Copyright © __year__ Adobe. All rights reserved.</span>
-    <a href="https://www.adobe.com/privacy.html" target="_blank">Privacy</a>
-    <a href="https://www.adobe.com/legal/terms.html" target="_blank"
-      >Terms of use</a
-    >
-    <a href="https://contentauthenticity.org/contact" target="_blank"
-      >Contact us</a
-    >
-  </footer>
+  <Footer />
 </main>
 
 <style lang="postcss">
   main {
-    @apply grid absolute w-screen h-screen font-base;
+    @apply grid fixed inset-0 font-base;
     grid-template-columns: 320px auto 320px;
     grid-template-rows: 80px auto 55px;
   }
@@ -229,16 +221,11 @@
   section.loading {
     @apply flex items-center justify-center;
   }
-  footer {
-    @apply col-span-3 flex justify-center items-center text-75 border-t-2 border-gray-200;
-    max-width: 100vw;
+  section.left-col {
+    @apply border-r-2;
   }
-  footer a {
-    @apply underline;
-  }
-  footer a::before {
-    @apply px-1;
-    content: '|';
+  section.right-col {
+    @apply border-l-2;
   }
   .mobile-overlay {
     @apply fixed flex justify-center items-center left-0 right-0 bg-white z-50;

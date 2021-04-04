@@ -111,7 +111,7 @@
     @apply font-bold cursor-default;
   }
   .separator {
-    @apply inline-block relative;
+    @apply inline-block relative ml-2 mr-1.5;
     top: 2px;
   }
   .compare-tabs {
