@@ -21,79 +21,71 @@
   );
 </script>
 
-<div bind:this={element}>
-  <div class="info">
-    {#if isComparing}
-      <div>
-        <div class="text-xs text-gray-700 uppercase leading-none mb-1">
-          File name
-        </div>
-        <div class="text-md text-gray-900 font-bold truncate">
-          {claim.title}
-        </div>
-      </div>
-    {/if}
+<div class="info" bind:this={element}>
+  {#if isComparing}
     <div>
-      <cai-panel-content-producer
-        producedby={claim.produced_by}
-        producedwith={claim.produced_with}
-        signedon={claim.signed_on}
+      <div class="text-xs text-gray-700 uppercase leading-none mb-1">
+        File name
+      </div>
+      <div class="text-md text-gray-900 font-bold truncate">
+        {claim.title}
+      </div>
+    </div>
+  {/if}
+  <div>
+    <cai-panel-content-producer
+      producedby={claim.produced_by}
+      producedwith={claim.produced_with}
+      signedon={claim.signed_on}
+      class="theme-spectrum"
+    >
+      <ProviderIcon
+        provider={claim.produced_with}
+        slotName="produced-with-icon"
+      />
+    </cai-panel-content-producer>
+  </div>
+  <div>
+    <cai-panel-edits-activity {categories} class="theme-spectrum" />
+  </div>
+  {#if claim.location}
+    <div>
+      <cai-panel-custom-data
+        header="Location"
+        helpText="Where this photo was taken."
         class="theme-spectrum"
       >
-        <ProviderIcon
-          provider={claim.produced_with}
-          slotName="produced-with-icon"
-        />
-      </cai-panel-content-producer>
+        <span slot="content">{formatLocation(claim.location)}</span>
+      </cai-panel-custom-data>
     </div>
+  {/if}
+  {#if isComparing && (claim.references || isSecureCapture)}
     <div>
-      <cai-panel-edits-activity {categories} class="theme-spectrum" />
-    </div>
-    {#if claim.location}
-      <div>
-        <cai-panel-custom-data
-          header="Location"
-          helpText="Where this photo was taken."
-          class="theme-spectrum"
-        >
-          <span slot="content">{formatLocation(claim.location)}</span>
-        </cai-panel-custom-data>
-      </div>
-    {/if}
-    {#if isComparing && (claim.references || isSecureCapture)}
-      <div>
-        <cai-panel-content-record
-          references={claim.references}
-          class="theme-spectrum"
-        >
-          {#if isSecureCapture}
-            <div slot="no-references">
-              <OriginalCreation />
-            </div>
-          {/if}
-        </cai-panel-content-record>
-      </div>
-    {/if}
-    <div>
-      <cai-panel-providers
-        identifiedby={upperFirst(claim.signed_by ?? '')}
-        signedby={upperFirst(claim.signed_by ?? '')}
+      <cai-panel-content-record
+        references={claim.references}
         class="theme-spectrum"
       >
-        <ProviderIcon
-          provider={claim.signed_by}
-          slotName="identified-by-icon"
-        />
-        <ProviderIcon provider={claim.signed_by} slotName="signed-by-icon" />
-      </cai-panel-providers>
+        {#if isSecureCapture}
+          <div slot="no-references">
+            <OriginalCreation />
+          </div>
+        {/if}
+      </cai-panel-content-record>
     </div>
+  {/if}
+  <div>
+    <cai-panel-providers
+      identifiedby={upperFirst(claim.signed_by ?? '')}
+      signedby={upperFirst(claim.signed_by ?? '')}
+      class="theme-spectrum"
+    >
+      <ProviderIcon provider={claim.signed_by} slotName="identified-by-icon" />
+      <ProviderIcon provider={claim.signed_by} slotName="signed-by-icon" />
+    </cai-panel-providers>
   </div>
 </div>
 
 <style lang="postcss">
-  .info {
-    display: grid;
-  }
   .info > div {
     @apply py-4 border-b border-gray-300;
   }
@@ -102,5 +94,10 @@
   }
   .info > div:last-child {
     @apply border-none pb-0;
+  }
+  @screen md {
+    .info {
+      @apply min-h-0;
+    }
   }
 </style>

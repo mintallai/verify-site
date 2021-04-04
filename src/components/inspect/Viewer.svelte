@@ -40,7 +40,6 @@
   });
 </script>
 
-<input type="file" bind:this={fileInput} accept="image/jpeg" class="hidden" />
 <div
   class="viewer"
   class:no-source={!source}
@@ -49,6 +48,7 @@
   bind:clientWidth={width}
   bind:clientHeight={height}
 >
+  <input type="file" bind:this={fileInput} accept="image/jpeg" class="hidden" />
   <div class="inner" use:cssVars={styles}>
     {#if uploadMode}
       <div class="upload-content" in:fade>
@@ -104,19 +104,19 @@
 
 <style lang="postcss">
   .viewer {
-    @apply w-full bg-gray-75 flex items-center justify-center overflow-hidden;
+    @apply w-full flex bg-gray-75 items-center justify-center overflow-hidden;
   }
   .viewer.no-source {
     @apply bg-white;
   }
   .inner {
-    @apply flex justify-center rounded-md overflow-hidden border-0 border-transparent transition-all duration-200;
+    @apply flex justify-center bg-gray-75 rounded-md overflow-hidden border-0 border-transparent;
     width: var(--width);
     height: var(--height);
     min-width: 256px;
   }
   .upload .inner {
-    @apply border-2 border-gray-300 bg-gray-100 text-gray-700 bg-opacity-100 border-dashed shadow-none relative transition-all duration-200;
+    @apply border-2 border-gray-300 bg-gray-100 text-gray-700 bg-opacity-100 border-dashed shadow-none relative;
   }
   .dragging .inner {
     @apply border-2 border-blue-500 border-solid text-blue-500;

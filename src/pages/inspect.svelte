@@ -132,26 +132,32 @@
   {#if hasContent}
     {#if error}
       <section class="left-col" class:loading={isLoading} />
-      <Viewer isError={!!error} />
-      <section class="right-col p-4">
-        <Alert severity="error">Something went wrong</Alert>
-      </section>
+      <div class="content-col">
+        <Viewer isError={!!error} />
+        <section class="right-col p-4">
+          <Alert severity="error">Something went wrong</Alert>
+        </section>
+      </div>
     {:else if isLoading}
       <section class="left-col" class:loading={isLoading}>
         <CircleLoader />
       </section>
-      <Viewer isLoading={true} isDragging={isDraggingOver} />
-      <section class="right-col" class:loading={isLoading}>
-        <CircleLoader />
-      </section>
+      <div class="content-col">
+        <Viewer isLoading={true} isDragging={isDraggingOver} />
+        <section class="right-col" class:loading={isLoading}>
+          <CircleLoader />
+        </section>
+      </div>
     {:else if noMetadata}
       <section class="left-col">
         <ContentRecord {source} />
       </section>
-      <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
-      <section class="right-col p-4">
-        <ContentCredentialsError status={ContentCredentialsStatus.None} />
-      </section>
+      <div class="content-col">
+        <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
+        <section class="right-col p-4">
+          <ContentCredentialsError status={ContentCredentialsStatus.None} />
+        </section>
+      </div>
     {:else if primary}
       <section class="left-col">
         {#if !isComparing}
@@ -170,62 +176,92 @@
           </div>
         {/if}
       </section>
-      {#if isComparing}
-        <Comparison {primary} {secondary} />
-      {:else}
-        <Viewer
-          thumbnailURL={primary.thumbnail_url}
-          isDragging={isDraggingOver}
-        />
-      {/if}
-      <section class="right-col p-4">
-        {#if !isComparing && primary?.type === 'claim'}
-          <About
-            claim={primary}
-            {isComparing}
-            on:close={partial(handleClose, secondary)}
+      <div class="content-col">
+        {#if isComparing}
+          <Comparison {primary} {secondary} />
+        {:else}
+          <Viewer
+            thumbnailURL={primary.thumbnail_url}
+            isDragging={isDraggingOver}
           />
-        {:else if !isComparing && primary?.type === 'reference'}
-          <ContentCredentialsError />
-        {:else if secondary?.type === 'claim'}
-          <About
-            claim={secondary}
-            {isComparing}
-            on:close={partial(handleClose, primary)}
-          />
-        {:else if secondary?.type === 'reference'}
-          <ContentCredentialsError />
         {/if}
-      </section>
+        <section class="right-col p-4">
+          {#if !isComparing && primary?.type === 'claim'}
+            <About
+              claim={primary}
+              {isComparing}
+              on:close={partial(handleClose, secondary)}
+            />
+          {:else if !isComparing && primary?.type === 'reference'}
+            <ContentCredentialsError />
+          {:else if secondary?.type === 'claim'}
+            <About
+              claim={secondary}
+              {isComparing}
+              on:close={partial(handleClose, primary)}
+            />
+          {:else if secondary?.type === 'reference'}
+            <ContentCredentialsError />
+          {/if}
+        </section>
+      </div>
     {/if}
   {:else}
     <section />
-    <Viewer isDragging={isDraggingOver} />
-    <section />
+    <div class="content-col">
+      <Viewer isDragging={isDraggingOver} />
+      <section />
+    </div>
   {/if}
   <Footer />
 </main>
 
 <style lang="postcss">
   main {
-    @apply grid fixed inset-0 font-base;
-    grid-template-columns: 320px auto 320px;
-    grid-template-rows: 80px auto 55px;
+    @apply grid w-screen font-base overflow-auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: 80px 1fr 55px;
   }
   main.has-breadcrumb-bar {
-    grid-template-rows: 80px 60px auto 55px;
+    grid-template-rows: 80px 60px 1fr 55px;
   }
   section {
-    @apply col-span-1 border-gray-200 max-h-full overflow-auto;
+    @apply col-span-1 border-gray-200 max-h-full;
   }
   section.loading {
     @apply flex items-center justify-center;
   }
   section.left-col {
-    @apply border-r-2;
+    @apply border-r-2 hidden;
   }
   section.right-col {
-    @apply border-l-2;
+    @apply border-l-2 max-h-full;
+  }
+  .content-col {
+    @apply grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 375px 1fr;
+  }
+  @screen md {
+    main {
+      @apply fixed inset-0;
+      grid-template-columns: 320px 1fr;
+      grid-template-rows: 80px 1fr 55px;
+    }
+    main.has-breadcrumb-bar {
+      grid-template-rows: 80px 60px 1fr 55px;
+    }
+    section {
+      @apply overflow-auto;
+    }
+    section.left-col {
+      @apply block;
+    }
+    .content-col {
+      @apply overflow-visible min-h-0;
+      grid-template-columns: 1fr 320px;
+      grid-template-rows: 1fr;
+    }
   }
   .mobile-overlay {
     @apply fixed flex justify-center items-center left-0 right-0 bg-white z-50;

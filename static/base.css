@@ -1,7 +1,7 @@
 @layer base {
   /* purgecss start ignore */
   body {
-    @apply text-100 overflow-hidden;
+    @apply text-100 md:overflow-hidden;
   }
 
   h2 {

@@ -21,11 +21,7 @@
   );
 </script>
 
-<div
-  class="bg-gray-100 flex flex-col items-center justify-center overflow-hidden"
-  bind:clientWidth={width}
-  bind:clientHeight={height}
->
+<div class="comparison" bind:clientWidth={width} bind:clientHeight={height}>
   {#if !isLoading}
     {#if $compareMode === CompareMode.Slider}
       <Slider {primary} {secondary} {side} />
@@ -38,3 +34,9 @@
     </div>
   {/if}
 </div>
+
+<style lang="postcss">
+  .comparison {
+    @apply bg-gray-100 flex flex-col items-center justify-center overflow-hidden;
+  }
+</style>
