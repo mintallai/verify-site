@@ -105,6 +105,7 @@
 <style lang="postcss">
   .viewer {
     @apply w-full flex bg-gray-75 items-center justify-center overflow-hidden;
+    grid-area: viewer;
   }
   .viewer.no-source {
     @apply bg-white;

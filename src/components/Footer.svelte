@@ -11,7 +11,8 @@
 
 <style lang="postcss">
   footer {
-    @apply col-span-3 flex justify-center items-center text-75 border-t-2 border-gray-200;
+    @apply flex justify-center items-center text-75 border-t-2 border-gray-200;
+    grid-area: footer;
     max-width: 100vw;
   }
   footer a {

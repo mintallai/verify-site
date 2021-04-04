@@ -38,7 +38,8 @@
 
 <style lang="postcss">
   header {
-    @apply col-span-3 border-gray-200 border-b-2 px-5 flex items-center justify-between;
+    @apply border-gray-200 border-b-2 px-5 flex items-center justify-between;
+    grid-area: header;
     max-width: 100vw;
     height: 80px;
   }

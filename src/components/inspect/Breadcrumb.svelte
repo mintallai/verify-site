@@ -93,7 +93,8 @@
 
 <style lang="postcss">
   .container {
-    @apply col-span-3 flex items-center border-b-2 border-gray-200 px-5 max-w-full relative;
+    @apply flex items-center border-b-2 border-gray-200 px-5 max-w-full relative;
+    grid-area: breadcrumb;
     height: 60px;
   }
   .home {

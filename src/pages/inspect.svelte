@@ -142,22 +142,18 @@
       <section class="left-col" class:loading={isLoading}>
         <CircleLoader />
       </section>
-      <div class="content-col">
-        <Viewer isLoading={true} isDragging={isDraggingOver} />
-        <section class="right-col" class:loading={isLoading}>
-          <CircleLoader />
-        </section>
-      </div>
+      <Viewer isLoading={true} isDragging={isDraggingOver} />
+      <section class="right-col" class:loading={isLoading}>
+        <CircleLoader />
+      </section>
     {:else if noMetadata}
       <section class="left-col">
         <ContentRecord {source} />
       </section>
-      <div class="content-col">
-        <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
-        <section class="right-col p-4">
-          <ContentCredentialsError status={ContentCredentialsStatus.None} />
-        </section>
-      </div>
+      <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
+      <section class="right-col p-4">
+        <ContentCredentialsError status={ContentCredentialsStatus.None} />
+      </section>
     {:else if primary}
       <section class="left-col">
         {#if !isComparing}
@@ -176,54 +172,61 @@
           </div>
         {/if}
       </section>
-      <div class="content-col">
-        {#if isComparing}
-          <Comparison {primary} {secondary} />
-        {:else}
-          <Viewer
-            thumbnailURL={primary.thumbnail_url}
-            isDragging={isDraggingOver}
+      {#if isComparing}
+        <Comparison {primary} {secondary} />
+      {:else}
+        <Viewer
+          thumbnailURL={primary.thumbnail_url}
+          isDragging={isDraggingOver}
+        />
+      {/if}
+      <section class="right-col p-4">
+        {#if !isComparing && primary?.type === 'claim'}
+          <About
+            claim={primary}
+            {isComparing}
+            on:close={partial(handleClose, secondary)}
           />
+        {:else if !isComparing && primary?.type === 'reference'}
+          <ContentCredentialsError />
+        {:else if secondary?.type === 'claim'}
+          <About
+            claim={secondary}
+            {isComparing}
+            on:close={partial(handleClose, primary)}
+          />
+        {:else if secondary?.type === 'reference'}
+          <ContentCredentialsError />
         {/if}
-        <section class="right-col p-4">
-          {#if !isComparing && primary?.type === 'claim'}
-            <About
-              claim={primary}
-              {isComparing}
-              on:close={partial(handleClose, secondary)}
-            />
-          {:else if !isComparing && primary?.type === 'reference'}
-            <ContentCredentialsError />
-          {:else if secondary?.type === 'claim'}
-            <About
-              claim={secondary}
-              {isComparing}
-              on:close={partial(handleClose, primary)}
-            />
-          {:else if secondary?.type === 'reference'}
-            <ContentCredentialsError />
-          {/if}
-        </section>
-      </div>
+      </section>
     {/if}
   {:else}
     <section />
-    <div class="content-col">
-      <Viewer isDragging={isDraggingOver} />
-      <section />
-    </div>
+    <Viewer isDragging={isDraggingOver} />
+    <section />
   {/if}
   <Footer />
 </main>
 
 <style lang="postcss">
   main {
-    @apply grid w-screen font-base overflow-auto;
+    @apply grid w-screen min-h-screen font-base;
     grid-template-columns: 1fr;
-    grid-template-rows: 80px 1fr 55px;
+    grid-template-rows: 80px 375px 1fr 55px;
+    grid-template-areas:
+      'header'
+      'viewer'
+      'right'
+      'footer';
   }
   main.has-breadcrumb-bar {
-    grid-template-rows: 80px 60px 1fr 55px;
+    grid-template-rows: 80px 60px 375px 1fr 55px;
+    grid-template-areas:
+      'header'
+      'breadcrumb'
+      'viewer'
+      'right'
+      'footer';
   }
   section {
     @apply col-span-1 border-gray-200 max-h-full;
@@ -233,34 +236,35 @@
   }
   section.left-col {
     @apply border-r-2 hidden;
+    grid-area: left;
   }
   section.right-col {
     @apply border-l-2 max-h-full;
-  }
-  .content-col {
-    @apply grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 375px 1fr;
+    grid-area: right;
   }
   @screen md {
     main {
       @apply fixed inset-0;
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: 320px 1fr 320px;
       grid-template-rows: 80px 1fr 55px;
+      grid-template-areas:
+        'header header header'
+        'left viewer right'
+        'footer footer footer';
     }
     main.has-breadcrumb-bar {
       grid-template-rows: 80px 60px 1fr 55px;
+      grid-template-areas:
+        'header header header'
+        'breadcrumb breadcrumb breadcrumb'
+        'left viewer right'
+        'footer footer footer';
     }
     section {
       @apply overflow-auto;
     }
     section.left-col {
       @apply block;
-    }
-    .content-col {
-      @apply overflow-visible min-h-0;
-      grid-template-columns: 1fr 320px;
-      grid-template-rows: 1fr;
     }
   }
   .mobile-overlay {

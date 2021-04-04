@@ -38,5 +38,6 @@
 <style lang="postcss">
   .comparison {
     @apply bg-gray-100 flex flex-col items-center justify-center overflow-hidden;
+    grid-area: viewer;
   }
 </style>
