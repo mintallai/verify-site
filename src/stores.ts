@@ -53,6 +53,8 @@ export const primaryId = writable<string>('');
  */
 export const secondaryId = writable<string>('');
 
+export const isBurgerMenuShown = writable<boolean>(false);
+
 export enum CompareMode {
   Split = 'SPLIT',
   Slider = 'SLIDER',

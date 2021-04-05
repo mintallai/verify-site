@@ -104,7 +104,7 @@
 
 <style lang="postcss">
   .viewer {
-    @apply w-full flex bg-gray-75 items-center justify-center overflow-hidden;
+    @apply w-full flex items-center justify-center overflow-hidden;
     grid-area: viewer;
   }
   .viewer.no-source {
@@ -133,5 +133,10 @@
     @apply text-gray-600;
     --cai-icon-width: 100px;
     --cai-icon-height: 100px;
+  }
+  @screen md {
+    .viewer {
+      @apply bg-gray-75;
+    }
   }
 </style>

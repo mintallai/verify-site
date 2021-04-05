@@ -6,6 +6,7 @@
     DeviceDesktopIcon,
     HelpOutlineIcon,
     InfoIcon,
+    ShowMenuIcon,
   } from '@spectrum-web-components/icons-workflow/lib/icons';
   import { ArrowLeftMediumIcon } from '@spectrum-web-components/icons-ui/lib/icons';
 
@@ -19,6 +20,7 @@
     DeviceDesktopIcon,
     HelpOutlineIcon,
     InfoIcon,
+    ShowMenuIcon,
   };
 </script>
 

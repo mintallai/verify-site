@@ -42,6 +42,7 @@ module.exports = merge(spectrumConfig, {
     padding: ({ after }) => after(['first']),
     display: ['responsive'],
     backgroundColor: ['hover', 'responsive'],
+    backgroundOpacity: ['active'],
     textColor: ['hover'],
     gradientColorStops: ['active'],
   },

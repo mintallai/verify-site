@@ -4170,6 +4170,11 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
+vanilla-hamburger@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/vanilla-hamburger/-/vanilla-hamburger-0.2.3.tgz#3400135d4ca3fef1613ca87a055573c8afdae360"
+  integrity sha512-tzzU/2MojrQuJoaDa7OSUYPd8MkyJsFH3B3j1/NMN4HQoW/77qvDaOHsDu6c0tqXuok3/MRggaW54tFuFBNbbg==
+
 vary@^1, vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"

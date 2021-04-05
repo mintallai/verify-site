@@ -93,9 +93,10 @@
 
 <style lang="postcss">
   .container {
-    @apply flex items-center border-b-2 border-gray-200 px-5 max-w-full relative;
+    @apply flex items-center bg-white border-b-2 border-gray-200 px-5 max-w-full sticky z-30;
     grid-area: breadcrumb;
     height: 60px;
+    top: 80px;
   }
   .home {
     @apply mr-2 cursor-pointer;

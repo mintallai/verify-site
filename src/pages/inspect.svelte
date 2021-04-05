@@ -11,7 +11,6 @@
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
   import ContentRecord from '../components/inspect/ContentRecord.svelte';
-  import Icon from '../components/Icon.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError, {
     Status as ContentCredentialsStatus,
@@ -28,6 +27,7 @@
     secondaryId,
     primaryAsset,
     secondaryAsset,
+    isBurgerMenuShown,
   } from '../stores';
   import { getIdentifier } from '../lib/claim';
 
@@ -39,8 +39,7 @@
   let isDraggingOver = false;
   let error: ToolkitError;
   let tour: ReturnType<typeof startTour>;
-  let winW = 0;
-  let winH = 0;
+  let mdBreakpoint = `(max-width: 768px)`;
 
   $: source = $sourceStore;
   $: sourceParam = $urlParams.source;
@@ -50,12 +49,21 @@
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
   $: noMetadata = !!(source && !$summary);
-  $: showMobileOverlay = winW < 1024 || winH < 400;
   $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
   $: {
     // Cancel the tour if the overlay is showing
-    if (tour && tour.isActive() && showMobileOverlay) {
+    if (tour && tour.isActive() && $isBurgerMenuShown) {
       tour.cancel();
+    }
+  }
+
+  /**
+   * Make sure we close any open hamburger menu if we increase the
+   * window size to a breakpoint where the menu is hidden
+   */
+  function handleBreakpointChange({ media, matches }) {
+    if (media === mdBreakpoint && !matches && $isBurgerMenuShown) {
+      isBurgerMenuShown.set(false);
     }
   }
 
@@ -66,7 +74,7 @@
         const result = await getSummaryFromUrl(sourceParam);
         window.newrelic?.setCustomAttribute('source', sourceParam);
         setSummary(result);
-        if (!showMobileOverlay) {
+        if (!$isBurgerMenuShown) {
           tour = startTour({
             summary: $summary,
             start: tourFlag,
@@ -97,28 +105,27 @@
         }, 50);
       },
     });
+
+    matchMedia(mdBreakpoint).addEventListener('change', handleBreakpointChange);
+
     return () => {
       cleanupDragDrop();
+      matchMedia(mdBreakpoint).removeEventListener(
+        'change',
+        handleBreakpointChange,
+      );
     };
   });
 </script>
 
-<svelte:window bind:innerWidth={winW} bind:innerHeight={winH} />
+<svelte:window />
 <main class="theme-light" class:has-breadcrumb-bar={hasBreadcrumbBar}>
-  {#if false && showMobileOverlay}
-    <div transition:fade={{ duration: 500 }} class="mobile-overlay">
-      <div class="content">
-        <Icon
-          size="3xl"
-          name="workflow:DeviceDesktop"
-          class="text-blue-500 mb-3"
-        />
-        <div>
-          Increase the size of your browser window to view. If you’re on a
-          mobile device, open this page on a computer.
-        </div>
-      </div>
-    </div>
+  {#if $isBurgerMenuShown}
+    <div
+      transition:fade={{ duration: 200 }}
+      class="menu-overlay"
+      on:click={() => isBurgerMenuShown.update((shown) => !shown)}
+    />
   {/if}
   <Header />
   {#if hasBreadcrumbBar}
@@ -180,7 +187,7 @@
           isDragging={isDraggingOver}
         />
       {/if}
-      <section class="right-col p-4">
+      <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary?.type === 'claim'}
           <About
             claim={primary}
@@ -212,7 +219,7 @@
   main {
     @apply grid w-screen min-h-screen font-base;
     grid-template-columns: 1fr;
-    grid-template-rows: 80px 375px 1fr 55px;
+    grid-template-rows: 80px 375px 1fr 70px;
     grid-template-areas:
       'header'
       'viewer'
@@ -220,7 +227,7 @@
       'footer';
   }
   main.has-breadcrumb-bar {
-    grid-template-rows: 80px 60px 375px 1fr 55px;
+    grid-template-rows: 80px 60px 375px 1fr 70px;
     grid-template-areas:
       'header'
       'breadcrumb'
@@ -241,6 +248,10 @@
   section.right-col {
     @apply border-l-2 max-h-full;
     grid-area: right;
+  }
+  .menu-overlay {
+    @apply fixed inset-0 z-20;
+    background-color: rgba(0, 0, 0, 0.2);
   }
   @screen md {
     main {
@@ -264,16 +275,7 @@
       @apply overflow-auto;
     }
     section.left-col {
-      @apply block;
+      @apply flex;
     }
-  }
-  .mobile-overlay {
-    @apply fixed flex justify-center items-center left-0 right-0 bg-white z-50;
-    top: 80px;
-    bottom: 55px;
-  }
-  .mobile-overlay .content {
-    @apply flex flex-col justify-center items-center text-center text-xl leading-small;
-    max-width: 354px;
   }
 </style>
