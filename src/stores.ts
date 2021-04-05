@@ -123,7 +123,7 @@ export function navigateToId(
     }
   });
   primaryId.set(newId);
-  secondaryId.set('claim_id:claim_1'); // TODO: Remove me
+  // secondaryId.set('claim_id:claim_1'); // TODO: Remove me
   if (logEvent) {
     window.newrelic?.addPageAction('navigateToId', { id: newId });
   }
