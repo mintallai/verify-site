@@ -7,6 +7,8 @@ declare module 'html-parse-stringify' {
 
 declare module 'svelte-css-vars';
 
+declare var __breakpoints__;
+
 interface IUrlParams {
   source: string;
   tourFlag: boolean;

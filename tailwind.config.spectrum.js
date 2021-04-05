@@ -98,13 +98,6 @@ module.exports = {
       transparent: 'transparent',
       current: 'currentColor',
     },
-    screens: {
-      xsmall: '304px',
-      small: '768px',
-      medium: '1280px',
-      large: '1768px',
-      xlarge: '2160px',
-    },
     duration: {
       0: 'var(--duration-0)',
       100: 'var(--duration-100)',

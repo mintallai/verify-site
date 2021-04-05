@@ -1,7 +1,7 @@
 @layer base {
   /* purgecss start ignore */
   body {
-    @apply text-100 md:overflow-hidden;
+    @apply text-100 lg:overflow-hidden;
   }
 
   h2 {
@@ -18,6 +18,11 @@
 
   a.link {
     @apply text-blue-500 underline;
+  }
+
+  .viewer-wrapper {
+    @apply w-full h-full flex items-stretch p-4 lg:p-0;
+    grid-area: viewer;
   }
 
   .message-illustration {

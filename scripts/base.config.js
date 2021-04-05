@@ -139,7 +139,7 @@ function baseConfig(config, ctx) {
         'process.env.NODE_ENV': production ? '"production"' : '"development"',
         __toolkit_wasm_src__:
           process.env.TOOLKIT_WASM_SRC || '/toolkit/toolkit_bg.wasm',
-        __delay__: production ? '3000' : '100',
+        __delay__: production ? '100' : '100',
         __year__: new Date().getFullYear(),
       }),
       embeddedTypescript({ sourceMap: !production }),

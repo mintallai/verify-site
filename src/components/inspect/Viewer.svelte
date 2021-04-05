@@ -3,7 +3,7 @@
   import { fade } from 'svelte/transition';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
-  import { urlParams, summary } from '../../stores';
+  import { urlParams, summary, isMobileViewerShown } from '../../stores';
   import { loadFile } from '../../lib/file';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
 
@@ -16,9 +16,9 @@
   let width = 0;
   let height = 0;
   let side = `0px`;
-  let padding = 20;
 
   $: {
+    const padding = $isMobileViewerShown ? 0 : 20;
     side = `${Math.min(width, height) - padding * 2}px`;
   }
   $: styles = {
@@ -40,72 +40,78 @@
   });
 </script>
 
-<div
-  class="viewer"
-  class:no-source={!source}
-  class:upload={uploadMode}
-  class:dragging={isDragging}
-  bind:clientWidth={width}
-  bind:clientHeight={height}
->
-  <input type="file" bind:this={fileInput} accept="image/jpeg" class="hidden" />
-  <div class="inner" use:cssVars={styles}>
-    {#if uploadMode}
-      <div class="upload-content" in:fade>
-        <svg
-          width="58"
-          height="99"
-          xmlns="http://www.w3.org/2000/svg"
-          class="message-illustration"
-        >
-          <g
-            stroke="currentColor"
-            stroke-width="3"
-            fill="none"
-            fill-rule="evenodd"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+<div class="viewer-wrapper">
+  <div
+    class="viewer"
+    class:no-source={!source}
+    class:upload={uploadMode}
+    class:dragging={isDragging}
+    bind:clientWidth={width}
+    bind:clientHeight={height}
+  >
+    <input
+      type="file"
+      bind:this={fileInput}
+      accept="image/jpeg"
+      class="hidden"
+    />
+    <div class="inner" use:cssVars={styles}>
+      {#if uploadMode}
+        <div class="upload-content" in:fade>
+          <svg
+            width="58"
+            height="99"
+            xmlns="http://www.w3.org/2000/svg"
+            class="message-illustration"
           >
-            <path
-              d="M21.216 73.125H3.5a2 2 0 01-2-2V3.5a2 2 0 012-2h31.443M55.942 27.41v43.714a2 2 0 01-2 2H34.216"
-            />
-            <path
-              d="M55.942 22.5h-21v-21zM27.722 55.316V96.06M17.942 87.762l9.146 9.277a.998.998 0 001.424 0l9.146-9.277"
-            />
-          </g>
-        </svg>
-        {#if source || $summary}
-          <div class="message-heading">Drop your file</div>
-        {:else}
-          <div class="message-heading">Drag and drop your file</div>
-          <div class="message-text">
-            <span class="link" on:click={browseFile}>Select a JPG</span> from your
-            computer
-          </div>
-        {/if}
-      </div>
-    {:else if !isLoading && thumbnailURL}
-      <img
-        src={thumbnailURL}
-        alt=""
-        class="h-full w-full object-contain object-center"
-      />
-    {:else}
-      <div class="flex items-center justify-center">
-        {#if isError}
-          <cai-icon-broken-image />
-        {:else}
-          <CircleLoader />
-        {/if}
-      </div>
-    {/if}
+            <g
+              stroke="currentColor"
+              stroke-width="3"
+              fill="none"
+              fill-rule="evenodd"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21.216 73.125H3.5a2 2 0 01-2-2V3.5a2 2 0 012-2h31.443M55.942 27.41v43.714a2 2 0 01-2 2H34.216"
+              />
+              <path
+                d="M55.942 22.5h-21v-21zM27.722 55.316V96.06M17.942 87.762l9.146 9.277a.998.998 0 001.424 0l9.146-9.277"
+              />
+            </g>
+          </svg>
+          {#if source || $summary}
+            <div class="message-heading">Drop your file</div>
+          {:else}
+            <div class="message-heading">Drag and drop your file</div>
+            <div class="message-text">
+              <span class="link" on:click={browseFile}>Select a JPG</span> from your
+              computer
+            </div>
+          {/if}
+        </div>
+      {:else if !isLoading && thumbnailURL}
+        <img
+          src={thumbnailURL}
+          alt=""
+          class="h-full w-full object-contain object-center"
+        />
+      {:else}
+        <div class="flex items-center justify-center">
+          {#if isError}
+            <cai-icon-broken-image />
+          {:else}
+            <CircleLoader />
+          {/if}
+        </div>
+      {/if}
+    </div>
   </div>
 </div>
 
 <style lang="postcss">
   .viewer {
-    @apply w-full flex items-center justify-center overflow-hidden;
-    grid-area: viewer;
+    @apply w-full bg-gray-75 flex items-center justify-center overflow-hidden;
   }
   .viewer.no-source {
     @apply bg-white;
@@ -134,7 +140,7 @@
     --cai-icon-width: 100px;
     --cai-icon-height: 100px;
   }
-  @screen md {
+  @screen lg {
     .viewer {
       @apply bg-gray-75;
     }

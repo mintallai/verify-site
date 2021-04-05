@@ -14,6 +14,7 @@
 
   export let claim: IClaimSummary;
   export let isComparing: boolean = false;
+  export let isMobileViewer: boolean = false;
   let element: HTMLElement;
 
   $: categories = compact(
@@ -21,7 +22,7 @@
   );
 </script>
 
-<div class="info" bind:this={element}>
+<div class="info lg:pb-4" bind:this={element}>
   {#if isComparing}
     <div>
       <div class="text-xs text-gray-700 uppercase leading-none mb-1">
@@ -59,7 +60,7 @@
       </cai-panel-custom-data>
     </div>
   {/if}
-  {#if isComparing && (claim.references || isSecureCapture)}
+  {#if (isComparing || isMobileViewer) && (claim.references || isSecureCapture)}
     <div>
       <cai-panel-content-record
         references={claim.references}

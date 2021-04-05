@@ -1,6 +1,7 @@
 <script lang="ts">
   import cssVars from 'svelte-css-vars';
   import partial from 'lodash/partial';
+  import { isMobileViewerShown } from '../../../stores';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
 
@@ -24,14 +25,18 @@
   }
 
   $: {
-    if (Object.values(aspectRatios).every((x) => x !== null)) {
-      const avg = (aspectRatios.primary + aspectRatios.secondary) / 2;
-      layout = avg >= 1 ? Layout.Stacked : Layout.SideBySide;
+    if ($isMobileViewerShown) {
+      layout = Layout.SideBySide;
+    } else {
+      if (Object.values(aspectRatios).every((x) => x !== null)) {
+        const avg = (aspectRatios.primary + aspectRatios.secondary) / 2;
+        layout = avg >= 1 ? Layout.Stacked : Layout.SideBySide;
+      }
     }
   }
 
   $: styles = {
-    width: `${side}px`,
+    width: $isMobileViewerShown ? `100%` : `${side}px`,
     height: `${side}px`,
   };
 
@@ -45,8 +50,9 @@
 
 <div
   class="inner"
+  class:mobile={$isMobileViewerShown}
   class:layout-stacked={layout === Layout.Stacked}
-  class:layout-sideBySide={layout === Layout.SideBySide}
+  class:layout-side={layout === Layout.SideBySide}
   use:cssVars={styles}
 >
   <div class="primary thumbnail" class:invisible={!layout}>
@@ -73,6 +79,12 @@
     @apply flex pointer-events-none;
     width: var(--width);
     height: var(--height);
+  }
+  .inner.layout-side {
+    width: 100%;
+  }
+  .inner.mobile.layout-side .thumbnail {
+    @apply p-4;
   }
   .inner.layout-stacked {
     @apply flex-col;

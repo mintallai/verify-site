@@ -28,6 +28,7 @@
     primaryAsset,
     secondaryAsset,
     isBurgerMenuShown,
+    isMobileViewerShown,
   } from '../stores';
   import { getIdentifier } from '../lib/claim';
 
@@ -39,7 +40,9 @@
   let isDraggingOver = false;
   let error: ToolkitError;
   let tour: ReturnType<typeof startTour>;
-  let mdBreakpoint = `(max-width: 768px)`;
+  let breakpoints = __breakpoints__;
+  let mdBreakpoint = `(max-width: ${breakpoints.md})`;
+  let lgBreakpoint = `(max-width: ${breakpoints.lg})`;
 
   $: source = $sourceStore;
   $: sourceParam = $urlParams.source;
@@ -48,6 +51,7 @@
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
+  $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !!(source && !$summary);
   $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
   $: {
@@ -65,9 +69,13 @@
     if (media === mdBreakpoint && !matches && $isBurgerMenuShown) {
       isBurgerMenuShown.set(false);
     }
+    if (media === lgBreakpoint) {
+      isMobileViewerShown.set(matches);
+    }
   }
 
   onMount(async () => {
+    const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
     const { tourFlag, forceTourFlag } = $urlParams;
     if (sourceParam) {
       try {
@@ -106,20 +114,27 @@
       },
     });
 
-    matchMedia(mdBreakpoint).addEventListener('change', handleBreakpointChange);
+    isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);
+
+    listenBreakpoints.forEach((bp) =>
+      matchMedia(bp).addEventListener('change', handleBreakpointChange),
+    );
 
     return () => {
       cleanupDragDrop();
-      matchMedia(mdBreakpoint).removeEventListener(
-        'change',
-        handleBreakpointChange,
+      listenBreakpoints.forEach((bp) =>
+        matchMedia(bp).removeEventListener('change', handleBreakpointChange),
       );
     };
   });
 </script>
 
 <svelte:window />
-<main class="theme-light" class:has-breadcrumb-bar={hasBreadcrumbBar}>
+<main
+  class="theme-light"
+  class:comparing={isComparing}
+  class:has-breadcrumb-bar={hasBreadcrumbBar}
+>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -170,6 +185,7 @@
             <About
               claim={primary}
               {isComparing}
+              {isMobileViewer}
               on:close={partial(handleClose, secondary)}
             />
           </div>
@@ -192,6 +208,7 @@
           <About
             claim={primary}
             {isComparing}
+            {isMobileViewer}
             on:close={partial(handleClose, secondary)}
           />
         {:else if !isComparing && primary?.type === 'reference'}
@@ -200,6 +217,7 @@
           <About
             claim={secondary}
             {isComparing}
+            {isMobileViewer}
             on:close={partial(handleClose, primary)}
           />
         {:else if secondary?.type === 'reference'}
@@ -217,9 +235,11 @@
 
 <style lang="postcss">
   main {
+    --viewer-height: 375px;
+
     @apply grid w-screen min-h-screen font-base;
-    grid-template-columns: 1fr;
-    grid-template-rows: 80px 375px 1fr 70px;
+    grid-template-columns: 100%;
+    grid-template-rows: 80px var(--viewer-height) 1fr 70px;
     grid-template-areas:
       'header'
       'viewer'
@@ -227,7 +247,7 @@
       'footer';
   }
   main.has-breadcrumb-bar {
-    grid-template-rows: 80px 60px 375px 1fr 70px;
+    grid-template-rows: 80px 60px var(--viewer-height) 1fr 70px;
     grid-template-areas:
       'header'
       'breadcrumb'
@@ -254,7 +274,31 @@
     background-color: rgba(0, 0, 0, 0.2);
   }
   @screen md {
-    main {
+    main.comparing {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 80px var(--viewer-height) 1fr 55px;
+      grid-template-areas:
+        'header header'
+        'viewer viewer'
+        'left right'
+        'footer footer';
+    }
+    main.comparing.has-breadcrumb-bar {
+      grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
+      grid-template-areas:
+        'header header'
+        'breadcrumb breadcrumb'
+        'viewer viewer'
+        'left right'
+        'footer footer';
+    }
+    section.left-col {
+      @apply flex;
+    }
+  }
+  @screen lg {
+    main,
+    main.comparing {
       @apply fixed inset-0;
       grid-template-columns: 320px 1fr 320px;
       grid-template-rows: 80px 1fr 55px;
@@ -263,7 +307,8 @@
         'left viewer right'
         'footer footer footer';
     }
-    main.has-breadcrumb-bar {
+    main.has-breadcrumb-bar,
+    main.comparing.has-breadcrumb-bar {
       grid-template-rows: 80px 60px 1fr 55px;
       grid-template-areas:
         'header header header'
@@ -273,9 +318,6 @@
     }
     section {
       @apply overflow-auto;
-    }
-    section.left-col {
-      @apply flex;
     }
   }
 </style>

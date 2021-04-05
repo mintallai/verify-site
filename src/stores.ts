@@ -55,6 +55,8 @@ export const secondaryId = writable<string>('');
 
 export const isBurgerMenuShown = writable<boolean>(false);
 
+export const isMobileViewerShown = writable<boolean>(false);
+
 export enum CompareMode {
   Split = 'SPLIT',
   Slider = 'SLIDER',
@@ -121,6 +123,7 @@ export function navigateToId(
     }
   });
   primaryId.set(newId);
+  secondaryId.set('claim_id:claim_1'); // TODO: Remove me
   if (logEvent) {
     window.newrelic?.addPageAction('navigateToId', { id: newId });
   }
