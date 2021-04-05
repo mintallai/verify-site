@@ -7,9 +7,10 @@ module.exports = merge(spectrumConfig, {
     screens: {
       sm: '640px',
       md: '768px',
-      lg: '1024px',
+      lg: '1000px',
       xl: '1280px',
       '2xl': '1536px',
+      lgHeight: { 'raw': '(min-height: 480px)' },
     },
     extend: {
       boxShadow: {

@@ -181,7 +181,7 @@
         {#if !isComparing}
           <ContentRecord claim={primary?.type === 'claim' ? primary : null} />
         {:else if primary?.type === 'claim'}
-          <div class="p-4">
+          <div class="p-4 pt-0 md:pt-4">
             <About
               claim={primary}
               {isComparing}
@@ -262,39 +262,37 @@
     @apply flex items-center justify-center;
   }
   section.left-col {
-    @apply border-r-2 hidden;
+    @apply hidden;
     grid-area: left;
   }
   section.right-col {
-    @apply border-l-2 max-h-full;
+    @apply max-h-full;
     grid-area: right;
   }
   .menu-overlay {
     @apply fixed inset-0 z-20;
     background-color: rgba(0, 0, 0, 0.2);
   }
-  @screen md {
-    main.comparing {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 80px var(--viewer-height) 1fr 55px;
-      grid-template-areas:
-        'header header'
-        'viewer viewer'
-        'left right'
-        'footer footer';
-    }
-    main.comparing.has-breadcrumb-bar {
-      grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
-      grid-template-areas:
-        'header header'
-        'breadcrumb breadcrumb'
-        'viewer viewer'
-        'left right'
-        'footer footer';
-    }
-    section.left-col {
-      @apply flex;
-    }
+  main.comparing {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 80px var(--viewer-height) 1fr 55px;
+    grid-template-areas:
+      'header header'
+      'viewer viewer'
+      'left right'
+      'footer footer';
+  }
+  main.comparing.has-breadcrumb-bar {
+    grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
+    grid-template-areas:
+      'header header'
+      'breadcrumb breadcrumb'
+      'viewer viewer'
+      'left right'
+      'footer footer';
+  }
+  main.comparing section.left-col {
+    @apply flex;
   }
   @screen lg {
     main,
@@ -318,6 +316,12 @@
     }
     section {
       @apply overflow-auto;
+    }
+    section.left-col {
+      @apply border-r-2 flex;
+    }
+    section.right-col {
+      @apply border-l-2;
     }
   }
 </style>

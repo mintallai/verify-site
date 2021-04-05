@@ -13,6 +13,9 @@ import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 
+// TODO: Convert this to esm
+const tailwindConfig = require('./tailwind.config');
+
 const year = new Date().getFullYear();
 const newrelic = fs.readFileSync('etc/newrelic.html');
 const banner = `
@@ -140,6 +143,7 @@ function baseConfig(config, ctx) {
         __toolkit_wasm_src__:
           process.env.TOOLKIT_WASM_SRC || '/toolkit/toolkit_bg.wasm',
         __delay__: production ? '100' : '100',
+        __breakpoints__: JSON.stringify(tailwindConfig.theme.screens),
         __year__: new Date().getFullYear(),
       }),
       embeddedTypescript({ sourceMap: !production }),

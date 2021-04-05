@@ -66,7 +66,7 @@
 
 <style lang="postcss">
   header {
-    @apply border-gray-200 bg-white border-b-2 px-5 flex items-center justify-between sticky top-0 z-40;
+    @apply border-gray-200 bg-white border-b-2 px-5 flex items-center justify-between z-40;
     grid-area: header;
     max-width: 100vw;
     height: 80px;
@@ -103,6 +103,11 @@
   @screen md {
     .full-menu {
       @apply block;
+    }
+  }
+  @screen lgHeight {
+    header {
+      @apply sticky top-0;
     }
   }
 </style>

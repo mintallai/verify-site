@@ -93,10 +93,9 @@
 
 <style lang="postcss">
   .container {
-    @apply flex items-center bg-white border-b-2 border-gray-200 px-5 max-w-full sticky z-30;
+    @apply flex items-center bg-white border-b-2 border-gray-200 px-5 max-w-full z-30;
     grid-area: breadcrumb;
     height: 60px;
-    top: 80px;
   }
   .home {
     @apply mr-2 cursor-pointer;
@@ -124,5 +123,11 @@
   .compare-tabs sp-tab {
     --spectrum-tabs-text-size: var(--font-size-100);
     --spectrum-tabs-text-font-weight: bold;
+  }
+  @screen lgHeight {
+    .container {
+      @apply sticky;
+      top: 80px;
+    }
   }
 </style>
