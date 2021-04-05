@@ -14,7 +14,7 @@
     width="126"
     height="90"
     xmlns="http://www.w3.org/2000/svg"
-    class="message-illustration mb-4"
+    class="message-illustration mb-4 hidden lg:block mt-0 lg:mt-5"
   >
     <g
       stroke="currentColor"

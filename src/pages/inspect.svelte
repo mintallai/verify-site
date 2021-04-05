@@ -8,9 +8,10 @@
   import Alert from '../components/Alert.svelte';
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
+  import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import ContentRecord from '../components/inspect/ContentRecord.svelte';
+  import ContentCredentials from '../components/inspect/ContentCredentials.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError, {
     Status as ContentCredentialsStatus,
@@ -170,7 +171,7 @@
       </section>
     {:else if noMetadata}
       <section class="left-col">
-        <ContentRecord {source} />
+        <ContentCredentials {source} />
       </section>
       <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
       <section class="right-col p-4">
@@ -179,7 +180,9 @@
     {:else if primary}
       <section class="left-col">
         {#if !isComparing}
-          <ContentRecord claim={primary?.type === 'claim' ? primary : null} />
+          <ContentCredentials
+            claim={primary?.type === 'claim' ? primary : null}
+          />
         {:else if primary?.type === 'claim'}
           <div class="p-4 pt-0 md:pt-4">
             <About
@@ -205,14 +208,20 @@
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary?.type === 'claim'}
-          <About
-            claim={primary}
-            {isComparing}
-            {isMobileViewer}
-            on:close={partial(handleClose, secondary)}
-          />
+          <div>
+            <About
+              claim={primary}
+              {isComparing}
+              {isMobileViewer}
+              on:close={partial(handleClose, secondary)}
+            />
+            <CompareLatestButton claim={primary} {isComparing} />
+          </div>
         {:else if !isComparing && primary?.type === 'reference'}
-          <ContentCredentialsError />
+          <div>
+            <ContentCredentialsError />
+            <CompareLatestButton claim={null} {isComparing} />
+          </div>
         {:else if secondary?.type === 'claim'}
           <About
             claim={secondary}

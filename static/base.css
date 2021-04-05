@@ -29,7 +29,7 @@
     @apply text-gray-500 transition-all duration-200;
   }
   .message-heading {
-    @apply font-light text-700 mt-5 text-gray-700 leading-small mb-2 text-center;
+    @apply font-light text-700 text-gray-700 leading-small mb-2 text-center;
   }
   .message-text {
     @apply text-75 text-gray-700 text-center;

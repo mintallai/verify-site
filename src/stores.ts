@@ -123,6 +123,7 @@ export function navigateToId(
     }
   });
   primaryId.set(newId);
+  scrollTo(0, 0);
   // secondaryId.set('claim_id:claim_1'); // TODO: Remove me
   if (logEvent) {
     window.newrelic?.addPageAction('navigateToId', { id: newId });
@@ -138,6 +139,7 @@ export function navigateToId(
 export function compareWithId(id: string, logEvent = true): void {
   console.debug('Comparing with', id);
   secondaryId.set(id);
+  scrollTo(0, 0);
   if (logEvent) {
     window.newrelic?.addPageAction('compareWithId', {
       id: get(primaryId),

@@ -23,7 +23,7 @@
 <div class="h-full relative">
   <div class="p-4 pb-1">
     <h2 class="my-0 mb-2">
-      <span>Content record</span>
+      <span>Content credentials</span>
       <cai-tooltip class="theme-spectrum ml-2"
         ><div slot="content">
           Tamper-evident editing and activity data attached on export, including

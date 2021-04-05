@@ -28,10 +28,10 @@
   resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.1.7/6fcf9c968ec772c0eb34913620fc5b246ec86f91f09cbb366a2faec1670f45c2#bcf043c176ae47f2d1c67b857800f2efe4e2adfa"
   integrity sha512-mt5+zAVXSidIsxwlUtZgQsVBSGg+acL6GZoe8RM72ftubdYOpAShjYC+ROzPE2OXSlrX35AVmmDj6N2yWWbHNQ==
 
-"@contentauth/web-components@0.1.3-alpha.37":
-  version "0.1.3-alpha.37"
-  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.3-alpha.37/57767b9c07f8614b4e759f76c678abdac8a6bffa8f4da5285488e75bce33119b#ec84fd61887b0c33d37efbc66720fbe7342de75f"
-  integrity sha512-m4U5xQmoKpVwktrn4+kO9JPVgGzcGuOAKlG7RUvK7X14yo9TbjcfKV26FQ6VKdSY/NHWMZ5P13rs5RLZrai7dA==
+"@contentauth/web-components@0.1.3-alpha.39":
+  version "0.1.3-alpha.39"
+  resolved "https://npm.pkg.github.com/download/@contentauth/web-components/0.1.3-alpha.39/1ba961d7d546e7c80f90ea6f358f42267bf63f877562a5fe7fe9d78975ec372c#e4961ee2caae8771db602d0a4164564c243f0752"
+  integrity sha512-zs/DoUFmlI8yKFDPNTIRJRe3IXRZCIW8Z+nS+9lIVuZgsj9mrS6/6v19jTddncynjD4paQvHEW2JQ+tQM2lHJQ==
   dependencies:
     "@popperjs/core" "^2.9.1"
     date-fns "^2.19.0"

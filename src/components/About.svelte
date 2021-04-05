@@ -4,15 +4,17 @@
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import { formatLocation, isSecureCapture } from '../lib/demo';
+  import { getIdentifier } from '../lib/claim';
+  import { navigateToId } from '../stores';
   import '@contentauth/web-components/dist/components/panels/ContentProducer';
-  import '@contentauth/web-components/dist/components/panels/ContentRecord';
+  import '@contentauth/web-components/dist/components/panels/Assets';
   import '@contentauth/web-components/dist/components/panels/CustomData';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/panels/Providers';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
 
-  export let claim: IClaimSummary;
+  export let claim: IClaimSummary & IIdentifiable;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
   let element: HTMLElement;
@@ -47,7 +49,11 @@
     </cai-panel-content-producer>
   </div>
   <div>
-    <cai-panel-edits-activity {categories} class="theme-spectrum" />
+    <cai-panel-edits-activity
+      {categories}
+      hidedescriptions={isMobileViewer && isComparing ? true : null}
+      class="theme-spectrum"
+    />
   </div>
   {#if claim.location}
     <div>
@@ -62,8 +68,14 @@
   {/if}
   {#if (isComparing || isMobileViewer) && (claim.references || isSecureCapture)}
     <div>
-      <cai-panel-content-record
+      <cai-panel-assets
         references={claim.references}
+        on:reference-click={({ detail }) => {
+          const identifier = getIdentifier(detail?.reference);
+          if (identifier) {
+            navigateToId(identifier);
+          }
+        }}
         class="theme-spectrum"
       >
         {#if isSecureCapture}
@@ -71,7 +83,7 @@
             <OriginalCreation />
           </div>
         {/if}
-      </cai-panel-content-record>
+      </cai-panel-assets>
     </div>
   {/if}
   <div>
