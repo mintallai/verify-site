@@ -64,8 +64,8 @@
   <div class="slider" bind:this={slider}>
     <div class="handle">
       <div>
-        <Icon size="m" name="workflow:ChevronLeft" class="text-gray-700" />
-        <Icon size="m" name="workflow:ChevronRight" class="text-gray-700" />
+        <Icon size="m" name="ChevronLeft" class="text-gray-700" />
+        <Icon size="m" name="ChevronRight" class="text-gray-700" />
       </div>
     </div>
   </div>

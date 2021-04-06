@@ -8,11 +8,7 @@
     InfoIcon,
     ShowMenuIcon,
   } from '@spectrum-web-components/icons-workflow/lib/icons';
-  import { ArrowLeftMediumIcon } from '@spectrum-web-components/icons-ui/lib/icons';
 
-  const IconsUI = {
-    ArrowLeftMediumIcon,
-  };
   const IconsWorkflow = {
     ChevronLeftIcon,
     ChevronRightIcon,
@@ -42,28 +38,15 @@
   let svg = '';
 
   $: {
-    const [library, icon] = name.split(':');
     let iconFn: (args: any) => any;
-    if (library === 'ui') {
-      iconFn = IconsUI[`${icon}Icon`];
-    } else if (library === 'workflow') {
-      iconFn = IconsWorkflow[`${icon}Icon`];
-    } else {
-      console.error(
-        `Icon library must be either "ui" or "workflow". Received:`,
-        library,
-      );
-    }
+    iconFn = IconsWorkflow[`${name}Icon`];
     if (iconFn) {
       svg = iconFn({
         width: dims,
         height: dims,
       });
     } else {
-      console.error(
-        `Icon "${icon}" not found. Available options are:`,
-        Object.keys(library === 'workflow' ? IconsWorkflow : IconsUI),
-      );
+      console.error(`Icon "${name}" not found.`);
     }
   }
 </script>

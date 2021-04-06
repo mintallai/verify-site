@@ -14,6 +14,7 @@
   } from '../../stores';
   import { getBreadcrumbList } from '../../lib/claim';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
+  import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
   import '@spectrum-web-components/tabs/sp-tabs.js';
   import '@spectrum-web-components/tabs/sp-tab.js';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
@@ -45,12 +46,11 @@
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
   {#if isComparing}
-    <div class="absolute flex cursor-pointer" on:click={() => dispatch('back')}>
-      <Icon
-        size="m"
-        name="ui:ArrowLeftMedium"
-        class="text-gray-800 mr-3 relative top-0.5"
-      />
+    <div
+      class="absolute flex items-center cursor-pointer"
+      on:click={() => dispatch('back')}
+    >
+      <LeftArrow width="14" height="12" class="text-gray-800 mr-3" />
       <div class="breadcrumbs">
         <div class="breadcrumb-item font-bold">Back</div>
       </div>
@@ -89,7 +89,7 @@
       </sp-action-menu>
     </sp-theme>
     <div class="separator -ml-2">
-      <Icon size="s" name="workflow:ChevronRight" class="text-gray-800" />
+      <Icon size="s" name="ChevronRight" class="text-gray-800" />
     </div>
     <div class="breadcrumb-item" class:current={true}>
       {$primaryAsset.title}
@@ -106,7 +106,7 @@
       <div slot="content">This is the content you started with.</div>
     </cai-tooltip>
     <div class="separator">
-      <Icon size="s" name="workflow:ChevronRight" class="text-gray-800" />
+      <Icon size="s" name="ChevronRight" class="text-gray-800" />
     </div>
     {#if noMetadata && source}
       <div class="breadcrumb-item" class:current={true}>
@@ -116,7 +116,7 @@
       {#each breadcrumbList as asset, index ({ id: asset._id, ctx: 'breadcrumb-list' })}
         {#if index > 0}
           <div class="separator">
-            <Icon size="s" name="workflow:ChevronRight" class="text-gray-800" />
+            <Icon size="s" name="ChevronRight" class="text-gray-800" />
           </div>
         {/if}
         <div

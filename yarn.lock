@@ -260,15 +260,6 @@
     "@spectrum-web-components/base" "^0.1.3"
     tslib "^2.0.0"
 
-"@spectrum-web-components/icon@^0.6.0":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@spectrum-web-components/icon/-/icon-0.6.3.tgz#5a773b6950ae29006a8508a04e4b43972dec7566"
-  integrity sha512-UcJb7SOr5UTYO3+oj7A5jbS3vWghSqhWXyyS7FLwvNzVkjnc+gK/4wper3gQubk95slnXobs3/uJZ82YJcBL/A==
-  dependencies:
-    "@spectrum-web-components/base" "^0.1.3"
-    "@spectrum-web-components/iconset" "^0.2.5"
-    tslib "^2.0.0"
-
 "@spectrum-web-components/icon@^0.9.4":
   version "0.9.4"
   resolved "https://registry.yarnpkg.com/@spectrum-web-components/icon/-/icon-0.9.4.tgz#5a4acbaf562794ea3474c8c880135e360390a2d3"
@@ -276,15 +267,6 @@
   dependencies:
     "@spectrum-web-components/base" "^0.4.2"
     "@spectrum-web-components/iconset" "^0.5.4"
-    tslib "^2.0.0"
-
-"@spectrum-web-components/icons-ui@^0.3.0":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@spectrum-web-components/icons-ui/-/icons-ui-0.3.3.tgz#7e8593150534e924eb86d41298e4deeba814d90a"
-  integrity sha512-/6MrwVSlYI/1XZ/rjBNanLEGPhXfulVLT9aInOSh3DRx+4X2fqA+2lk2swq9LEu8X1Dg5I1Kc04xnNR3X+3RXw==
-  dependencies:
-    "@spectrum-web-components/base" "^0.1.3"
-    "@spectrum-web-components/iconset" "^0.2.5"
     tslib "^2.0.0"
 
 "@spectrum-web-components/icons-ui@^0.6.4":
