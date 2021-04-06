@@ -3,7 +3,12 @@
   import { fade } from 'svelte/transition';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
-  import { urlParams, summary, isMobileViewerShown } from '../../stores';
+  import {
+    urlParams,
+    summary,
+    source,
+    isMobileViewerShown,
+  } from '../../stores';
   import { loadFile } from '../../lib/file';
   import DropFile from '../../../assets/svg/monochrome/drop-file.svg';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
@@ -26,8 +31,8 @@
     width: side,
     height: side,
   };
-  $: source = $urlParams.source;
-  $: uploadMode = (!source && !$summary) || isDragging;
+  $: urlSource = $urlParams.source;
+  $: uploadMode = (!urlSource && !$source && !$summary) || isDragging;
 
   function browseFile() {
     fileInput.click();
@@ -44,7 +49,7 @@
 <div class="viewer-wrapper">
   <div
     class="viewer"
-    class:no-source={!source}
+    class:no-source={!$source}
     class:upload={uploadMode}
     class:dragging={isDragging}
     bind:clientWidth={width}
@@ -64,7 +69,7 @@
             height={99}
             class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}"
           />
-          {#if source || $summary}
+          {#if $source || $summary}
             <div class="message-heading">Drop your file</div>
           {:else}
             <div class="message-heading">Drag and drop your file</div>

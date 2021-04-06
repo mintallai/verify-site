@@ -124,15 +124,6 @@ export function navigateToId(
   });
   primaryId.set(newId);
   scrollTo(0, 0);
-  // primaryId.set('claim_id:claim_3'); // TODO: Remove me
-  // secondaryId.set('document_id:xmp.did:a0ca6da8-6bc2-4d37-b4e1-a5867a933899');
-  // primaryId.set('document_id:xmp.did:0112f1a9-d13e-7747-bbb6-9fae69b0ee2f');
-  // contentSourceIds.set([
-  //   'claim_id:claim_3',
-  //   'claim_id:claim_2',
-  //   'claim_id:claim_1',
-  //   'claim_id:claim_0',
-  // ]);
   if (logEvent) {
     window.newrelic?.addPageAction('navigateToId', { id: newId });
   }
@@ -200,7 +191,7 @@ export const summary = writable<ISummaryResponse | null>(null, (set) => {
  * @param data Data provided by on of the `getSummary*` toolkit functions, or `null` to clear the existing info, and show the upload screen
  */
 export async function setSummary(result: ISummaryResult) {
-  let { summary: data } = result;
+  let data = result?.summary;
   // Grab map of references, since we may need to look up a claim title from
   // refs in the case of an acquisition
   console.info('Summary data', data);

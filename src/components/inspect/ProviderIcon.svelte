@@ -1,36 +1,29 @@
 <script lang="ts">
   import { afterUpdate } from 'svelte';
-  import '@contentauth/web-components/dist/icons/color/logos/adobe';
-  import '@contentauth/web-components/dist/icons/color/logos/photoshop';
+  import AdobeLogo from '../../../assets/svg/color/logos/adobe.svg';
+  import PhotoshopLogo from '../../../assets/svg/color/logos/photoshop.svg';
+  import TruepicLogo from '../../../assets/svg/color/logos/truepic.svg';
 
   export let slotName: string;
   export let provider: string;
   let containerElement: HTMLElement;
+  let iconComponent = null;
 
   const matchers = [
-    { pattern: /adobe/i, icon: 'cai-icon-adobe' },
-    { pattern: /photoshop/i, icon: 'cai-icon-photoshop' },
+    { pattern: /adobe/i, icon: AdobeLogo },
+    { pattern: /photoshop/i, icon: PhotoshopLogo },
+    { pattern: /truepic/i, icon: TruepicLogo },
   ];
 
   afterUpdate(() => {
-    const icon = matchers.find(({ pattern }) =>
-      pattern.test(provider?.toString() ?? ''),
-    )?.icon;
-    while (containerElement.firstChild) {
-      containerElement.removeChild(containerElement.firstChild);
-    }
-    if (icon) {
-      const iconElement = document.createElement(icon);
-      containerElement.setAttribute('slot', slotName);
-      containerElement.appendChild(iconElement);
-    }
+    iconComponent =
+      matchers.find(({ pattern }) => pattern.test(provider?.toString() ?? ''))
+        ?.icon || null;
+
+    containerElement.setAttribute('slot', slotName);
   });
 </script>
 
-<div class="container" bind:this={containerElement} />
-
-<style lang="postcss">
-  .container {
-    display: inline-flex;
-  }
-</style>
+<div class="flex" bind:this={containerElement}>
+  <svelte:component this={iconComponent} width="16" height="16" />
+</div>
