@@ -25,17 +25,22 @@
     grid-area: viewer;
   }
 
-  .message-illustration {
-    @apply text-gray-500 transition-all duration-200;
-  }
   .message-heading {
-    @apply font-light text-700 text-gray-700 leading-small mb-2 text-center;
+    @apply font-light text-400 text-gray-700 leading-small mb-2 text-center;
   }
   .message-text {
-    @apply text-75 text-gray-700 text-center;
+    @apply text-200 text-gray-700 text-center;
   }
   .message-text .link {
     @apply text-blue-500 cursor-pointer underline;
+  }
+  @screen lg {
+    .message-heading {
+      @apply text-700;
+    }
+    .message-text {
+      @apply text-75;
+    }
   }
 
   dl.attributes {

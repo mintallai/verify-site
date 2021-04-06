@@ -2,7 +2,7 @@ const merge = require('lodash/merge');
 const spectrumConfig = require('./tailwind.config.spectrum');
 
 module.exports = merge(spectrumConfig, {
-  purge: [],
+  purge: ['./src/**/*.{svelte,js,ts}'],
   theme: {
     screens: {
       sm: '640px',

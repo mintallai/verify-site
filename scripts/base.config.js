@@ -12,6 +12,7 @@ import del from 'del';
 import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
+import svelteSvg from '../etc/rollup/plugins/svelte-svg';
 
 // TODO: Convert this to esm
 const tailwindConfig = require('./tailwind.config');
@@ -135,9 +136,10 @@ function baseConfig(config, ctx) {
       // resolve matching modules from current working directory
       resolve({
         browser: true,
-        extensions: ['.svelte', '.ts', '.js'],
+        extensions: ['.svelte', '.ts', '.js', '.svg'],
         dedupe: (importee) => !!importee.match(/svelte(\/|$)/),
       }),
+      svelteSvg(),
       replace({
         'process.env.NODE_ENV': production ? '"production"' : '"development"',
         __toolkit_wasm_src__:

@@ -13,9 +13,7 @@
   import Footer from '../components/Footer.svelte';
   import ContentCredentials from '../components/inspect/ContentCredentials.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
-  import ContentCredentialsError, {
-    Status as ContentCredentialsStatus,
-  } from '../components/inspect/ContentCredentialsError.svelte';
+  import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
@@ -155,12 +153,10 @@
   {#if hasContent}
     {#if error}
       <section class="left-col" class:loading={isLoading} />
-      <div class="content-col">
-        <Viewer isError={!!error} />
-        <section class="right-col p-4">
-          <Alert severity="error">Something went wrong</Alert>
-        </section>
-      </div>
+      <Viewer isError={!!error} />
+      <section class="right-col p-4">
+        <Alert severity="error">Something went wrong</Alert>
+      </section>
     {:else if isLoading}
       <section class="left-col" class:loading={isLoading}>
         <CircleLoader />
@@ -175,7 +171,7 @@
       </section>
       <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
       <section class="right-col p-4">
-        <ContentCredentialsError status={ContentCredentialsStatus.None} />
+        <ContentCredentialsError {isComparing} status="none" />
       </section>
     {:else if primary}
       <section class="left-col">
@@ -184,7 +180,7 @@
             claim={primary?.type === 'claim' ? primary : null}
           />
         {:else if primary?.type === 'claim'}
-          <div class="p-4 pt-0 md:pt-4">
+          <div class="w-full p-4 pt-0 md:pt-4">
             <About
               claim={primary}
               {isComparing}
@@ -193,8 +189,8 @@
             />
           </div>
         {:else if primary?.type === 'reference'}
-          <div class="p-4 h-full flex items-middle justify-center">
-            <ContentCredentialsError />
+          <div class="wrapper">
+            <ContentCredentialsError {isComparing} />
           </div>
         {/if}
       </section>
@@ -208,19 +204,23 @@
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary?.type === 'claim'}
-          <div>
+          <div class="wrapper">
             <About
               claim={primary}
               {isComparing}
               {isMobileViewer}
               on:close={partial(handleClose, secondary)}
             />
-            <CompareLatestButton claim={primary} {isComparing} />
+            {#if isMobileViewer}
+              <CompareLatestButton claim={primary} {isComparing} />
+            {/if}
           </div>
         {:else if !isComparing && primary?.type === 'reference'}
-          <div>
-            <ContentCredentialsError />
-            <CompareLatestButton claim={null} {isComparing} />
+          <div class="wrapper">
+            <ContentCredentialsError {isComparing} />
+            {#if isMobileViewer}
+              <CompareLatestButton claim={null} {isComparing} />
+            {/if}
           </div>
         {:else if secondary?.type === 'claim'}
           <About
@@ -230,7 +230,7 @@
             on:close={partial(handleClose, primary)}
           />
         {:else if secondary?.type === 'reference'}
-          <ContentCredentialsError />
+          <ContentCredentialsError {isComparing} />
         {/if}
       </section>
     {/if}
@@ -277,6 +277,9 @@
   section.right-col {
     @apply max-h-full;
     grid-area: right;
+  }
+  main.comparing section.right-col > .wrapper {
+    @apply sticky top-10;
   }
   .menu-overlay {
     @apply fixed inset-0 z-20;
@@ -331,6 +334,10 @@
     }
     section.right-col {
       @apply border-l-2;
+    }
+    main.comparing section.right-col > .wrapper,
+    section.right-col > .wrapper {
+      @apply w-full h-full flex align-middle justify-center;
     }
   }
 </style>

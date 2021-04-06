@@ -5,6 +5,7 @@
   import CircleLoader from '../CircleLoader.svelte';
   import { urlParams, summary, isMobileViewerShown } from '../../stores';
   import { loadFile } from '../../lib/file';
+  import DropFile from '../../../assets/svg/monochrome/drop-file.svg';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
 
   export let thumbnailURL: string = null;
@@ -58,28 +59,11 @@
     <div class="inner" use:cssVars={styles}>
       {#if uploadMode}
         <div class="upload-content" in:fade>
-          <svg
-            width="58"
-            height="99"
-            xmlns="http://www.w3.org/2000/svg"
-            class="message-illustration"
-          >
-            <g
-              stroke="currentColor"
-              stroke-width="3"
-              fill="none"
-              fill-rule="evenodd"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M21.216 73.125H3.5a2 2 0 01-2-2V3.5a2 2 0 012-2h31.443M55.942 27.41v43.714a2 2 0 01-2 2H34.216"
-              />
-              <path
-                d="M55.942 22.5h-21v-21zM27.722 55.316V96.06M17.942 87.762l9.146 9.277a.998.998 0 001.424 0l9.146-9.277"
-              />
-            </g>
-          </svg>
+          <DropFile
+            width={58}
+            height={99}
+            class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}"
+          />
           {#if source || $summary}
             <div class="message-heading">Drop your file</div>
           {:else}
@@ -128,9 +112,6 @@
   .dragging .inner {
     @apply border-2 border-blue-500 border-solid text-blue-500;
     background-color: rgba(20, 115, 230, 0.1);
-  }
-  .dragging .inner .message-illustration {
-    @apply text-blue-500;
   }
   .upload-content {
     @apply absolute inset-0 flex justify-center items-center flex-col;

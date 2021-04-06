@@ -26,11 +26,9 @@
 
 <div class="info lg:pb-4" bind:this={element}>
   {#if isComparing}
-    <div>
-      <div class="text-xs text-gray-700 uppercase leading-none mb-1">
-        File name
-      </div>
-      <div class="text-md text-gray-900 font-bold truncate">
+    <div class="file-name">
+      <div class="label">File name</div>
+      <div class="value">
         {claim.title}
       </div>
     </div>
@@ -108,9 +106,21 @@
   .info > div:last-child {
     @apply border-none pb-0;
   }
+  .file-name .label {
+    @apply text-xs text-gray-700 uppercase mb-1;
+  }
+  .file-name .value {
+    @apply text-md text-gray-900 font-bold truncate;
+    max-width: calc((100vw / 2) - 30px);
+  }
   @screen md {
     .info {
       @apply min-h-0;
+    }
+  }
+  @screen lg {
+    .file-name .value {
+      @apply max-w-full;
     }
   }
 </style>

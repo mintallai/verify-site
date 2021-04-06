@@ -7,6 +7,8 @@ declare module 'html-parse-stringify' {
 
 declare module 'svelte-css-vars';
 
+declare module '*.svg';
+
 declare var __breakpoints__;
 
 interface IUrlParams {

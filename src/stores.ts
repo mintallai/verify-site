@@ -124,7 +124,8 @@ export function navigateToId(
   });
   primaryId.set(newId);
   scrollTo(0, 0);
-  // secondaryId.set('claim_id:claim_1'); // TODO: Remove me
+  // primaryId.set('claim_id:claim_3'); // TODO: Remove me
+  // secondaryId.set('document_id:xmp.did:a0ca6da8-6bc2-4d37-b4e1-a5867a933899');
   if (logEvent) {
     window.newrelic?.addPageAction('navigateToId', { id: newId });
   }

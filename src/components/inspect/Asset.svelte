@@ -1,6 +1,7 @@
 <script lang="ts">
   import { quintOut } from 'svelte/easing';
   import { navigateToId, compareWithId, primaryId } from '../../stores';
+  import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/components/Thumbnail';
 
@@ -64,18 +65,7 @@
   <div {id} class="item" class:current>
     {#if indented}
       <div class="indent-arrow">
-        <svg viewBox="0 0 19 17" xmlns="http://www.w3.org/2000/svg">
-          <g
-            stroke="#A8A8A8"
-            stroke-width="2"
-            fill="none"
-            fill-rule="evenodd"
-            stroke-linecap="round"
-          >
-            <path d="M1.5 1v5a4 4 0 004 4h10" />
-            <path d="M11.25 4l6 6-6 6" />
-          </g>
-        </svg>
+        <NestedArrow width="19" height="17" class="text-gray-500" />
       </div>
     {/if}
     {#if asset}
@@ -122,10 +112,6 @@
   }
   .indent-arrow {
     @apply flex items-center justify-end;
-  }
-  .indent-arrow svg {
-    width: 19px;
-    height: 17px;
   }
   .file-name {
     @apply truncate;
