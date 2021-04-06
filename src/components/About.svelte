@@ -24,7 +24,7 @@
   );
 </script>
 
-<div class="info lg:pb-4" bind:this={element}>
+<div class="info w-full lg:pb-4" bind:this={element}>
   {#if isComparing}
     <div class="file-name">
       <div class="label">File name</div>
