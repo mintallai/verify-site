@@ -63,7 +63,7 @@ function renderElement({ isMonochrome, name, svg }) {
     </style>
   `;
   const { js } = svelte.compile(code, { name: className });
-  return js.code;
+  return js;
 }
 
 export default function rollupSvelteSvg(options = {}) {
@@ -82,13 +82,13 @@ export default function rollupSvelteSvg(options = {}) {
         const overrides = isMonochrome ? monochromeOverrides : colorOverrides;
         const config = { path: id, plugins: extendDefaultPlugins(overrides) };
         const optimized = optimize(svg.trim(), config);
-        const code = renderElement({
+        const { code, map } = renderElement({
           name,
           isMonochrome,
           svg: optimized.data,
         });
 
-        return { code };
+        return { code, map };
       } catch (err) {
         const message = 'Could not process SVG file';
         const position = parseInt(/[\d]/.exec(err.message)[0], 10);

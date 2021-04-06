@@ -126,6 +126,13 @@ export function navigateToId(
   scrollTo(0, 0);
   // primaryId.set('claim_id:claim_3'); // TODO: Remove me
   // secondaryId.set('document_id:xmp.did:a0ca6da8-6bc2-4d37-b4e1-a5867a933899');
+  // primaryId.set('document_id:xmp.did:0112f1a9-d13e-7747-bbb6-9fae69b0ee2f');
+  // contentSourceIds.set([
+  //   'claim_id:claim_3',
+  //   'claim_id:claim_2',
+  //   'claim_id:claim_1',
+  //   'claim_id:claim_0',
+  // ]);
   if (logEvent) {
     window.newrelic?.addPageAction('navigateToId', { id: newId });
   }
