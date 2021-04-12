@@ -120,10 +120,9 @@
   .connector {
     @apply absolute bg-gray-600;
     width: 2px;
-    height: 17px;
+    height: 20px;
     top: -20px;
     left: 36px;
     transform-origin: top;
-    z-index: 5;
   }
 </style>

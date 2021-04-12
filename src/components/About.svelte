@@ -24,75 +24,80 @@
   );
 </script>
 
-<div class="info w-full lg:pb-4" bind:this={element}>
-  {#if isComparing}
-    <div class="file-name">
-      <div class="label">File name</div>
-      <div class="value">
-        {claim.title}
+<div class="w-full flex justify-center">
+  <div class="info w-full max-w-xs lg:pb-4" bind:this={element}>
+    {#if isComparing}
+      <div class="file-name">
+        <div class="label">File name</div>
+        <div class="value">
+          {claim.title}
+        </div>
       </div>
+    {/if}
+    <div>
+      <cai-panel-content-producer
+        producedby={claim.produced_by}
+        producedwith={claim.produced_with}
+        signedon={claim.signed_on}
+        class="theme-spectrum"
+      >
+        <ProviderIcon
+          provider={claim.produced_with}
+          slotName="produced-with-icon"
+        />
+      </cai-panel-content-producer>
     </div>
-  {/if}
-  <div>
-    <cai-panel-content-producer
-      producedby={claim.produced_by}
-      producedwith={claim.produced_with}
-      signedon={claim.signed_on}
-      class="theme-spectrum"
-    >
-      <ProviderIcon
-        provider={claim.produced_with}
-        slotName="produced-with-icon"
+    <div>
+      <cai-panel-edits-activity
+        {categories}
+        hidedescriptions={isMobileViewer && isComparing ? true : null}
+        class="theme-spectrum"
       />
-    </cai-panel-content-producer>
-  </div>
-  <div>
-    <cai-panel-edits-activity
-      {categories}
-      hidedescriptions={isMobileViewer && isComparing ? true : null}
-      class="theme-spectrum"
-    />
-  </div>
-  {#if claim.location}
+    </div>
+    {#if claim.location}
+      <div>
+        <cai-panel-custom-data
+          header="Location"
+          helpText="Where this photo was taken."
+          class="theme-spectrum"
+        >
+          <span slot="content">{formatLocation(claim.location)}</span>
+        </cai-panel-custom-data>
+      </div>
+    {/if}
+    {#if (isComparing || isMobileViewer) && (claim.references || isSecureCapture)}
+      <div>
+        <cai-panel-assets
+          references={claim.references}
+          on:reference-click={({ detail }) => {
+            const identifier = getIdentifier(detail?.reference);
+            if (identifier) {
+              navigateToId(identifier);
+            }
+          }}
+          class="theme-spectrum"
+        >
+          {#if isSecureCapture}
+            <div slot="no-references">
+              <OriginalCreation />
+            </div>
+          {/if}
+        </cai-panel-assets>
+      </div>
+    {/if}
     <div>
-      <cai-panel-custom-data
-        header="Location"
-        helpText="Where this photo was taken."
+      <cai-panel-providers
+        identifiedby={upperFirst(claim.signed_by ?? '')}
+        signedby={upperFirst(claim.signed_by ?? '')}
         class="theme-spectrum"
       >
-        <span slot="content">{formatLocation(claim.location)}</span>
-      </cai-panel-custom-data>
+        <ProviderIcon
+          provider={claim.signed_by}
+          slotName="identified-by-icon"
+        />
+        <ProviderIcon provider={claim.signed_by} slotName="signed-by-icon" />
+      </cai-panel-providers>
     </div>
-  {/if}
-  {#if (isComparing || isMobileViewer) && (claim.references || isSecureCapture)}
-    <div>
-      <cai-panel-assets
-        references={claim.references}
-        on:reference-click={({ detail }) => {
-          const identifier = getIdentifier(detail?.reference);
-          if (identifier) {
-            navigateToId(identifier);
-          }
-        }}
-        class="theme-spectrum"
-      >
-        {#if isSecureCapture}
-          <div slot="no-references">
-            <OriginalCreation />
-          </div>
-        {/if}
-      </cai-panel-assets>
-    </div>
-  {/if}
-  <div>
-    <cai-panel-providers
-      identifiedby={upperFirst(claim.signed_by ?? '')}
-      signedby={upperFirst(claim.signed_by ?? '')}
-      class="theme-spectrum"
-    >
-      <ProviderIcon provider={claim.signed_by} slotName="identified-by-icon" />
-      <ProviderIcon provider={claim.signed_by} slotName="signed-by-icon" />
-    </cai-panel-providers>
   </div>
 </div>
 

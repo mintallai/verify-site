@@ -95,7 +95,7 @@
       {$primaryAsset.title}
     </div>
   {:else if homeId || noMetadata}
-    <cai-tooltip class="theme-spectrum">
+    <cai-tooltip class="theme-spectrum mr-3">
       <div
         class="home"
         slot="trigger"
@@ -105,9 +105,6 @@
       </div>
       <div slot="content">This is the content you started with.</div>
     </cai-tooltip>
-    <div class="separator">
-      <Icon size="s" name="ChevronRight" class="text-gray-800" />
-    </div>
     {#if noMetadata && source}
       <div class="breadcrumb-item" class:current={true}>
         {source.name}

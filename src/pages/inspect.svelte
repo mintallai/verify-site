@@ -58,6 +58,10 @@
     if (tour && tour.isActive() && $isBurgerMenuShown) {
       tour.cancel();
     }
+    // Clear errors if a summary has changed
+    if ($summary !== undefined) {
+      error = null;
+    }
   }
 
   /**
@@ -89,7 +93,7 @@
           });
         }
       } catch (err) {
-        error = err;
+        error = err?.message;
       }
     }
 
@@ -100,7 +104,11 @@
       async onDrop(files: File[]) {
         clearTimeout(dragTimeout);
         isDraggingOver = false;
-        processFiles(files);
+        try {
+          await processFiles(files);
+        } catch (err) {
+          error = err?.message;
+        }
       },
       onDragOver() {
         clearTimeout(dragTimeout);
@@ -155,7 +163,13 @@
       <section class="left-col" class:loading={isLoading} />
       <Viewer isError={!!error} />
       <section class="right-col p-4">
-        <Alert severity="error">Something went wrong</Alert>
+        <Alert severity="error">
+          {#if error === ToolkitError.InvalidFile}
+            Unsupported file type
+          {:else}
+            Something went wrong
+          {/if}
+        </Alert>
       </section>
     {:else if isLoading}
       <section class="left-col" class:loading={isLoading}>
@@ -171,7 +185,7 @@
       </section>
       <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
       <section class="right-col p-4">
-        <ContentCredentialsError {isComparing} status="none" />
+        <ContentCredentialsError {isComparing} />
       </section>
     {:else if primary}
       <section class="left-col">
