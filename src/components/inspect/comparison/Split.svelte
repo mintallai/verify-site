@@ -77,11 +77,10 @@
 <style lang="postcss">
   .inner {
     @apply flex pointer-events-none;
-    width: var(--width);
-    height: var(--height);
   }
   .inner.layout-side {
     width: 100%;
+    max-height: 100%;
   }
   .inner.mobile.layout-side .thumbnail {
     @apply p-4;
@@ -103,5 +102,11 @@
   .divider {
     @apply bg-gray-300;
     flex: 0 0 1px;
+  }
+  @screen lg {
+    .inner.layout-side {
+      width: var(--width);
+      height: var(--height);
+    }
   }
 </style>

@@ -37,7 +37,7 @@
 
 <style lang="postcss">
   .container {
-    @apply h-full flex flex-col justify-center items-center p-4;
+    @apply h-full flex flex-col justify-center items-center p-4 mx-auto;
   }
   .comparing.container {
     @apply sticky top-0 h-screen;

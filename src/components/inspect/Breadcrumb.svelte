@@ -73,7 +73,7 @@
         <div slot="icon" class="py-2">
           <BreadcrumbDropdown
             slot="icon"
-            width="19"
+            width="20"
             height="16"
             class="text-gray-800"
           />
@@ -95,16 +95,6 @@
       {$primaryAsset.title}
     </div>
   {:else if homeId || noMetadata}
-    <cai-tooltip class="theme-spectrum mr-3">
-      <div
-        class="home"
-        slot="trigger"
-        on:click={() => !noMetadata && navigateToId(homeId)}
-      >
-        <cai-icon-cai class="text-gray-800" />
-      </div>
-      <div slot="content">This is the content you started with.</div>
-    </cai-tooltip>
     {#if noMetadata && source}
       <div class="breadcrumb-item" class:current={true}>
         {source.name}
@@ -117,7 +107,7 @@
           </div>
         {/if}
         <div
-          class="breadcrumb-item"
+          class="breadcrumb-item hover:underline"
           class:current={asset._id === $primaryId}
           on:click={() => navigateToId(asset._id)}
         >
@@ -134,11 +124,6 @@
     grid-area: breadcrumb;
     height: 60px;
   }
-  .home {
-    @apply cursor-pointer relative top-0.5;
-    --cai-icon-width: 19px;
-    --cai-icon-height: 16px;
-  }
   .breadcrumb-item {
     @apply inline-block cursor-pointer;
   }
@@ -147,7 +132,6 @@
   }
   .separator {
     @apply inline-block relative px-2;
-    top: 2px;
   }
   .menu-item {
     @apply flex items-center;

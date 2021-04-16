@@ -32,7 +32,8 @@
       </cai-tooltip>
     </h2>
     <div class="mb-4 leading-small text-gray-700">
-      Select one of these elements to view more of the content record.
+      These assets are in chronological order, starting with the latest version.
+      Select one to explore its own content credentials.
     </div>
   </div>
   <div class="relative pl-4">

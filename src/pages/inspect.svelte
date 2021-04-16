@@ -53,6 +53,11 @@
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !!(source && !$summary);
   $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
+  $: errorMessage =
+    error &&
+    (error === ToolkitError.InvalidFile
+      ? 'Unsupported file type'
+      : 'Something went wrong');
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && $isBurgerMenuShown) {
@@ -163,13 +168,7 @@
       <section class="left-col" class:loading={isLoading} />
       <Viewer isError={!!error} />
       <section class="right-col p-4">
-        <Alert severity="error">
-          {#if error === ToolkitError.InvalidFile}
-            Unsupported file type
-          {:else}
-            Something went wrong
-          {/if}
-        </Alert>
+        <Alert severity="error">{errorMessage}</Alert>
       </section>
     {:else if isLoading}
       <section class="left-col" class:loading={isLoading}>
@@ -251,7 +250,13 @@
   {:else}
     <section />
     <Viewer isDragging={isDraggingOver} />
-    <section />
+    {#if error}
+      <section class="right-col p-4">
+        <Alert severity="error">{errorMessage}</Alert>
+      </section>
+    {:else}
+      <section />
+    {/if}
   {/if}
   <Footer />
 </main>
