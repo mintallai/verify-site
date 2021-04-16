@@ -57,6 +57,8 @@ export const isBurgerMenuShown = writable<boolean>(false);
 
 export const isMobileViewerShown = writable<boolean>(false);
 
+export const isCompareSelectMode = writable<boolean>(false);
+
 export enum CompareMode {
   Split = 'SPLIT',
   Slider = 'SLIDER',

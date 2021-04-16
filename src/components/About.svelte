@@ -5,7 +5,7 @@
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import { formatLocation, isSecureCapture } from '../lib/demo';
   import { getIdentifier } from '../lib/claim';
-  import { navigateToId } from '../stores';
+  import { navigateToId, compareWithId } from '../stores';
   import '@contentauth/web-components/dist/components/panels/ContentProducer';
   import '@contentauth/web-components/dist/components/panels/Assets';
   import '@contentauth/web-components/dist/components/panels/CustomData';
@@ -19,8 +19,10 @@
   export let isMobileViewer: boolean = false;
   let element: HTMLElement;
 
+  $: isOriginal = claim?.references?.length === 0;
+  $: secureCapture = isSecureCapture(claim);
   $: categories = compact(
-    (claim.edits?.categories ?? []).concat(isSecureCapture(claim) && 'CAPTURE'),
+    (claim.edits?.categories ?? []).concat(secureCapture && 'CAPTURE'),
   );
 </script>
 
@@ -65,7 +67,7 @@
         </cai-panel-custom-data>
       </div>
     {/if}
-    {#if (isComparing || isMobileViewer) && (claim.references || isSecureCapture)}
+    {#if isComparing || isMobileViewer}
       <div>
         <cai-panel-assets
           references={claim.references}
@@ -73,15 +75,21 @@
             const identifier = getIdentifier(detail?.reference);
             if (identifier) {
               navigateToId(identifier);
+              compareWithId(null);
             }
           }}
           class="theme-spectrum"
         >
-          {#if isSecureCapture}
-            <div slot="no-references">
-              <OriginalCreation />
-            </div>
-          {/if}
+          <div slot="no-references">
+            {#if isOriginal || secureCapture}
+              <OriginalCreation
+                type={secureCapture ? 'secureCapture' : 'original'}
+                {claim}
+              />
+            {:else}
+              None
+            {/if}
+          </div>
         </cai-panel-assets>
       </div>
     {/if}

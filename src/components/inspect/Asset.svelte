@@ -12,7 +12,7 @@
   export let indented: boolean = false;
   export let hasConnector: boolean = false;
   export let current: boolean = false;
-  export let isCompareMode: boolean = false;
+  export let isCompareSelectMode: boolean = false;
 
   function scaleIn(node: HTMLElement, _params: any) {
     const existingTransform = getComputedStyle(node).transform.replace(
@@ -29,7 +29,7 @@
   }
 
   $: isCurrent = asset?._id === $primaryId;
-  $: compare = isCompareMode && !isCurrent;
+  $: compare = isCompareSelectMode && !isCurrent;
   $: {
     if (isCurrent) {
       hover = false;
@@ -54,8 +54,8 @@
   on:mouseenter={() => (hover = isCurrent ? false : true)}
   on:mouseleave={() => (hover = false)}
   on:click={() => {
-    if (asset) {
-      isCompareMode ? compareWithId(asset._id) : navigateToId(asset._id);
+    if (asset && !isCurrent) {
+      isCompareSelectMode ? compareWithId(asset._id) : navigateToId(asset._id);
     }
   }}
 >

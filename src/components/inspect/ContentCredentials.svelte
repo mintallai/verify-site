@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
   import Asset from './Asset.svelte';
   import Button from '../Button.svelte';
   import OriginalCreation from './OriginalCreation.svelte';
@@ -6,6 +7,7 @@
     contentSourceIds,
     assetsByIdentifier,
     primaryId,
+    isCompareSelectMode,
   } from '../../stores';
   import { getAssetList, getBreadcrumbList } from '../../lib/claim';
   import { isSecureCapture } from '../../lib/demo';
@@ -13,11 +15,12 @@
   export let claim: IClaimSummary | null = null;
   export let source: ISourceInfo | null = null;
   let container: any;
-  let isCompareMode = false;
 
   $: assetList = claim ? getAssetList(claim, $assetsByIdentifier) : [];
   $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
   $: combined = [...breadcrumbList, ...assetList];
+
+  onDestroy(() => isCompareSelectMode.set(false));
 </script>
 
 <div class="h-full relative">
@@ -41,7 +44,7 @@
       {#each breadcrumbList as asset, index (asset._id)}
         <Asset
           {asset}
-          {isCompareMode}
+          isCompareSelectMode={$isCompareSelectMode}
           id={`record-${index}`}
           current={asset._id === $primaryId}
           hasConnector={index > 0}
@@ -50,7 +53,11 @@
       <div class="grid space-y-4">
         {#each assetList as asset (asset._id)}
           <div>
-            <Asset {asset} {isCompareMode} indented />
+            <Asset
+              {asset}
+              isCompareSelectMode={$isCompareSelectMode}
+              indented
+            />
           </div>
         {/each}
       </div>
@@ -58,7 +65,7 @@
   </div>
   {#if isSecureCapture(claim)}
     <div class="mx-4">
-      <OriginalCreation />
+      <OriginalCreation type="secureCapture" {claim} />
     </div>
   {/if}
   {#if combined.length > 0}
@@ -67,8 +74,8 @@
     >
       <div class="pointer-events-auto">
         <Button
-          on:click={() => (isCompareMode = !isCompareMode)}
-          secondary={!isCompareMode}>Compare records</Button
+          on:click={() => isCompareSelectMode.update((x) => !x)}
+          secondary={!$isCompareSelectMode}>Compare credentials</Button
         >
       </div>
     </div>
