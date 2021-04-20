@@ -44,9 +44,6 @@
   <div class="ml-5 full-menu">
     <Button href={$learnMoreUrl} outline={true}>Learn more</Button>
   </div>
-  <a href="https://www.adobe.com/" target="_blank">
-    <cai-icon-adobe class="ml-5 full-menu" />
-  </a>
   <div class="block md:hidden -mr-3">
     <fade-burger
       on:pressed-changed={handleBurgerClick}
