@@ -1,27 +1,45 @@
-<script lang="ts">
-  import { url } from '@roxi/routify';
-</script>
+<footer>
+  <span class="copyright">Copyright © __year__ Adobe. All rights reserved.</span
+  >
+  <span class="links">
+    <a href="https://www.adobe.com/privacy.html" target="_blank">Privacy</a>
+    <a href="https://www.adobe.com/legal/terms.html" target="_blank"
+      >Terms of use</a
+    >
+    <a href="https://contentauthenticity.org/contact" target="_blank"
+      >Contact us</a
+    >
+  </span>
+</footer>
 
 <style lang="postcss">
   footer {
-    @apply border-gray-200 border-t items-center justify-center px-8;
-    height: 114px;
+    @apply flex flex-col justify-center items-center text-75 border-t-2 border-gray-200;
+    grid-area: footer;
+    max-width: 100vw;
   }
-  .content {
-    @apply text-xs;
+  footer a {
+    @apply underline;
   }
-  .content > span:not(:last-child)::after {
-    @apply inline-block px-2;
-    content: '/';
+  footer a::before {
+    @apply px-1;
+    content: '|';
+  }
+  footer a:first-of-type::before {
+    @apply hidden;
+  }
+  .copyright {
+    @apply block;
+  }
+  @screen md {
+    footer {
+      @apply flex-row;
+    }
+    footer span {
+      @apply inline;
+    }
+    footer a:first-of-type::before {
+      @apply inline;
+    }
   }
 </style>
-
-<footer class="flex">
-  <div class="content flex flex-wrap justify-center">
-    <span>Copyright © __year__ Adobe. All rights reserved.</span>
-    <span><a href="#">Privacy</a></span>
-    <span><a href="#">Terms of Use</a></span>
-    <span><a href="#">Cookies</a></span>
-    <span><a href="#">Do not sell my personal information</a></span>
-  </div>
-</footer>

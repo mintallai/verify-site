@@ -1,11 +1,11 @@
 @layer base {
   /* purgecss start ignore */
   body {
-    @apply text-base overflow-hidden;
+    @apply text-100 lg:overflow-hidden;
   }
 
   h2 {
-    @apply font-bold text-xl my-5 flex items-center;
+    @apply font-bold text-200 text-gray-900 my-4 flex items-center;
   }
   h2 .icon {
     @apply relative ml-2;
@@ -13,7 +13,34 @@
   }
 
   h6 {
-    @apply font-bold text-xs uppercase text-gray-500;
+    @apply font-bold text-75 uppercase text-gray-500;
+  }
+
+  a.link {
+    @apply text-blue-500 underline;
+  }
+
+  .viewer-wrapper {
+    @apply w-full h-full flex items-stretch p-4 lg:p-0;
+    grid-area: viewer;
+  }
+
+  .message-heading {
+    @apply font-light text-400 text-gray-700 leading-small mb-2 text-center;
+  }
+  .message-text {
+    @apply text-200 text-gray-700 text-center;
+  }
+  .message-text .link {
+    @apply text-blue-500 cursor-pointer underline;
+  }
+  @screen lg {
+    .message-heading {
+      @apply text-700;
+    }
+    .message-text {
+      @apply text-75;
+    }
   }
 
   dl.attributes {
@@ -22,19 +49,19 @@
     row-gap: 0.5em;
 
     dt {
-      @apply font-bold text-xs uppercase text-gray-500;
+      @apply font-medium text-75 uppercase text-gray-700;
       line-height: 1.45rem;
     }
 
     dd {
-      @apply text-base text-right justify-end;
+      @apply text-100 text-right justify-end;
     }
 
     &.multiline {
       @apply block;
 
       dt {
-        @apply leading-normal;
+        @apply leading-medium;
       }
       dd {
         @apply text-left justify-start mb-2;
@@ -46,7 +73,7 @@
   }
 
   .tippy-box[data-theme~='cai'] {
-    @apply font-body text-sm leading-snug text-black bg-white p-0;
+    @apply font-base text-sm leading-small text-black bg-white p-0;
     filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.3));
 
     &[data-placement^='top'] > .tippy-arrow::before {
@@ -79,7 +106,7 @@
   }
 
   .shepherd-element {
-    @apply bg-blue-500 rounded-md text-white outline-none transition opacity-0 invisible w-full px-1;
+    @apply font-base bg-blue-500 rounded-md text-white outline-none transition opacity-0 invisible w-full px-1;
     filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
     max-width: 285px;
     z-index: 9999;
@@ -135,8 +162,6 @@
     pointer-events: none;
   }
   .shepherd-modal-overlay-container {
-    -ms-filter: progid:dximagetransform.microsoft.gradient.alpha(Opacity=50);
-    filter: alpha(opacity=50);
     height: 0;
     left: 0;
     opacity: 0;

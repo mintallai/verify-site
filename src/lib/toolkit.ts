@@ -41,24 +41,32 @@ async function loadToolkit() {
   }
 }
 
-export async function getSummaryFromFile(
-  file: File,
-): Promise<ISummaryResponse> {
+export async function getSummaryFromFile(file: File): Promise<ISummaryResult> {
   await loadToolkit();
   const arrayBuffer = await fileAsArrayBuffer(file);
-  return get_summary_from_array_buffer(arrayBuffer, true);
+  const summary = await get_summary_from_array_buffer(arrayBuffer, true);
+  return {
+    source: 'file',
+    summary,
+    file,
+    arrayBuffer,
+  };
 }
 
-export async function getSummaryFromUrl(
-  url: string,
-): Promise<ISummaryResponse> {
+export async function getSummaryFromUrl(url: string): Promise<ISummaryResult> {
   await loadToolkit();
   const res = await fetch(url);
   if (res.ok) {
     const contentType = res.headers.get('Content-Type');
     if (JPEG_MIME_TYPE.test(contentType)) {
       const arrayBuffer = await res.arrayBuffer();
-      return get_summary_from_array_buffer(arrayBuffer, true);
+      const summary = await get_summary_from_array_buffer(arrayBuffer, true);
+      return {
+        source: 'url',
+        summary,
+        url,
+        arrayBuffer,
+      };
     }
     const invalidFileError = new Error(ToolkitError.InvalidFile);
     window.newrelic?.noticeError(invalidFileError, { url, contentType });

@@ -1,40 +1,47 @@
 <script lang="ts">
+  import '@contentauth/web-components/dist/icons/monochrome/alert-circle';
+  import '@contentauth/web-components/dist/icons/color/info-blue';
+
   type Severity = 'info' | 'error';
 
-  export let message: string;
   export let severity: Severity;
 </script>
-
-<style lang="postcss">
-  .alert {
-    @apply flex border rounded text-base p-3 pr-4;
-  }
-  cai-icon {
-    @apply mr-2;
-    width: 20px;
-    height: 20px;
-  }
-  .message {
-    @apply leading-snug;
-  }
-  .info {
-    @apply border-purple-500;
-  }
-  .error {
-    @apply border-red-500;
-  }
-</style>
 
 <div
   class="alert"
   class:error={severity === 'error'}
-  class:info={severity === 'info'}>
+  class:info={severity === 'info'}
+>
   {#if severity === 'error'}
-    <cai-icon name="ErrorCircle" width="20px" height="20px" />
+    <cai-icon-alert-circle class="icon" />
+    <slot />
   {:else if severity === 'info'}
-    <cai-icon name="InfoCircle_Purple" width="20px" height="20px" />
+    <slot />
+    <cai-icon-info-blue class="icon" />
   {/if}
-  <div class="message">
-    {@html message}
-  </div>
 </div>
+
+<style lang="postcss">
+  .alert {
+    @apply w-full flex text-base text-white px-4 py-3 leading-small;
+  }
+  .icon {
+    @apply text-white flex-shrink-0;
+    --cai-icon-width: 16px;
+    --cai-icon-height: 16px;
+  }
+  cai-icon-alert-circle {
+    @apply text-white mr-3;
+  }
+  cai-icon-info-blue {
+    @apply ml-3;
+    --cai-icon-width: 20px;
+    --cai-icon-height: 20px;
+  }
+  .info {
+    @apply border-blue-500 border-2 rounded px-3 text-gray-700;
+  }
+  .error {
+    @apply bg-red-500;
+  }
+</style>

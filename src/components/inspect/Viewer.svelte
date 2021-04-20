@@ -3,29 +3,36 @@
   import { fade } from 'svelte/transition';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
-  import Icon from '../Icon.svelte';
-  import { urlParams, summary } from '../../stores';
+  import {
+    urlParams,
+    summary,
+    source,
+    isMobileViewerShown,
+  } from '../../stores';
   import { loadFile } from '../../lib/file';
+  import DropFile from '../../../assets/svg/monochrome/drop-file.svg';
+  import '@contentauth/web-components/dist/icons/monochrome/broken-image';
 
   export let thumbnailURL: string = null;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
+  export let isError: boolean = false;
 
   let fileInput: HTMLInputElement;
   let width = 0;
   let height = 0;
   let side = `0px`;
-  let padding = 20;
 
   $: {
+    const padding = $isMobileViewerShown ? 0 : 20;
     side = `${Math.min(width, height) - padding * 2}px`;
   }
   $: styles = {
     width: side,
     height: side,
   };
-  $: source = $urlParams.source;
-  $: uploadMode = (!source && !$summary) || isDragging;
+  $: urlSource = $urlParams.source;
+  $: uploadMode = (!urlSource && !$source && !$summary) || isDragging;
 
   function browseFile() {
     fileInput.click();
@@ -39,71 +46,89 @@
   });
 </script>
 
-<input type="file" bind:this={fileInput} accept="image/jpeg" class="hidden" />
-<div
-  class="viewer"
-  class:no-source={!source}
-  class:upload={uploadMode}
-  class:dragging={isDragging}
-  bind:clientWidth={width}
-  bind:clientHeight={height}
->
-  <div class="inner" use:cssVars={styles}>
-    {#if uploadMode}
-      <div class="upload-content" in:fade>
-        <Icon
-          size="3xl"
-          name="workflow:FolderOpenOutline"
-          class="text-purple-500"
+<div class="viewer-wrapper">
+  <div
+    class="viewer"
+    class:no-source={!$source}
+    class:upload={uploadMode}
+    class:dragging={isDragging}
+    bind:clientWidth={width}
+    bind:clientHeight={height}
+  >
+    <input
+      type="file"
+      bind:this={fileInput}
+      accept="image/jpeg"
+      class="hidden"
+    />
+    <div class="inner" use:cssVars={styles}>
+      {#if uploadMode}
+        <div class="upload-content" in:fade>
+          <DropFile
+            width={58}
+            height={99}
+            class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}"
+          />
+          {#if $source || $summary}
+            <div class="message-heading">Drop your file</div>
+          {:else}
+            <div class="message-heading">Drag and drop your file</div>
+            <div class="message-text">
+              <span class="link" on:click={browseFile}>Select a JPG</span> from your
+              computer
+            </div>
+          {/if}
+        </div>
+      {:else if !isLoading && thumbnailURL}
+        <img
+          src={thumbnailURL}
+          alt=""
+          class="h-full w-full object-contain object-center"
         />
-        {#if source || $summary}
-          <div class="upload-text">Drop your JPG here</div>
-        {:else}
-          <div class="upload-text">
-            Drag and drop a JPG or <span on:click={browseFile}>browse</span>
-          </div>
-        {/if}
-      </div>
-    {:else if !isLoading && thumbnailURL}
-      <img
-        src={thumbnailURL}
-        alt=""
-        class="h-full w-full object-contain object-center"
-      />
-    {:else}
-      <div class="flex items-center justify-center">
-        <CircleLoader />
-      </div>
-    {/if}
+      {:else}
+        <div class="flex items-center justify-center">
+          {#if isError}
+            <cai-icon-broken-image />
+          {:else}
+            <CircleLoader />
+          {/if}
+        </div>
+      {/if}
+    </div>
   </div>
 </div>
 
 <style lang="postcss">
   .viewer {
-    @apply w-full bg-gray-100 flex items-center justify-center overflow-hidden;
+    @apply w-full bg-gray-75 flex items-center justify-center overflow-hidden;
   }
   .viewer.no-source {
     @apply bg-white;
   }
   .inner {
-    @apply flex justify-center rounded-md overflow-hidden bg-white shadow-md border-0 border-transparent transition-all duration-100;
+    @apply flex justify-center bg-gray-75 rounded-md overflow-hidden border-0 border-transparent;
     width: var(--width);
     height: var(--height);
     min-width: 256px;
   }
   .upload .inner {
-    @apply border-2 border-purple-500 bg-gray-100 border-dashed shadow-none relative;
+    @apply border-2 border-gray-300 bg-gray-100 text-gray-700 bg-opacity-100 border-dashed shadow-none relative;
   }
   .dragging .inner {
-    @apply border-4;
+    @apply border-2 border-blue-500 border-solid text-blue-500;
+    background-color: rgba(20, 115, 230, 0.1);
   }
   .upload-content {
-    @apply absolute inset-0 bg-gray-100 flex justify-center items-center flex-col;
+    @apply absolute inset-0 flex justify-center items-center flex-col;
   }
-  .upload-text {
-    @apply font-bold text-xl mt-2;
+  cai-icon-broken-image {
+    @apply text-gray-600;
+    --cai-icon-width: 100px;
+    --cai-icon-height: 100px;
   }
-  .upload-text span {
-    @apply text-purple-500 cursor-pointer;
+  @screen lg {
+    .viewer {
+      @apply bg-gray-75;
+    }
   }
 </style>

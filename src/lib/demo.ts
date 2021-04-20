@@ -23,11 +23,40 @@ export function supportDemoImages(
           categories: [],
         };
       }
-      if (/truepic/i.test(claim?.produced_with)) {
+      if (isSecureCapture(claim)) {
         claim.edits.categories = [...claim.edits.categories, 'CAPTURE'];
       }
       return claim;
     });
   }
   return summary;
+}
+
+const locationRegExp = /Lat(?:itude)?:\s*(-?(?:(\d|\.)+)),\s*Long(?:itude)?:\s*(-?(?:(\d|\.)+))/i;
+// Do local lookup for now
+const nycBBox = [
+  [40.47739894, 40.91617849],
+  [-74.25909008, -73.70018092],
+];
+
+export function formatLocation(location: string): string {
+  const matches = locationRegExp.exec(location);
+  if (matches) {
+    const [, latStr, , longStr] = matches;
+    const lat = parseFloat(latStr);
+    const long = parseFloat(longStr);
+    if (
+      lat > nycBBox[0][0] &&
+      lat < nycBBox[0][1] &&
+      long > nycBBox[1][0] &&
+      long < nycBBox[1][1]
+    ) {
+      return 'New York, NY, USA';
+    }
+  }
+  return location;
+}
+
+export function isSecureCapture(claim: IClaimSummary) {
+  return /truepic/i.test(claim?.produced_with ?? '');
 }

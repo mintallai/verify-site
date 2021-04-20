@@ -8,22 +8,26 @@
   import Alert from '../components/Alert.svelte';
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
+  import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
   import Header from '../components/Header.svelte';
-  import ContentSources from '../components/inspect/ContentSources.svelte';
-  import Icon from '../components/Icon.svelte';
-  import NoInfo from '../components/inspect/NoInfo.svelte';
+  import Footer from '../components/Footer.svelte';
+  import ContentCredentials from '../components/inspect/ContentCredentials.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
+  import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
     urlParams,
+    source as sourceStore,
     summary,
     setSummary,
     navigateToId,
     secondaryId,
     primaryAsset,
     secondaryAsset,
+    isBurgerMenuShown,
+    isMobileViewerShown,
   } from '../stores';
   import { getIdentifier } from '../lib/claim';
 
@@ -35,31 +39,58 @@
   let isDraggingOver = false;
   let error: ToolkitError;
   let tour: ReturnType<typeof startTour>;
-  let winW = 0;
-  let winH = 0;
+  let breakpoints = __breakpoints__;
+  let mdBreakpoint = `(max-width: ${breakpoints.md})`;
+  let lgBreakpoint = `(max-width: ${breakpoints.lg})`;
 
-  $: source = $urlParams.source;
-  $: hasContent = source || $summary;
-  $: isLoading = $summary === null;
+  $: source = $sourceStore;
+  $: sourceParam = $urlParams.source;
+  $: hasContent = sourceParam || $summary || source;
+  $: isLoading = $summary === null && source === null;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
-  $: showMobileOverlay = winW < 1024 || winH < 400;
+  $: isMobileViewer = $isMobileViewerShown;
+  $: noMetadata = !!(source && !$summary);
+  $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
+  $: errorMessage =
+    error &&
+    (error === ToolkitError.InvalidFile
+      ? 'Unsupported file type'
+      : 'Something went wrong');
   $: {
     // Cancel the tour if the overlay is showing
-    if (tour && tour.isActive() && showMobileOverlay) {
+    if (tour && tour.isActive() && $isBurgerMenuShown) {
       tour.cancel();
+    }
+    // Clear errors if a summary has changed
+    if ($summary !== undefined) {
+      error = null;
+    }
+  }
+
+  /**
+   * Make sure we close any open hamburger menu if we increase the
+   * window size to a breakpoint where the menu is hidden
+   */
+  function handleBreakpointChange({ media, matches }) {
+    if (media === mdBreakpoint && !matches && $isBurgerMenuShown) {
+      isBurgerMenuShown.set(false);
+    }
+    if (media === lgBreakpoint) {
+      isMobileViewerShown.set(matches);
     }
   }
 
   onMount(async () => {
+    const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
     const { tourFlag, forceTourFlag } = $urlParams;
-    if (source) {
+    if (sourceParam) {
       try {
-        const data = await getSummaryFromUrl(source);
-        window.newrelic?.setCustomAttribute('source', source);
-        setSummary(data);
-        if (!showMobileOverlay) {
+        const result = await getSummaryFromUrl(sourceParam);
+        window.newrelic?.setCustomAttribute('source', sourceParam);
+        setSummary(result);
+        if (!$isBurgerMenuShown) {
           tour = startTour({
             summary: $summary,
             start: tourFlag,
@@ -67,18 +98,22 @@
           });
         }
       } catch (err) {
-        error = err;
+        error = err?.message;
       }
     }
 
     // This stops the drag state from rapidly changing during drag
     // They also use this pattern in the dragDrop library
-    let dragTimeout;
+    let dragTimeout: number | undefined;
     const cleanupDragDrop = dragDrop('main', {
       async onDrop(files: File[]) {
         clearTimeout(dragTimeout);
         isDraggingOver = false;
-        processFiles(files);
+        try {
+          await processFiles(files);
+        } catch (err) {
+          error = err?.message;
+        }
       },
       onDragOver() {
         clearTimeout(dragTimeout);
@@ -90,62 +125,86 @@
         }, 50);
       },
     });
+
+    isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);
+
+    listenBreakpoints.forEach((bp) =>
+      matchMedia(bp).addEventListener('change', handleBreakpointChange),
+    );
+
     return () => {
       cleanupDragDrop();
+      listenBreakpoints.forEach((bp) =>
+        matchMedia(bp).removeEventListener('change', handleBreakpointChange),
+      );
     };
   });
 </script>
 
-<svelte:window bind:innerWidth={winW} bind:innerHeight={winH} />
-<main>
-  {#if showMobileOverlay}
-    <div transition:fade={{ duration: 500 }} class="mobile-overlay">
-      <div class="content">
-        <Icon
-          size="3xl"
-          name="workflow:DeviceDesktop"
-          class="text-purple-500 mb-3"
-        />
-        <div>
-          Increase the size of your browser window to view. If you’re on a
-          mobile device, open this page on a computer.
-        </div>
-      </div>
-    </div>
+<svelte:window />
+<main
+  class="theme-light"
+  class:comparing={isComparing}
+  class:has-breadcrumb-bar={hasBreadcrumbBar}
+>
+  {#if $isBurgerMenuShown}
+    <div
+      transition:fade={{ duration: 200 }}
+      class="menu-overlay"
+      on:click={() => isBurgerMenuShown.update((shown) => !shown)}
+    />
   {/if}
   <Header />
-  <Breadcrumb />
+  {#if hasBreadcrumbBar}
+    <Breadcrumb
+      {isComparing}
+      {noMetadata}
+      {source}
+      on:back={partial(handleClose, secondary)}
+    />
+  {/if}
   {#if hasContent}
     {#if error}
-      <section class="border-r" class:loading={isLoading} />
-      <Viewer />
-      <section class="border-l p-4">
-        <Alert severity="error" message="Sorry, something went wrong" />
+      <section class="left-col" class:loading={isLoading} />
+      <Viewer isError={!!error} />
+      <section class="right-col p-4">
+        <Alert severity="error">{errorMessage}</Alert>
       </section>
     {:else if isLoading}
-      <section class="border-r" class:loading={isLoading}>
+      <section class="left-col" class:loading={isLoading}>
         <CircleLoader />
       </section>
       <Viewer isLoading={true} isDragging={isDraggingOver} />
-      <section class="border-l" class:loading={isLoading}>
+      <section class="right-col" class:loading={isLoading}>
         <CircleLoader />
       </section>
+    {:else if noMetadata}
+      <section class="left-col">
+        <ContentCredentials {source} />
+      </section>
+      <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
+      <section class="right-col p-4">
+        <ContentCredentialsError {isComparing} />
+      </section>
     {:else if primary}
-      <section class="border-r p-4">
+      <section class="left-col">
         {#if !isComparing}
-          <ContentSources claim={primary?.type === 'claim' ? primary : null} />
+          <ContentCredentials
+            claim={primary?.type === 'claim' ? primary : null}
+          />
         {:else if primary?.type === 'claim'}
-          <About
-            claim={primary}
-            {isComparing}
-            on:close={partial(handleClose, secondary)}
-          />
+          <div class="w-full p-4 pt-0 md:pt-4">
+            <About
+              claim={primary}
+              {isComparing}
+              {isMobileViewer}
+              on:close={partial(handleClose, secondary)}
+            />
+          </div>
         {:else if primary?.type === 'reference'}
-          <NoInfo
-            ingredient={primary}
-            {isComparing}
-            on:close={partial(handleClose, primary)}
-          />
+          <div class="wrapper">
+            <ContentCredentialsError {isComparing} />
+          </div>
         {/if}
       </section>
       {#if isComparing}
@@ -156,81 +215,148 @@
           isDragging={isDraggingOver}
         />
       {/if}
-      <section class="border-l p-4">
+      <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary?.type === 'claim'}
-          <About
-            claim={primary}
-            {isComparing}
-            on:close={partial(handleClose, secondary)}
-          />
+          <div class="wrapper">
+            <About
+              claim={primary}
+              {isComparing}
+              {isMobileViewer}
+              on:close={partial(handleClose, secondary)}
+            />
+            {#if isMobileViewer}
+              <CompareLatestButton claim={primary} {isComparing} />
+            {/if}
+          </div>
         {:else if !isComparing && primary?.type === 'reference'}
-          <NoInfo
-            ingredient={primary}
-            {isComparing}
-            on:close={partial(handleClose, primary)}
-          />
+          <div class="wrapper">
+            <ContentCredentialsError {isComparing} />
+            {#if isMobileViewer}
+              <CompareLatestButton claim={null} {isComparing} />
+            {/if}
+          </div>
         {:else if secondary?.type === 'claim'}
           <About
             claim={secondary}
             {isComparing}
+            {isMobileViewer}
             on:close={partial(handleClose, primary)}
           />
         {:else if secondary?.type === 'reference'}
-          <NoInfo
-            ingredient={secondary}
-            {isComparing}
-            on:close={partial(handleClose, primary)}
-          />
+          <ContentCredentialsError {isComparing} />
         {/if}
       </section>
     {/if}
   {:else}
     <section />
     <Viewer isDragging={isDraggingOver} />
-    <section />
+    {#if error}
+      <section class="right-col p-4">
+        <Alert severity="error">{errorMessage}</Alert>
+      </section>
+    {:else}
+      <section />
+    {/if}
   {/if}
-  <footer>
-    <span>© __year__ Adobe</span>
-    <a href="https://www.adobe.com/privacy.html" target="_blank">Privacy</a>
-    <a href="https://www.adobe.com/legal/terms.html" target="_blank"
-      >Terms of use</a
-    >
-    <a href="https://contentauthenticity.org/contact" target="_blank"
-      >Contact us</a
-    >
-  </footer>
+  <Footer />
 </main>
 
 <style lang="postcss">
   main {
-    @apply grid absolute w-screen h-screen font-body;
-    grid-template-columns: 320px auto 320px;
-    grid-template-rows: 80px 60px auto 55px;
+    --viewer-height: 375px;
+
+    @apply grid w-screen min-h-screen font-base;
+    grid-template-columns: 100%;
+    grid-template-rows: 80px var(--viewer-height) 1fr 70px;
+    grid-template-areas:
+      'header'
+      'viewer'
+      'right'
+      'footer';
+  }
+  main.has-breadcrumb-bar {
+    grid-template-rows: 80px 60px var(--viewer-height) 1fr 70px;
+    grid-template-areas:
+      'header'
+      'breadcrumb'
+      'viewer'
+      'right'
+      'footer';
   }
   section {
-    @apply col-span-1 border-gray-200 max-h-full overflow-auto;
+    @apply col-span-1 border-gray-200 max-h-full;
   }
   section.loading {
     @apply flex items-center justify-center;
   }
-  footer {
-    @apply col-span-3 flex justify-center items-center text-xs border-t border-gray-200;
-    max-width: 100vw;
+  section.left-col {
+    @apply hidden;
+    grid-area: left;
   }
-  footer a {
-    @apply underline;
+  section.right-col {
+    @apply max-h-full;
+    grid-area: right;
   }
-  footer a::before {
-    @apply px-1;
-    content: '|';
+  main.comparing section.right-col > .wrapper {
+    @apply sticky top-10;
   }
-  .mobile-overlay {
-    @apply fixed flex justify-center items-center left-0 right-0 bg-white z-50;
-    top: 80px;
-    bottom: 55px;
+  .menu-overlay {
+    @apply fixed inset-0 z-20;
+    background-color: rgba(0, 0, 0, 0.2);
   }
-  .mobile-overlay .content {
-    @apply flex flex-col justify-center items-center text-center text-xl leading-snug;
-    max-width: 354px;
+  main.comparing {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 80px var(--viewer-height) 1fr 55px;
+    grid-template-areas:
+      'header header'
+      'viewer viewer'
+      'left right'
+      'footer footer';
+  }
+  main.comparing.has-breadcrumb-bar {
+    grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
+    grid-template-areas:
+      'header header'
+      'breadcrumb breadcrumb'
+      'viewer viewer'
+      'left right'
+      'footer footer';
+  }
+  main.comparing section.left-col {
+    @apply flex;
+  }
+  @screen lg {
+    main,
+    main.comparing {
+      @apply fixed inset-0;
+      grid-template-columns: 320px 1fr 320px;
+      grid-template-rows: 80px 1fr 55px;
+      grid-template-areas:
+        'header header header'
+        'left viewer right'
+        'footer footer footer';
+    }
+    main.has-breadcrumb-bar,
+    main.comparing.has-breadcrumb-bar {
+      grid-template-rows: 80px 60px 1fr 55px;
+      grid-template-areas:
+        'header header header'
+        'breadcrumb breadcrumb breadcrumb'
+        'left viewer right'
+        'footer footer footer';
+    }
+    section {
+      @apply overflow-auto;
+    }
+    section.left-col {
+      @apply border-r-2 flex;
+    }
+    section.right-col {
+      @apply border-l-2;
+    }
+    main.comparing section.right-col > .wrapper,
+    section.right-col > .wrapper {
+      @apply w-full h-full flex align-middle justify-center;
+    }
   }
 </style>

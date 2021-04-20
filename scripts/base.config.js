@@ -12,6 +12,10 @@ import del from 'del';
 import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
+import svelteSvg from '../etc/rollup/plugins/svelte-svg';
+
+// TODO: Convert this to esm
+const tailwindConfig = require('./tailwind.config');
 
 const year = new Date().getFullYear();
 const newrelic = fs.readFileSync('etc/newrelic.html');
@@ -132,14 +136,16 @@ function baseConfig(config, ctx) {
       // resolve matching modules from current working directory
       resolve({
         browser: true,
-        extensions: ['.svelte', '.ts', '.js'],
+        extensions: ['.svelte', '.ts', '.js', '.svg'],
         dedupe: (importee) => !!importee.match(/svelte(\/|$)/),
       }),
+      svelteSvg(),
       replace({
         'process.env.NODE_ENV': production ? '"production"' : '"development"',
         __toolkit_wasm_src__:
           process.env.TOOLKIT_WASM_SRC || '/toolkit/toolkit_bg.wasm',
-        __delay__: production ? '3000' : '100',
+        __delay__: production ? '100' : '100',
+        __breakpoints__: JSON.stringify(tailwindConfig.theme.screens),
         __year__: new Date().getFullYear(),
       }),
       embeddedTypescript({ sourceMap: !production }),
@@ -182,7 +188,7 @@ function baseConfig(config, ctx) {
     const bundleTag = '<script defer src="/build/bundle.js"></script>';
     return contents
       .toString()
-      .replace('__NEW_RELIC__', newrelic)
+      .replace('__NEW_RELIC__', production ? newrelic : '')
       .replace('__SCRIPT__', dynamicImports ? scriptTag : bundleTag);
   }
 }

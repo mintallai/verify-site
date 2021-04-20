@@ -6,28 +6,6 @@
   export let outline: boolean = false;
 </script>
 
-<style lang="postcss">
-  .button {
-    @apply inline-block bg-purple-500 text-sm text-white font-bold px-6 py-2 rounded-full;
-  }
-  .button.full {
-    @apply w-full;
-  }
-  .button.outline {
-    @apply bg-white border-black border-2 text-black;
-  }
-  .secondary {
-    @apply bg-purple-200 text-purple-500;
-  }
-  .lg {
-    @apply px-12 py-3 text-xl;
-  }
-  .lg .inner {
-    position: relative;
-    top: -1px;
-  }
-</style>
-
 {#if href}
   <a
     class="button"
@@ -35,7 +13,8 @@
     class:secondary
     class:outline
     class:lg={size === 'lg'}
-    {href}>
+    {href}
+  >
     <div class="inner">
       <slot />
     </div>
@@ -46,9 +25,35 @@
     class:full
     class:secondary
     class:lg={size === 'lg'}
-    on:click|stopPropagation>
+    on:click|stopPropagation
+  >
     <div class="inner">
       <slot />
     </div>
   </button>
 {/if}
+
+<style lang="postcss">
+  .button {
+    @apply inline-block bg-blue-500 text-sm text-white font-bold px-4 py-1.5 rounded-full transition duration-200 outline-none;
+  }
+  .button.full {
+    @apply w-full;
+  }
+  .button.outline {
+    @apply bg-white border-gray-800 border-2 text-gray-800;
+  }
+  .button.outline:hover {
+    @apply text-white bg-gray-800;
+  }
+  .secondary {
+    @apply bg-gray-100 text-gray-800;
+  }
+  .lg {
+    @apply px-12 py-3 text-xl;
+  }
+  .lg .inner {
+    position: relative;
+    top: -1px;
+  }
+</style>

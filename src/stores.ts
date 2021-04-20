@@ -4,12 +4,16 @@ import size from 'lodash/size';
 import omit from 'lodash/omit';
 import reduce from 'lodash/reduce';
 import mapValues from 'lodash/mapValues';
+import { local } from 'store2';
 import { addIdentifiers, getIdentifier } from './lib/claim';
+import { arrayBufferToBlobUrl } from './lib/util/data';
+import { logVerificationErrors } from './lib/util/debug';
 import { supportDemoImages } from './lib/demo';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
+const STORAGE_MODE_KEY = 'compareMode';
 
 /**
  * Syncs the URL params to the state
@@ -48,6 +52,34 @@ export const primaryId = writable<string>('');
  * to compare with.
  */
 export const secondaryId = writable<string>('');
+
+export const isBurgerMenuShown = writable<boolean>(false);
+
+export const isMobileViewerShown = writable<boolean>(false);
+
+export const isCompareSelectMode = writable<boolean>(false);
+
+export enum CompareMode {
+  Split = 'SPLIT',
+  Slider = 'SLIDER',
+}
+
+/**
+ * Specifies the active compare mode on the comparison view
+ */
+export const compareMode = writable<CompareMode>(
+  local.get(STORAGE_MODE_KEY) || CompareMode.Split,
+);
+
+/**
+ * Sets the comparison mode
+ * @param mode CompareMode
+ */
+export function setCompareMode(mode: CompareMode) {
+  compareMode.set(mode);
+  local.set(STORAGE_MODE_KEY, mode);
+  window.newrelic?.addPageAction('setCompareMode', { compareMode: mode });
+}
 
 /**
  * Returns the FAQ URL on the contentauthenticity.org site
@@ -93,6 +125,7 @@ export function navigateToId(
     }
   });
   primaryId.set(newId);
+  scrollTo(0, 0);
   if (logEvent) {
     window.newrelic?.addPageAction('navigateToId', { id: newId });
   }
@@ -107,11 +140,44 @@ export function navigateToId(
 export function compareWithId(id: string, logEvent = true): void {
   console.debug('Comparing with', id);
   secondaryId.set(id);
+  scrollTo(0, 0);
   if (logEvent) {
     window.newrelic?.addPageAction('compareWithId', {
       id: get(primaryId),
       comparingWith: id,
     });
+  }
+}
+
+/**
+ * Contains info about the source file that was uploaded/dragged in
+ */
+export const source = writable<ISourceInfo | null>(null, (set) => {
+  return () => {};
+});
+
+async function setSource(result: ISummaryResult | null) {
+  const sourceType = result?.source;
+  const existingUrl = get(source)?.url;
+  // Clean up the previous blobURL
+  if (existingUrl && /^blob:/.test(existingUrl)) {
+    URL.revokeObjectURL(existingUrl);
+  }
+  if (sourceType === 'url') {
+    const { url, arrayBuffer } = result;
+    const { pathname } = new URL(url);
+    source.set({
+      name: pathname?.split('/').pop() || 'Unknown',
+      url: arrayBufferToBlobUrl(arrayBuffer),
+    });
+  } else if (sourceType === 'file') {
+    const { file, arrayBuffer } = result;
+    source.set({
+      name: file.name,
+      url: arrayBufferToBlobUrl(arrayBuffer),
+    });
+  } else {
+    source.set(null);
   }
 }
 
@@ -126,11 +192,19 @@ export const summary = writable<ISummaryResponse | null>(null, (set) => {
  * Sets the summary of the loaded asset.
  * @param data Data provided by on of the `getSummary*` toolkit functions, or `null` to clear the existing info, and show the upload screen
  */
-export async function setSummary(data: ISummaryResponse | null) {
+export async function setSummary(result: ISummaryResult) {
+  let data = result?.summary;
+  // Grab map of references, since we may need to look up a claim title from
+  // refs in the case of an acquisition
+  console.info('Summary data', data);
+  // @ts-ignore - For debugging
+  window.summaryData = JSON.stringify(data);
+  setSource(result);
   if (data) {
     // Grab map of references, since we may need to look up a claim title from
     // refs in the case of an acquisition
     console.info('Summary data', data);
+    logVerificationErrors(data);
     // @ts-ignore - For debugging
     window.summaryData = JSON.stringify(data);
     // Temporary
@@ -154,7 +228,7 @@ export async function setSummary(data: ISummaryResponse | null) {
     }));
     summary.set(data);
     navigateToRoot();
-  } else {
+  } else if (data === false) {
     summary.set(null);
   }
 }

@@ -1,14 +1,18 @@
 <script lang="ts">
   import { quintOut } from 'svelte/easing';
-  import cssVars from 'svelte-css-vars';
   import { navigateToId, compareWithId, primaryId } from '../../stores';
+  import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
+  import '@contentauth/web-components/dist/components/Tooltip';
+  import '@contentauth/web-components/dist/components/Thumbnail';
 
   let hover: boolean;
-  export let asset: ViewableItem;
-  export let id: string;
-  export let mini: boolean = false;
+  export let asset: ViewableItem | null = null;
+  export let id: string | null = null;
+  export let source: ISourceInfo | null = null;
+  export let indented: boolean = false;
   export let hasConnector: boolean = false;
   export let current: boolean = false;
+  export let isCompareSelectMode: boolean = false;
 
   function scaleIn(node: HTMLElement, _params: any) {
     const existingTransform = getComputedStyle(node).transform.replace(
@@ -24,82 +28,68 @@
     };
   }
 
-  $: isCurrent = asset._id === $primaryId;
+  $: isCurrent = asset?._id === $primaryId;
+  $: compare = isCompareSelectMode && !isCurrent;
   $: {
     if (isCurrent) {
       hover = false;
     }
   }
+  $: badge =
+    asset?.type === 'claim'
+      ? {
+          type: 'info',
+          helpText: 'This image has attribution and history data.',
+        }
+      : {
+          type: 'none',
+        };
 </script>
 
 <div
   class="container"
-  class:mini
+  class:indented
   class:hover
+  class:compare
   on:mouseenter={() => (hover = isCurrent ? false : true)}
   on:mouseleave={() => (hover = false)}
-  on:click={() => navigateToId(asset._id)}
+  on:click={() => {
+    if (asset && !isCurrent) {
+      isCompareSelectMode ? compareWithId(asset._id) : navigateToId(asset._id);
+    }
+  }}
 >
   {#if hasConnector}
     <div class="connector" in:scaleIn />
   {/if}
   <div {id} class="item" class:current>
-    {#if asset.type === 'claim'}
-      <div class="thumbnail-wrapper">
-        {#if mini}
-          <img src="/images/svg/nested-arrow.svg" alt="" class="nested" />
-        {/if}
-        <div
-          class="thumbnail"
-          use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}
-        >
-          <cai-tooltip
-            content="This image has attribution and history data."
-            class="info">
-            <cai-icon name="InfoCircle_Purple" width="20px" height="20px" />
-          </cai-tooltip>
-        </div>
+    {#if indented}
+      <div class="indent-arrow">
+        <NestedArrow width="19" height="17" class="text-gray-500" />
       </div>
-      <div>
-        <dl class="attributes multiline overflow-hidden self-center">
-          <dt>File Name</dt>
-          <dd class="file-name" title={asset.title}>{asset.title}</dd>
-        </dl>
-        {#if current}
-          <div class="selected">Selected</div>
-        {:else}
-          <div class="actions">
-            <span>View</span>
-            <span>·</span>
-            <span on:click={() => compareWithId(asset._id)}>Compare</span>
-          </div>
-        {/if}
-      </div>
-    {:else}
-      <div class="thumbnail-wrapper">
-        {#if mini}
-          <img src="/images/svg/nested-arrow.svg" alt="" class="nested" />
-        {/if}
-        <div
-          class="thumbnail"
-          use:cssVars={{ backgroundImage: `url('${asset.thumbnail_url}')` }}
-        />
-      </div>
-      <div>
-        <dl class="attributes multiline overflow-hidden self-center">
-          <dt>File Name</dt>
-          <dd class="file-name" title={asset.title}>{asset.title}</dd>
-        </dl>
-        {#if current}
-          <div class="selected">Selected</div>
-        {:else}
-          <div class="actions">
-            <span>View</span>
-            <span>·</span>
-            <span on:click={() => compareWithId(asset._id)}>Compare</span>
-          </div>
-        {/if}
-      </div>
+    {/if}
+    {#if asset}
+      <cai-thumbnail
+        src={asset.thumbnail_url}
+        selected={current}
+        badge={badge.type}
+        badgehelptext={badge.helpText}
+        class="theme-spectrum"
+      />
+      <dl class="attributes multiline overflow-hidden self-center pr-2">
+        <dt>File Name</dt>
+        <dd class="file-name" title={asset.title}>{asset.title}</dd>
+      </dl>
+    {:else if source}
+      <cai-thumbnail
+        src={source.url}
+        selected={current}
+        class="theme-spectrum"
+      />
+      <dl class="attributes multiline overflow-hidden self-center pr-2">
+        <dt>File Name</dt>
+        <dd class="file-name" title={source.name}>{source.name}</dd>
+      </dl>
     {/if}
   </div>
 </div>
@@ -109,59 +99,30 @@
     @apply relative mb-1 transition duration-200 z-0 cursor-pointer;
   }
   .item {
-    @apply rounded p-2 grid gap-3 max-w-full bg-transparent transition duration-200 border border-transparent;
-    grid-template-columns: 94px auto;
+    @apply grid gap-3 max-w-full bg-transparent transition-all duration-200 border-blue-500 border-r-0;
+    grid-template-columns: 72px auto;
     min-height: 0;
     min-width: 0;
   }
-  .hover .item {
-    @apply border-gray-350;
+  .compare .item {
+    @apply border-r-4;
   }
-  .item.current {
-    @apply bg-gray-200 border border-gray-200;
+  .indented .item {
+    grid-template-columns: 36px 72px auto;
   }
-  .mini .thumbnail-wrapper {
-    @apply flex justify-between items-center;
-  }
-  img.nested {
-    width: 20px;
-    height: 20px;
-    flex: 0 0 20px;
-  }
-  .thumbnail {
-    @apply relative border border-gray-350 bg-white rounded-sm bg-contain bg-center bg-no-repeat;
-    flex: 0 0 94px;
-    width: 94px;
-    height: 94px;
-    background-image: var(--backgroundImage);
-  }
-  .mini .thumbnail {
-    flex: 0 0 60px;
-    width: 60px;
-    height: 60px;
-  }
-  .info {
-    @apply absolute;
-    top: 1px;
-    right: 1px;
+  .indent-arrow {
+    @apply flex items-center justify-end;
   }
   .file-name {
     @apply truncate;
     max-width: 170px;
   }
-  .selected {
-    @apply italic text-sm text-gray-700;
-  }
-  .actions {
-    @apply text-xs font-bold text-gray-700;
-  }
   .connector {
-    @apply absolute bg-gray-400;
+    @apply absolute bg-gray-600;
     width: 2px;
-    height: 24px;
-    top: -14px;
-    left: 54px;
+    height: 20px;
+    top: -20px;
+    left: 36px;
     transform-origin: top;
-    z-index: 5;
   }
 </style>

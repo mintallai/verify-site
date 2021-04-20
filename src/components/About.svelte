@@ -1,89 +1,139 @@
 <script lang="ts">
-  import { createEventDispatcher, afterUpdate } from 'svelte';
-  import { getFaqUrl, rootClaimId } from '../stores';
+  import compact from 'lodash/compact';
+  import upperFirst from 'lodash/upperFirst';
+  import OriginalCreation from './inspect/OriginalCreation.svelte';
+  import ProviderIcon from './inspect/ProviderIcon.svelte';
+  import { formatLocation, isSecureCapture } from '../lib/demo';
   import { getIdentifier } from '../lib/claim';
-  import Alert from './Alert.svelte';
-  import Icon from './Icon.svelte';
+  import { navigateToId, compareWithId } from '../stores';
+  import '@contentauth/web-components/dist/components/panels/ContentProducer';
+  import '@contentauth/web-components/dist/components/panels/Assets';
+  import '@contentauth/web-components/dist/components/panels/CustomData';
+  import '@contentauth/web-components/dist/components/panels/EditsActivity';
+  import '@contentauth/web-components/dist/components/panels/Providers';
+  import '@contentauth/web-components/dist/components/Tooltip';
+  import '@contentauth/web-components/dist/themes/spectrum';
 
-  type TooltipElement = HTMLElement & {
-    getPopper: any;
-  };
-
-  export let claim: IClaimSummary;
+  export let claim: IClaimSummary & IIdentifiable;
   export let isComparing: boolean = false;
-  export let isPopup: boolean = false;
+  export let isMobileViewer: boolean = false;
   let element: HTMLElement;
-  const dispatch = createEventDispatcher();
 
-  $: alternate = isComparing || isPopup;
-  $: variant = isComparing ? 'sm' : 'lg';
-  $: isSecureCapture = /truepic/i.test(claim?.produced_with);
-
-  afterUpdate(() => {
-    // We need to force tooltip repositioning if the alert components shows/hides
-    element
-      ?.querySelector('claim-info')
-      ?.shadowRoot?.querySelectorAll('cai-tooltip')
-      ?.forEach((el: TooltipElement) => el?.getPopper()?.update());
-  });
+  $: isOriginal = claim?.references?.length === 0;
+  $: secureCapture = isSecureCapture(claim);
+  $: categories = compact(
+    (claim.edits?.categories ?? []).concat(secureCapture && 'CAPTURE'),
+  );
 </script>
 
+<div class="w-full flex justify-center">
+  <div class="info w-full max-w-xs lg:pb-4" bind:this={element}>
+    {#if isComparing}
+      <div class="file-name">
+        <div class="label">File name</div>
+        <div class="value">
+          {claim.title}
+        </div>
+      </div>
+    {/if}
+    <div>
+      <cai-panel-content-producer
+        producedby={claim.produced_by}
+        producedwith={claim.produced_with}
+        signedon={claim.signed_on}
+        class="theme-spectrum"
+      >
+        <ProviderIcon
+          provider={claim.produced_with}
+          slotName="produced-with-icon"
+        />
+      </cai-panel-content-producer>
+    </div>
+    <div>
+      <cai-panel-edits-activity
+        {categories}
+        hidedescriptions={isMobileViewer && isComparing ? true : null}
+        class="theme-spectrum"
+      />
+    </div>
+    {#if claim.location}
+      <div>
+        <cai-panel-custom-data
+          header="Location"
+          helpText="Where this photo was taken."
+          class="theme-spectrum"
+        >
+          <span slot="content">{formatLocation(claim.location)}</span>
+        </cai-panel-custom-data>
+      </div>
+    {/if}
+    {#if isComparing || isMobileViewer}
+      <div>
+        <cai-panel-assets
+          references={claim.references}
+          on:reference-click={({ detail }) => {
+            const identifier = getIdentifier(detail?.reference);
+            if (identifier) {
+              navigateToId(identifier);
+              compareWithId(null);
+            }
+          }}
+          class="theme-spectrum"
+        >
+          <div slot="no-references">
+            {#if isOriginal || secureCapture}
+              <OriginalCreation
+                type={secureCapture ? 'secureCapture' : 'original'}
+                {claim}
+              />
+            {:else}
+              None
+            {/if}
+          </div>
+        </cai-panel-assets>
+      </div>
+    {/if}
+    <div>
+      <cai-panel-providers
+        identifiedby={upperFirst(claim.signed_by ?? '')}
+        signedby={upperFirst(claim.signed_by ?? '')}
+        class="theme-spectrum"
+      >
+        <ProviderIcon
+          provider={claim.signed_by}
+          slotName="identified-by-icon"
+        />
+        <ProviderIcon provider={claim.signed_by} slotName="signed-by-icon" />
+      </cai-panel-providers>
+    </div>
+  </div>
+</div>
+
 <style lang="postcss">
-  h2.filename {
-    @apply mt-0 mb-3;
+  .info > div {
+    @apply py-4 border-b border-gray-300;
   }
-  h2:first-child {
-    @apply mt-0;
+  .info > div:first-child {
+    @apply pt-0;
   }
-  .close {
-    @apply bg-gray-200 rounded-full cursor-pointer flex items-center justify-center;
-    width: 28px;
-    height: 28px;
+  .info > div:last-child {
+    @apply border-none pb-0;
   }
-  .compare-title {
-    @apply font-bold text-xl truncate mb-1;
-    max-width: 240px;
+  .file-name .label {
+    @apply text-xs text-gray-700 uppercase mb-1;
   }
-  .compare-thumbnail {
-    @apply w-full border border-gray-350 bg-white rounded bg-contain bg-center bg-no-repeat mb-4;
-    height: 280px;
+  .file-name .value {
+    @apply text-md text-gray-900 font-bold truncate;
+    max-width: calc((100vw / 2) - 30px);
+  }
+  @screen md {
+    .info {
+      @apply min-h-0;
+    }
+  }
+  @screen lg {
+    .file-name .value {
+      @apply max-w-full;
+    }
   }
 </style>
-
-<div bind:this={element}>
-  <!-- Compare header -->
-  {#if alternate}
-    {#if isComparing}
-      <h2 class="filename">
-        {#if getIdentifier(claim) === $rootClaimId}
-          <div class="mr-2">
-            <cai-icon name="Pin" width="20px" height="20px" />
-          </div>
-        {/if}
-        <div>
-          <div
-            class="font-bold text-xs uppercase text-gray-500 leading-none mb-1">
-            File name
-          </div>
-          <div class="compare-title">{claim.title}</div>
-        </div>
-        <div class="flex-grow flex justify-end">
-          <div class="close" on:click={() => dispatch('close', { claim })}>
-            <Icon size="m" name="workflow:Close" class="text-gray-400" />
-          </div>
-        </div>
-      </h2>
-    {/if}
-    <div
-      class="compare-thumbnail"
-      style={`background-image: url("${claim.thumbnail_url}");`} />
-  {:else if isSecureCapture}
-    <div class="mb-4">
-      <Alert
-        severity="info"
-        message={`This is an original photo, taken on a secure device. <a href="${getFaqUrl('block-yui_3_17_2_1_1607115018705_17736')}" target="_blank" style="text-decoration: underline;">Learn more</a>`} />
-    </div>
-  {/if}
-
-  <claim-info {claim} {variant} />
-</div>

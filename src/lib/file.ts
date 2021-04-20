@@ -1,4 +1,4 @@
-import { getSummaryFromFile } from '../lib/toolkit';
+import { getSummaryFromFile, ToolkitError } from '../lib/toolkit';
 import { setSummary } from '../stores';
 
 const VALID_TYPES = ['image/jpeg'];
@@ -14,13 +14,14 @@ export async function processFiles(files: File[] | FileList) {
     window.newrelic?.addPageAction('loadedUserFile', {
       type: file.type,
     });
-    const data = await getSummaryFromFile(file);
-    setSummary(data);
+    const result = await getSummaryFromFile(file);
+    setSummary(result);
   } else if (fileArray.length) {
-    const invalidTypeError = new Error('INVALID_TYPE');
+    const invalidTypeError = new Error(ToolkitError.InvalidFile);
     window.newrelic?.noticeError(invalidTypeError, {
       type: fileArray[0]?.type,
     });
+    throw invalidTypeError;
   }
 }
 

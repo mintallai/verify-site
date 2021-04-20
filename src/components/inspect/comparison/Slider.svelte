@@ -60,9 +60,28 @@
   });
 </script>
 
+<div class="inner" use:cssVars={styles}>
+  <div class="slider" bind:this={slider}>
+    <div class="handle">
+      <div>
+        <Icon size="m" name="ChevronLeft" class="text-gray-700" />
+        <Icon size="m" name="ChevronRight" class="text-gray-700" />
+      </div>
+    </div>
+  </div>
+  <div class="primary">
+    <div class="thumbnail" use:tippy={{ content: primary.title, ...tippyOpts }}>
+      <img src={primary.thumbnail_url} alt="" />
+    </div>
+  </div>
+  <div class="secondary" use:tippy={{ content: secondary.title, ...tippyOpts }}>
+    <div class="thumbnail"><img src={secondary.thumbnail_url} alt="" /></div>
+  </div>
+</div>
+
 <style lang="postcss">
   .inner {
-    @apply relative rounded-md overflow-hidden bg-white shadow-md pointer-events-none select-none;
+    @apply relative pointer-events-none select-none;
     width: var(--width);
     height: var(--height);
   }
@@ -109,22 +128,3 @@
     @apply flex relative;
   }
 </style>
-
-<div class="inner" use:cssVars={styles}>
-  <div class="slider" bind:this={slider}>
-    <div class="handle">
-      <div>
-        <Icon size="m" name="workflow:ChevronLeft" class="text-gray-700" />
-        <Icon size="m" name="workflow:ChevronRight" class="text-gray-700" />
-      </div>
-    </div>
-  </div>
-  <div class="primary">
-    <div class="thumbnail" use:tippy={{ content: primary.title, ...tippyOpts }}>
-      <img src={primary.thumbnail_url} alt="" />
-    </div>
-  </div>
-  <div class="secondary" use:tippy={{ content: secondary.title, ...tippyOpts }}>
-    <div class="thumbnail"><img src={secondary.thumbnail_url} alt="" /></div>
-  </div>
-</div>

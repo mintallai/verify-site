@@ -1,9 +1,15 @@
+declare module 'drag-drop';
+
 declare module 'html-parse-stringify' {
   function parse(html: string): any;
   function stringify(ast: any): string;
 }
 
 declare module 'svelte-css-vars';
+
+declare module '*.svg';
+
+declare var __breakpoints__;
 
 interface IUrlParams {
   source: string;
@@ -69,6 +75,14 @@ declare interface ISummaryResponse {
   claims: IClaimMap;
 }
 
+declare interface ISummaryResult {
+  source: 'file' | 'url';
+  summary: ISummaryResponse | false;
+  file?: File;
+  url?: string;
+  arrayBuffer: ArrayBuffer;
+}
+
 declare interface IIdentifiable {
   _id: string;
 }
@@ -79,4 +93,9 @@ declare type ViewableItem = ReferenceInfo & IIdentifiable;
 
 declare interface IAssetIdentifierMap {
   [claimID: string]: ViewableItem;
+}
+
+declare interface ISourceInfo {
+  name: string;
+  url: string;
 }
