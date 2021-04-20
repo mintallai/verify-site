@@ -60,7 +60,7 @@
       : 'Something went wrong');
   $: {
     // Cancel the tour if the overlay is showing
-    if (tour && tour.isActive() && $isBurgerMenuShown) {
+    if (tour && tour.isActive() && isMobileViewer) {
       tour.cancel();
     }
     // Clear errors if a summary has changed
@@ -85,12 +85,18 @@
   onMount(async () => {
     const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
     const { tourFlag, forceTourFlag } = $urlParams;
+
+    isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);
+    listenBreakpoints.forEach((bp) =>
+      matchMedia(bp).addEventListener('change', handleBreakpointChange),
+    );
+
     if (sourceParam) {
       try {
         const result = await getSummaryFromUrl(sourceParam);
         window.newrelic?.setCustomAttribute('source', sourceParam);
         setSummary(result);
-        if (!$isBurgerMenuShown) {
+        if (isMobileViewer === false) {
           tour = startTour({
             summary: $summary,
             start: tourFlag,
@@ -125,12 +131,6 @@
         }, 50);
       },
     });
-
-    isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);
-
-    listenBreakpoints.forEach((bp) =>
-      matchMedia(bp).addEventListener('change', handleBreakpointChange),
-    );
 
     return () => {
       cleanupDragDrop();
