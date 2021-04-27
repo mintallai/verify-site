@@ -19,6 +19,9 @@ export function getIdentifier(item: ReferenceInfo): string {
     return `claim_id:${item.claim_id}`;
   } else if ('document_id' in item) {
     return `document_id:${item.document_id}`;
+  } else if ('root_claim_id' in item) {
+    // ReferenceInfo can be of type IClaimSummary | IReference; if of type IClaimSummary return the identifier of the root claim
+    return `claim_id:${item.root_claim_id}`;
   } else {
     console.error('No identifier found for', item);
   }

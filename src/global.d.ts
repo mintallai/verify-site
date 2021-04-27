@@ -40,6 +40,12 @@ declare interface IReference {
   document_id: string;
   thumbnail_url: string;
   claim_id: string | null;
+  errors?: IErrorSummary[];
+}
+
+declare interface IErrorSummary {
+  code: string;
+  description: string;
 }
 
 declare interface IIngredientReference extends IReference {
@@ -93,6 +99,10 @@ declare type ViewableItem = ReferenceInfo & IIdentifiable;
 
 declare interface IAssetIdentifierMap {
   [claimID: string]: ViewableItem;
+}
+
+declare interface IErrorIdentifierMap {
+  [claimID: string]: IErrorSummary[];
 }
 
 declare interface ISourceInfo {

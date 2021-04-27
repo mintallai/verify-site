@@ -1,6 +1,6 @@
 <script lang="ts">
   import { quintOut } from 'svelte/easing';
-  import { navigateToId, compareWithId, primaryId } from '../../stores';
+  import { navigateToId, compareWithId, primaryId, errorsByIdentifier } from '../../stores';
   import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/components/Thumbnail';
@@ -28,6 +28,20 @@
     };
   }
 
+  function getThumbnailBadge() {
+    if (hasErrors) {
+      return {
+          type: 'missing',
+          helpText: 'The producer edited this asset without attaching complete credentials',
+        };
+    }
+    return {
+        type: 'info',
+        helpText: 'This image has attribution and history data.',
+      };
+  }
+
+  $: hasErrors = $errorsByIdentifier[asset?._id]?.length;
   $: isCurrent = asset?._id === $primaryId;
   $: compare = isCompareSelectMode && !isCurrent;
   $: {
@@ -37,10 +51,7 @@
   }
   $: badge =
     asset?.type === 'claim'
-      ? {
-          type: 'info',
-          helpText: 'This image has attribution and history data.',
-        }
+      ? getThumbnailBadge()
       : {
           type: 'none',
         };
