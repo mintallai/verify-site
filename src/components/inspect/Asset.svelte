@@ -41,7 +41,7 @@
       };
   }
 
-  $: hasErrors = $errorsByIdentifier[asset?._id]?.length;
+  $: hasErrors = !!$errorsByIdentifier[asset?._id]?.length;
   $: isCurrent = asset?._id === $primaryId;
   $: compare = isCompareSelectMode && !isCurrent;
   $: {

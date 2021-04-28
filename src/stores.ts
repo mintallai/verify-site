@@ -314,11 +314,17 @@ export const errorsByIdentifier = derived<
   { [identifier: string]: IErrorIdentifierMap }
 >([summary], ([$summary]) => {
   if ($summary) {
+    const nestedDepth = 3; // Errors are nested references[x].errors
     const errors = reduceDeep(
       $summary,
       (acc, value, key, parent, ctx) => {
         if (key === 'errors' && value.length) {
-          const id = getIdentifier(parent);
+          // head claim error
+          if (ctx.depth < nestedDepth) {
+            return {};
+          }
+          const parentClaim = ctx.parents[ctx.depth - nestedDepth].value;
+          const id = getIdentifier(parentClaim);
           acc[id] ? acc[id].push(value) : (acc[id] = value);
         }
         return acc;
