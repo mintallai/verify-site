@@ -3,6 +3,7 @@ import toposort from 'toposort';
 import size from 'lodash/size';
 import omit from 'lodash/omit';
 import reduce from 'lodash/reduce';
+import reduceDeep from 'deepdash/reduceDeep';
 import mapValues from 'lodash/mapValues';
 import { local } from 'store2';
 import { addIdentifiers, getIdentifier } from './lib/claim';
@@ -304,6 +305,33 @@ export const assetsByIdentifier = derived<
         } as ViewableItem;
       }
     });
+  }
+  return {};
+});
+
+export const errorsByIdentifier = derived<
+  [typeof summary],
+  { [identifier: string]: IErrorIdentifierMap }
+>([summary], ([$summary]) => {
+  if ($summary) {
+    const nestedDepth = 3; // Errors are nested references[x].errors
+    const errors = reduceDeep(
+      $summary,
+      (acc, value, key, parent, ctx) => {
+        if (key === 'errors' && value.length) {
+          // head claim error
+          if (ctx.depth < nestedDepth) {
+            return {};
+          }
+          const parentClaim = ctx.parents[ctx.depth - nestedDepth].value;
+          const id = getIdentifier(parentClaim);
+          acc[id] ? acc[id].push(value) : (acc[id] = value);
+        }
+        return acc;
+      },
+      {},
+    );
+    return errors;
   }
   return {};
 });
