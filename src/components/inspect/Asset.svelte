@@ -31,14 +31,14 @@
   function getThumbnailBadge() {
     if (hasErrors) {
       return {
-          type: 'missing',
-          helpText: 'The producer edited this asset without attaching complete credentials',
-        };
+        type: 'missing',
+        helpText: 'The producer edited this asset without attaching complete credentials',
+      };
     }
     return {
-        type: 'info',
-        helpText: 'This image has attribution and history data.',
-      };
+      type: 'info',
+      helpText: 'This image has attribution and history data.',
+    };
   }
 
   $: hasErrors = !!$errorsByIdentifier[asset?._id]?.length;
