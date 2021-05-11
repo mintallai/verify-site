@@ -50,7 +50,6 @@ services:
             stage: default
             build_on_rollback: false
             deploy_token: false
-            deployed_sha_for_rollback: false
             required: true
             unstable_allowed: false
             build_params:
@@ -102,7 +101,6 @@ services:
             stage: deploy---Dev
             build_on_rollback: true
             deploy_token: false
-            deployed_sha_for_rollback: false
             required: true
             unstable_allowed: false
             build_params:
@@ -158,7 +156,6 @@ services:
             stage: deploy---Stage
             build_on_rollback: true
             deploy_token: false
-            deployed_sha_for_rollback: false
             required: true
             unstable_allowed: false
             build_params:
@@ -214,7 +211,6 @@ services:
             stage: deploy---Prod
             build_on_rollback: true
             deploy_token: false
-            deployed_sha_for_rollback: false
             required: true
             unstable_allowed: false
             build_params:
