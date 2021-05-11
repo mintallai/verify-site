@@ -44,7 +44,6 @@ services:
           - name: default
         projects:
           - title: CAI Verify Site Build
-            name: client-cai-verify-site-makefile-exec
             project_group: cai-build
             build_type: lambda
             lambda: proteus
@@ -97,7 +96,6 @@ services:
           - name: deploy---Dev
         projects:
           - title: CAI Verify Site dev deploy
-            name: client-cai-verify-site-makefile-exec
             project_group: cai-dev
             build_type: lambda
             lambda: proteus
@@ -154,7 +152,6 @@ services:
           - name: deploy---Stage
         projects:
           - title: CAI Verify Site Stage Deploy
-            name: client-cai-verify-site-makefile-exec
             project_group: cai-stage
             build_type: lambda
             lambda: proteus
@@ -211,7 +208,6 @@ services:
           - name: deploy---Prod
         projects:
           - title: CAI Verify Site Prod Deploy
-            name: client-cai-verify-site-makefile-exec
             project_group: cai-prod
             build_type: lambda
             lambda: proteus
