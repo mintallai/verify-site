@@ -69,7 +69,7 @@
       <OriginalCreation type="secureCapture" {claim} />
     </div>
   {/if}
-  {#if combined.length > 0}
+  {#if combined.length > 1}
     <div
       class="sticky bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent"
     >
