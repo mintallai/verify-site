@@ -1,6 +1,8 @@
 import init, {
-  get_summary_from_array_buffer,
+  get_store_report_from_array_buffer,
 } from '@contentauth/toolkit/pkg/web/toolkit';
+import startsWith from 'lodash/startsWith';
+import { IStoreReportResult } from './types';
 
 // TODO: Update this with newrelic typescript defs
 declare global {
@@ -9,7 +11,13 @@ declare global {
   }
 }
 
-const JPEG_MIME_TYPE = /^image\/jpeg/;
+const VALID_MIME_TYPES = ['image/jpeg', 'image/png'];
+
+// Need to do this since some Content-Types are coming in such as
+// `image/jpeg; charset=utf-8`
+function isValidMimeType(type) {
+  return VALID_MIME_TYPES.some((mime) => startsWith(type, mime));
+}
 
 let toolkit: any;
 
@@ -20,7 +28,7 @@ export enum ToolkitError {
 
 function fileAsArrayBuffer(file: File): Promise<Uint8Array> {
   return new Promise((resolve, reject) => {
-    if (JPEG_MIME_TYPE.test(file.type)) {
+    if (isValidMimeType(file.type)) {
       const reader = new FileReader();
       reader.addEventListener('load', (evt: any) => {
         resolve(new Uint8Array(evt.target.result));
@@ -40,31 +48,37 @@ async function loadToolkit() {
   }
 }
 
-export async function getSummaryFromFile(file: File): Promise<ISummaryResult> {
+export async function getStoreReportFromFile(
+  file: File,
+): Promise<IStoreReportResult> {
   await loadToolkit();
   const arrayBuffer = await fileAsArrayBuffer(file);
-  const summary = await get_summary_from_array_buffer(arrayBuffer, true);
+  const storeReport = await get_store_report_from_array_buffer(arrayBuffer);
   return {
     source: 'file',
-    summary,
-    file,
-    arrayBuffer,
+    storeReport,
+    filename: file.name,
+    data: new Blob([arrayBuffer], { type: file.type }),
   };
 }
 
-export async function getSummaryFromUrl(url: string): Promise<ISummaryResult> {
+export async function getStoreReportFromUrl(
+  url: string,
+): Promise<IStoreReportResult> {
   await loadToolkit();
   const res = await fetch(url);
   if (res.ok) {
     const contentType = res.headers.get('Content-Type');
-    if (JPEG_MIME_TYPE.test(contentType)) {
+    if (isValidMimeType(contentType)) {
       const arrayBuffer = await res.arrayBuffer();
-      const summary = await get_summary_from_array_buffer(arrayBuffer, true);
+      const storeReport = await get_store_report_from_array_buffer(arrayBuffer);
+      const { pathname } = new URL(url);
+      const filename = pathname?.split('/').pop() || 'Unknown';
       return {
         source: 'url',
-        summary,
-        url,
-        arrayBuffer,
+        storeReport,
+        filename,
+        data: new Blob([arrayBuffer], { type: contentType }),
       };
     }
     const invalidFileError = new Error(ToolkitError.InvalidFile);

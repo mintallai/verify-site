@@ -1,5 +1,5 @@
-import { getSummaryFromFile, ToolkitError } from '../lib/toolkit';
-import { setSummary } from '../stores';
+import { getStoreReportFromFile, ToolkitError } from '../lib/toolkit';
+import { setStoreReport } from '../stores';
 
 const VALID_TYPES = ['image/jpeg'];
 
@@ -10,12 +10,12 @@ export async function processFiles(files: File[] | FileList) {
   );
   if (validFiles.length) {
     const file = validFiles[0];
-    setSummary(null);
+    setStoreReport(null);
     window.newrelic?.addPageAction('loadedUserFile', {
       type: file.type,
     });
-    const result = await getSummaryFromFile(file);
-    setSummary(result);
+    const result = await getStoreReportFromFile(file);
+    setStoreReport(result);
   } else if (fileArray.length) {
     const invalidTypeError = new Error(ToolkitError.InvalidFile);
     window.newrelic?.noticeError(invalidTypeError, {

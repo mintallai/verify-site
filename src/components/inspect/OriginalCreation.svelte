@@ -1,8 +1,9 @@
 <script lang="ts">
   import Alert from '../Alert.svelte';
+  import type { IEnhancedClaimReport } from '../../lib/types';
 
   export let type: 'original' | 'secureCapture' = 'original';
-  export let claim: IClaimSummary;
+  export let claim: IEnhancedClaimReport;
 </script>
 
 <Alert severity="info">

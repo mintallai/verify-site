@@ -6,9 +6,16 @@ import reduce from 'lodash/reduce';
 import reduceDeep from 'deepdash/reduceDeep';
 import mapValues from 'lodash/mapValues';
 import { local } from 'store2';
-import { addIdentifiers, getIdentifier } from './lib/claim';
+import { enhanceClaim, getIdentifier, resolveId } from './lib/claim';
 import { arrayBufferToBlobUrl } from './lib/util/data';
-import { supportDemoImages } from './lib/demo';
+import { logVerificationErrors } from './lib/util/debug';
+import type {
+  IEnhancedClaimReport,
+  IEnhancedStoreReport,
+  IStoreReport,
+  IStoreReportResult,
+  ViewableItem,
+} from './lib/types';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
@@ -149,28 +156,51 @@ export const source = writable<ISourceInfo | null>(null, (set) => {
   return () => {};
 });
 
-async function setSource(result: ISummaryResult | null) {
-  const sourceType = result?.source;
-  const existingUrl = get(source)?.url;
-  // Clean up the previous blobURL
-  if (existingUrl && /^blob:/.test(existingUrl)) {
-    URL.revokeObjectURL(existingUrl);
-  }
-  if (sourceType === 'url') {
-    const { url, arrayBuffer } = result;
-    const { pathname } = new URL(url);
-    source.set({
-      name: pathname?.split('/').pop() || 'Unknown',
-      url: arrayBufferToBlobUrl(arrayBuffer),
-    });
-  } else if (sourceType === 'file') {
-    const { file, arrayBuffer } = result;
-    source.set({
-      name: file.name,
-      url: arrayBufferToBlobUrl(arrayBuffer),
-    });
-  } else {
-    source.set(null);
+async function setSource(result: IStoreReportResult | null) {
+  source.set({
+    name: result.filename,
+    data: result.data,
+  });
+}
+
+/**
+ * Contains the current store report of the loaded asset.
+ */
+export const storeReport = writable<IEnhancedStoreReport | null>(
+  null,
+  (set) => {
+    return () => {};
+  },
+);
+
+/**
+ * This updates the report with type hints and identifiers to make it easier to
+ * reference claims and ingredients throughout the app.
+ */
+function enhanceReport(report: IStoreReport): IEnhancedStoreReport {
+  return {
+    head: report.head,
+    claims: mapValues(report.claims, enhanceClaim),
+  };
+}
+
+/**
+ * Sets the store report of the loaded asset.
+ * @param data Data provided by on of the `getStore*` toolkit functions, or `null` to clear the existing info, and show the upload screen
+ */
+export async function setStoreReport(result: IStoreReportResult) {
+  let data = result?.storeReport;
+  // Grab map of references, since we may need to look up a claim title from
+  // refs in the case of an acquisition
+  setSource(result);
+  if (data) {
+    const enhancedReport = enhanceReport(data);
+    console.info('Store report', enhancedReport);
+    // logVerificationErrors(data);
+    storeReport.set(enhancedReport);
+    navigateToRoot();
+  } else if (data === false) {
+    summary.set(null);
   }
 }
 
@@ -182,55 +212,11 @@ export const summary = writable<ISummaryResponse | null>(null, (set) => {
 });
 
 /**
- * Sets the summary of the loaded asset.
- * @param data Data provided by on of the `getSummary*` toolkit functions, or `null` to clear the existing info, and show the upload screen
+ * Calculates the root claim ID (the ID of the latest claim) contained in the store report.
  */
-export async function setSummary(result: ISummaryResult) {
-  let data = result?.summary;
-  // Grab map of references, since we may need to look up a claim title from
-  // refs in the case of an acquisition
-  setSource(result);
-  if (data) {
-    // Grab map of references, since we may need to look up a claim title from
-    // refs in the case of an acquisition
-    // Temporary
-    data = supportDemoImages(data, get(urlParams));
-    const refs = reduce(
-      data.claims,
-      (acc, claim) => {
-        if (claim.references) {
-          acc = [...acc, ...claim.references];
-        }
-        return acc;
-      },
-      [],
-    );
-    data.claims = mapValues(data.claims, (claim, claim_id) => ({
-      ...claim,
-      title:
-        claim.title ||
-        refs.find((x) => x.title && x.claim_id === claim_id)?.title,
-      claim_id,
-    }));
-    summary.set(data);
-    navigateToRoot();
-  } else if (data === false) {
-    summary.set(null);
-  }
-}
-
-/**
- * Calculates the root claim ID (the ID of the latest claim) contained in the summary data.
- */
-export const rootClaimId = derived<[typeof summary], string | null>(
-  [summary],
-  ([$summary]) => {
-    const rootId = $summary?.root_claim_id;
-    if (rootId) {
-      return `claim_id:${rootId}`;
-    }
-    return null;
-  },
+export const rootClaimId = derived<[typeof storeReport], string | null>(
+  [storeReport],
+  ([$storeReport]) => $storeReport?.head ?? null,
 );
 
 /**
@@ -247,53 +233,6 @@ export function navigateToRoot(logEvent = true): void {
 }
 
 /**
- * Calculates a flat object with all of the claims in the manifest keyed by a universal identifier.
- * Universal identifiers (stored as the key name and under the `_id` key) are in the form of:
- *   - `claim_id:<CLAIM_ID>` for claims, e.g. `claim_id:claim_0`
- *   - `document_id:<XMP_DOCUMENT_ID>` for parents/ingredients without a claim, e.g. `document_id:xmp.did.a0b1c2d3...`
- *
- * This serves as a dictionary that we can easily and performantly look up the information on any claim by its `_id`
- * field from any context, instead of traversing a nested data structure. Since it is `derived`, it is recalculated
- * only when necessary (when the summary data changes).
- *
- * For instance:
- *
- * ```
- * {
- *   // Claim entry
- *   "claim_id:<CLAIM_ID>": { ...claimInfo },
- *   // Entry for a parent/ingredient without a claim
- *   "document_id:<XMP_DOCUMENT_ID>": { ...parentOrIngredientInfo },
- * }
- * ```
- */
-export const assetsByIdentifier = derived<
-  [typeof summary],
-  { [identifier: string]: ViewableItem }
->([summary], ([$summary]) => {
-  if ($summary) {
-    const grouped = addIdentifiers($summary?.claims);
-    return mapValues(grouped, ([item], _id) => {
-      if (item.claim_id) {
-        const claim = $summary.claims[item.claim_id];
-        return {
-          ...claim,
-          type: 'claim',
-          _id,
-        } as ViewableItem;
-      } else {
-        const ref = omit(item, ['claim_id', 'id']);
-        return {
-          ...ref,
-          type: 'reference',
-          _id,
-        } as ViewableItem;
-      }
-    });
-  }
-  return {};
-});
-
 export const errorsByIdentifier = derived<
   [typeof summary],
   { [identifier: string]: IErrorIdentifierMap }
@@ -320,74 +259,24 @@ export const errorsByIdentifier = derived<
   }
   return {};
 });
-
-// FIXME: This needs to work for references as well - right now only claims are working
-/**
- * Performs a topographical sort on assets - orginally built to help with displaying the
- * nested claim structure.
- *
- * **NOTE:** It seems we don't currently use this.
- */
-export const sortedAssets = derived<[typeof summary], ViewableItem[]>(
-  [summary],
-  ([$summary]) => {
-    if (size($summary?.claims)) {
-      const { claims } = $summary;
-      const nodes = Object.keys(claims);
-      const edges = reduce(
-        claims,
-        (acc, claim) => {
-          const deps = (claim.references || [])
-            .filter((ref) => !!ref.claim_id)
-            .map((ref) => {
-              return [claim.claim_id, ref.claim_id];
-            });
-          return [...acc, ...deps];
-        },
-        [],
-      );
-      const sorted = toposort.array(nodes, edges);
-      return sorted.map((id) => {
-        const item = claims[id];
-        const _id = getIdentifier(item);
-        if (item.claim_id) {
-          const claim = $summary.claims[item.claim_id];
-          return {
-            ...claim,
-            type: 'claim',
-            _id,
-          } as ViewableItem;
-        } else {
-          const ref = omit(item, ['claim_id', 'id']);
-          return {
-            ...ref,
-            type: 'reference',
-            _id,
-          } as ViewableItem;
-        }
-      });
-    } else {
-      return [];
-    }
-  },
-);
+*/
 
 /**
  * Convenience accessor for the claim/ingredient data that's linked to the `primaryId`.
  */
 export const primaryAsset = derived<
-  [typeof assetsByIdentifier, typeof primaryId],
-  ViewableItem
->([assetsByIdentifier, primaryId], ([$assetsByIdentifier, $primaryId]) => {
-  return $assetsByIdentifier[$primaryId];
+  [typeof storeReport, typeof primaryId],
+  ViewableItem | null
+>([storeReport, primaryId], ([$storeReport, $primaryId]) => {
+  return resolveId($storeReport, $primaryId);
 });
 
 /**
  * Convenience accessor for the claim/ingredient data that's linked to the `secondaryId`.
  */
 export const secondaryAsset = derived<
-  [typeof assetsByIdentifier, typeof secondaryId],
-  ViewableItem
->([assetsByIdentifier, secondaryId], ([$assetsByIdentifier, $secondaryId]) => {
-  return $assetsByIdentifier[$secondaryId];
+  [typeof storeReport, typeof secondaryId],
+  ViewableItem | null
+>([storeReport, secondaryId], ([$storeReport, $secondaryId]) => {
+  return resolveId($storeReport, $secondaryId);
 });

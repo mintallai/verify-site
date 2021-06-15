@@ -6,6 +6,7 @@
   import Icon from '../../Icon.svelte';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
+  import type { ViewableItem } from '../../../lib/types'
 
   export let side = 0;
   let slider: HTMLDivElement;

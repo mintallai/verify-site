@@ -1,4 +1,5 @@
 import mapValues from 'lodash/mapValues';
+import { IEnhancedClaimReport } from './types';
 
 const demoUrlRegexp = /^https?:\/\/[^\/]+\/sdk\/static\/sample-images\/SNL_\d+_\d+_\w\.jpg$/;
 
@@ -57,6 +58,7 @@ export function formatLocation(location: string): string {
   return location;
 }
 
-export function isSecureCapture(claim: IClaimSummary) {
-  return /truepic/i.test(claim?.produced_with ?? '');
+export function isSecureCapture(claim: IEnhancedClaimReport) {
+  // FIXME: Have this return the correct info
+  return false;
 }

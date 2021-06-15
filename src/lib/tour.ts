@@ -8,6 +8,7 @@ import {
   secondaryId,
   navigateToRoot,
 } from '../stores';
+import { IEnhancedStoreReport } from './types';
 
 const COMPLETE_LOCALSTORAGE_KEY = 'hasSeenTour';
 const DELAY_MS = 500;
@@ -33,17 +34,18 @@ function createComponent(tour, props) {
   return component.getElement();
 }
 
-function getParentRef(summary) {
+// FIXME: Do the right thing for tours
+function getParentRef(storeReport: IEnhancedStoreReport) {
   const rootClaim = summary?.claims[summary.root_claim_id];
   return rootClaim?.references.find((x) => x.type === 'parent' && !!x.claim_id);
 }
 
-async function gotoRootClaim(summary) {
-  navigateToId(`claim_id:${summary.root_claim_id}`, false, false);
+async function gotoRootClaim(storeReport: IEnhancedStoreReport) {
+  navigateToId(storeReport.head, false, false);
   return delay(DELAY_MS);
 }
 
-async function gotoParentClaim(summary) {
+async function gotoParentClaim(storeReport: IEnhancedStoreReport) {
   const parentRef = getParentRef(summary);
   if (parentRef) {
     secondaryId.set('');
@@ -52,16 +54,16 @@ async function gotoParentClaim(summary) {
   }
 }
 
-async function gotoCompare(summary) {
-  const parentRef = getParentRef(summary);
+async function gotoCompare(storeReport: IEnhancedStoreReport) {
+  const parentRef = getParentRef(storeReport);
   if (parentRef) {
     navigateToId(`claim_id:${parentRef.claim_id}`, false, false);
-    compareWithId(`claim_id:${summary.root_claim_id}`, false);
+    compareWithId(`claim_id:${storeReport.root_claim_id}`, false);
     await delay(DELAY_MS);
   }
 }
 
-export function createTour({ summary }) {
+export function createTour(storeReport: IEnhancedStoreReport) {
   const tour = new Shepherd.Tour({
     defaultStepOptions: {
       popperOptions: {
@@ -83,7 +85,7 @@ export function createTour({ summary }) {
       element: '#record-0',
       on: 'right',
     },
-    beforeShowPromise: () => gotoRootClaim(summary),
+    beforeShowPromise: () => gotoRootClaim(storeReport),
     text: () =>
       createComponent(tour, {
         title: 'Get tamper-evident image data',
@@ -100,7 +102,7 @@ export function createTour({ summary }) {
       element: '#record-1',
       on: 'right',
     },
-    beforeShowPromise: () => gotoParentClaim(summary),
+    beforeShowPromise: () => gotoParentClaim(storeReport),
     text: () =>
       createComponent(tour, {
         title: 'Explore a JPEG’s past',
@@ -117,7 +119,7 @@ export function createTour({ summary }) {
       element: '#breadcrumb-bar',
       on: 'left-start',
     },
-    beforeShowPromise: () => gotoCompare(summary),
+    beforeShowPromise: () => gotoCompare(storeReport),
     text: () =>
       createComponent(tour, {
         title: 'Track changes over time',
@@ -131,10 +133,10 @@ export function createTour({ summary }) {
   return tour;
 }
 
-export function startTour({ summary, start, force }) {
+export function startTour({ storeReport, start, force }) {
   const hasSeenTour = store.get(COMPLETE_LOCALSTORAGE_KEY);
   if (!hasSeenTour || force) {
-    const tour = createTour({ summary });
+    const tour = createTour(storeReport);
     const stepIds = tour.steps.map((s) => s.id);
     if (start) {
       tour.start();

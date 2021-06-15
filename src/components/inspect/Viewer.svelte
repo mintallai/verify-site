@@ -13,7 +13,7 @@
   import DropFile from '../../../assets/svg/monochrome/drop-file.svg';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
 
-  export let thumbnailURL: string = null;
+  export let thumbnail: Blob | null = null;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
   export let isError: boolean = false;
@@ -22,6 +22,7 @@
   let width = 0;
   let height = 0;
   let side = `0px`;
+  let thumbnailUrl: string;
 
   $: {
     const padding = $isMobileViewerShown ? 0 : 20;
@@ -40,8 +41,14 @@
 
   onMount(() => {
     fileInput.addEventListener('change', loadFile, false);
+    if (thumbnail) {
+      thumbnailUrl = URL.createObjectURL(thumbnail);
+    }
     return () => {
       fileInput.removeEventListener('change', loadFile);
+      if (thumbnailUrl) {
+        URL.revokeObjectURL(thumbnailUrl);
+      }
     };
   });
 </script>
@@ -79,9 +86,9 @@
             </div>
           {/if}
         </div>
-      {:else if !isLoading && thumbnailURL}
+      {:else if !isLoading && thumbnailUrl}
         <img
-          src={thumbnailURL}
+          src={thumbnailUrl}
           alt=""
           class="h-full w-full object-contain object-center"
         />

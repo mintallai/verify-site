@@ -5,19 +5,20 @@
   import OriginalCreation from './OriginalCreation.svelte';
   import {
     contentSourceIds,
-    assetsByIdentifier,
+    storeReport,
     primaryId,
     isCompareSelectMode,
   } from '../../stores';
   import { getAssetList, getBreadcrumbList } from '../../lib/claim';
   import { isSecureCapture } from '../../lib/demo';
+  import type { IEnhancedClaimReport } from '../../lib/types';
 
-  export let claim: IClaimSummary | null = null;
+  export let claim: IEnhancedClaimReport | null = null;
   export let source: ISourceInfo | null = null;
   let container: any;
 
-  $: assetList = claim ? getAssetList(claim, $assetsByIdentifier) : [];
-  $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
+  $: assetList = claim ? getAssetList($storeReport, claim.id) : [];
+  $: breadcrumbList = getBreadcrumbList($storeReport, $contentSourceIds);
   $: combined = [...breadcrumbList, ...assetList];
 
   onDestroy(() => isCompareSelectMode.set(false));
@@ -41,17 +42,17 @@
   </div>
   <div class="relative pl-4">
     <div bind:this={container} class="grid space-y-4">
-      {#each breadcrumbList as asset, index (asset._id)}
+      {#each breadcrumbList as asset, index (asset.id)}
         <Asset
           {asset}
           isCompareSelectMode={$isCompareSelectMode}
           id={`record-${index}`}
-          current={asset._id === $primaryId}
+          current={asset.id === $primaryId}
           hasConnector={index > 0}
         />
       {/each}
       <div class="grid space-y-4">
-        {#each assetList as asset (asset._id)}
+        {#each assetList as asset (asset.id)}
           <div>
             <Asset
               {asset}

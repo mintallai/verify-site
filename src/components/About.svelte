@@ -4,7 +4,6 @@
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import { formatLocation, isSecureCapture } from '../lib/demo';
-  import { getIdentifier } from '../lib/claim';
   import { navigateToId, compareWithId } from '../stores';
   import '@contentauth/web-components/dist/components/panels/ContentProducer';
   import '@contentauth/web-components/dist/components/panels/Assets';
@@ -13,13 +12,14 @@
   import '@contentauth/web-components/dist/components/panels/Providers';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
+  import type { IEnhancedClaimReport } from '../lib/types';
 
-  export let claim: IClaimSummary & IIdentifiable;
+  export let claim: IEnhancedClaimReport;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
   let element: HTMLElement;
 
-  $: isOriginal = claim?.references?.length === 0;
+  $: isOriginal = claim.ingredients.length === 0;
   $: secureCapture = isSecureCapture(claim);
   $: categories = compact(
     (claim.edits?.categories ?? []).concat(secureCapture && 'CAPTURE'),

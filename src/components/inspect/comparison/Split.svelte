@@ -4,6 +4,7 @@
   import { isMobileViewerShown } from '../../../stores';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
+  import type { ViewableItem } from '../../../lib/types'
 
   enum Layout {
     Stacked = 'stacked',

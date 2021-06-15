@@ -9,9 +9,11 @@ declare module 'svelte-css-vars';
 
 declare module '*.svg';
 
+declare module '@contentauth/web-components/dist/icons/monochrome/broken-image';
+
 declare var __breakpoints__;
 
-interface IUrlParams {
+declare interface IUrlParams {
   source: string;
   tourFlag: boolean;
   forceTourFlag: boolean;
@@ -95,8 +97,6 @@ declare interface IIdentifiable {
 
 declare type ReferenceInfo = IClaimSummary | IReference;
 
-declare type ViewableItem = ReferenceInfo & IIdentifiable;
-
 declare interface IAssetIdentifierMap {
   [claimID: string]: ViewableItem;
 }
@@ -107,5 +107,5 @@ declare interface IErrorIdentifierMap {
 
 declare interface ISourceInfo {
   name: string;
-  url: string;
+  data: Blob;
 }

@@ -3,7 +3,7 @@
   import { fade } from 'svelte/transition';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
-  import { getSummaryFromUrl, ToolkitError } from '../lib/toolkit';
+  import { getStoreReportFromUrl, ToolkitError } from '../lib/toolkit';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
@@ -20,8 +20,8 @@
   import {
     urlParams,
     source as sourceStore,
-    summary,
-    setSummary,
+    storeReport,
+    setStoreReport,
     navigateToId,
     secondaryId,
     primaryAsset,
@@ -29,10 +29,11 @@
     isBurgerMenuShown,
     isMobileViewerShown,
   } from '../stores';
-  import { getIdentifier } from '../lib/claim';
+  import type { ViewableItem } from '../lib/types'
+import { getThumbnailForId } from '../lib/claim';
 
   function handleClose(navigateToAsset: ViewableItem) {
-    navigateToId(getIdentifier(navigateToAsset));
+    navigateToId(navigateToAsset.id);
     secondaryId.set('');
   }
 
@@ -45,13 +46,13 @@
 
   $: source = $sourceStore;
   $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $summary || source;
-  $: isLoading = $summary === null && source === null;
+  $: hasContent = sourceParam || $storeReport || source;
+  $: isLoading = $storeReport === null && source === null;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
   $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !!(source && !$summary);
+  $: noMetadata = !!(source && !$storeReport);
   $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
   $: errorMessage =
     error &&
@@ -64,7 +65,7 @@
       tour.cancel();
     }
     // Clear errors if a summary has changed
-    if ($summary !== undefined) {
+    if ($storeReport !== undefined) {
       error = null;
     }
   }
@@ -93,12 +94,12 @@
 
     if (sourceParam) {
       try {
-        const result = await getSummaryFromUrl(sourceParam);
+        const result = await getStoreReportFromUrl(sourceParam);
         window.newrelic?.setCustomAttribute('source', sourceParam);
-        setSummary(result);
+        setStoreReport(result);
         if (isMobileViewer === false) {
           tour = startTour({
-            summary: $summary,
+            storeReport: $storeReport,
             start: tourFlag,
             force: forceTourFlag,
           });
@@ -182,7 +183,7 @@
       <section class="left-col">
         <ContentCredentials {source} />
       </section>
-      <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
+      <Viewer thumbnail={source.data} isDragging={isDraggingOver} />
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
@@ -201,7 +202,7 @@
               on:close={partial(handleClose, secondary)}
             />
           </div>
-        {:else if primary?.type === 'reference'}
+        {:else if primary?.type === 'ingredient'}
           <div class="wrapper">
             <ContentCredentialsError {isComparing} />
           </div>
@@ -211,7 +212,7 @@
         <Comparison {primary} {secondary} />
       {:else}
         <Viewer
-          thumbnailURL={primary.thumbnail_url}
+          thumbnail={getThumbnailForId($storeReport, primary.id)}
           isDragging={isDraggingOver}
         />
       {/if}
@@ -228,7 +229,7 @@
               <CompareLatestButton claim={primary} {isComparing} />
             {/if}
           </div>
-        {:else if !isComparing && primary?.type === 'reference'}
+        {:else if !isComparing && primary?.type === 'ingredient'}
           <div class="wrapper">
             <ContentCredentialsError {isComparing} />
             {#if isMobileViewer}
@@ -242,7 +243,7 @@
             {isMobileViewer}
             on:close={partial(handleClose, primary)}
           />
-        {:else if secondary?.type === 'reference'}
+        {:else if secondary?.type === 'ingredient'}
           <ContentCredentialsError {isComparing} />
         {/if}
       </section>

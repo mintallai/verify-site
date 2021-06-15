@@ -1,9 +1,10 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import Icon from '../Icon.svelte';
+  import Thumbnail from './Thumbnail.svelte'
   import {
     contentSourceIds,
-    assetsByIdentifier,
+    storeReport,
     primaryId,
     primaryAsset,
     navigateToId,
@@ -19,7 +20,6 @@
   import '@spectrum-web-components/tabs/sp-tab.js';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Tooltip';
-  import '@contentauth/web-components/dist/components/Thumbnail';
   import '@spectrum-web-components/action-menu/sp-action-menu.js';
   import '@spectrum-web-components/menu/sp-menu.js';
   import '@spectrum-web-components/menu/sp-menu-item.js';
@@ -37,8 +37,8 @@
     navigateToId(this.value);
   }
 
-  $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
-  $: homeId = breadcrumbList[0]?._id;
+  $: breadcrumbList = getBreadcrumbList($storeReport, $contentSourceIds);
+  $: homeId = breadcrumbList[0]?.id;
   $: showMenu =
     breadcrumbList.length > 1 &&
     ($isMobileViewerShown || breadcrumbList.length > 4);
@@ -78,10 +78,10 @@
             class="text-gray-800"
           />
         </div>
-        {#each breadcrumbList as asset, _ ({ id: asset._id, ctx: 'menu-item' })}
-          <sp-menu-item value={asset._id} class="checkbox-pos">
+        {#each breadcrumbList as asset, _ ({ id: asset.id, ctx: 'menu-item' })}
+          <sp-menu-item value={asset.id} class="checkbox-pos">
             <div class="menu-item pointer-events-none">
-              <cai-thumbnail src={asset.thumbnail_url} class="theme-spectrum" />
+              <cai-thumbnail  />
               <div class="ml-2 text-100">{asset.title}</div>
             </div>
           </sp-menu-item>
@@ -100,7 +100,7 @@
         {source.name}
       </div>
     {:else if breadcrumbList}
-      {#each breadcrumbList as asset, index ({ id: asset._id, ctx: 'breadcrumb-list' })}
+      {#each breadcrumbList as asset, index ({ id: asset.id, ctx: 'breadcrumb-list' })}
         {#if index > 0}
           <div class="separator">
             <Icon size="s" name="ChevronRight" class="text-gray-800" />
@@ -108,8 +108,8 @@
         {/if}
         <div
           class="breadcrumb-item hover:underline"
-          class:current={asset._id === $primaryId}
-          on:click={() => navigateToId(asset._id)}
+          class:current={asset.id === $primaryId}
+          on:click={() => navigateToId(asset.id)}
         >
           {asset.title}
         </div>
