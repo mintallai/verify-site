@@ -183,7 +183,7 @@ import { getThumbnailUrlForId } from '../lib/claim';
       <section class="left-col">
         <ContentCredentials {source} />
       </section>
-      <Viewer thumbnailUrl={source.data} isDragging={isDraggingOver} />
+      <Viewer thumbnailUrl={source.dataUrl} isDragging={isDraggingOver} />
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>

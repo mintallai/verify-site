@@ -121,11 +121,45 @@ export interface IEnhancedIngredient extends IIngredient {
   thumbnailUrl: string | null;
 }
 
+export interface IDictionaryCategory {
+  icon: string;
+  labels: {
+    [locale: string]: string;
+  };
+  descriptions: {
+    [locale: string]: string;
+  };
+}
+
+export interface IDictionaryAction {
+  labels: {
+    [isoLangCode: string]: string;
+  };
+  category: string;
+}
+
+export interface IDictionary {
+  categories: {
+    [categoryId: string]: IDictionaryCategory;
+  };
+  actions: {
+    [actionId: string]: IDictionaryAction;
+  };
+}
+
+export interface IEditCategory {
+  id: string;
+  icon: string;
+  label: string;
+  description: string;
+}
+
 export interface IEnhancedClaimReport extends IClaimReport {
   type: 'claim';
   id: string;
   asset: IEnhancedAsset;
   ingredients: IEnhancedIngredient[];
+  dictionary: IDictionary;
 }
 
 export interface IEnhancedStoreReport extends IStoreReport {

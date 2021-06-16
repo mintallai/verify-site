@@ -182,7 +182,7 @@ export async function setStoreReport(result: IStoreReportResult) {
   const data = result?.storeReport;
   setSource(result);
   if (data) {
-    const enhancedReport = enhanceReport(data);
+    const enhancedReport = await enhanceReport(data);
     console.info('Store report', enhancedReport);
     // logVerificationErrors(data);
     storeReport.set(enhancedReport);

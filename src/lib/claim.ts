@@ -1,7 +1,13 @@
-import compact from 'lodash/compact';
-import mapValues from 'lodash/mapValues';
+import flow from 'lodash/fp/flow';
+import compact from 'lodash/fp/compact';
+import map from 'lodash/fp/map';
+import uniqBy from 'lodash/fp/uniqBy';
+import sortBy from 'lodash/fp/sortBy';
+import toPairs from 'lodash/fp/toPairs';
+import zipObject from 'lodash/zipObject';
+import pMemoize from 'p-memoize';
+import { asDate } from './util/format';
 import type {
-  IClaimReport,
   IEnhancedClaimReport,
   IEnhancedIngredient,
   IIngredient,
@@ -11,9 +17,23 @@ import type {
   IThumbnail,
   IEnhancedAsset,
   IAsset,
+  IClaimReport,
+  IDictionary,
+  IDictionaryCategory,
+  IEditCategory,
 } from './types';
 
+const ACTION_ASSERTION_LABEL = 'cai.actions';
+const ACTION_ID_KEY = 'stEvt:parameters';
+const IDENTITY_ASSERTION_LABEL = 'cai.identity';
+const DEFAULT_LOCALE = 'en-US';
+const DEFAULT_ICON_VARIANT = 'dark';
 const ingredientIdRegExp = /^(\S+)\[(\d+)\]$/;
+
+export enum ClaimError {
+  InvalidActionAssertion = 'INVALID_ACTION_ASSERTION',
+  InvalidIdentityAssertion = 'INVALID_IDENTITY_ASSERTION',
+}
 
 /**
  * This resolves an ID of either a claim or an ingredient so that we can identify it globally.
@@ -66,10 +86,101 @@ export function getThumbnailUrlForId(
   }
 }
 
+interface IDictionaryCategoryWithId extends IDictionaryCategory {
+  id: string;
+}
+
+export function translateActionName(
+  dictionary: IDictionary,
+  actionId: string,
+): IDictionaryCategoryWithId {
+  const categoryId = dictionary.actions[actionId]?.category ?? 'UNCATEGORIZED';
+  // TODO: Use proper locale
+  const category = dictionary.categories[categoryId];
+  if (category) {
+    return {
+      ...category,
+      id: categoryId,
+    };
+  }
+  return null;
+}
+
+const processCategories = flow(
+  compact,
+  map<IDictionaryCategoryWithId, IEditCategory>((category) => ({
+    id: category.id,
+    icon: category.icon.replace('{variant}', DEFAULT_ICON_VARIANT),
+    label: category.labels[DEFAULT_LOCALE],
+    description: category.descriptions[DEFAULT_LOCALE],
+  })),
+  uniqBy((category) => category.id),
+  sortBy((category) => category.label),
+);
+
+export function getCategories(claim: IEnhancedClaimReport): IEditCategory[] {
+  const { dictionary } = claim;
+  const actionAssertion = claim.assertions.find(
+    (x) => x.label === ACTION_ASSERTION_LABEL,
+  );
+  const actions = actionAssertion?.data?.actions;
+  if (dictionary && actions) {
+    return processCategories(
+      actions.map((action) =>
+        translateActionName(dictionary, action[ACTION_ID_KEY]),
+      ),
+    );
+  }
+
+  throw new Error(ClaimError.InvalidActionAssertion);
+}
+
+/**
+ * Gets the title for the claim/ingredient
+ */
 export function getTitle(item: ViewableItem) {
   return item.type === 'claim' ? item.asset.title : item.title;
 }
 
+export function getProducer(claim: IEnhancedClaimReport) {
+  const assertion = claim.assertions.find(
+    (x) => x.label === IDENTITY_ASSERTION_LABEL,
+  );
+  const display = assertion?.data?.display;
+  if (display) {
+    return display;
+  }
+
+  throw new Error(ClaimError.InvalidActionAssertion);
+}
+
+export function getRecorder(claim: IEnhancedClaimReport) {
+  try {
+    const [softwareName] = claim.recorder.split('(');
+    return softwareName.trim();
+  } catch (err) {
+    return 'Unknown';
+  }
+}
+
+export function getSignatureIssuer(claim: IEnhancedClaimReport) {
+  return claim.signature.issuer;
+}
+
+export function getSignatureDate(claim: IEnhancedClaimReport) {
+  const value = claim.signature.time;
+  if (value) {
+    return asDate(value);
+  }
+  return null;
+}
+
+/**
+ * Enhances the asset returned from the toolkit with a blob URL generated from the binary thumbnail data
+ *
+ * @param asset The asset data to enhance
+ * @param thumbnailUrls Mutable list of URLs generated so that we can clean previous blob URLs properly
+ */
 function enhanceAsset(asset: IAsset, thumbnailUrls: string[]): IEnhancedAsset {
   const thumbnailUrl = thumbnailToBlobUrl(asset.thumbnail);
   thumbnailUrls.push(thumbnailUrl);
@@ -95,11 +206,39 @@ function enhanceIngredients(
   });
 }
 
-function enhanceClaim(
+async function fetchDictionaryUrl(url: string): Promise<IDictionary | null> {
+  const res = await fetch(url, {
+    credentials: 'omit',
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+  if (res.ok) {
+    return res.json();
+  }
+  return null;
+}
+
+const loadDictionaryUrl = pMemoize(fetchDictionaryUrl);
+
+async function loadDictionary(
+  claim: IClaimReport,
+): Promise<IDictionary | null> {
+  const actionAssertion = claim.assertions.find(
+    (x) => x.label === ACTION_ASSERTION_LABEL,
+  );
+  const dictionaryUrl = actionAssertion?.data?.dictionary;
+  if (dictionaryUrl) {
+    return loadDictionaryUrl(dictionaryUrl);
+  }
+  return null;
+}
+
+async function enhanceClaim(
   report: IStoreReport,
   claimId: string,
   thumbnailUrls: string[],
-): IEnhancedClaimReport {
+): Promise<IEnhancedClaimReport> {
   const claim = report.claims[claimId];
 
   return {
@@ -108,6 +247,7 @@ function enhanceClaim(
     ingredients: enhanceIngredients(claimId, claim.ingredients, thumbnailUrls),
     type: 'claim',
     id: claimId,
+    dictionary: await loadDictionary(claim),
   };
 }
 
@@ -115,14 +255,20 @@ function enhanceClaim(
  * This updates the report with type hints and identifiers to make it easier to
  * reference claims and ingredients throughout the app.
  */
-export function enhanceReport(report: IStoreReport): IEnhancedStoreReport {
+export async function enhanceReport(
+  report: IStoreReport,
+): Promise<IEnhancedStoreReport> {
   const thumbnailUrls: string[] = [];
+  const claimPairs = toPairs(report.claims);
+  const enhancedClaimsPromises = claimPairs.map(([claimId]) =>
+    enhanceClaim(report, claimId, thumbnailUrls),
+  );
+  const enhancedClaims = await Promise.all(enhancedClaimsPromises);
+  const claimIds = claimPairs.map(([claimId]) => claimId);
 
   return {
     head: report.head,
-    claims: mapValues(report.claims, (_, claimId) =>
-      enhanceClaim(report, claimId, thumbnailUrls),
-    ),
+    claims: zipObject(claimIds, enhancedClaims),
     thumbnailUrls: compact(thumbnailUrls),
   };
 }

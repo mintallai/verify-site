@@ -53,7 +53,7 @@
   // $: hasErrors = !!$errorsByIdentifier[asset?.id]?.length;
   $: hasErrors = false;
   $: isCurrent = asset?.id === $primaryId;
-  $: title = getTitle(asset);
+  $: title = asset ? getTitle(asset) : '';
   $: compare = isCompareSelectMode && !isCurrent;
   $: {
     if (isCurrent) {
@@ -104,7 +104,7 @@
         <dd class="file-name" {title}>{title}</dd>
       </dl>
     {:else if source}
-      <Thumbnail src={source.data} selected={current} />
+      <Thumbnail src={source.dataUrl} selected={current} />
       <dl class="attributes multiline overflow-hidden self-center pr-2">
         <dt>File Name</dt>
         <dd class="file-name" title={source.name}>{source.name}</dd>

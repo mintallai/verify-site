@@ -1,10 +1,11 @@
 <script lang="ts">
   import cssVars from 'svelte-css-vars';
   import partial from 'lodash/partial';
-  import { isMobileViewerShown } from '../../../stores';
+  import { storeReport, isMobileViewerShown } from '../../../stores';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
   import type { ViewableItem } from '../../../lib/types'
+  import { getThumbnailUrlForId, getTitle } from '../../../lib/claim';
 
   enum Layout {
     Stacked = 'stacked',
@@ -58,8 +59,8 @@
 >
   <div class="primary thumbnail" class:invisible={!layout}>
     <img
-      use:tippy={{ content: primary.title, ...tippyOpts }}
-      src={primary.thumbnail_url}
+      use:tippy={{ content: getTitle(primary), ...tippyOpts }}
+      src={getThumbnailUrlForId($storeReport, primary.id)}
       alt=""
       on:load={partial(processImage, 'primary')}
     />
@@ -67,8 +68,8 @@
   <div class="divider" />
   <div class="secondary thumbnail" class:invisible={!layout}>
     <img
-      use:tippy={{ content: secondary.title, ...tippyOpts }}
-      src={secondary.thumbnail_url}
+      use:tippy={{ content: getTitle(secondary), ...tippyOpts }}
+      src={getThumbnailUrlForId($storeReport, secondary.id)}
       alt=""
       on:load={partial(processImage, 'secondary')}
     />
