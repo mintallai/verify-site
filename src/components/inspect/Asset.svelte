@@ -8,7 +8,7 @@
   } from '../../stores';
   import Thumbnail from './Thumbnail.svelte';
   import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
-  import { getThumbnailForId, getTitle } from '../../lib/claim';
+  import { getThumbnailUrlForId, getTitle } from '../../lib/claim';
   import '@contentauth/web-components/dist/components/Tooltip';
   import type { ViewableItem } from '../../lib/types';
 
@@ -94,7 +94,7 @@
     {/if}
     {#if asset}
       <Thumbnail
-        src={getThumbnailForId($storeReport, asset.id)}
+        src={getThumbnailUrlForId($storeReport, asset.id)}
         selected={current}
         badge={badge.type}
         badgehelptext={badge.helpText}

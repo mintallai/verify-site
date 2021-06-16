@@ -1,18 +1,9 @@
 import { readable, writable, derived, get } from 'svelte/store';
-import toposort from 'toposort';
-import size from 'lodash/size';
-import omit from 'lodash/omit';
-import reduce from 'lodash/reduce';
-import reduceDeep from 'deepdash/reduceDeep';
-import mapValues from 'lodash/mapValues';
 import { local } from 'store2';
-import { enhanceClaim, getIdentifier, resolveId } from './lib/claim';
-import { arrayBufferToBlobUrl } from './lib/util/data';
+import { enhanceReport, resolveId } from './lib/claim';
 import { logVerificationErrors } from './lib/util/debug';
 import type {
-  IEnhancedClaimReport,
   IEnhancedStoreReport,
-  IStoreReport,
   IStoreReportResult,
   ViewableItem,
 } from './lib/types';
@@ -157,9 +148,14 @@ export const source = writable<ISourceInfo | null>(null, (set) => {
 });
 
 async function setSource(result: IStoreReportResult | null) {
+  const existingUrl = get(source)?.dataUrl;
+  // Clean up the previous blobURL
+  if (existingUrl && /^blob:/.test(existingUrl)) {
+    URL.revokeObjectURL(existingUrl);
+  }
   source.set({
     name: result.filename,
-    data: result.data,
+    dataUrl: URL.createObjectURL(result.data),
   });
 }
 
@@ -174,24 +170,16 @@ export const storeReport = writable<IEnhancedStoreReport | null>(
 );
 
 /**
- * This updates the report with type hints and identifiers to make it easier to
- * reference claims and ingredients throughout the app.
- */
-function enhanceReport(report: IStoreReport): IEnhancedStoreReport {
-  return {
-    head: report.head,
-    claims: mapValues(report.claims, enhanceClaim),
-  };
-}
-
-/**
  * Sets the store report of the loaded asset.
  * @param data Data provided by on of the `getStore*` toolkit functions, or `null` to clear the existing info, and show the upload screen
  */
 export async function setStoreReport(result: IStoreReportResult) {
-  let data = result?.storeReport;
-  // Grab map of references, since we may need to look up a claim title from
-  // refs in the case of an acquisition
+  // Clean up existing store report
+  const existingThumbnails = get(storeReport)?.thumbnailUrls ?? [];
+  existingThumbnails.forEach((dataUrl) => URL.revokeObjectURL(dataUrl));
+
+  // Set new data and set source information
+  const data = result?.storeReport;
   setSource(result);
   if (data) {
     const enhancedReport = enhanceReport(data);

@@ -13,7 +13,7 @@
     CompareMode,
     isMobileViewerShown,
   } from '../../stores';
-  import { getBreadcrumbList } from '../../lib/claim';
+  import { getBreadcrumbList, getThumbnailUrlForId, getTitle } from '../../lib/claim';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
   import '@spectrum-web-components/tabs/sp-tabs.js';
@@ -81,8 +81,8 @@
         {#each breadcrumbList as asset, _ ({ id: asset.id, ctx: 'menu-item' })}
           <sp-menu-item value={asset.id} class="checkbox-pos">
             <div class="menu-item pointer-events-none">
-              <cai-thumbnail  />
-              <div class="ml-2 text-100">{asset.title}</div>
+              <Thumbnail src={getThumbnailUrlForId($storeReport, asset.id)} />
+              <div class="ml-2 text-100">{getTitle(asset)}</div>
             </div>
           </sp-menu-item>
         {/each}
@@ -92,7 +92,7 @@
       <Icon size="s" name="ChevronRight" class="text-gray-800" />
     </div>
     <div class="breadcrumb-item" class:current={true}>
-      {$primaryAsset.title}
+      {getTitle($primaryAsset)}
     </div>
   {:else if homeId || noMetadata}
     {#if noMetadata && source}
@@ -111,7 +111,7 @@
           class:current={asset.id === $primaryId}
           on:click={() => navigateToId(asset.id)}
         >
-          {asset.title}
+          {getTitle(asset)}
         </div>
       {/each}
     {/if}

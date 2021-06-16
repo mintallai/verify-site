@@ -107,5 +107,5 @@ declare interface IErrorIdentifierMap {
 
 declare interface ISourceInfo {
   name: string;
-  data: Blob;
+  dataUrl: string;
 }

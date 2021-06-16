@@ -1,11 +1,16 @@
+import compact from 'lodash/compact';
+import mapValues from 'lodash/mapValues';
 import type {
   IClaimReport,
   IEnhancedClaimReport,
   IEnhancedIngredient,
   IIngredient,
+  IStoreReport,
   IEnhancedStoreReport,
   ViewableItem,
   IThumbnail,
+  IEnhancedAsset,
+  IAsset,
 } from './types';
 
 const ingredientIdRegExp = /^(\S+)\[(\d+)\]$/;
@@ -34,29 +39,30 @@ export function resolveId(
   return store.claims[id];
 }
 
-export function thumbnailToBlob(thumbnail: IThumbnail): Blob | null {
+export function thumbnailToBlobUrl(thumbnail: IThumbnail): string | null {
   if (thumbnail) {
     const buffer = Uint8Array.from(thumbnail.image);
-    return new Blob([buffer], { type: thumbnail.format });
+    const blob = new Blob([buffer], { type: thumbnail.format });
+    return URL.createObjectURL(blob);
   }
 
   return null;
 }
 
-export function getThumbnailForId(
+export function getThumbnailUrlForId(
   store: IEnhancedStoreReport,
   id: string,
-): Blob | null {
+): string | null {
   const item = resolveId(store, id);
   if (item.type === 'claim') {
-    return thumbnailToBlob(item.asset.thumbnail);
+    return item.asset.thumbnailUrl;
   }
   if (item.type === 'ingredient') {
     if (item.provenance) {
       // If this has a claim, return the asset for that claim
-      return getThumbnailForId(store, item.provenance);
+      return getThumbnailUrlForId(store, item.provenance);
     }
-    return thumbnailToBlob(item.thumbnail);
+    return item.thumbnailUrl;
   }
 }
 
@@ -64,28 +70,60 @@ export function getTitle(item: ViewableItem) {
   return item.type === 'claim' ? item.asset.title : item.title;
 }
 
-export function enhanceIngredients(
-  ingredients: IIngredient[],
+function enhanceAsset(asset: IAsset, thumbnailUrls: string[]): IEnhancedAsset {
+  const thumbnailUrl = thumbnailToBlobUrl(asset.thumbnail);
+  thumbnailUrls.push(thumbnailUrl);
+
+  return { ...asset, thumbnailUrl };
+}
+
+function enhanceIngredients(
   claimId: string,
+  ingredients: IIngredient[],
+  thumbnailUrls: string[],
 ): IEnhancedIngredient[] {
   return ingredients.map((ingredient, idx) => {
+    const thumbnailUrl = thumbnailToBlobUrl(ingredient.thumbnail);
+    thumbnailUrls.push(thumbnailUrl);
+
     return {
       ...ingredient,
       type: 'ingredient',
       id: `${claimId}[${idx}]`,
+      thumbnailUrl,
     };
   });
 }
 
-export function enhanceClaim(
-  claim: IClaimReport,
+function enhanceClaim(
+  report: IStoreReport,
   claimId: string,
+  thumbnailUrls: string[],
 ): IEnhancedClaimReport {
+  const claim = report.claims[claimId];
+
   return {
     ...claim,
-    ingredients: enhanceIngredients(claim.ingredients, claimId),
+    asset: enhanceAsset(claim.asset, thumbnailUrls),
+    ingredients: enhanceIngredients(claimId, claim.ingredients, thumbnailUrls),
     type: 'claim',
     id: claimId,
+  };
+}
+
+/**
+ * This updates the report with type hints and identifiers to make it easier to
+ * reference claims and ingredients throughout the app.
+ */
+export function enhanceReport(report: IStoreReport): IEnhancedStoreReport {
+  const thumbnailUrls: string[] = [];
+
+  return {
+    head: report.head,
+    claims: mapValues(report.claims, (_, claimId) =>
+      enhanceClaim(report, claimId, thumbnailUrls),
+    ),
+    thumbnailUrls: compact(thumbnailUrls),
   };
 }
 

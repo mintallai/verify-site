@@ -93,10 +93,6 @@
   .burger-menu a:last-of-type {
     @apply border-none;
   }
-  cai-icon-adobe {
-    --cai-icon-width: 24px;
-    --cai-icon-height: 24px;
-  }
   @screen md {
     .full-menu {
       @apply block;

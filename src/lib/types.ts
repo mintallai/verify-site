@@ -107,18 +107,24 @@ export interface IStoreReportResult {
   file?: File;
   url?: string;
   filename: string;
-  data?: Blob;
+  data: Blob;
 }
 
 // Types for Verify
+export interface IEnhancedAsset extends IAsset {
+  thumbnailUrl: string | null;
+}
+
 export interface IEnhancedIngredient extends IIngredient {
   type: 'ingredient';
   id: string;
+  thumbnailUrl: string | null;
 }
 
 export interface IEnhancedClaimReport extends IClaimReport {
   type: 'claim';
   id: string;
+  asset: IEnhancedAsset;
   ingredients: IEnhancedIngredient[];
 }
 
@@ -126,6 +132,7 @@ export interface IEnhancedStoreReport extends IStoreReport {
   claims: {
     [claimID: string]: IEnhancedClaimReport;
   };
+  thumbnailUrls: string[];
 }
 
 export type ViewableItem = IEnhancedClaimReport | IEnhancedIngredient;

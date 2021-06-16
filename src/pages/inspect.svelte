@@ -30,7 +30,7 @@
     isMobileViewerShown,
   } from '../stores';
   import type { ViewableItem } from '../lib/types'
-import { getThumbnailForId } from '../lib/claim';
+import { getThumbnailUrlForId } from '../lib/claim';
 
   function handleClose(navigateToAsset: ViewableItem) {
     navigateToId(navigateToAsset.id);
@@ -183,7 +183,7 @@ import { getThumbnailForId } from '../lib/claim';
       <section class="left-col">
         <ContentCredentials {source} />
       </section>
-      <Viewer thumbnail={source.data} isDragging={isDraggingOver} />
+      <Viewer thumbnailUrl={source.data} isDragging={isDraggingOver} />
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
@@ -212,7 +212,7 @@ import { getThumbnailForId } from '../lib/claim';
         <Comparison {primary} {secondary} />
       {:else}
         <Viewer
-          thumbnail={getThumbnailForId($storeReport, primary.id)}
+          thumbnailUrl={getThumbnailUrlForId($storeReport, primary.id)}
           isDragging={isDraggingOver}
         />
       {/if}
