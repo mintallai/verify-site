@@ -30,7 +30,7 @@
   let element: HTMLElement;
   let categories: IEditCategory[] = [];
   let producer: string = '';
-  let structureError;
+  let structureError: Error;
 
   $: isOriginal = claim.ingredients.length === 0;
   $: secureCapture = isSecureCapture(claim);
@@ -80,7 +80,7 @@
         />
       </cai-panel-content-producer>
     </div>
-    {#if !(structureError.message === ClaimError.InvalidActionAssertion)}
+    {#if !(structureError?.message === ClaimError.InvalidActionAssertion)}
       <div>
         <cai-panel-edits-activity
           {categories}

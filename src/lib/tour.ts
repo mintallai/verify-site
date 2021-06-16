@@ -36,8 +36,9 @@ function createComponent(tour, props) {
 
 // FIXME: Do the right thing for tours
 function getParentRef(storeReport: IEnhancedStoreReport) {
-  const rootClaim = summary?.claims[summary.root_claim_id];
-  return rootClaim?.references.find((x) => x.type === 'parent' && !!x.claim_id);
+  const { claims, head } = storeReport;
+  const rootClaim = claims[head];
+  return rootClaim?.ingredients.find((x) => x.is_parent && !!x.provenance);
 }
 
 async function gotoRootClaim(storeReport: IEnhancedStoreReport) {
@@ -46,10 +47,10 @@ async function gotoRootClaim(storeReport: IEnhancedStoreReport) {
 }
 
 async function gotoParentClaim(storeReport: IEnhancedStoreReport) {
-  const parentRef = getParentRef(summary);
+  const parentRef = getParentRef(storeReport);
   if (parentRef) {
     secondaryId.set('');
-    navigateToId(`claim_id:${parentRef.claim_id}`, false, false);
+    navigateToId(parentRef.id, false, false);
     await delay(DELAY_MS);
   }
 }
@@ -57,8 +58,8 @@ async function gotoParentClaim(storeReport: IEnhancedStoreReport) {
 async function gotoCompare(storeReport: IEnhancedStoreReport) {
   const parentRef = getParentRef(storeReport);
   if (parentRef) {
-    navigateToId(`claim_id:${parentRef.claim_id}`, false, false);
-    compareWithId(`claim_id:${storeReport.root_claim_id}`, false);
+    navigateToId(parentRef.id, false, false);
+    compareWithId(storeReport.head, false);
     await delay(DELAY_MS);
   }
 }

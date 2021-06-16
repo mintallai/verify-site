@@ -69,6 +69,11 @@ export function thumbnailToBlobUrl(thumbnail: IThumbnail): string | null {
   return null;
 }
 
+/**
+ * Gets the thumbnail URL for a particular ID. We need this function instead of always
+ * using thumbnailUrl since ingredients with claims will reference the thumbnail of the claim
+ * instead of storing it with the ingredient.
+ */
 export function getThumbnailUrlForId(
   store: IEnhancedStoreReport,
   id: string,
@@ -90,6 +95,9 @@ interface IDictionaryCategoryWithId extends IDictionaryCategory {
   id: string;
 }
 
+/**
+ * Uses the dictionary to translate an action name into category information
+ */
 export function translateActionName(
   dictionary: IDictionary,
   actionId: string,
@@ -106,6 +114,10 @@ export function translateActionName(
   return null;
 }
 
+/**
+ * Pipeline to convert categories from the dictionary into a structure suitable for the
+ * edits and activity web component. This also makes sure the categories are unique and sorted.
+ */
 const processCategories = flow(
   compact,
   map<IDictionaryCategoryWithId, IEditCategory>((category) => ({
@@ -118,6 +130,11 @@ const processCategories = flow(
   sortBy((category) => category.label),
 );
 
+/**
+ * Gets the list of actions from the claim's action assertion and runs them through the
+ * dictionary to get information needed to render the associated categories in the
+ * "Edits and activity" section.
+ */
 export function getCategories(claim: IEnhancedClaimReport): IEditCategory[] {
   const { dictionary } = claim;
   const actionAssertion = claim.assertions.find(
@@ -136,12 +153,15 @@ export function getCategories(claim: IEnhancedClaimReport): IEditCategory[] {
 }
 
 /**
- * Gets the title for the claim/ingredient
+ * Gets the title for the claim or ingredient
  */
 export function getTitle(item: ViewableItem) {
   return item.type === 'claim' ? item.asset.title : item.title;
 }
 
+/**
+ * Gets the producer from the identity assertion in the claim
+ */
 export function getProducer(claim: IEnhancedClaimReport) {
   const assertion = claim.assertions.find(
     (x) => x.label === IDENTITY_ASSERTION_LABEL,
@@ -154,6 +174,9 @@ export function getProducer(claim: IEnhancedClaimReport) {
   throw new Error(ClaimError.InvalidActionAssertion);
 }
 
+/**
+ * Gets information on the software that created this claim from the `recorder` field
+ */
 export function getRecorder(claim: IEnhancedClaimReport) {
   try {
     const [softwareName] = claim.recorder.split('(');
@@ -163,10 +186,16 @@ export function getRecorder(claim: IEnhancedClaimReport) {
   }
 }
 
+/**
+ * Gets the entity that issued this claim
+ */
 export function getSignatureIssuer(claim: IEnhancedClaimReport) {
   return claim.signature.issuer;
 }
 
+/**
+ * Gets the date corresponding to the signature time
+ */
 export function getSignatureDate(claim: IEnhancedClaimReport) {
   const value = claim.signature.time;
   if (value) {
@@ -188,6 +217,15 @@ function enhanceAsset(asset: IAsset, thumbnailUrls: string[]): IEnhancedAsset {
   return { ...asset, thumbnailUrl };
 }
 
+/**
+ * Enhances the ingredients array from the claim with a unique ID (used in `resolveId`) and a
+ * blob URL generated from the binary thumbnail data
+ *
+ * @param claimId The ID of the claim that the ingredients belong to
+ * @param ingredients The ingredients array from the claim
+ * @param thumbnailUrls Mutable list of URLs generated so that we can clean previous blob URLs properly
+ * @returns
+ */
 function enhanceIngredients(
   claimId: string,
   ingredients: IIngredient[],
@@ -206,6 +244,14 @@ function enhanceIngredients(
   });
 }
 
+/**
+ * Fetches the data from the dictionary URL contained in the action assertion
+ *
+ * **Note:** Do not use this function directly, please use `loadDictionary`
+ * so that repeated calls are cached.
+ *
+ * @param url The URL to fetch
+ */
 async function fetchDictionaryUrl(url: string): Promise<IDictionary | null> {
   const res = await fetch(url, {
     credentials: 'omit',
@@ -219,8 +265,13 @@ async function fetchDictionaryUrl(url: string): Promise<IDictionary | null> {
   return null;
 }
 
-const loadDictionaryUrl = pMemoize(fetchDictionaryUrl);
+const cachedFetchDictionaryUrl = pMemoize(fetchDictionaryUrl);
 
+/**
+ * Loads the dictionary data specified in the claim's action assertion. This is used
+ * to translate the actions in the actions assertion to category information to be used
+ * in the "Edits and activity" section.
+ */
 async function loadDictionary(
   claim: IClaimReport,
 ): Promise<IDictionary | null> {
@@ -229,11 +280,22 @@ async function loadDictionary(
   );
   const dictionaryUrl = actionAssertion?.data?.dictionary;
   if (dictionaryUrl) {
-    return loadDictionaryUrl(dictionaryUrl);
+    return cachedFetchDictionaryUrl(dictionaryUrl);
   }
   return null;
 }
 
+/**
+ * Enhances the claim from the store report with:
+ * - a unique ID (used in `resolveId`)
+ * - an enhanced asset structure (see `enhanceAssets`)
+ * - enhanced ingredients (see `enhanceIngredients`)
+ * - an associated dictionary
+ *
+ * @param report The store report containing the claimId
+ * @param claimId The ID of the claim to process
+ * @param thumbnailUrls Mutable list of URLs generated so that we can clean previous blob URLs properly
+ */
 async function enhanceClaim(
   report: IStoreReport,
   claimId: string,
@@ -252,8 +314,10 @@ async function enhanceClaim(
 }
 
 /**
- * This updates the report with type hints and identifiers to make it easier to
+ * This creates a version of the report with type hints and identifiers to make it easier to
  * reference claims and ingredients throughout the app.
+ *
+ * @param report The store report to process
  */
 export async function enhanceReport(
   report: IStoreReport,

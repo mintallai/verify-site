@@ -147,6 +147,12 @@ export const source = writable<ISourceInfo | null>(null, (set) => {
   return () => {};
 });
 
+/**
+ * Sets the information about the source of the asset that we are inspecting, whether it
+ * is from the `source` URL parameter or a file that was dragged in.
+ *
+ * @param result The result from the `getStore*` toolkit functions
+ */
 async function setSource(result: IStoreReportResult | null) {
   const existingUrl = get(source)?.dataUrl;
   // Clean up the previous blobURL
@@ -171,7 +177,9 @@ export const storeReport = writable<IEnhancedStoreReport | null>(
 
 /**
  * Sets the store report of the loaded asset.
- * @param data Data provided by on of the `getStore*` toolkit functions, or `null` to clear the existing info, and show the upload screen
+ *
+ * @param data Data provided by on of the `getStore*` toolkit functions, or `null` to clear the
+ *             existing info, and show the upload screen
  */
 export async function setStoreReport(result: IStoreReportResult) {
   // Clean up existing store report
@@ -221,6 +229,7 @@ export function navigateToRoot(logEvent = true): void {
 }
 
 /**
+ * // FIXME: Make sure we account for this
 export const errorsByIdentifier = derived<
   [typeof summary],
   { [identifier: string]: IErrorIdentifierMap }
