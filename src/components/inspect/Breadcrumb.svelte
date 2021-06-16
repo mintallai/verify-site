@@ -1,7 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import Icon from '../Icon.svelte';
-  import Thumbnail from './Thumbnail.svelte'
   import {
     contentSourceIds,
     storeReport,
@@ -19,6 +18,7 @@
   import '@spectrum-web-components/tabs/sp-tabs.js';
   import '@spectrum-web-components/tabs/sp-tab.js';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
+  import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@spectrum-web-components/action-menu/sp-action-menu.js';
   import '@spectrum-web-components/menu/sp-menu.js';
@@ -81,7 +81,7 @@
         {#each breadcrumbList as asset, _ ({ id: asset.id, ctx: 'menu-item' })}
           <sp-menu-item value={asset.id} class="checkbox-pos">
             <div class="menu-item pointer-events-none">
-              <Thumbnail src={getThumbnailUrlForId($storeReport, asset.id)} />
+              <cai-thumbnail src={getThumbnailUrlForId($storeReport, asset.id)} class="theme-spectrum" />
               <div class="ml-2 text-100">{getTitle(asset)}</div>
             </div>
           </sp-menu-item>

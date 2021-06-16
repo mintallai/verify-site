@@ -6,9 +6,9 @@
     compareWithId,
     primaryId,
   } from '../../stores';
-  import Thumbnail from './Thumbnail.svelte';
   import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
   import { getThumbnailUrlForId, getTitle } from '../../lib/claim';
+  import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
   import type { ViewableItem } from '../../lib/types';
 
@@ -93,18 +93,23 @@
       </div>
     {/if}
     {#if asset}
-      <Thumbnail
+      <cai-thumbnail
         src={getThumbnailUrlForId($storeReport, asset.id)}
         selected={current}
         badge={badge.type}
         badgehelptext={badge.helpText}
+        class="theme-spectrum"
       />
       <dl class="attributes multiline overflow-hidden self-center pr-2">
         <dt>File Name</dt>
         <dd class="file-name" {title}>{title}</dd>
       </dl>
     {:else if source}
-      <Thumbnail src={source.dataUrl} selected={current} />
+      <cai-thumbnail
+        src={source.dataUrl}
+        selected={current}
+        class="theme-spectrum"
+      />
       <dl class="attributes multiline overflow-hidden self-center pr-2">
         <dt>File Name</dt>
         <dd class="file-name" title={source.name}>{source.name}</dd>
