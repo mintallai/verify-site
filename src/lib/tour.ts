@@ -34,7 +34,6 @@ function createComponent(tour, props) {
   return component.getElement();
 }
 
-// FIXME: Do the right thing for tours
 function getParentRef(storeReport: IEnhancedStoreReport) {
   const { claims, head } = storeReport;
   const rootClaim = claims[head];
