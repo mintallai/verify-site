@@ -64,7 +64,7 @@ import { getThumbnailUrlForId } from '../lib/claim';
     if (tour && tour.isActive() && isMobileViewer) {
       tour.cancel();
     }
-    // Clear errors if a summary has changed
+    // Clear errors if the store report has changed
     if ($storeReport !== undefined) {
       error = null;
     }

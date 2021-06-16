@@ -3,7 +3,6 @@
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Alert from './Alert.svelte';
-  import { isSecureCapture } from '../lib/demo';
   import { navigateToId, compareWithId, storeReport } from '../stores';
   import {
     getCategories,
@@ -31,9 +30,9 @@
   let categories: IEditCategory[] = [];
   let producer: string = '';
   let structureError: Error;
+  let secureCapture = false;
 
   $: isOriginal = claim.ingredients.length === 0;
-  $: secureCapture = isSecureCapture(claim);
   $: {
     try {
       categories = getCategories(claim);

@@ -1,7 +1,6 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { enhanceReport, resolveId } from './lib/claim';
-import { logVerificationErrors } from './lib/util/debug';
 import type {
   IEnhancedStoreReport,
   IStoreReportResult,
@@ -153,7 +152,7 @@ export const source = writable<ISourceInfo | null>(null, (set) => {
  *
  * @param result The result from the `getStore*` toolkit functions
  */
-async function setSource(result: IStoreReportResult | null) {
+async function setSource(result: IStoreReportResult) {
   const existingUrl = get(source)?.dataUrl;
   // Clean up the previous blobURL
   if (existingUrl && /^blob:/.test(existingUrl)) {
@@ -188,7 +187,9 @@ export async function setStoreReport(result: IStoreReportResult) {
 
   // Set new data and set source information
   const data = result?.storeReport;
-  setSource(result);
+  if (result) {
+    setSource(result);
+  }
   if (data) {
     const enhancedReport = await enhanceReport(data);
     console.info('Store report', enhancedReport);
@@ -196,16 +197,9 @@ export async function setStoreReport(result: IStoreReportResult) {
     storeReport.set(enhancedReport);
     navigateToRoot();
   } else if (data === false) {
-    summary.set(null);
+    storeReport.set(null);
   }
 }
-
-/**
- * Contains the current claim summary of the loaded asset.
- */
-export const summary = writable<ISummaryResponse | null>(null, (set) => {
-  return () => {};
-});
 
 /**
  * Calculates the root claim ID (the ID of the latest claim) contained in the store report.

@@ -40,7 +40,8 @@ export enum ClaimError {
  * We should be able to access every claim/ingredient in one of two ways:
  *
  * - Claims should be able to be accessed by their ID, e.g. `mEiBD6JdB/na1TIxvcw9HMkbo6stDkkiNFcy8Lsp3oW5yOw`
- * - Ingredients should be able to be accessed by their ID and index, e.g. `mEiBD6JdB/na1TIxvcw9HMkbo6stDkkiNFcy8Lsp3oW5yOw[0]`
+ * - Ingredients should be able to be accessed by their associated claim ID and index,
+ *   e.g. `mEiBD6JdB/na1TIxvcw9HMkbo6stDkkiNFcy8Lsp3oW5yOw[0]`
  */
 export function resolveId(
   store: IEnhancedStoreReport,

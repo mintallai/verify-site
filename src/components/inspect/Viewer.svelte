@@ -5,7 +5,7 @@
   import CircleLoader from '../CircleLoader.svelte';
   import {
     urlParams,
-    summary,
+    storeReport,
     source,
     isMobileViewerShown,
   } from '../../stores';
@@ -32,7 +32,7 @@
     height: side,
   };
   $: urlSource = $urlParams.source;
-  $: uploadMode = (!urlSource && !$source && !$summary) || isDragging;
+  $: uploadMode = (!urlSource && !$source && !$storeReport) || isDragging;
 
   function browseFile() {
     fileInput.click();
@@ -69,7 +69,7 @@
             height={99}
             class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}"
           />
-          {#if $source || $summary}
+          {#if $source || $storeReport}
             <div class="message-heading">Drop your file</div>
           {:else}
             <div class="message-heading">Drag and drop your file</div>

@@ -10,12 +10,12 @@
     isCompareSelectMode,
   } from '../../stores';
   import { getAssetList, getBreadcrumbList } from '../../lib/claim';
-  import { isSecureCapture } from '../../lib/demo';
   import type { IEnhancedClaimReport } from '../../lib/types';
 
   export let claim: IEnhancedClaimReport | null = null;
   export let source: ISourceInfo | null = null;
   let container: any;
+  let secureCapture: false;
 
   $: assetList = claim ? getAssetList($storeReport, claim.id) : [];
   $: breadcrumbList = getBreadcrumbList($storeReport, $contentSourceIds);
@@ -64,7 +64,7 @@
       </div>
     </div>
   </div>
-  {#if isSecureCapture(claim)}
+  {#if secureCapture}
     <div class="mx-4">
       <OriginalCreation type="secureCapture" {claim} />
     </div>
