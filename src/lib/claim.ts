@@ -60,6 +60,12 @@ export function resolveId(
   return store.claims[id];
 }
 
+/**
+ * Converts an IThumbnail mime-type/uint array to a blob URL so we can work with thumbnails easier
+ * across the application (i.e. just feed the blob URLs directly into `img` tags)
+ *
+ * @param thumbnail Thumnail object from the store report data structure to convert
+ */
 export function thumbnailToBlobUrl(thumbnail: IThumbnail): string | null {
   if (thumbnail) {
     const buffer = Uint8Array.from(thumbnail.image);
