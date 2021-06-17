@@ -25,11 +25,12 @@ import debug from 'debug';
 
 const dbg = debug('claim');
 
-const ACTION_ASSERTION_LABEL = 'cai.actions';
+const ACTION_ASSERTION_LABEL = 'cai.actions.v2';
 const ACTION_ID_KEY = 'stEvt:parameters';
-const IDENTITY_ASSERTION_LABEL = 'cai.identity';
+const IDENTITY_ASSERTION_LABEL = 'cai.identity.v1';
 const DEFAULT_LOCALE = 'en-US';
 const DEFAULT_ICON_VARIANT = 'dark';
+const UNCATEGORIZED_ID = 'UNCATEGORIZED';
 const ingredientIdRegExp = /^(\S+)\[(\d+)\]$/;
 
 export enum ClaimError {
@@ -111,7 +112,10 @@ export function translateActionName(
   dictionary: IDictionary,
   actionId: string,
 ): IDictionaryCategoryWithId {
-  const categoryId = dictionary.actions[actionId]?.category ?? 'UNCATEGORIZED';
+  const categoryId = dictionary.actions[actionId]?.category ?? UNCATEGORIZED_ID;
+  if (categoryId === UNCATEGORIZED_ID) {
+    dbg('Could not find category for actionId', actionId);
+  }
   // TODO: Use proper locale
   const category = dictionary.categories[categoryId];
   if (category) {
@@ -131,9 +135,9 @@ const processCategories = flow(
   compact,
   map<IDictionaryCategoryWithId, IEditCategory>((category) => ({
     id: category.id,
-    icon: category.icon.replace('{variant}', DEFAULT_ICON_VARIANT),
-    label: category.labels[DEFAULT_LOCALE],
-    description: category.descriptions[DEFAULT_LOCALE],
+    icon: category.icon?.replace('{variant}', DEFAULT_ICON_VARIANT),
+    label: category.labels?.[DEFAULT_LOCALE],
+    description: category.descriptions?.[DEFAULT_LOCALE],
   })),
   uniqBy((category) => category.id),
   sortBy((category) => category.label),

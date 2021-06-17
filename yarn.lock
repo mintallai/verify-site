@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@contentauth/toolkit@0.2.0-alpha.6":
-  version "0.2.0-alpha.6"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.2.0-alpha.6/65c112055fe596896047b30eed220906258d44535509b26c0996af41e4b5134d#ad92b65a362287b0162cd3d68edca3a89d42bf8d"
-  integrity sha512-+hlsV4izt/0OiVUHEw9VMpi9i/nOvKirvW5yzT/qIcKTFSiKAeLD9a09gISEVhbfqT9VDe+96dFg8z5AdhCc0g==
+"@contentauth/toolkit@0.2.0-alpha.9":
+  version "0.2.0-alpha.9"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.2.0-alpha.9/1b845461181d04fd49d42ce922119090ff5699804e9d9e3c457f437da87663c9#869c9c895e7baa3cf90d17f28775611ea2db3fdf"
+  integrity sha512-c86TVjkJ7Lcgm747V4dswupASdybs8+aJvmtBKcGIp+JQ3DwNTfTYQ/sElbSsD074Mvw6r2TzwjZK1AXWzWMVw==
 
 "@contentauth/web-components@0.2.0-alpha.19":
   version "0.2.0-alpha.19"

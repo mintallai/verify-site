@@ -22,6 +22,9 @@
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
   import type { IEditCategory, IEnhancedClaimReport } from '../lib/types';
+  import debug from 'debug';
+
+  const dbg = debug('about');
 
   export let claim: IEnhancedClaimReport;
   export let isComparing: boolean = false;
@@ -37,8 +40,9 @@
     structureError = null;
     try {
       categories = getCategories(claim);
-      producer = getProducer(claim)
+      producer = getProducer(claim);
     } catch (err) {
+      dbg('Got structure error', err);
       structureError = err;
     }
   }
@@ -63,7 +67,8 @@
     {#if structureError}
       <Alert severity="error">
         {#if structureError}
-          This credential is using an invalid or outdated structure, which may result in missing information.
+          This credential is using an invalid or outdated structure, which may
+          result in missing information.
         {/if}
       </Alert>
     {/if}
