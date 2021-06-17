@@ -6,6 +6,9 @@ import type {
   IStoreReportResult,
   ViewableItem,
 } from './lib/types';
+import debug from 'debug';
+
+const dbg = debug('store');
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
@@ -73,6 +76,7 @@ export const compareMode = writable<CompareMode>(
  * @param mode CompareMode
  */
 export function setCompareMode(mode: CompareMode) {
+  dbg('Setting compare mode to', mode);
   compareMode.set(mode);
   local.set(STORAGE_MODE_KEY, mode);
   window.newrelic?.addPageAction('setCompareMode', { compareMode: mode });
@@ -98,6 +102,10 @@ export function navigateToId(
   clearBreadcrumbs = false,
   logEvent = true,
 ): void {
+  dbg('Navigating to id', newId, {
+    clearBreadcrumbs,
+    contentSourceIds: get(contentSourceIds),
+  });
   const currId = get(primaryId);
   contentSourceIds.update((ids) => {
     if (clearBreadcrumbs) {
@@ -129,6 +137,7 @@ export function navigateToId(
  * @param logEvent `true` to log this event in New Relic
  */
 export function compareWithId(id: string, logEvent = true): void {
+  dbg('Comparing with', id);
   secondaryId.set(id);
   scrollTo(0, 0);
   if (logEvent) {
@@ -152,16 +161,24 @@ export const source = writable<ISourceInfo | null>(null, (set) => {
  *
  * @param result The result from the `getStore*` toolkit functions
  */
-async function setSource(result: IStoreReportResult) {
+async function setSource(result: IStoreReportResult | null) {
   const existingUrl = get(source)?.dataUrl;
   // Clean up the previous blobURL
   if (existingUrl && /^blob:/.test(existingUrl)) {
+    dbg('Disposing previous source URL', existingUrl);
     URL.revokeObjectURL(existingUrl);
   }
-  source.set({
-    name: result.filename,
-    dataUrl: URL.createObjectURL(result.data),
-  });
+  if (result) {
+    const newSource = {
+      name: result.filename,
+      dataUrl: URL.createObjectURL(result.data),
+    };
+    dbg('Setting source', newSource);
+    source.set(newSource);
+  } else {
+    dbg('Setting source to null');
+    source.set(null);
+  }
 }
 
 /**
@@ -174,30 +191,40 @@ export const storeReport = writable<IEnhancedStoreReport | null>(
   },
 );
 
+function disposePreviousThumbnails(thumbnailUrls: string[]) {
+  dbg('Disposing previous claim thumbnails', thumbnailUrls);
+  thumbnailUrls.forEach((dataUrl) => URL.revokeObjectURL(dataUrl));
+}
+
 /**
  * Sets the store report of the loaded asset.
  *
  * @param data Data provided by on of the `getStore*` toolkit functions, or `null` to clear the
  *             existing info, and show the upload screen
  */
-export async function setStoreReport(result: IStoreReportResult) {
-  // Clean up existing store report
-  const existingThumbnails = get(storeReport)?.thumbnailUrls ?? [];
-  existingThumbnails.forEach((dataUrl) => URL.revokeObjectURL(dataUrl));
+export async function setStoreReport(result: IStoreReportResult | null) {
+  dbg('Calling setStoreReport');
 
   // Set new data and set source information
   const data = result?.storeReport;
-  if (result) {
-    setSource(result);
+  const existingThumbnails = get(storeReport)?.thumbnailUrls ?? [];
+
+  setSource(result);
+  // If null is passed as the result, we are in the process of loading a new image
+  if (result === null) {
+    storeReport.set(null);
   }
+
   if (data) {
     const enhancedReport = await enhanceReport(data);
-    console.info('Store report', enhancedReport);
-    // logVerificationErrors(data);
+    dbg('Setting enhanced store report', enhancedReport);
     storeReport.set(enhancedReport);
+    disposePreviousThumbnails(existingThumbnails);
     navigateToRoot();
   } else if (data === false) {
+    dbg('No store report found');
     storeReport.set(null);
+    disposePreviousThumbnails(existingThumbnails);
   }
 }
 
@@ -259,7 +286,7 @@ export const primaryAsset = derived<
   [typeof storeReport, typeof primaryId],
   ViewableItem | null
 >([storeReport, primaryId], ([$storeReport, $primaryId]) => {
-  return resolveId($storeReport, $primaryId);
+  return $storeReport ? resolveId($storeReport, $primaryId) : null;
 });
 
 /**
@@ -269,5 +296,5 @@ export const secondaryAsset = derived<
   [typeof storeReport, typeof secondaryId],
   ViewableItem | null
 >([storeReport, secondaryId], ([$storeReport, $secondaryId]) => {
-  return resolveId($storeReport, $secondaryId);
+  return $storeReport ? resolveId($storeReport, $secondaryId) : null;
 });

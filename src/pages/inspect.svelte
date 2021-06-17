@@ -15,6 +15,7 @@
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
+  import { getThumbnailUrlForId } from '../lib/claim';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
@@ -29,8 +30,7 @@
     isBurgerMenuShown,
     isMobileViewerShown,
   } from '../stores';
-  import type { ViewableItem } from '../lib/types'
-import { getThumbnailUrlForId } from '../lib/claim';
+  import type { ViewableItem } from '../lib/types';
 
   function handleClose(navigateToAsset: ViewableItem) {
     navigateToId(navigateToAsset.id);

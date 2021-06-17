@@ -141,7 +141,9 @@ function baseConfig(config, ctx) {
       }),
       svelteSvg(),
       replace({
-        'process.env.NODE_ENV': production ? '"production"' : '"development"',
+        'process.env.NODE_ENV': JSON.stringify(
+          production ? 'production' : 'development',
+        ),
         __toolkit_wasm_src__:
           process.env.TOOLKIT_WASM_SRC || '/toolkit/toolkit_bg.wasm',
         __delay__: production ? '100' : '100',

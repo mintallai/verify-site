@@ -29,7 +29,6 @@ async function load() {
     const res = await fetch(`${moduleBase}/pkg/toolkit_bg.wasm`);
     const buf = await res.arrayBuffer();
     toolkit = await init(buf);
-    console.debug('Loaded CAI toolkit');
   }
 }
 

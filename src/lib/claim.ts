@@ -6,7 +6,6 @@ import sortBy from 'lodash/fp/sortBy';
 import toPairs from 'lodash/fp/toPairs';
 import zipObject from 'lodash/zipObject';
 import pMemoize from 'p-memoize';
-import { asDate } from './util/format';
 import type {
   IEnhancedClaimReport,
   IEnhancedIngredient,
@@ -22,6 +21,10 @@ import type {
   IDictionaryCategory,
   IEditCategory,
 } from './types';
+import debug from 'debug';
+import { storeReport } from '../stores';
+
+const dbg = debug('claim');
 
 const ACTION_ASSERTION_LABEL = 'cai.actions';
 const ACTION_ID_KEY = 'stEvt:parameters';
@@ -148,6 +151,7 @@ export function getCategories(claim: IEnhancedClaimReport): IEditCategory[] {
     (x) => x.label === ACTION_ASSERTION_LABEL,
   );
   const actions = actionAssertion?.data?.actions;
+  // A dictionary and actions are both available
   if (dictionary && actions) {
     return processCategories(
       actions.map((action) =>
@@ -155,8 +159,14 @@ export function getCategories(claim: IEnhancedClaimReport): IEditCategory[] {
       ),
     );
   }
-
-  throw new Error(ClaimError.InvalidActionAssertion);
+  // Action assertion exists but no dictionary URL is in the structure
+  // This would happen for images that haven't transitioned to the new
+  // dictionary setup yet
+  if (actionAssertion && !dictionary) {
+    throw new Error(ClaimError.InvalidActionAssertion);
+  }
+  // No actions or dictionary (this would happen if the producer opted out of this)
+  return [];
 }
 
 /**
@@ -174,11 +184,16 @@ export function getProducer(claim: IEnhancedClaimReport) {
     (x) => x.label === IDENTITY_ASSERTION_LABEL,
   );
   const display = assertion?.data?.display;
-  if (display) {
+  // Return the display name if we get the structure we expect
+  if (assertion && display) {
     return display;
   }
-
-  throw new Error(ClaimError.InvalidActionAssertion);
+  // The claim includes an identity assertion but not in a format we expect
+  if (assertion && !display) {
+    throw new Error(ClaimError.InvalidActionAssertion);
+  }
+  // The assertion isn't available (this would happen if the producer opted out of this)
+  return null;
 }
 
 /**
@@ -197,18 +212,14 @@ export function getRecorder(claim: IEnhancedClaimReport) {
  * Gets the entity that issued this claim
  */
 export function getSignatureIssuer(claim: IEnhancedClaimReport) {
-  return claim.signature.issuer;
+  return claim.signature?.issuer ?? null;
 }
 
 /**
  * Gets the date corresponding to the signature time
  */
 export function getSignatureDate(claim: IEnhancedClaimReport) {
-  const value = claim.signature.time;
-  if (value) {
-    return asDate(value);
-  }
-  return null;
+  return claim.signature?.time ?? null;
 }
 
 /**
@@ -260,6 +271,7 @@ function enhanceIngredients(
  * @param url The URL to fetch
  */
 async function fetchDictionaryUrl(url: string): Promise<IDictionary | null> {
+  dbg('Loading dictionary at url:', url);
   const res = await fetch(url, {
     credentials: 'omit',
     headers: {
@@ -345,25 +357,31 @@ export async function enhanceReport(
 }
 
 /**
- * Gets information for all of the claim's references (parents/ingredients). Used to list
- * information about the parents/ingredients that are part of the current claim.
+ * Gets information for all of the claim's ingredients (which now includes parents as denoted
+ * by the `is_parent` flag). This is used to list information about the parents/ingredients
+ * that are part of the current claim.
  *
- * @param claim The claim data that you want to show parent/ingredient information for
- * @param assetsByIdentifier The value of `assetsByIdentifier` in the stores file
+ * @param $storeReport The value of `storeReport` in the stores file
+ * @param claimId The claim ID to display the parents/ingredients of
  */
 export function getAssetList(
   $storeReport: IEnhancedStoreReport,
   claimId: string,
 ): ViewableItem[] {
-  const claim = resolveId($storeReport, claimId);
-  if (claim?.type === 'claim') {
-    return claim.ingredients;
+  if ($storeReport) {
+    const claim = resolveId($storeReport, claimId);
+    if (claim?.type === 'claim') {
+      return claim.ingredients;
+    }
   }
   return [];
 }
 
 /**
- * Gets information to populate the breadcrumb bar.
+ * Gets information to populate the breadcrumb bar, namely information of all of the
+ * claims/ingredients contained in the hierarchy between the head claim and the current claim/ingredient
+ * that is being viewed.
+ *
  * @param $storeReport The value of `storeReport` in the stores file
  * @param $contentSourceIds The value of `contentSourceIds` in the stores file
  */
@@ -371,5 +389,7 @@ export function getBreadcrumbList(
   $storeReport: IEnhancedStoreReport,
   $contentSourceIds: string[],
 ): ViewableItem[] {
-  return $contentSourceIds.map((id) => resolveId($storeReport, id));
+  return $storeReport
+    ? $contentSourceIds.map((id) => resolveId($storeReport, id))
+    : [];
 }

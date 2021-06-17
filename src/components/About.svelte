@@ -29,11 +29,12 @@
   let element: HTMLElement;
   let categories: IEditCategory[] = [];
   let producer: string = '';
-  let structureError: Error;
+  let structureError: Error | null = null;
   let secureCapture = false;
 
   $: isOriginal = claim.ingredients.length === 0;
   $: {
+    structureError = null;
     try {
       categories = getCategories(claim);
       producer = getProducer(claim)
@@ -101,7 +102,7 @@
           }}
           class="theme-spectrum"
         >
-          <div slot="no-references">
+          <div slot="no-assets">
             {#if isOriginal || secureCapture}
               <OriginalCreation
                 type={secureCapture ? 'secureCapture' : 'original'}

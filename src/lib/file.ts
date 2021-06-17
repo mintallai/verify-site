@@ -1,13 +1,13 @@
-import { getStoreReportFromFile, ToolkitError } from '../lib/toolkit';
+import {
+  getStoreReportFromFile,
+  isValidMimeType,
+  ToolkitError,
+} from '../lib/toolkit';
 import { setStoreReport } from '../stores';
-
-const VALID_TYPES = ['image/jpeg'];
 
 export async function processFiles(files: File[] | FileList) {
   const fileArray = Array.from(files);
-  const validFiles = fileArray.filter((file) =>
-    VALID_TYPES.includes(file.type),
-  );
+  const validFiles = fileArray.filter((file) => isValidMimeType(file.type));
   if (validFiles.length) {
     const file = validFiles[0];
     setStoreReport(null);
