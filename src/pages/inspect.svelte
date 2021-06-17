@@ -51,6 +51,8 @@
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
+  $: primaryClaim = primary && getAssociatedClaim($storeReport, primary);
+  $: secondaryClaim = secondary && getAssociatedClaim($storeReport, secondary);
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !!(source && !$storeReport);
   $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
@@ -191,9 +193,7 @@
     {:else if primary}
       <section class="left-col">
         {#if !isComparing}
-          <ContentCredentials
-            claim={getAssociatedClaim($storeReport, primary)}
-          />
+          <ContentCredentials claim={primaryClaim} />
         {:else if primary?.type === 'claim'}
           <div class="w-full p-4 pt-0 md:pt-4">
             <About
@@ -218,16 +218,16 @@
         />
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing && primary?.type === 'claim'}
+        {#if !isComparing && primaryClaim}
           <div class="wrapper">
             <About
-              claim={primary}
+              claim={primaryClaim}
               {isComparing}
               {isMobileViewer}
               on:close={partial(handleClose, secondary)}
             />
             {#if isMobileViewer}
-              <CompareLatestButton claim={primary} {isComparing} />
+              <CompareLatestButton claim={primaryClaim} {isComparing} />
             {/if}
           </div>
         {:else if !isComparing && primary?.type === 'ingredient'}
@@ -237,9 +237,9 @@
               <CompareLatestButton claim={null} {isComparing} />
             {/if}
           </div>
-        {:else if secondary?.type === 'claim'}
+        {:else if secondaryClaim}
           <About
-            claim={secondary}
+            claim={secondaryClaim}
             {isComparing}
             {isMobileViewer}
             on:close={partial(handleClose, primary)}

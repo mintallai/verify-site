@@ -148,7 +148,9 @@ const processCategories = flow(
  * dictionary to get information needed to render the associated categories in the
  * "Edits and activity" section.
  */
-export function getCategories(claim: IEnhancedClaimReport): IEditCategory[] {
+export function getCategories(
+  claim: IEnhancedClaimReport,
+): IEditCategory[] | null {
   const { dictionary } = claim;
   const actionAssertion = claim.assertions.find(
     (x) => x.label === ACTION_ASSERTION_LABEL,
@@ -166,10 +168,21 @@ export function getCategories(claim: IEnhancedClaimReport): IEditCategory[] {
   // This would happen for images that haven't transitioned to the new
   // dictionary setup yet
   if (actionAssertion && !dictionary) {
+    dbg('No dictionary found', actionAssertion);
     throw new Error(ClaimError.InvalidActionAssertion);
   }
+  // No current action assertion but old ones exist
+  if (!actionAssertion) {
+    if (
+      claim.assertions.some((x) => x.label === 'cai.actions') ||
+      claim.assertions.some((x) => x.label === 'cai.actions.v1')
+    ) {
+      dbg('Legacy action assertions found', claim.assertions);
+      throw new Error(ClaimError.InvalidActionAssertion);
+    }
+  }
   // No actions or dictionary (this would happen if the producer opted out of this)
-  return [];
+  return null;
 }
 
 /**

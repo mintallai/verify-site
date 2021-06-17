@@ -85,7 +85,7 @@
         />
       </cai-panel-content-producer>
     </div>
-    {#if !(structureError?.message === ClaimError.InvalidActionAssertion)}
+    {#if !(categories === null || structureError?.message === ClaimError.InvalidActionAssertion)}
       <div>
         <cai-panel-edits-activity
           {categories}
