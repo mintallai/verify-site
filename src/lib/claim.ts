@@ -22,7 +22,6 @@ import type {
   IEditCategory,
 } from './types';
 import debug from 'debug';
-import { storeReport } from '../stores';
 
 const dbg = debug('claim');
 
@@ -354,6 +353,30 @@ export async function enhanceReport(
     claims: zipObject(claimIds, enhancedClaims),
     thumbnailUrls: compact(thumbnailUrls),
   };
+}
+
+/**
+ * Returns true if the item (can be a claim/ingredient) has an associated claim
+ *
+ * @param item The claim/ingredient to check
+ */
+export function hasClaim(item: ViewableItem) {
+  return item.type === 'claim' || item.provenance;
+}
+
+/**
+ * Gets the claim data associated with a ViewableItem (claim/ingredient)
+ */
+export function getAssociatedClaim(
+  $storeReport: IEnhancedStoreReport,
+  item: ViewableItem,
+): IEnhancedClaimReport | null {
+  if (item.type === 'claim') {
+    return item;
+  } else if (item.type === 'ingredient' && item.provenance) {
+    return resolveId($storeReport, item.provenance) as IEnhancedClaimReport;
+  }
+  return null;
 }
 
 /**

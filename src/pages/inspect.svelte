@@ -15,7 +15,7 @@
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
-  import { getThumbnailUrlForId } from '../lib/claim';
+  import { getAssociatedClaim, getThumbnailUrlForId } from '../lib/claim';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
@@ -140,6 +140,7 @@
       );
     };
   });
+
 </script>
 
 <svelte:window />
@@ -191,7 +192,7 @@
       <section class="left-col">
         {#if !isComparing}
           <ContentCredentials
-            claim={primary?.type === 'claim' ? primary : null}
+            claim={getAssociatedClaim($storeReport, primary)}
           />
         {:else if primary?.type === 'claim'}
           <div class="w-full p-4 pt-0 md:pt-4">
@@ -360,4 +361,5 @@
       @apply w-full h-full flex align-middle justify-center;
     }
   }
+
 </style>

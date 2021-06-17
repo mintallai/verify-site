@@ -7,7 +7,7 @@
     primaryId,
   } from '../../stores';
   import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
-  import { getThumbnailUrlForId, getTitle } from '../../lib/claim';
+  import { getThumbnailUrlForId, getTitle, hasClaim } from '../../lib/claim';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
   import type { ViewableItem } from '../../lib/types';
@@ -61,7 +61,7 @@
     }
   }
   $: badge =
-    asset?.type === 'claim'
+    asset && hasClaim(asset)
       ? getThumbnailBadge()
       : {
           type: 'none',

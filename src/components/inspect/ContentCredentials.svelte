@@ -22,6 +22,7 @@
   $: combined = [...breadcrumbList, ...assetList];
 
   onDestroy(() => isCompareSelectMode.set(false));
+
 </script>
 
 <div class="h-full relative">
