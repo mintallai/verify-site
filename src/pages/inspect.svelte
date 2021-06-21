@@ -194,10 +194,10 @@
       <section class="left-col">
         {#if !isComparing}
           <ContentCredentials claim={primaryClaim} />
-        {:else if primary?.type === 'claim'}
+        {:else if primaryClaim}
           <div class="w-full p-4 pt-0 md:pt-4">
             <About
-              claim={primary}
+              claim={primaryClaim}
               {isComparing}
               {isMobileViewer}
               on:close={partial(handleClose, secondary)}

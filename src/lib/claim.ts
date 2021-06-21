@@ -45,6 +45,8 @@ export enum ClaimError {
  * - Claims should be able to be accessed by their ID, e.g. `mEiBD6JdB/na1TIxvcw9HMkbo6stDkkiNFcy8Lsp3oW5yOw`
  * - Ingredients should be able to be accessed by their associated claim ID and index,
  *   e.g. `mEiBD6JdB/na1TIxvcw9HMkbo6stDkkiNFcy8Lsp3oW5yOw[0]`
+ *
+ * // TODO: Make sure we update this when the new `head` structure is available
  */
 export function resolveId(
   store: IEnhancedStoreReport,
@@ -83,6 +85,8 @@ export function thumbnailToBlobUrl(thumbnail: IThumbnail): string | null {
  * Gets the thumbnail URL for a particular ID. We need this function instead of always
  * using thumbnailUrl since ingredients with claims will reference the thumbnail of the claim
  * instead of storing it with the ingredient.
+ *
+ * // TODO: Make sure we update this when the new `head` structure is available
  */
 export function getThumbnailUrlForId(
   store: IEnhancedStoreReport,
