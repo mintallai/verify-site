@@ -37,7 +37,6 @@ async function loadToolkit() {
     const res = await fetch(`__toolkit_wasm_src__`);
     const buf = await res.arrayBuffer();
     toolkit = await init(buf);
-    console.debug('Loaded CAI toolkit');
   }
 }
 

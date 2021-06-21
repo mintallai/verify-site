@@ -8,7 +8,6 @@ import mapValues from 'lodash/mapValues';
 import { local } from 'store2';
 import { addIdentifiers, getIdentifier } from './lib/claim';
 import { arrayBufferToBlobUrl } from './lib/util/data';
-import { logVerificationErrors } from './lib/util/debug';
 import { supportDemoImages } from './lib/demo';
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
@@ -102,12 +101,6 @@ export function navigateToId(
   clearBreadcrumbs = false,
   logEvent = true,
 ): void {
-  console.debug(
-    'Navigating to',
-    newId,
-    clearBreadcrumbs,
-    get(contentSourceIds),
-  );
   const currId = get(primaryId);
   contentSourceIds.update((ids) => {
     if (clearBreadcrumbs) {
@@ -139,7 +132,6 @@ export function navigateToId(
  * @param logEvent `true` to log this event in New Relic
  */
 export function compareWithId(id: string, logEvent = true): void {
-  console.debug('Comparing with', id);
   secondaryId.set(id);
   scrollTo(0, 0);
   if (logEvent) {
@@ -197,17 +189,10 @@ export async function setSummary(result: ISummaryResult) {
   let data = result?.summary;
   // Grab map of references, since we may need to look up a claim title from
   // refs in the case of an acquisition
-  console.info('Summary data', data);
-  // @ts-ignore - For debugging
-  window.summaryData = JSON.stringify(data);
   setSource(result);
   if (data) {
     // Grab map of references, since we may need to look up a claim title from
     // refs in the case of an acquisition
-    console.info('Summary data', data);
-    logVerificationErrors(data);
-    // @ts-ignore - For debugging
-    window.summaryData = JSON.stringify(data);
     // Temporary
     data = supportDemoImages(data, get(urlParams));
     const refs = reduce(
