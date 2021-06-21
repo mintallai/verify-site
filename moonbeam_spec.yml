@@ -29,7 +29,7 @@ services:
           field: tessa2_api_key
           path: dme_cai/caivrfy
       - name: PUBLIC_GITHUB_PACKAGE_TOKEN
-        global: 'true'
+        global: "true"
         secret_data:
           field: public_github_package_token
           path: dme_cai/caivrfy
@@ -101,7 +101,7 @@ services:
             stage: deploy---Dev
             build_on_rollback: true
             deploy_token: false
-            required: true
+            required: false
             unstable_allowed: false
             build_params:
               - name: TYPE
@@ -144,7 +144,7 @@ services:
         tier: 2
         production: false
         auto_promote: false
-        optional: false
+        optional: true
         single_rollback_allowed: false
         environment_stages:
           - name: deploy---Stage
