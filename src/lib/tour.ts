@@ -72,7 +72,6 @@ export function createTour({ summary }) {
   });
 
   tour.on('complete', () => {
-    console.debug('Tour completed');
     store.set(COMPLETE_LOCALSTORAGE_KEY, Date.now());
     navigateToRoot(false);
     window.newrelic?.addPageAction('finishedTour');

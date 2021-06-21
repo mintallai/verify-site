@@ -1,6 +1,11 @@
 <script lang="ts">
   import { quintOut } from 'svelte/easing';
-  import { navigateToId, compareWithId, primaryId, errorsByIdentifier } from '../../stores';
+  import {
+    navigateToId,
+    compareWithId,
+    primaryId,
+    errorsByIdentifier,
+  } from '../../stores';
   import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/components/Thumbnail';
@@ -32,7 +37,8 @@
     if (hasErrors) {
       return {
         type: 'missing',
-        helpText: 'The producer edited this asset without attaching complete credentials',
+        helpText:
+          'The producer edited this asset without attaching complete credentials',
       };
     }
     return {
@@ -54,7 +60,9 @@
       ? getThumbnailBadge()
       : {
           type: 'none',
+          helpText: null,
         };
+
 </script>
 
 <div
@@ -136,4 +144,5 @@
     left: 36px;
     transform-origin: top;
   }
+
 </style>
