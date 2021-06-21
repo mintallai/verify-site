@@ -1,3 +1,5 @@
+# Full spec for this file is here:
+# https://git.corp.adobe.com/proteus-platform/moonbeam-translator/blob/master/pipeline_spec.yml
 services:
   - product: cai
     name: verify-site
@@ -27,7 +29,7 @@ services:
           field: tessa2_api_key
           path: dme_cai/caivrfy
       - name: PUBLIC_GITHUB_PACKAGE_TOKEN
-        global: 'true'
+        global: "true"
         secret_data:
           field: public_github_package_token
           path: dme_cai/caivrfy
@@ -40,17 +42,14 @@ services:
         single_rollback_allowed: false
         environment_stages:
           - name: default
-            step: 1
         projects:
           - title: CAI Verify Site Build
-            name: client-cai-verify-site-makefile-exec
             project_group: cai-build
             build_type: lambda
             lambda: proteus
             stage: default
-            rollback: false
+            build_on_rollback: false
             deploy_token: false
-            deployed_sha_for_rollback: false
             required: true
             unstable_allowed: false
             build_params:
@@ -94,18 +93,15 @@ services:
         single_rollback_allowed: false
         environment_stages:
           - name: deploy---Dev
-            step:
         projects:
           - title: CAI Verify Site dev deploy
-            name: client-cai-verify-site-makefile-exec
             project_group: cai-dev
             build_type: lambda
             lambda: proteus
             stage: deploy---Dev
-            rollback: true
+            build_on_rollback: true
             deploy_token: false
-            deployed_sha_for_rollback: false
-            required: true
+            required: false
             unstable_allowed: false
             build_params:
               - name: TYPE
@@ -148,21 +144,18 @@ services:
         tier: 2
         production: false
         auto_promote: false
-        optional: false
+        optional: true
         single_rollback_allowed: false
         environment_stages:
           - name: deploy---Stage
-            step: 1
         projects:
           - title: CAI Verify Site Stage Deploy
-            name: client-cai-verify-site-makefile-exec
             project_group: cai-stage
             build_type: lambda
             lambda: proteus
             stage: deploy---Stage
-            rollback: true
+            build_on_rollback: true
             deploy_token: false
-            deployed_sha_for_rollback: false
             required: true
             unstable_allowed: false
             build_params:
@@ -210,17 +203,14 @@ services:
         single_rollback_allowed: false
         environment_stages:
           - name: deploy---Prod
-            step: 1
         projects:
           - title: CAI Verify Site Prod Deploy
-            name: client-cai-verify-site-makefile-exec
             project_group: cai-prod
             build_type: lambda
             lambda: proteus
             stage: deploy---Prod
-            rollback: true
+            build_on_rollback: true
             deploy_token: false
-            deployed_sha_for_rollback: false
             required: true
             unstable_allowed: false
             build_params:

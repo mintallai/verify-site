@@ -5,6 +5,8 @@ groups:
     - andyp
     - klein
     - gpeacock
+    - leuenber
+    - dstein
 
 features:
   everything:
