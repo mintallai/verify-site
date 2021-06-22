@@ -9,6 +9,7 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import copy from 'rollup-plugin-copy';
 import del from 'del';
+import git from 'git-rev-sync';
 import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
@@ -141,7 +142,10 @@ function baseConfig(config, ctx) {
       }),
       svelteSvg(),
       replace({
-        'process.env.NODE_ENV': production ? '"production"' : '"development"',
+        'process.env.NODE_ENV': JSON.stringify(
+          production ? 'production' : 'development',
+        ),
+        'process.env.GIT_REVISION': JSON.stringify(git.short()),
         __toolkit_wasm_src__:
           process.env.TOOLKIT_WASM_SRC || '/toolkit/toolkit_bg.wasm',
         __delay__: production ? '100' : '100',

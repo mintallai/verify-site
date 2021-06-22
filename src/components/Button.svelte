@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let href: string | undefined;
+  export let href: string | undefined = undefined;
   export let secondary: boolean = false;
   export let size: string = 'md';
   export let full: boolean = false;

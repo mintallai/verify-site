@@ -1,14 +1,16 @@
 <script lang="ts">
   import { quintOut } from 'svelte/easing';
   import {
+    storeReport,
     navigateToId,
     compareWithId,
     primaryId,
-    errorsByIdentifier,
   } from '../../stores';
   import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
-  import '@contentauth/web-components/dist/components/Tooltip';
+  import { getThumbnailUrlForId, getTitle, hasClaim } from '../../lib/claim';
   import '@contentauth/web-components/dist/components/Thumbnail';
+  import '@contentauth/web-components/dist/components/Tooltip';
+  import type { ViewableItem } from '../../lib/types';
 
   let hover: boolean;
   export let asset: ViewableItem | null = null;
@@ -47,8 +49,11 @@
     };
   }
 
-  $: hasErrors = !!$errorsByIdentifier[asset?._id]?.length;
-  $: isCurrent = asset?._id === $primaryId;
+  // FIXME: Make sure errors come through
+  // $: hasErrors = !!$errorsByIdentifier[asset?.id]?.length;
+  $: hasErrors = false;
+  $: isCurrent = asset?.id === $primaryId;
+  $: title = asset ? getTitle(asset) : '';
   $: compare = isCompareSelectMode && !isCurrent;
   $: {
     if (isCurrent) {
@@ -56,7 +61,7 @@
     }
   }
   $: badge =
-    asset?.type === 'claim'
+    asset && hasClaim(asset)
       ? getThumbnailBadge()
       : {
           type: 'none',
@@ -74,7 +79,7 @@
   on:mouseleave={() => (hover = false)}
   on:click={() => {
     if (asset && !isCurrent) {
-      isCompareSelectMode ? compareWithId(asset._id) : navigateToId(asset._id);
+      isCompareSelectMode ? compareWithId(asset.id) : navigateToId(asset.id);
     }
   }}
 >
@@ -89,7 +94,7 @@
     {/if}
     {#if asset}
       <cai-thumbnail
-        src={asset.thumbnail_url}
+        src={getThumbnailUrlForId($storeReport, asset.id)}
         selected={current}
         badge={badge.type}
         badgehelptext={badge.helpText}
@@ -97,11 +102,11 @@
       />
       <dl class="attributes multiline overflow-hidden self-center pr-2">
         <dt>File Name</dt>
-        <dd class="file-name" title={asset.title}>{asset.title}</dd>
+        <dd class="file-name" {title}>{title}</dd>
       </dl>
     {:else if source}
       <cai-thumbnail
-        src={source.url}
+        src={source.dataUrl}
         selected={current}
         class="theme-spectrum"
       />

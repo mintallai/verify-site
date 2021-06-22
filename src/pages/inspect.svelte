@@ -3,7 +3,7 @@
   import { fade } from 'svelte/transition';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
-  import { getSummaryFromUrl, ToolkitError } from '../lib/toolkit';
+  import { getStoreReportFromUrl, ToolkitError } from '../lib/toolkit';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
@@ -15,13 +15,14 @@
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
+  import { getAssociatedClaim, getThumbnailUrlForId } from '../lib/claim';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
     urlParams,
     source as sourceStore,
-    summary,
-    setSummary,
+    storeReport,
+    setStoreReport,
     navigateToId,
     secondaryId,
     primaryAsset,
@@ -29,10 +30,10 @@
     isBurgerMenuShown,
     isMobileViewerShown,
   } from '../stores';
-  import { getIdentifier } from '../lib/claim';
+  import type { ViewableItem } from '../lib/types';
 
   function handleClose(navigateToAsset: ViewableItem) {
-    navigateToId(getIdentifier(navigateToAsset));
+    navigateToId(navigateToAsset.id);
     secondaryId.set('');
   }
 
@@ -45,13 +46,15 @@
 
   $: source = $sourceStore;
   $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $summary || source;
-  $: isLoading = $summary === null && source === null;
+  $: hasContent = sourceParam || $storeReport || source;
+  $: isLoading = $storeReport === null && source === null;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
+  $: primaryClaim = primary && getAssociatedClaim($storeReport, primary);
+  $: secondaryClaim = secondary && getAssociatedClaim($storeReport, secondary);
   $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !!(source && !$summary);
+  $: noMetadata = !!(source && !$storeReport);
   $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
   $: errorMessage =
     error &&
@@ -63,8 +66,8 @@
     if (tour && tour.isActive() && isMobileViewer) {
       tour.cancel();
     }
-    // Clear errors if a summary has changed
-    if ($summary !== undefined) {
+    // Clear errors if the store report has changed
+    if ($storeReport !== undefined) {
       error = null;
     }
   }
@@ -93,12 +96,12 @@
 
     if (sourceParam) {
       try {
-        const result = await getSummaryFromUrl(sourceParam);
+        const result = await getStoreReportFromUrl(sourceParam);
         window.newrelic?.setCustomAttribute('source', sourceParam);
-        setSummary(result);
+        setStoreReport(result);
         if (isMobileViewer === false) {
           tour = startTour({
-            summary: $summary,
+            storeReport: $storeReport,
             start: tourFlag,
             force: forceTourFlag,
           });
@@ -139,6 +142,7 @@
       );
     };
   });
+
 </script>
 
 <svelte:window />
@@ -182,26 +186,24 @@
       <section class="left-col">
         <ContentCredentials {source} />
       </section>
-      <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
+      <Viewer thumbnailUrl={source.dataUrl} isDragging={isDraggingOver} />
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
     {:else if primary}
       <section class="left-col">
         {#if !isComparing}
-          <ContentCredentials
-            claim={primary?.type === 'claim' ? primary : null}
-          />
-        {:else if primary?.type === 'claim'}
+          <ContentCredentials claim={primaryClaim} />
+        {:else if primaryClaim}
           <div class="w-full p-4 pt-0 md:pt-4">
             <About
-              claim={primary}
+              claim={primaryClaim}
               {isComparing}
               {isMobileViewer}
               on:close={partial(handleClose, secondary)}
             />
           </div>
-        {:else if primary?.type === 'reference'}
+        {:else if primary?.type === 'ingredient'}
           <div class="wrapper">
             <ContentCredentialsError {isComparing} />
           </div>
@@ -211,38 +213,38 @@
         <Comparison {primary} {secondary} />
       {:else}
         <Viewer
-          thumbnailURL={primary.thumbnail_url}
+          thumbnailUrl={getThumbnailUrlForId($storeReport, primary.id)}
           isDragging={isDraggingOver}
         />
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing && primary?.type === 'claim'}
+        {#if !isComparing && primaryClaim}
           <div class="wrapper">
             <About
-              claim={primary}
+              claim={primaryClaim}
               {isComparing}
               {isMobileViewer}
               on:close={partial(handleClose, secondary)}
             />
             {#if isMobileViewer}
-              <CompareLatestButton claim={primary} {isComparing} />
+              <CompareLatestButton claim={primaryClaim} {isComparing} />
             {/if}
           </div>
-        {:else if !isComparing && primary?.type === 'reference'}
+        {:else if !isComparing && primary?.type === 'ingredient'}
           <div class="wrapper">
             <ContentCredentialsError {isComparing} />
             {#if isMobileViewer}
               <CompareLatestButton claim={null} {isComparing} />
             {/if}
           </div>
-        {:else if secondary?.type === 'claim'}
+        {:else if secondaryClaim}
           <About
-            claim={secondary}
+            claim={secondaryClaim}
             {isComparing}
             {isMobileViewer}
             on:close={partial(handleClose, primary)}
           />
-        {:else if secondary?.type === 'reference'}
+        {:else if secondary?.type === 'ingredient'}
           <ContentCredentialsError {isComparing} />
         {/if}
       </section>
@@ -359,4 +361,5 @@
       @apply w-full h-full flex align-middle justify-center;
     }
   }
+
 </style>

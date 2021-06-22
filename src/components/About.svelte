@@ -1,11 +1,19 @@
 <script lang="ts">
-  import compact from 'lodash/compact';
   import upperFirst from 'lodash/upperFirst';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
-  import { formatLocation, isSecureCapture } from '../lib/demo';
-  import { getIdentifier } from '../lib/claim';
-  import { navigateToId, compareWithId } from '../stores';
+  import Alert from './Alert.svelte';
+  import { navigateToId, compareWithId, storeReport } from '../stores';
+  import {
+    getCategories,
+    getProducer,
+    getRecorder,
+    getSignatureDate,
+    getSignatureIssuer,
+    getThumbnailUrlForId,
+    getTitle,
+    ClaimError,
+  } from '../lib/claim';
   import '@contentauth/web-components/dist/components/panels/ContentProducer';
   import '@contentauth/web-components/dist/components/panels/Assets';
   import '@contentauth/web-components/dist/components/panels/CustomData';
@@ -13,17 +21,37 @@
   import '@contentauth/web-components/dist/components/panels/Providers';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
+  import type { IEditCategory, IEnhancedClaimReport } from '../lib/types';
+  import debug from 'debug';
 
-  export let claim: IClaimSummary & IIdentifiable;
+  const dbg = debug('about');
+
+  export let claim: IEnhancedClaimReport;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
   let element: HTMLElement;
+  let categories: IEditCategory[] = [];
+  let producer: string = '';
+  let structureError: Error | null = null;
+  let secureCapture = false;
 
-  $: isOriginal = claim?.references?.length === 0;
-  $: secureCapture = isSecureCapture(claim);
-  $: categories = compact(
-    (claim.edits?.categories ?? []).concat(secureCapture && 'CAPTURE'),
-  );
+  $: isOriginal = claim.ingredients.length === 0;
+  $: {
+    structureError = null;
+    try {
+      categories = getCategories(claim);
+      producer = getProducer(claim);
+    } catch (err) {
+      dbg('Got structure error', err);
+      structureError = err;
+    }
+  }
+  $: assetsUsed = claim.ingredients.map((ingredient) => ({
+    ...ingredient,
+    thumbnailUrl: getThumbnailUrlForId($storeReport, ingredient.id),
+  }));
+  $: signedBy = getSignatureIssuer(claim);
+
 </script>
 
 <div class="w-full flex justify-center">
@@ -32,55 +60,54 @@
       <div class="file-name">
         <div class="label">File name</div>
         <div class="value">
-          {claim.title}
+          {getTitle(claim)}
         </div>
       </div>
     {/if}
+    {#if structureError}
+      <Alert severity="error">
+        {#if structureError}
+          This credential is using an invalid or outdated structure, which may
+          result in missing information.
+        {/if}
+      </Alert>
+    {/if}
     <div>
       <cai-panel-content-producer
-        producedby={claim.produced_by}
-        producedwith={claim.produced_with}
-        signedon={claim.signed_on}
+        producedby={producer}
+        producedwith={getRecorder(claim)}
+        signedon={getSignatureDate(claim)}
         class="theme-spectrum"
       >
         <ProviderIcon
-          provider={claim.produced_with}
+          provider={getRecorder(claim)}
           slotName="produced-with-icon"
         />
       </cai-panel-content-producer>
     </div>
-    <div>
-      <cai-panel-edits-activity
-        {categories}
-        hidedescriptions={isMobileViewer && isComparing ? true : null}
-        class="theme-spectrum"
-      />
-    </div>
-    {#if claim.location}
+    {#if !(categories === null || structureError?.message === ClaimError.InvalidActionAssertion)}
       <div>
-        <cai-panel-custom-data
-          header="Location"
-          helpText="Where this photo was taken."
+        <cai-panel-edits-activity
+          {categories}
+          hidedescriptions={isMobileViewer && isComparing ? true : null}
           class="theme-spectrum"
-        >
-          <span slot="content">{formatLocation(claim.location)}</span>
-        </cai-panel-custom-data>
+        />
       </div>
     {/if}
     {#if isComparing || isMobileViewer}
       <div>
         <cai-panel-assets
-          references={claim.references}
-          on:reference-click={({ detail }) => {
-            const identifier = getIdentifier(detail?.reference);
-            if (identifier) {
-              navigateToId(identifier);
+          assets={assetsUsed}
+          on:asset-click={({ detail }) => {
+            const id = detail?.asset?.id;
+            if (id) {
+              navigateToId(id);
               compareWithId(null);
             }
           }}
           class="theme-spectrum"
         >
-          <div slot="no-references">
+          <div slot="no-assets">
             {#if isOriginal || secureCapture}
               <OriginalCreation
                 type={secureCapture ? 'secureCapture' : 'original'}
@@ -95,15 +122,12 @@
     {/if}
     <div>
       <cai-panel-providers
-        identifiedby={upperFirst(claim.signed_by ?? '')}
-        signedby={upperFirst(claim.signed_by ?? '')}
+        identifiedby={upperFirst(signedBy)}
+        signedby={upperFirst(signedBy)}
         class="theme-spectrum"
       >
-        <ProviderIcon
-          provider={claim.signed_by}
-          slotName="identified-by-icon"
-        />
-        <ProviderIcon provider={claim.signed_by} slotName="signed-by-icon" />
+        <ProviderIcon provider={signedBy} slotName="identified-by-icon" />
+        <ProviderIcon provider={signedBy} slotName="signed-by-icon" />
       </cai-panel-providers>
     </div>
   </div>
@@ -136,4 +160,5 @@
       @apply max-w-full;
     }
   }
+
 </style>

@@ -3,7 +3,7 @@
   import Icon from '../Icon.svelte';
   import {
     contentSourceIds,
-    assetsByIdentifier,
+    storeReport,
     primaryId,
     primaryAsset,
     navigateToId,
@@ -12,14 +12,14 @@
     CompareMode,
     isMobileViewerShown,
   } from '../../stores';
-  import { getBreadcrumbList } from '../../lib/claim';
+  import { getBreadcrumbList, getThumbnailUrlForId, getTitle } from '../../lib/claim';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
   import '@spectrum-web-components/tabs/sp-tabs.js';
   import '@spectrum-web-components/tabs/sp-tab.js';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
-  import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/components/Thumbnail';
+  import '@contentauth/web-components/dist/components/Tooltip';
   import '@spectrum-web-components/action-menu/sp-action-menu.js';
   import '@spectrum-web-components/menu/sp-menu.js';
   import '@spectrum-web-components/menu/sp-menu-item.js';
@@ -37,8 +37,8 @@
     navigateToId(this.value);
   }
 
-  $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
-  $: homeId = breadcrumbList[0]?._id;
+  $: breadcrumbList = getBreadcrumbList($storeReport, $contentSourceIds);
+  $: homeId = breadcrumbList[0]?.id;
   $: showMenu =
     breadcrumbList.length > 1 &&
     ($isMobileViewerShown || breadcrumbList.length > 4);
@@ -78,11 +78,11 @@
             class="text-gray-800"
           />
         </div>
-        {#each breadcrumbList as asset, _ ({ id: asset._id, ctx: 'menu-item' })}
-          <sp-menu-item value={asset._id} class="checkbox-pos">
+        {#each breadcrumbList as asset, _ ({ id: asset.id, ctx: 'menu-item' })}
+          <sp-menu-item value={asset.id} class="checkbox-pos">
             <div class="menu-item pointer-events-none">
-              <cai-thumbnail src={asset.thumbnail_url} class="theme-spectrum" />
-              <div class="ml-2 text-100">{asset.title}</div>
+              <cai-thumbnail src={getThumbnailUrlForId($storeReport, asset.id)} class="theme-spectrum" />
+              <div class="ml-2 text-100">{getTitle(asset)}</div>
             </div>
           </sp-menu-item>
         {/each}
@@ -92,7 +92,7 @@
       <Icon size="s" name="ChevronRight" class="text-gray-800" />
     </div>
     <div class="breadcrumb-item" class:current={true}>
-      {$primaryAsset.title}
+      {getTitle($primaryAsset)}
     </div>
   {:else if homeId || noMetadata}
     {#if noMetadata && source}
@@ -100,7 +100,7 @@
         {source.name}
       </div>
     {:else if breadcrumbList}
-      {#each breadcrumbList as asset, index ({ id: asset._id, ctx: 'breadcrumb-list' })}
+      {#each breadcrumbList as asset, index ({ id: asset.id, ctx: 'breadcrumb-list' })}
         {#if index > 0}
           <div class="separator">
             <Icon size="s" name="ChevronRight" class="text-gray-800" />
@@ -108,10 +108,10 @@
         {/if}
         <div
           class="breadcrumb-item hover:underline"
-          class:current={asset._id === $primaryId}
-          on:click={() => navigateToId(asset._id)}
+          class:current={asset.id === $primaryId}
+          on:click={() => navigateToId(asset.id)}
         >
-          {asset.title}
+          {getTitle(asset)}
         </div>
       {/each}
     {/if}

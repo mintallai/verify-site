@@ -1,8 +1,10 @@
 <script lang="ts">
   import Alert from '../Alert.svelte';
+  import type { IEnhancedClaimReport } from '../../lib/types';
+  import { getRecorder } from '../../lib/claim';
 
   export let type: 'original' | 'secureCapture' = 'original';
-  export let claim: IClaimSummary;
+  export let claim: IEnhancedClaimReport;
 </script>
 
 <Alert severity="info">
@@ -10,7 +12,7 @@
     <div class="font-bold text-gray-900 mb-3">Original creation</div>
     <div>
       {#if type === 'original'}
-        This photo was first produced in {claim.produced_with}.
+        This photo was first produced in {getRecorder(claim)}.
       {:else if type === 'secureCapture'}
         <div>
           This photo was captured by a secure device. <a
@@ -21,5 +23,5 @@
         </div>
       {/if}
     </div>
-  </div></Alert
->
+  </div>
+</Alert>
