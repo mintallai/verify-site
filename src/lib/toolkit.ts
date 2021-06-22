@@ -1,7 +1,6 @@
 import init, {
   get_store_report_from_array_buffer,
 } from '@contentauth/toolkit/pkg/web/toolkit';
-import startsWith from 'lodash/startsWith';
 import { IStoreReportResult } from './types';
 import debug from 'debug';
 
@@ -18,8 +17,12 @@ const VALID_MIME_TYPES = ['image/jpeg', 'image/png'];
 
 // Need to do this since some Content-Types are coming in such as
 // `image/jpeg; charset=utf-8`
+function sanitizeMimeType(type: string) {
+  return type.split(';')[0];
+}
+
 export function isValidMimeType(type: string) {
-  return VALID_MIME_TYPES.some((mime) => startsWith(type, mime));
+  return VALID_MIME_TYPES.includes(sanitizeMimeType(type));
 }
 
 let toolkit: any;
@@ -64,14 +67,15 @@ export async function getStoreReportFromFile(
   file: File,
 ): Promise<IStoreReportResult> {
   await loadToolkit();
+  const mimeType = sanitizeMimeType(file.type);
   const arrayBuffer = await fileAsArrayBuffer(file);
-  const storeReport = await get_store_report_from_array_buffer(arrayBuffer);
+  const storeReport = await get_store_report_from_array_buffer(arrayBuffer, mimeType);
   dbg('getStoreReportFromFile file:', file, 'toolkit reponse:', storeReport);
   return {
     source: 'file',
     storeReport: validateStoreReport(storeReport),
     filename: file.name,
-    data: new Blob([arrayBuffer], { type: file.type }),
+    data: new Blob([arrayBuffer], { type: mimeType }),
   };
 }
 
@@ -81,10 +85,10 @@ export async function getStoreReportFromUrl(
   await loadToolkit();
   const res = await fetch(url);
   if (res.ok) {
-    const contentType = res.headers.get('Content-Type');
-    if (isValidMimeType(contentType)) {
+    const mimeType = sanitizeMimeType(res.headers.get('Content-Type'));
+    if (isValidMimeType(mimeType)) {
       const arrayBuffer = await res.arrayBuffer();
-      const storeReport = await get_store_report_from_array_buffer(arrayBuffer);
+      const storeReport = await get_store_report_from_array_buffer(arrayBuffer, mimeType);
       dbg('getStoreReportFromUrl url:', url, 'toolkit reponse:', storeReport);
       const { pathname } = new URL(url);
       const filename = pathname?.split('/').pop() || 'Unknown';
@@ -92,11 +96,11 @@ export async function getStoreReportFromUrl(
         source: 'url',
         storeReport: validateStoreReport(storeReport),
         filename,
-        data: new Blob([arrayBuffer], { type: contentType }),
+        data: new Blob([arrayBuffer], { type: mimeType }),
       };
     }
     const invalidFileError = new Error(ToolkitError.InvalidFile);
-    window.newrelic?.noticeError(invalidFileError, { url, contentType });
+    window.newrelic?.noticeError(invalidFileError, { url, mimeType });
     throw invalidFileError;
   }
   const fetchError = new Error(ToolkitError.FetchError);
