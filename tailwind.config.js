@@ -34,7 +34,7 @@ module.exports = merge(spectrumConfig, {
         '0': '0',
       },
       gradientColorStops: {
-        transparent: 'transparent',
+        transparent: 'rgba(255, 255, 255, 0)',
         white: '#fff',
       },
     },
