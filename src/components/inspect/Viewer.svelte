@@ -25,7 +25,10 @@
 
   $: {
     const padding = $isMobileViewerShown ? 0 : 20;
-    side = `${Math.min(width, height) - padding * 2}px`;
+    side =
+      height > padding * 2
+        ? `${Math.min(width, height) - padding * 2}px`
+        : `0px`;
   }
   $: styles = {
     width: side,
@@ -53,22 +56,19 @@
     class:upload={uploadMode}
     class:dragging={isDragging}
     bind:clientWidth={width}
-    bind:clientHeight={height}
-  >
+    bind:clientHeight={height}>
     <input
       type="file"
       bind:this={fileInput}
       accept="image/jpeg"
-      class="hidden"
-    />
+      class="hidden" />
     <div class="inner" use:cssVars={styles}>
       {#if uploadMode}
         <div class="upload-content" in:fade>
           <DropFile
             width={58}
             height={99}
-            class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}"
-          />
+            class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}" />
           {#if $source || $storeReport}
             <div class="message-heading">Drop your file</div>
           {:else}
@@ -83,8 +83,7 @@
         <img
           src={thumbnailUrl}
           alt=""
-          class="h-full w-full object-contain object-center"
-        />
+          class="h-full w-full object-contain object-center" />
       {:else}
         <div class="flex items-center justify-center">
           {#if isError}

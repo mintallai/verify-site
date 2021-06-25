@@ -1,9 +1,10 @@
+/* purgecss start ignore */
 body {
   @apply text-100 lg:overflow-hidden;
 }
 
 h2 {
-  @apply font-bold text-200 text-gray-900 my-4 flex items-center;
+  @apply font-bold text-75 text-gray-700 uppercase my-4 flex items-center;
 }
 h2 .icon {
   @apply relative ml-2;
@@ -43,16 +44,16 @@ a.link {
 
 dl.attributes {
   @apply grid;
-  grid-template-columns: repeat(2, auto);
-  row-gap: 0.5em;
+  grid-template-columns: 40% 60%;
+  row-gap: 1em;
 
   dt {
-    @apply font-medium text-75 uppercase text-gray-700;
-    line-height: 1.45rem;
+    @apply font-bold text-75 uppercase text-gray-700;
+    line-height: 1.8;
   }
 
   dd {
-    @apply text-100 text-right justify-end;
+    @apply text-150 justify-start text-gray-900;
   }
 
   &.multiline {
@@ -273,3 +274,4 @@ dl.attributes {
   margin: 0;
   padding: 0;
 }
+/* purgecss end ignore */
