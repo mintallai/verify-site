@@ -142,21 +142,18 @@
       );
     };
   });
-
 </script>
 
 <svelte:window />
 <main
   class="theme-light"
   class:comparing={isComparing}
-  class:has-breadcrumb-bar={hasBreadcrumbBar}
->
+  class:has-breadcrumb-bar={hasBreadcrumbBar}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
       class="menu-overlay"
-      on:click={() => isBurgerMenuShown.update((shown) => !shown)}
-    />
+      on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
   {#if hasBreadcrumbBar}
@@ -164,8 +161,7 @@
       {isComparing}
       {noMetadata}
       {source}
-      on:back={partial(handleClose, secondary)}
-    />
+      on:back={partial(handleClose, secondary)} />
   {/if}
   {#if hasContent}
     {#if error}
@@ -200,8 +196,7 @@
               claim={primaryClaim}
               {isComparing}
               {isMobileViewer}
-              on:close={partial(handleClose, secondary)}
-            />
+              on:close={partial(handleClose, secondary)} />
           </div>
         {:else if primary?.type === 'ingredient'}
           <div class="wrapper">
@@ -214,8 +209,7 @@
       {:else}
         <Viewer
           thumbnailUrl={getThumbnailUrlForId($storeReport, primary.id)}
-          isDragging={isDraggingOver}
-        />
+          isDragging={isDraggingOver} />
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primaryClaim}
@@ -224,8 +218,7 @@
               claim={primaryClaim}
               {isComparing}
               {isMobileViewer}
-              on:close={partial(handleClose, secondary)}
-            />
+              on:close={partial(handleClose, secondary)} />
             {#if isMobileViewer}
               <CompareLatestButton claim={primaryClaim} {isComparing} />
             {/if}
@@ -242,8 +235,7 @@
             claim={secondaryClaim}
             {isComparing}
             {isMobileViewer}
-            on:close={partial(handleClose, primary)}
-          />
+            on:close={partial(handleClose, primary)} />
         {:else if secondary?.type === 'ingredient'}
           <ContentCredentialsError {isComparing} />
         {/if}
@@ -361,5 +353,4 @@
       @apply w-full h-full flex align-middle justify-center;
     }
   }
-
 </style>

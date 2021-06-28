@@ -1,279 +1,277 @@
-@layer base {
-  /* purgecss start ignore */
-  body {
-    @apply text-100 lg:overflow-hidden;
-  }
+/* purgecss start ignore */
+body {
+  @apply text-100 lg:overflow-hidden;
+}
 
-  h2 {
-    @apply font-bold text-200 text-gray-900 my-4 flex items-center;
-  }
-  h2 .icon {
-    @apply relative ml-2;
-    top: 2px;
-  }
+h2 {
+  @apply font-bold text-75 text-gray-700 uppercase my-4 flex items-center;
+}
+h2 .icon {
+  @apply relative ml-2;
+  top: 2px;
+}
 
-  h6 {
-    @apply font-bold text-75 uppercase text-gray-500;
-  }
+h6 {
+  @apply font-bold text-75 uppercase text-gray-500;
+}
 
-  a.link {
-    @apply text-blue-500 underline;
-  }
+a.link {
+  @apply text-blue-500 underline;
+}
 
-  .viewer-wrapper {
-    @apply w-full h-full flex items-stretch p-4 lg:p-0;
-    grid-area: viewer;
-  }
+.viewer-wrapper {
+  @apply w-full h-full flex items-stretch p-4 lg:p-0;
+  grid-area: viewer;
+}
 
+.message-heading {
+  @apply font-light text-400 text-gray-700 leading-small mb-2 text-center;
+}
+.message-text {
+  @apply text-200 text-gray-700 text-center;
+}
+.message-text .link {
+  @apply text-blue-500 cursor-pointer underline;
+}
+@screen lg {
   .message-heading {
-    @apply font-light text-400 text-gray-700 leading-small mb-2 text-center;
+    @apply text-700;
   }
   .message-text {
-    @apply text-200 text-gray-700 text-center;
+    @apply text-75;
   }
-  .message-text .link {
-    @apply text-blue-500 cursor-pointer underline;
-  }
-  @screen lg {
-    .message-heading {
-      @apply text-700;
-    }
-    .message-text {
-      @apply text-75;
-    }
+}
+
+dl.attributes {
+  @apply grid;
+  grid-template-columns: 40% 60%;
+  row-gap: 1em;
+
+  dt {
+    @apply font-bold text-75 uppercase text-gray-700;
+    line-height: 1.8;
   }
 
-  dl.attributes {
-    @apply grid;
-    grid-template-columns: repeat(2, auto);
-    row-gap: 0.5em;
+  dd {
+    @apply text-150 justify-start text-gray-900;
+  }
+
+  &.multiline {
+    @apply block;
 
     dt {
-      @apply font-medium text-75 uppercase text-gray-700;
-      line-height: 1.45rem;
+      @apply leading-medium;
     }
-
     dd {
-      @apply text-100 text-right justify-end;
-    }
-
-    &.multiline {
-      @apply block;
-
-      dt {
-        @apply leading-medium;
-      }
-      dd {
-        @apply text-left justify-start mb-2;
-        &:last-child {
-          @apply mb-0;
-        }
+      @apply text-left justify-start mb-2;
+      &:last-child {
+        @apply mb-0;
       }
     }
   }
-
-  .tippy-box[data-theme~='cai'] {
-    @apply font-base text-sm leading-small text-black bg-white p-0;
-    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.3));
-
-    &[data-placement^='top'] > .tippy-arrow::before {
-      border-top-color: white;
-    }
-
-    &[data-placement^='bottom'] > .tippy-arrow::before {
-      border-bottom-color: white;
-    }
-
-    &[data-placement^='left'] > .tippy-arrow::before {
-      border-left-color: white;
-    }
-
-    &[data-placement^='right'] > .tippy-arrow::before {
-      border-right-color: white;
-    }
-
-    > .tippy-content {
-      @apply p-0;
-    }
-
-    > .tippy-backdrop {
-      @apply bg-white;
-    }
-
-    > .tippy-svg-arrow {
-      fill: #fff;
-    }
-  }
-
-  .shepherd-element {
-    @apply font-base bg-blue-500 rounded-md text-white outline-none transition opacity-0 invisible w-full px-1;
-    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
-    max-width: 285px;
-    z-index: 9999;
-  }
-  .shepherd-enabled.shepherd-element {
-    opacity: 1;
-    visibility: visible;
-  }
-  .shepherd-element[data-popper-reference-hidden]:not(.shepherd-centered) {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-  }
-  .shepherd-element,
-  .shepherd-element *,
-  .shepherd-element :after,
-  .shepherd-element :before {
-    box-sizing: border-box;
-  }
-  .shepherd-arrow,
-  .shepherd-arrow:before {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    z-index: -1;
-  }
-  .shepherd-arrow:before {
-    @apply bg-blue-500;
-    content: '';
-    transform: rotate(45deg);
-  }
-  .shepherd-element[data-popper-placement^='top'] > .shepherd-arrow {
-    bottom: -4px;
-  }
-  .shepherd-element[data-popper-placement^='bottom'] > .shepherd-arrow {
-    top: -4px;
-  }
-  .shepherd-element[data-popper-placement^='left'] > .shepherd-arrow {
-    right: -4px;
-  }
-  .shepherd-element[data-popper-placement^='right'] > .shepherd-arrow {
-    left: -4px;
-  }
-  .shepherd-element.shepherd-centered > .shepherd-arrow {
-    opacity: 0;
-  }
-  .shepherd-element.shepherd-has-title[data-popper-placement^='bottom']
-    > .shepherd-arrow:before {
-    background-color: #e6e6e6;
-  }
-  .shepherd-target-click-disabled.shepherd-enabled.shepherd-target,
-  .shepherd-target-click-disabled.shepherd-enabled.shepherd-target * {
-    pointer-events: none;
-  }
-  .shepherd-modal-overlay-container {
-    height: 0;
-    left: 0;
-    opacity: 0;
-    overflow: hidden;
-    pointer-events: none;
-    position: fixed;
-    top: 0;
-    transition: all 0.3s ease-out, height 0ms 0.3s, opacity 0.3s 0ms;
-    width: 100vw;
-    z-index: 9997;
-  }
-  .shepherd-modal-overlay-container.shepherd-modal-is-visible {
-    height: 100vh;
-    opacity: 0.35;
-    transition: all 0.3s ease-out, height 0s 0s, opacity 0.3s 0s;
-  }
-  .shepherd-modal-overlay-container.shepherd-modal-is-visible path {
-    pointer-events: all;
-  }
-  .shepherd-content {
-    border-radius: 5px;
-    outline: none;
-    padding: 0;
-  }
-  .shepherd-footer {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 0.75rem 0.75rem;
-  }
-  .shepherd-footer .shepherd-button:last-child {
-    margin-right: 0;
-  }
-  .shepherd-header {
-    align-items: center;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    display: flex;
-    justify-content: flex-end;
-    line-height: 2em;
-    padding: 0.75rem 0.75rem 0;
-  }
-  .shepherd-has-title .shepherd-content .shepherd-header {
-    background: #e6e6e6;
-    padding: 1em;
-  }
-  .shepherd-text {
-    color: rgba(0, 0, 0, 0.75);
-    font-size: 1rem;
-    line-height: 1.3em;
-    padding: 0.75em;
-  }
-  .shepherd-text p {
-    margin-top: 0;
-  }
-  .shepherd-text p:last-child {
-    margin-bottom: 0;
-  }
-  .shepherd-button {
-    background: #3288e6;
-    border: 0;
-    border-radius: 3px;
-    color: hsla(0, 0%, 100%, 0.75);
-    cursor: pointer;
-    margin-right: 0.5rem;
-    padding: 0.5rem 1.5rem;
-    transition: all 0.5s ease;
-  }
-  .shepherd-button:not(:disabled):hover {
-    background: #196fcc;
-    color: hsla(0, 0%, 100%, 0.75);
-  }
-  .shepherd-button.shepherd-button-secondary {
-    background: #f1f2f3;
-    color: rgba(0, 0, 0, 0.75);
-  }
-  .shepherd-button.shepherd-button-secondary:not(:disabled):hover {
-    background: #d6d9db;
-    color: rgba(0, 0, 0, 0.75);
-  }
-  .shepherd-button:disabled {
-    cursor: not-allowed;
-  }
-  .shepherd-cancel-icon {
-    background: transparent;
-    border: none;
-    color: hsla(0, 0%, 50.2%, 0.75);
-    font-size: 2em;
-    cursor: pointer;
-    font-weight: 400;
-    margin: 0;
-    padding: 0;
-    transition: color 0.5s ease;
-  }
-  .shepherd-cancel-icon:hover {
-    color: rgba(0, 0, 0, 0.75);
-  }
-  .shepherd-has-title .shepherd-content .shepherd-cancel-icon {
-    color: hsla(0, 0%, 50.2%, 0.75);
-  }
-  .shepherd-has-title .shepherd-content .shepherd-cancel-icon:hover {
-    color: rgba(0, 0, 0, 0.75);
-  }
-  .shepherd-title {
-    color: rgba(0, 0, 0, 0.75);
-    display: flex;
-    font-size: 1rem;
-    font-weight: 400;
-    flex: 1 0 auto;
-    margin: 0;
-    padding: 0;
-  }
-  /* purgecss end ignore */
 }
+
+.tippy-box[data-theme~='cai'] {
+  @apply font-base text-sm leading-small text-black bg-white p-0;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.3));
+
+  &[data-placement^='top'] > .tippy-arrow::before {
+    border-top-color: white;
+  }
+
+  &[data-placement^='bottom'] > .tippy-arrow::before {
+    border-bottom-color: white;
+  }
+
+  &[data-placement^='left'] > .tippy-arrow::before {
+    border-left-color: white;
+  }
+
+  &[data-placement^='right'] > .tippy-arrow::before {
+    border-right-color: white;
+  }
+
+  > .tippy-content {
+    @apply p-0;
+  }
+
+  > .tippy-backdrop {
+    @apply bg-white;
+  }
+
+  > .tippy-svg-arrow {
+    fill: #fff;
+  }
+}
+
+.shepherd-element {
+  @apply font-base bg-blue-500 rounded-md text-white outline-none transition opacity-0 invisible w-full px-1;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
+  max-width: 285px;
+  z-index: 9999;
+}
+.shepherd-enabled.shepherd-element {
+  opacity: 1;
+  visibility: visible;
+}
+.shepherd-element[data-popper-reference-hidden]:not(.shepherd-centered) {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+.shepherd-element,
+.shepherd-element *,
+.shepherd-element :after,
+.shepherd-element :before {
+  box-sizing: border-box;
+}
+.shepherd-arrow,
+.shepherd-arrow:before {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  z-index: -1;
+}
+.shepherd-arrow:before {
+  @apply bg-blue-500;
+  content: '';
+  transform: rotate(45deg);
+}
+.shepherd-element[data-popper-placement^='top'] > .shepherd-arrow {
+  bottom: -4px;
+}
+.shepherd-element[data-popper-placement^='bottom'] > .shepherd-arrow {
+  top: -4px;
+}
+.shepherd-element[data-popper-placement^='left'] > .shepherd-arrow {
+  right: -4px;
+}
+.shepherd-element[data-popper-placement^='right'] > .shepherd-arrow {
+  left: -4px;
+}
+.shepherd-element.shepherd-centered > .shepherd-arrow {
+  opacity: 0;
+}
+.shepherd-element.shepherd-has-title[data-popper-placement^='bottom']
+  > .shepherd-arrow:before {
+  background-color: #e6e6e6;
+}
+.shepherd-target-click-disabled.shepherd-enabled.shepherd-target,
+.shepherd-target-click-disabled.shepherd-enabled.shepherd-target * {
+  pointer-events: none;
+}
+.shepherd-modal-overlay-container {
+  height: 0;
+  left: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  transition: all 0.3s ease-out, height 0ms 0.3s, opacity 0.3s 0ms;
+  width: 100vw;
+  z-index: 9997;
+}
+.shepherd-modal-overlay-container.shepherd-modal-is-visible {
+  height: 100vh;
+  opacity: 0.35;
+  transition: all 0.3s ease-out, height 0s 0s, opacity 0.3s 0s;
+}
+.shepherd-modal-overlay-container.shepherd-modal-is-visible path {
+  pointer-events: all;
+}
+.shepherd-content {
+  border-radius: 5px;
+  outline: none;
+  padding: 0;
+}
+.shepherd-footer {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0.75rem 0.75rem;
+}
+.shepherd-footer .shepherd-button:last-child {
+  margin-right: 0;
+}
+.shepherd-header {
+  align-items: center;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  display: flex;
+  justify-content: flex-end;
+  line-height: 2em;
+  padding: 0.75rem 0.75rem 0;
+}
+.shepherd-has-title .shepherd-content .shepherd-header {
+  background: #e6e6e6;
+  padding: 1em;
+}
+.shepherd-text {
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 1rem;
+  line-height: 1.3em;
+  padding: 0.75em;
+}
+.shepherd-text p {
+  margin-top: 0;
+}
+.shepherd-text p:last-child {
+  margin-bottom: 0;
+}
+.shepherd-button {
+  background: #3288e6;
+  border: 0;
+  border-radius: 3px;
+  color: hsla(0, 0%, 100%, 0.75);
+  cursor: pointer;
+  margin-right: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.5s ease;
+}
+.shepherd-button:not(:disabled):hover {
+  background: #196fcc;
+  color: hsla(0, 0%, 100%, 0.75);
+}
+.shepherd-button.shepherd-button-secondary {
+  background: #f1f2f3;
+  color: rgba(0, 0, 0, 0.75);
+}
+.shepherd-button.shepherd-button-secondary:not(:disabled):hover {
+  background: #d6d9db;
+  color: rgba(0, 0, 0, 0.75);
+}
+.shepherd-button:disabled {
+  cursor: not-allowed;
+}
+.shepherd-cancel-icon {
+  background: transparent;
+  border: none;
+  color: hsla(0, 0%, 50.2%, 0.75);
+  font-size: 2em;
+  cursor: pointer;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  transition: color 0.5s ease;
+}
+.shepherd-cancel-icon:hover {
+  color: rgba(0, 0, 0, 0.75);
+}
+.shepherd-has-title .shepherd-content .shepherd-cancel-icon {
+  color: hsla(0, 0%, 50.2%, 0.75);
+}
+.shepherd-has-title .shepherd-content .shepherd-cancel-icon:hover {
+  color: rgba(0, 0, 0, 0.75);
+}
+.shepherd-title {
+  color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  font-size: 1rem;
+  font-weight: 400;
+  flex: 1 0 auto;
+  margin: 0;
+  padding: 0;
+}
+/* purgecss end ignore */

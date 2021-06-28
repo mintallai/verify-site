@@ -22,19 +22,12 @@
   $: combined = [...breadcrumbList, ...assetList];
 
   onDestroy(() => isCompareSelectMode.set(false));
-
 </script>
 
 <div class="h-full relative">
   <div class="p-4 pb-1">
     <h2 class="my-0 mb-2">
       <span>Content credentials</span>
-      <cai-tooltip class="theme-spectrum ml-2"
-        ><div slot="content">
-          Tamper-evident editing and activity data attached on export, including
-          additional images and anything else used to make the selected content.
-        </div>
-      </cai-tooltip>
     </h2>
     <div class="mb-4 leading-small text-gray-700">
       These assets are in chronological order, starting with the latest version.
@@ -49,8 +42,7 @@
           isCompareSelectMode={$isCompareSelectMode}
           id={`record-${index}`}
           current={asset.id === $primaryId}
-          hasConnector={index > 0}
-        />
+          hasConnector={index > 0} />
       {/each}
       <div class="grid space-y-4">
         {#each assetList as asset (asset.id)}
@@ -58,8 +50,7 @@
             <Asset
               {asset}
               isCompareSelectMode={$isCompareSelectMode}
-              indented
-            />
+              indented />
           </div>
         {/each}
       </div>
@@ -72,13 +63,11 @@
   {/if}
   {#if combined.length > 1}
     <div
-      class="sticky bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent"
-    >
+      class="sticky bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent">
       <div class="pointer-events-auto">
         <Button
           on:click={() => isCompareSelectMode.update((x) => !x)}
-          secondary={!$isCompareSelectMode}>Compare credentials</Button
-        >
+          secondary={!$isCompareSelectMode}>Compare credentials</Button>
       </div>
     </div>
   {/if}

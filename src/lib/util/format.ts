@@ -14,6 +14,10 @@ export function formatTime(date: Date | string): string {
   return format(asDate(date), 'h:mm aa');
 }
 
+export function formatDateTime(date: Date | string): string {
+  return format(asDate(date), 'MM/dd/yyyy h:mm aa');
+}
+
 export function asFilename(str: string): string {
   return kebabCase(str);
 }

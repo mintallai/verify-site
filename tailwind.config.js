@@ -1,8 +1,13 @@
+const production = !process.env.ROLLUP_WATCH;
 const merge = require('lodash/merge');
 const spectrumConfig = require('./tailwind.config.spectrum');
 
 module.exports = merge(spectrumConfig, {
-  purge: ['./src/**/*.{svelte,js,ts}'],
+  mode: 'jit',
+  purge: {
+    enabled: production,
+    content: ['./src/**/*.{svelte,js,ts}'],
+  },
   theme: {
     screens: {
       sm: '640px',
@@ -33,7 +38,7 @@ module.exports = merge(spectrumConfig, {
         '0': '0',
       },
       gradientColorStops: {
-        transparent: 'transparent',
+        transparent: 'rgba(255, 255, 255, 0)',
         white: '#fff',
       },
     },

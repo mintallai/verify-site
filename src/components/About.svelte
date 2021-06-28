@@ -1,5 +1,4 @@
 <script lang="ts">
-  import upperFirst from 'lodash/upperFirst';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Alert from './Alert.svelte';
@@ -14,6 +13,7 @@
     getTitle,
     ClaimError,
   } from '../lib/claim';
+  import { formatDateTime } from '../lib/util/format';
   import '@contentauth/web-components/dist/components/panels/ContentProducer';
   import '@contentauth/web-components/dist/components/panels/Assets';
   import '@contentauth/web-components/dist/components/panels/CustomData';
@@ -51,19 +51,11 @@
     thumbnailUrl: getThumbnailUrlForId($storeReport, ingredient.id),
   }));
   $: signedBy = getSignatureIssuer(claim);
-
+  $: recorder = getRecorder(claim);
 </script>
 
 <div class="w-full flex justify-center">
   <div class="info w-full max-w-xs lg:pb-4" bind:this={element}>
-    {#if isComparing}
-      <div class="file-name">
-        <div class="label">File name</div>
-        <div class="value">
-          {getTitle(claim)}
-        </div>
-      </div>
-    {/if}
     {#if structureError}
       <Alert severity="error">
         {#if structureError}
@@ -72,26 +64,39 @@
         {/if}
       </Alert>
     {/if}
+    {#if isComparing}
+      <div class="file-name">
+        <div class="label">File name</div>
+        <div class="value">
+          {getTitle(claim)}
+        </div>
+      </div>
+    {/if}
+    {#if producer}
+      <div>
+        <dl class="attributes">
+          <dt>Produced by</dt>
+          <dd>{producer}</dd>
+        </dl>
+      </div>
+    {/if}
     <div>
-      <cai-panel-content-producer
-        producedby={producer}
-        producedwith={getRecorder(claim)}
-        signedon={getSignatureDate(claim)}
-        class="theme-spectrum"
-      >
-        <ProviderIcon
-          provider={getRecorder(claim)}
-          slotName="produced-with-icon"
-        />
-      </cai-panel-content-producer>
+      <dl class="attributes">
+        <dt>Produced with</dt>
+        <dd class="flex space-x-2">
+          <div class="relative top-0.5">
+            <ProviderIcon provider={recorder} />
+          </div>
+          <div class="break-word">{recorder}</div>
+        </dd>
+      </dl>
     </div>
     {#if !(categories === null || structureError?.message === ClaimError.InvalidActionAssertion)}
       <div>
         <cai-panel-edits-activity
           {categories}
           hidedescriptions={isMobileViewer && isComparing ? true : null}
-          class="theme-spectrum"
-        />
+          class="theme-spectrum" />
       </div>
     {/if}
     {#if isComparing || isMobileViewer}
@@ -105,14 +110,12 @@
               compareWithId(null);
             }
           }}
-          class="theme-spectrum"
-        >
+          class="theme-spectrum">
           <div slot="no-assets">
             {#if isOriginal || secureCapture}
               <OriginalCreation
                 type={secureCapture ? 'secureCapture' : 'original'}
-                {claim}
-              />
+                {claim} />
             {:else}
               None
             {/if}
@@ -121,14 +124,25 @@
       </div>
     {/if}
     <div>
-      <cai-panel-providers
-        identifiedby={upperFirst(signedBy)}
-        signedby={upperFirst(signedBy)}
-        class="theme-spectrum"
-      >
-        <ProviderIcon provider={signedBy} slotName="identified-by-icon" />
-        <ProviderIcon provider={signedBy} slotName="signed-by-icon" />
-      </cai-panel-providers>
+      <dl class="attributes">
+        <dt class="flex space-x-2">
+          <div>Signed by</div>
+          <cai-tooltip class="theme-spectrum">
+            <div slot="content" class="text-gray-700" style="width: 200px;">
+              Cryptographic signatures assuring that this content record wasn’t
+              tampered with.
+            </div>
+          </cai-tooltip>
+        </dt>
+        <dd class="flex space-x-2">
+          <div class="relative top-0.5">
+            <ProviderIcon provider={signedBy} />
+          </div>
+          <div>{signedBy}</div>
+        </dd>
+        <dt>Signed on</dt>
+        <dd>{formatDateTime(getSignatureDate(claim))}</dd>
+      </dl>
     </div>
   </div>
 </div>
@@ -144,10 +158,10 @@
     @apply border-none pb-0;
   }
   .file-name .label {
-    @apply text-xs text-gray-700 uppercase mb-1;
+    @apply text-75 text-gray-700 font-bold uppercase mb-1;
   }
   .file-name .value {
-    @apply text-md text-gray-900 font-bold truncate;
+    @apply text-150 text-gray-900 font-bold truncate;
     max-width: calc((100vw / 2) - 30px);
   }
   @screen md {
@@ -160,5 +174,4 @@
       @apply max-w-full;
     }
   }
-
 </style>

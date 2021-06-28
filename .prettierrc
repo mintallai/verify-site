@@ -2,6 +2,8 @@
   "bracketSpacing": true,
   "semi": true,
   "singleQuote": true,
+  "svelteBracketNewLine": false,
+  "jsxBracketSameLine": true,
   "tabWidth": 2,
   "trailingComma": "all",
   "overrides": [

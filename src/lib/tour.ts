@@ -41,7 +41,7 @@ function getParentRef(storeReport: IEnhancedStoreReport) {
 }
 
 async function gotoRootClaim(storeReport: IEnhancedStoreReport) {
-  navigateToId(storeReport.head, false, false);
+  navigateToId(storeReport?.head, false, false);
   return delay(DELAY_MS);
 }
 

@@ -25,21 +25,19 @@
   <div class="flex-shrink">
     <button
       on:click={() => navigateToRoot()}
-      class="flex select-none outline-none items-center"
-    >
+      class="flex select-none outline-none items-center">
       <h1 class="font-black text-600 text-gray-900 leading-none">Verify</h1>
       <div class="beta">Beta</div>
     </button>
   </div>
   <div class="links full-menu">
-    <a href="#" on:click={upload} class="font-bold text-sm tracking-tight"
-      >Upload image</a
-    >
+    <button on:click={upload} class="font-bold text-sm tracking-tight">
+      Upload image
+    </button>
     <a
       href={getFaqUrl()}
       target="_blank"
-      class="font-bold text-sm tracking-tight">FAQ</a
-    >
+      class="font-bold text-sm tracking-tight">FAQ</a>
   </div>
   <div class="ml-5 full-menu">
     <Button href={$learnMoreUrl} outline={true}>Learn more</Button>
@@ -50,8 +48,7 @@
       size="24"
       duration="0.2"
       class="text-gray-600 close"
-      pressed={$isBurgerMenuShown}
-    />
+      pressed={$isBurgerMenuShown} />
   </div>
   {#if $isBurgerMenuShown}
     <div transition:slide={{ duration: 300 }} class="burger-menu">
@@ -78,7 +75,8 @@
   .links {
     @apply flex-grow text-right;
   }
-  .links a {
+  .links a,
+  .links button {
     @apply ml-4 text-gray-800;
   }
   .burger-menu {
