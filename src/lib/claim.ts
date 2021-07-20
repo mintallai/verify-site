@@ -28,6 +28,7 @@ const dbg = debug('claim');
 const ACTION_ASSERTION_LABEL = 'cai.actions.v2';
 const ACTION_ID_KEY = 'stEvt:parameters';
 const IDENTITY_ASSERTION_LABEL = 'cai.identity.v1';
+const CREATIVEWORK_ASSERTION_LABEL = 'schema.org.CreativeWork';
 const DEFAULT_LOCALE = 'en-US';
 const DEFAULT_ICON_VARIANT = 'dark';
 const UNCATEGORIZED_ID = 'UNCATEGORIZED';
@@ -198,12 +199,23 @@ export function getTitle(item: ViewableItem) {
 
 /**
  * Gets the producer from the identity assertion in the claim
+ *
+ * // TODO: Remove support for identity assertion when we are no longer using it
  */
 export function getProducer(claim: IEnhancedClaimReport) {
-  const assertion = claim.assertions.find(
-    (x) => x.label === IDENTITY_ASSERTION_LABEL,
+  const assertion = claim.assertions.find((x) =>
+    [CREATIVEWORK_ASSERTION_LABEL, IDENTITY_ASSERTION_LABEL].includes(x.label),
   );
-  const display = assertion?.data?.display;
+  const isLegacyLabel = assertion?.label === IDENTITY_ASSERTION_LABEL;
+  const display = isLegacyLabel
+    ? assertion?.data?.display
+    : assertion?.data?.author[0]?.name;
+  if (isLegacyLabel) {
+    dbg(
+      'Found legacy identity assertion type instead of CreativeWork assertion',
+      assertion,
+    );
+  }
   // Return the display name if we get the structure we expect
   if (assertion && display) {
     return display;
