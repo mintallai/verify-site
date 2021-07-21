@@ -259,7 +259,7 @@
   main {
     --viewer-height: 375px;
 
-    @apply grid w-screen min-h-screen font-base;
+    @apply grid w-screen min-h-screen h-full font-base;
     grid-template-columns: 100%;
     grid-template-rows: 80px var(--viewer-height) 1fr 70px;
     grid-template-areas:

@@ -126,9 +126,9 @@
     <div>
       <dl class="attributes">
         <dt class="flex space-x-2">
-          <div>Signed by</div>
+          <div class="whitespace-nowrap">Signed by</div>
           <cai-tooltip class="theme-spectrum">
-            <div slot="content" class="text-gray-700" style="width: 200px;">
+            <div slot="content" class="text-gray-900" style="width: 200px;">
               Cryptographic signatures assuring that this content record wasn’t
               tampered with.
             </div>
