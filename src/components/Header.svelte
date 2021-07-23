@@ -27,7 +27,7 @@
       on:click={() => navigateToRoot()}
       class="flex select-none outline-none items-center">
       <h1 class="font-black text-600 text-gray-900 leading-none">Verify</h1>
-      <div class="beta">Beta</div>
+      <div class="beta">C2PA Beta</div>
     </button>
   </div>
   <div class="links full-menu">
@@ -69,7 +69,7 @@
     @apply hidden;
   }
   .beta {
-    @apply inline-block bg-gray-200 text-gray-700 font-semi-bold text-xxs rounded px-2 py-0 ml-3;
+    @apply inline-block bg-blue-400 text-white font-semi-bold text-xxs rounded px-2 py-0 ml-3;
     line-height: 1.4375rem;
   }
   .links {
