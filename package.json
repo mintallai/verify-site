@@ -60,7 +60,7 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
-    "@contentauth/toolkit": "0.2.0-alpha.7",
+    "@contentauth/toolkit": "0.2.0-c2pa.12",
     "@contentauth/web-components": "0.2.0-next.21",
     "@roxi/routify": "^2.7.3",
     "@spectrum-web-components/action-menu": "^0.9.4",
