@@ -1,6 +1,15 @@
 import parseISO from 'date-fns/parseISO';
-import format from 'date-fns/format';
+import dfnFormat from 'date-fns/format';
 import kebabCase from 'lodash/fp/kebabCase';
+
+export function format(date: Date, template: string) {
+  try {
+    return dfnFormat(date, template);
+  } catch (err) {
+    console.error('Invalid date given, could not parse:', date);
+    return '';
+  }
+}
 
 export function asDate(date: Date | string): Date {
   return typeof date === 'string' ? parseISO(date) : date;
