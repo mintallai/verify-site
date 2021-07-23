@@ -25,9 +25,9 @@ import debug from 'debug';
 
 const dbg = debug('claim');
 
-const ACTION_ASSERTION_LABEL = 'cai.actions.v2';
+const ACTION_ASSERTION_LABEL = 'c2pa.actions.v1';
 const ACTION_ID_KEY = 'stEvt:parameters';
-const IDENTITY_ASSERTION_LABEL = 'cai.identity.v1';
+const IDENTITY_ASSERTION_LABEL = 'c2pa.identity.v1';
 const CREATIVEWORK_ASSERTION_LABEL = 'schema.org.CreativeWork';
 const DEFAULT_LOCALE = 'en-US';
 const DEFAULT_ICON_VARIANT = 'dark';
