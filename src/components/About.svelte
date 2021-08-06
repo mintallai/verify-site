@@ -75,7 +75,14 @@
     {#if producer}
       <div>
         <dl class="attributes">
-          <dt>Produced by</dt>
+          <dt class="flex space-x-2">
+            <div class="whitespace-nowrap">Produced by</div>
+            <cai-tooltip class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 150px;">
+                This name was entered by the producer.
+              </div>
+            </cai-tooltip>
+          </dt>
           <dd>{producer}</dd>
         </dl>
       </div>
