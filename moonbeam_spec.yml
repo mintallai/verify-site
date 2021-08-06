@@ -89,7 +89,7 @@ services:
         tier: 3
         production: false
         auto_promote: false
-        optional: false
+        optional: true
         single_rollback_allowed: false
         environment_stages:
           - name: deploy---Dev
