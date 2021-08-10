@@ -1,0 +1,6 @@
+{
+  "hello": "ok",
+  "hello2": {
+    "__value__": "test"
+  }
+}

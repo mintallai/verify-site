@@ -4,8 +4,10 @@
     "module": "esnext",
     "experimentalDecorators": true,
     "importsNotUsedAsValues": "remove",
-    "noEmitOnError": false
+    "noEmitOnError": false,
+    "isolatedModules": false,
+    "types": ["jest"]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules/*", "static/*", "scripts/*", "assets/*"]
+  "exclude": ["node_modules/*", "static/*", "rollup/*", "assets/*"]
 }

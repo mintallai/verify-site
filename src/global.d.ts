@@ -10,6 +10,7 @@ declare module 'svelte-css-vars';
 declare module '*.svg';
 
 declare var __breakpoints__;
+declare var process;
 
 declare interface IUrlParams {
   source: string;

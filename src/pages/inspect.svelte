@@ -113,7 +113,7 @@
 
     // This stops the drag state from rapidly changing during drag
     // They also use this pattern in the dragDrop library
-    let dragTimeout: number | undefined;
+    let dragTimeout: ReturnType<typeof setTimeout> | undefined;
     const cleanupDragDrop = dragDrop('main', {
       async onDrop(files: File[]) {
         clearTimeout(dragTimeout);
