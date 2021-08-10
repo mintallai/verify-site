@@ -1,5 +1,4 @@
 import { register, init, getLocaleFromNavigator } from 'svelte-i18n';
-import { parseDictionary } from './util/dictionary';
 import { SUPPORTED_LOCALES, DEFAULT_LOCALE } from './util/lang';
 import debug from 'debug';
 
@@ -17,11 +16,6 @@ SUPPORTED_LOCALES.forEach((locale) => {
     return data;
   });
 });
-
-// register('en', () => import('./en.json'));
-// register('en-US', () => import('./en-US.json'));
-// register('pt', () => import('./pt.json'));
-// en, en-US and pt are not available yet
 
 init({
   fallbackLocale: DEFAULT_LOCALE,
