@@ -43,10 +43,8 @@
   "comp.viewer.selectFromComputer": "Select a JPG or PNG from your computer",
   "tour.explorePast.content": "The most recent version appears first in the content record, followed by previous versions and any component elements, like other images.",
   "tour.explorePast.title": "Explore a JPEG’s past",
-  "tour.getTamperEvidentData": "",
   "tour.getTamperEvidentData.content": "No matter where the content shows up on the internet, the info icon tells you that its record was confirmed.",
   "tour.getTamperEvidentData.title": "Get tamper-evident image data",
-  "tour.getTamperEvidentDataText": "",
   "tour.trackChanges.content": "Select an image to view its own content record. Or compare it to another entry in the content record in a slider or split-screen view.",
   "tour.trackChanges.title": "Track changes over time"
 }
