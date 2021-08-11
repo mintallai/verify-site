@@ -13,7 +13,7 @@
       if (loc) {
         const language = lang(loc);
         debug('i18n')(`Setting html tag language to ${language}`);
-        document.querySelector('html').setAttribute('lang', language);
+        document.documentElement.setAttribute('lang', language);
       }
     });
 

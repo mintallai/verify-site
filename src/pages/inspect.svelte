@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
+  import { _ } from 'svelte-i18n';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
   import { getStoreReportFromUrl, ToolkitError } from '../lib/toolkit';
@@ -145,6 +146,9 @@
 </script>
 
 <svelte:window />
+<svelte:head>
+  <title>{$_('page.title')}</title>
+</svelte:head>
 <main
   class="theme-light"
   class:comparing={isComparing}
