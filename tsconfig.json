@@ -4,7 +4,8 @@
     "module": "esnext",
     "experimentalDecorators": true,
     "importsNotUsedAsValues": "remove",
-    "noEmitOnError": false
+    "noEmitOnError": false,
+    "types": ["svelte"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules/*", "static/*", "rollup/*", "assets/*"]
