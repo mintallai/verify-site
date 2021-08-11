@@ -1,5 +1,11 @@
 const mapValues = require('lodash/mapValues');
 
+/**
+ * Processes JL10N syntax (with metadata and nested) into key:value
+ * pairs since we do not need metadata once it gets to the end user.
+ *
+ * @see https://wiki.corp.adobe.com/x/kYs_U
+ */
 function parseDictionary(data) {
   return mapValues(data, (val) => {
     if (typeof val === 'string') {
@@ -15,6 +21,9 @@ function parseDictionary(data) {
   });
 }
 
+/**
+ * Transformer for rollup-plugin-copy
+ */
 function transformDictionaryJson(data) {
   const parsed = JSON.parse(data);
   return JSON.stringify(parseDictionary(parsed));
