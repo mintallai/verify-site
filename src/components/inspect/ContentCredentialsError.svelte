@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import NoCredentials from '../../../assets/svg/monochrome/no-credentials.svg';
   import Otgp from '../../../assets/svg/monochrome/otgp.svg';
 
@@ -11,26 +12,23 @@
     <Otgp
       width="126"
       height="90"
-      class="text-gray-500 mb-4 hidden lg:block mt-0 lg:mt-5"
-    />
-    <div class="message-heading">Missing content credentials</div>
+      class="text-gray-500 mb-4 hidden lg:block mt-0 lg:mt-5" />
+    <div class="message-heading">
+      {$_('comp.contentCredentialsError.missing')}
+    </div>
     <div class="message-text">
-      The producer edited this asset without attaching complete content
-      credentials. Other data may be available in the content record. <a
-        class="link"
-        href="https://contentauthenticity.org/faq"
-        target="_blank">Learn more</a
-      >
+      {$_('comp.contentCredentialsError.missingText')}
+      <a class="link" href="https://contentauthenticity.org/faq" target="_blank"
+        >{$_('comp.contentCredentialsError.learnMore')}</a>
     </div>
   {:else if status === 'none'}
     <NoCredentials
       width="126"
       height="90"
-      class="text-gray-500 mb-4 hidden lg:block mt-0 lg:mt-5"
-    />
-    <div class="message-heading">No content credentials for this asset</div>
+      class="text-gray-500 mb-4 hidden lg:block mt-0 lg:mt-5" />
+    <div class="message-heading">{$_('comp.contentCredentialsError.none')}</div>
     <div class="message-text">
-      This asset doesn’t have a content record attached.
+      {$_('comp.contentCredentialsError.noneText')}
     </div>
   {/if}
 </div>

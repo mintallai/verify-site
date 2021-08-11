@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
+  import { _ } from 'svelte-i18n';
 
   export let title: string;
   export let content: string;
@@ -25,18 +26,21 @@
 </script>
 
 <div class="step" bind:this={element}>
-  <h3>{title}</h3>
-  <div class="content">{content}</div>
+  <h3>{$_(title)}</h3>
+  <div class="content">{$_(content)}</div>
   <div class="footer">
     <div class="flex-grow">{stepNum} of {stepTotal}</div>
     {#if stepNum > 1}
-      <button on:click={back} class="flex-shrink mr-4">Previous</button>
+      <button on:click={back} class="flex-shrink mr-4"
+        >{$_('comp.tourStep.previous')}</button>
     {/if}
     {#if stepNum < stepTotal}
-      <button on:click={next} class="flex-shrink">Next</button>
+      <button on:click={next} class="flex-shrink"
+        >{$_('comp.tourStep.next')}</button>
     {/if}
     {#if stepNum === stepTotal}
-      <button on:click={done} class="flex-shrink">Done</button>
+      <button on:click={done} class="flex-shrink"
+        >{$_('comp.tourStep.done')}</button>
     {/if}
   </div>
 </div>

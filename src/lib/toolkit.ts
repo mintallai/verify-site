@@ -69,7 +69,10 @@ export async function getStoreReportFromFile(
   await loadToolkit();
   const mimeType = sanitizeMimeType(file.type);
   const arrayBuffer = await fileAsArrayBuffer(file);
-  const storeReport = await get_store_report_from_array_buffer(arrayBuffer, mimeType);
+  const storeReport = await get_store_report_from_array_buffer(
+    arrayBuffer,
+    mimeType,
+  );
   dbg('getStoreReportFromFile file:', file, 'toolkit reponse:', storeReport);
   return {
     source: 'file',
@@ -88,7 +91,10 @@ export async function getStoreReportFromUrl(
     const mimeType = sanitizeMimeType(res.headers.get('Content-Type'));
     if (isValidMimeType(mimeType)) {
       const arrayBuffer = await res.arrayBuffer();
-      const storeReport = await get_store_report_from_array_buffer(arrayBuffer, mimeType);
+      const storeReport = await get_store_report_from_array_buffer(
+        arrayBuffer,
+        mimeType,
+      );
       dbg('getStoreReportFromUrl url:', url, 'toolkit reponse:', storeReport);
       const { pathname } = new URL(url);
       const filename = pathname?.split('/').pop() || 'Unknown';

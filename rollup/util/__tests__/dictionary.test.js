@@ -1,7 +1,7 @@
 const { parseDictionary } = require('../dictionary');
 
 describe('i18n utils', () => {
-  it('should process J10n files correctly', () => {
+  it('should process JL10n files correctly', () => {
     const processed = parseDictionary({
       'my.testKey1': 'myValue1',
       'my.testKey2': {
@@ -14,7 +14,7 @@ describe('i18n utils', () => {
     });
   });
 
-  it('should process nested J10n files correctly', () => {
+  it('should process nested JL10n files correctly', () => {
     const processed = parseDictionary({
       title: 'Verify',
       components: {
@@ -43,7 +43,7 @@ describe('i18n utils', () => {
     });
   });
 
-  it('should throw an error if given an incorrect J10n object', () => {
+  it('should throw an error if given an incorrect JL10n object', () => {
     expect(() => {
       parseDictionary({
         'my.testKey1': 'myValue1',

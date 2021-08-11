@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
+  import { _ } from 'svelte-i18n';
   import Icon from '../Icon.svelte';
   import {
     contentSourceIds,
@@ -12,7 +13,11 @@
     CompareMode,
     isMobileViewerShown,
   } from '../../stores';
-  import { getBreadcrumbList, getThumbnailUrlForId, getTitle } from '../../lib/claim';
+  import {
+    getBreadcrumbList,
+    getThumbnailUrlForId,
+    getTitle,
+  } from '../../lib/claim';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
   import '@spectrum-web-components/tabs/sp-tabs.js';
@@ -48,18 +53,23 @@
   {#if isComparing}
     <div
       class="absolute flex items-center cursor-pointer"
-      on:click={() => dispatch('back')}
-    >
+      on:click={() => dispatch('back')}>
       <LeftArrow width="14" height="12" class="text-gray-800 mr-3" />
       <div class="breadcrumbs">
-        <div class="breadcrumb-item font-bold">Back</div>
+        <div class="breadcrumb-item font-bold">
+          {$_('comp.breadcrumb.back')}
+        </div>
       </div>
     </div>
     <div class="compare-tabs">
       <sp-theme color="light" scale="medium">
         <sp-tabs selected={$compareMode} on:change={handleCompareChange}>
-          <sp-tab label="Split" value={CompareMode.Split} />
-          <sp-tab label="Slider" value={CompareMode.Slider} />
+          <sp-tab
+            label={$_('comp.breadcrumb.split')}
+            value={CompareMode.Split} />
+          <sp-tab
+            label={$_('comp.breadcrumb.slider')}
+            value={CompareMode.Slider} />
         </sp-tabs>
       </sp-theme>
     </div>
@@ -68,20 +78,20 @@
       <sp-action-menu
         class="-ml-3"
         value={$primaryId}
-        on:change={handleMenuChange}
-      >
+        on:change={handleMenuChange}>
         <div slot="icon" class="py-2">
           <BreadcrumbDropdown
             slot="icon"
             width="20"
             height="16"
-            class="text-gray-800"
-          />
+            class="text-gray-800" />
         </div>
         {#each breadcrumbList as asset, _ ({ id: asset.id, ctx: 'menu-item' })}
           <sp-menu-item value={asset.id} class="checkbox-pos">
             <div class="menu-item pointer-events-none">
-              <cai-thumbnail src={getThumbnailUrlForId($storeReport, asset.id)} class="theme-spectrum" />
+              <cai-thumbnail
+                src={getThumbnailUrlForId($storeReport, asset.id)}
+                class="theme-spectrum" />
               <div class="ml-2 text-100">{getTitle(asset)}</div>
             </div>
           </sp-menu-item>
@@ -109,8 +119,7 @@
         <div
           class="breadcrumb-item hover:underline"
           class:current={asset.id === $primaryId}
-          on:click={() => navigateToId(asset.id)}
-        >
+          on:click={() => navigateToId(asset.id)}>
           {getTitle(asset)}
         </div>
       {/each}

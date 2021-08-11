@@ -1,12 +1,16 @@
 <script lang="ts">
-  import './i18n';
+  import { isLoading } from 'svelte-i18n';
   import Router from '@roxi/routify/runtime/Router.svelte';
   import { routes } from '../.routify/routes';
 
   console.debug(`Verify site running revision ${process.env.GIT_REVISION}`);
 </script>
 
-<Router {routes} />
+{#if !$isLoading}
+  <Router {routes} />
+{:else}
+  <div />
+{/if}
 
 <style global>
   @import '../static/spectrum-vars.css';

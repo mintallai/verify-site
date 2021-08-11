@@ -51,7 +51,7 @@ function typeCheck() {
 }
 
 function getSupportedLocales() {
-  const dictPath = path.resolve(__dirname, './src/i18n/dict');
+  const dictPath = path.resolve(__dirname, './locales');
   return fs.readdirSync(dictPath).map((file) => path.basename(file, '.json'));
 }
 
@@ -141,8 +141,8 @@ function baseConfig(config, ctx) {
       copy({
         targets: [
           {
-            src: [`src/i18n/dict/*.json`],
-            dest: `${distDir}/i18n`,
+            src: [`locales/*.json`],
+            dest: `${distDir}/locales`,
             transform: transformDictionaryJson,
           },
         ],

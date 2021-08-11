@@ -1,3 +1,4 @@
+import { _ } from 'svelte-i18n';
 import Shepherd from 'shepherd.js';
 import delay from 'delay';
 import store from 'store2';
@@ -88,11 +89,10 @@ export function createTour(storeReport: IEnhancedStoreReport) {
     beforeShowPromise: () => gotoRootClaim(storeReport),
     text: () =>
       createComponent(tour, {
-        title: 'Get tamper-evident image data',
+        title: 'tour.getTamperEvidentData.title',
         stepNum: 1,
         stepTotal: 3,
-        content:
-          'No matter where the content shows up on the internet, the info icon tells you that its record was confirmed.',
+        content: 'tour.getTamperEvidentData.content',
       }),
   });
 
@@ -105,11 +105,10 @@ export function createTour(storeReport: IEnhancedStoreReport) {
     beforeShowPromise: () => gotoParentClaim(storeReport),
     text: () =>
       createComponent(tour, {
-        title: 'Explore a JPEG’s past',
+        title: 'tour.explorePast.title',
         stepNum: 2,
         stepTotal: 3,
-        content:
-          'The most recent version appears first in the content record, followed by previous versions and any component elements, like other images.',
+        content: 'tour.explorePast.content',
       }),
   });
 
@@ -122,11 +121,10 @@ export function createTour(storeReport: IEnhancedStoreReport) {
     beforeShowPromise: () => gotoCompare(storeReport),
     text: () =>
       createComponent(tour, {
-        title: 'Track changes over time',
+        title: 'tour.trackChanges.title',
         stepNum: 3,
         stepTotal: 3,
-        content:
-          'Select an image to view its own content record. Or compare it to another entry in the content record in a slider or split-screen view.',
+        content: 'tour.trackChanges.content',
       }),
   });
 
