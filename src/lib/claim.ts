@@ -25,10 +25,11 @@ import debug from 'debug';
 
 const dbg = debug('claim');
 
-const ACTION_ASSERTION_LABEL = 'c2pa.actions.v1';
+const ACTION_ASSERTION_LABEL = 'c2pa.actions';
 const ACTION_ID_KEY = 'stEvt:parameters';
 const IDENTITY_ASSERTION_LABEL = 'c2pa.identity.v1';
-const CREATIVEWORK_ASSERTION_LABEL = 'schema.org.CreativeWork';
+const CREATIVEWORK_ASSERTION_LABEL = 'stds.schema-org.CreativeWork';
+const DICTIONARY_ASSERTION_LABEL = 'adobe.dictionary';
 const DEFAULT_LOCALE = 'en-US';
 const DEFAULT_ICON_VARIANT = 'dark';
 const UNCATEGORIZED_ID = 'UNCATEGORIZED';
@@ -326,10 +327,10 @@ const cachedFetchDictionaryUrl = pMemoize(fetchDictionaryUrl);
 async function loadDictionary(
   claim: IClaimReport,
 ): Promise<IDictionary | null> {
-  const actionAssertion = claim.assertions.find(
-    (x) => x.label === ACTION_ASSERTION_LABEL,
+  const dictionaryAssertion = claim.assertions.find(
+    (x) => x.label === DICTIONARY_ASSERTION_LABEL,
   );
-  const dictionaryUrl = actionAssertion?.data?.dictionary;
+  const dictionaryUrl = dictionaryAssertion?.data?.url;
   if (dictionaryUrl) {
     return cachedFetchDictionaryUrl(dictionaryUrl);
   }
