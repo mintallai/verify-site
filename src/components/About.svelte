@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _, date, time } from 'svelte-i18n';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Alert from './Alert.svelte';
@@ -13,7 +14,7 @@
     getTitle,
     ClaimError,
   } from '../lib/claim';
-  import { formatDateTime } from '../lib/util/format';
+  import { asDate } from '../lib/util/format';
   import '@contentauth/web-components/dist/components/panels/ContentProducer';
   import '@contentauth/web-components/dist/components/panels/Assets';
   import '@contentauth/web-components/dist/components/panels/CustomData';
@@ -66,7 +67,7 @@
     {/if}
     {#if isComparing}
       <div class="file-name">
-        <div class="label">File name</div>
+        <div class="label">{$_('comp.about.fileName')}</div>
         <div class="value">
           {getTitle(claim)}
         </div>
@@ -75,14 +76,21 @@
     {#if producer}
       <div>
         <dl class="attributes">
-          <dt>Produced by</dt>
+          <dt class="flex space-x-2">
+            <div class="whitespace-nowrap">{$_('comp.about.producedBy')}</div>
+            <cai-tooltip class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 150px;">
+                {$_('comp.about.producedByHelpText')}
+              </div>
+            </cai-tooltip>
+          </dt>
           <dd>{producer}</dd>
         </dl>
       </div>
     {/if}
     <div>
       <dl class="attributes">
-        <dt>Produced with</dt>
+        <dt>{$_('comp.about.producedWith')}</dt>
         <dd class="flex space-x-2">
           <div class="relative top-0.5">
             <ProviderIcon provider={recorder} />
@@ -117,7 +125,7 @@
                 type={secureCapture ? 'secureCapture' : 'original'}
                 {claim} />
             {:else}
-              None
+              {$_('comp.about.none')}
             {/if}
           </div>
         </cai-panel-assets>
@@ -126,11 +134,10 @@
     <div>
       <dl class="attributes">
         <dt class="flex space-x-2">
-          <div class="whitespace-nowrap">Signed by</div>
+          <div class="whitespace-nowrap">{$_('comp.about.signedBy')}</div>
           <cai-tooltip class="theme-spectrum">
             <div slot="content" class="text-gray-900" style="width: 200px;">
-              Cryptographic signatures assuring that this content record wasn’t
-              tampered with.
+              {$_('comp.about.signedByHelpText')}
             </div>
           </cai-tooltip>
         </dt>
@@ -140,8 +147,11 @@
           </div>
           <div>{signedBy}</div>
         </dd>
-        <dt>Signed on</dt>
-        <dd>{formatDateTime(getSignatureDate(claim))}</dd>
+        <dt>{$_('comp.about.signedOn')}</dt>
+        <dd>
+          {$date(asDate(getSignatureDate(claim)), { format: 'short' })}{', '}
+          {$time(asDate(getSignatureDate(claim)), { format: 'short' })}
+        </dd>
       </dl>
     </div>
   </div>

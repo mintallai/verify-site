@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
+  import { _ } from 'svelte-i18n';
   import Asset from './Asset.svelte';
   import Button from '../Button.svelte';
   import OriginalCreation from './OriginalCreation.svelte';
@@ -27,11 +28,10 @@
 <div class="h-full relative">
   <div class="p-4 pb-1">
     <h2 class="my-0 mb-2">
-      <span>Content credentials</span>
+      <span>{$_('comp.contentCredentials.title')}</span>
     </h2>
     <div class="mb-4 leading-small text-gray-700">
-      These assets are in chronological order, starting with the latest version.
-      Select one to explore its own content credentials.
+      {$_('comp.contentCredentials.subtitle')}
     </div>
   </div>
   <div class="relative pl-4">
@@ -67,7 +67,8 @@
       <div class="pointer-events-auto">
         <Button
           on:click={() => isCompareSelectMode.update((x) => !x)}
-          secondary={!$isCompareSelectMode}>Compare credentials</Button>
+          secondary={!$isCompareSelectMode}
+          >{$_('comp.contentCredentials.compare')}</Button>
       </div>
     </div>
   {/if}

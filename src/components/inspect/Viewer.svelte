@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
+  import { _ } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
   import {
@@ -60,7 +61,7 @@
     <input
       type="file"
       bind:this={fileInput}
-      accept="image/jpeg"
+      accept="image/jpeg,image/png"
       class="hidden" />
     <div class="inner" use:cssVars={styles}>
       {#if uploadMode}
@@ -70,12 +71,13 @@
             height={99}
             class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}" />
           {#if $source || $storeReport}
-            <div class="message-heading">Drop your file</div>
+            <div class="message-heading">{$_('comp.viewer.dropFile')}</div>
           {:else}
-            <div class="message-heading">Drag and drop your file</div>
+            <div class="message-heading">{$_('comp.viewer.dragDropFile')}</div>
             <div class="message-text">
-              <span class="link" on:click={browseFile}>Select a JPG</span> from your
-              computer
+              <span class="link" on:click={browseFile}>
+                {$_('comp.viewer.selectFromComputer')}
+              </span>
             </div>
           {/if}
         </div>

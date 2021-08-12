@@ -1,5 +1,6 @@
 import childProcess from 'child_process';
 import fs from 'fs';
+import path from 'path';
 import svelte from 'rollup-plugin-svelte-hot';
 import Hmr from 'rollup-plugin-hot';
 import resolve from '@rollup/plugin-node-resolve';
@@ -17,6 +18,7 @@ import svelteSvg from '../etc/rollup/plugins/svelte-svg';
 
 // TODO: Convert this to esm
 const tailwindConfig = require('./tailwind.config');
+const { transformDictionaryJson } = require('./rollup/util/dictionary');
 
 const year = new Date().getFullYear();
 const newrelic = fs.readFileSync('etc/newrelic.html');
@@ -46,6 +48,11 @@ function typeCheck() {
       });
     },
   };
+}
+
+function getSupportedLocales() {
+  const dictPath = path.resolve(__dirname, './locales');
+  return fs.readdirSync(dictPath).map((file) => path.basename(file, '.json'));
 }
 
 export function createRollupConfigs(config) {
@@ -131,6 +138,18 @@ function baseConfig(config, ctx) {
         flatten: true,
         verbose: true,
       }),
+      copy({
+        targets: [
+          {
+            src: [`locales/*.json`],
+            dest: `${distDir}/locales`,
+            transform: transformDictionaryJson,
+          },
+        ],
+        copyOnce: false,
+        flatten: true,
+        verbose: true,
+      }),
       typeCheck(),
       svelte(svelteConfig),
 
@@ -146,13 +165,14 @@ function baseConfig(config, ctx) {
           production ? 'production' : 'development',
         ),
         'process.env.GIT_REVISION': JSON.stringify(git.short()),
+        'process.env.SUPPORTED_LOCALES': JSON.stringify(getSupportedLocales()),
         __toolkit_wasm_src__:
           process.env.TOOLKIT_WASM_SRC || '/toolkit/toolkit_bg.wasm',
         __delay__: production ? '100' : '100',
         __breakpoints__: JSON.stringify(tailwindConfig.theme.screens),
-        __year__: new Date().getFullYear(),
+        __year__: JSON.stringify(new Date().getFullYear()),
       }),
-      embeddedTypescript({ sourceMap: !production }),
+      embeddedTypescript({ compilerOptions: { sourceMap: !production } }),
       typescript({
         sourceMap: !production,
       }),
@@ -160,7 +180,7 @@ function baseConfig(config, ctx) {
 
       production &&
         terser({
-          output: {
+          format: {
             comments: function (node, comment) {
               var text = comment.value;
               var type = comment.type;

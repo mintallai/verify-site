@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import { quintOut } from 'svelte/easing';
   import {
     storeReport,
@@ -39,13 +40,12 @@
     if (hasErrors) {
       return {
         type: 'missing',
-        helpText:
-          'The producer edited this asset without attaching complete credentials',
+        helpText: $_('comp.asset.badgeMissingHelpText'),
       };
     }
     return {
       type: 'info',
-      helpText: 'This image has attribution and history data.',
+      helpText: $_('comp.asset.badgeInfoHelpText'),
     };
   }
 
@@ -67,7 +67,6 @@
           type: 'none',
           helpText: null,
         };
-
 </script>
 
 <div
@@ -81,8 +80,7 @@
     if (asset && !isCurrent) {
       isCompareSelectMode ? compareWithId(asset.id) : navigateToId(asset.id);
     }
-  }}
->
+  }}>
   {#if hasConnector}
     <div class="connector" in:scaleIn />
   {/if}
@@ -98,20 +96,18 @@
         selected={current}
         badge={badge.type}
         badgehelptext={badge.helpText}
-        class="theme-spectrum"
-      />
+        class="theme-spectrum" />
       <dl class="attributes multiline overflow-hidden self-center pr-2">
-        <dt>File Name</dt>
+        <dt>{$_('comp.asset.fileName')}</dt>
         <dd class="file-name" {title}>{title}</dd>
       </dl>
     {:else if source}
       <cai-thumbnail
         src={source.dataUrl}
         selected={current}
-        class="theme-spectrum"
-      />
+        class="theme-spectrum" />
       <dl class="attributes multiline overflow-hidden self-center pr-2">
-        <dt>File Name</dt>
+        <dt>{$_('comp.asset.fileName')}</dt>
         <dd class="file-name" title={source.name}>{source.name}</dd>
       </dl>
     {/if}
@@ -149,5 +145,4 @@
     left: 36px;
     transform-origin: top;
   }
-
 </style>

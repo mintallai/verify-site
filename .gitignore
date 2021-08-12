@@ -6,7 +6,6 @@ pkg/
 **/.history
 /src/tmp/
 .routify
-.npmrc
 *.log
 .vscode
 .idea

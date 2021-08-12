@@ -1,14 +1,22 @@
+<script lang="ts">
+  import { _, locale } from 'svelte-i18n';
+  import { getLocalizedURL } from '@intl/adobe-locales';
+</script>
+
 <footer>
-  <span class="copyright">Copyright © __year__ Adobe. All rights reserved.</span
-  >
+  <span class="copyright">
+    {$_('comp.footer.copyright', { values: { year: '__year__' } })}
+  </span>
   <span class="links">
-    <a href="https://www.adobe.com/privacy.html" target="_blank">Privacy</a>
-    <a href="https://www.adobe.com/legal/terms.html" target="_blank"
-      >Terms of use</a
-    >
-    <a href="https://contentauthenticity.org/contact" target="_blank"
-      >Contact us</a
-    >
+    <a
+      href={getLocalizedURL('https://www.adobe.com/privacy.html', $locale)}
+      target="_blank">{$_('comp.footer.privacy')}</a>
+    <a
+      href={getLocalizedURL('https://www.adobe.com/legal/terms.html', $locale)}
+      target="_blank">{$_('comp.footer.termsOfUse')}</a>
+    <a href="https://contentauthenticity.org/contact" target="_blank">
+      {$_('comp.footer.contactUs')}
+    </a>
   </span>
 </footer>
 
