@@ -1,4 +1,10 @@
 {
+  "comp.about.assets.claimInfoHelpText": "This image has attribution and history data",
+  "comp.about.assets.header": "Assets used",
+  "comp.about.assets.helpText": "Select one of the following assets to explore the tamper-evident editing and activity data that was attached on export.",
+  "comp.about.editsActivity.header": "Edits and activity",
+  "comp.about.editsActivity.helpText": "Categories of actions taken on this content, sorted alphabetically.",
+  "comp.about.editsActivity.none": "None",
   "comp.about.fileName": "File name",
   "comp.about.none": "None",
   "comp.about.producedBy": "Produced by",
