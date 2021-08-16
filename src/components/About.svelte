@@ -15,11 +15,8 @@
     ClaimError,
   } from '../lib/claim';
   import { asDate } from '../lib/util/format';
-  import '@contentauth/web-components/dist/components/panels/ContentProducer';
   import '@contentauth/web-components/dist/components/panels/Assets';
-  import '@contentauth/web-components/dist/components/panels/CustomData';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
-  import '@contentauth/web-components/dist/components/panels/Providers';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
   import type { IEditCategory, IEnhancedClaimReport } from '../lib/types';
@@ -52,7 +49,19 @@
     thumbnailUrl: getThumbnailUrlForId($storeReport, ingredient.id),
   }));
   $: signedBy = getSignatureIssuer(claim);
+  $: sigDate = asDate(getSignatureDate(claim));
   $: recorder = getRecorder(claim);
+
+  $: editsActivityStrings = JSON.stringify({
+    EDITS_ACTIVITY: $_('comp.about.editsActivity.header'),
+    HELP_TEXT: $_('comp.about.editsActivity.helpText'),
+    NO_EDITS: $_('comp.about.editsActivity.none'),
+  });
+  $: assetsStrings = JSON.stringify({
+    ASSETS_USED: $_('comp.about.assets.header'),
+    CLAIM_INFO_HELP_TEXT: $_('comp.about.assets.claimInfoHelpText'),
+    HELP_TEXT: $_('comp.about.assets.helpText'),
+  });
 </script>
 
 <div class="w-full flex justify-center">
@@ -103,6 +112,7 @@
       <div>
         <cai-panel-edits-activity
           {categories}
+          stringmap={editsActivityStrings}
           hidedescriptions={isMobileViewer && isComparing ? true : null}
           class="theme-spectrum" />
       </div>
@@ -110,6 +120,7 @@
     {#if isComparing || isMobileViewer}
       <div>
         <cai-panel-assets
+          stringmap={assetsStrings}
           assets={assetsUsed}
           on:asset-click={({ detail }) => {
             const id = detail?.asset?.id;
@@ -149,8 +160,8 @@
         </dd>
         <dt>{$_('comp.about.signedOn')}</dt>
         <dd>
-          {$date(asDate(getSignatureDate(claim)), { format: 'short' })}{', '}
-          {$time(asDate(getSignatureDate(claim)), { format: 'short' })}
+          {$date(sigDate, { format: 'short' })}{', '}
+          {$time(sigDate, { format: 'short' })}
         </dd>
       </dl>
     </div>
