@@ -87,7 +87,7 @@
   <div {id} class="item" class:current>
     {#if indented}
       <div class="indent-arrow">
-        <NestedArrow width="19" height="17" class="text-gray-500" />
+        <NestedArrow width="19px" height="17px" class="text-gray-500" />
       </div>
     {/if}
     {#if asset}

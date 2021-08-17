@@ -53,8 +53,9 @@
   {#if isComparing}
     <div
       class="absolute flex items-center cursor-pointer"
-      on:click={() => dispatch('back')}>
-      <LeftArrow width="14" height="12" class="text-gray-800 mr-3" />
+      on:click={() => dispatch('back')}
+    >
+      <LeftArrow width="14px" height="12px" class="text-gray-800 mr-3" />
       <div class="breadcrumbs">
         <div class="breadcrumb-item font-bold">
           {$_('comp.breadcrumb.back')}
