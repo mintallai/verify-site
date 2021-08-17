@@ -1,3 +1,5 @@
+import { locale } from 'svelte-i18n';
+import { get } from 'svelte/store';
 import flow from 'lodash/fp/flow';
 import compact from 'lodash/fp/compact';
 import map from 'lodash/fp/map';
@@ -30,7 +32,6 @@ const ACTION_ID_KEY = 'stEvt:parameters';
 const IDENTITY_ASSERTION_LABEL = 'c2pa.identity.v1';
 const CREATIVEWORK_ASSERTION_LABEL = 'stds.schema-org.CreativeWork';
 const DICTIONARY_ASSERTION_LABEL = 'adobe.dictionary';
-const DEFAULT_LOCALE = 'en-US';
 const DEFAULT_ICON_VARIANT = 'dark';
 const UNCATEGORIZED_ID = 'UNCATEGORIZED';
 const ingredientIdRegExp = /^(\S+)\[(\d+)\]$/;
@@ -139,12 +140,15 @@ export function translateActionName(
  */
 const processCategories = flow(
   compact,
-  map<IDictionaryCategoryWithId, IEditCategory>((category) => ({
-    id: category.id,
-    icon: category.icon?.replace('{variant}', DEFAULT_ICON_VARIANT),
-    label: category.labels?.[DEFAULT_LOCALE],
-    description: category.descriptions?.[DEFAULT_LOCALE],
-  })),
+  map<IDictionaryCategoryWithId, IEditCategory>((category) => {
+    const localeKey = get(locale);
+    return {
+      id: category.id,
+      icon: category.icon?.replace('{variant}', DEFAULT_ICON_VARIANT),
+      label: category.labels?.[localeKey],
+      description: category.descriptions?.[localeKey],
+    };
+  }),
   uniqBy((category) => category.id),
   sortBy((category) => category.label),
 );
