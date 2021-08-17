@@ -42,7 +42,7 @@
 <div class="theme-light overflow-show">
   <Header />
   <section id="section0" class="overflow-hidden">
-    <div class="w-screen object-fill" height="100%" width="100%" style="background-image: url({heroBkg});"/>
+    <div class="w-screen object-fill bg-cover bg-center" style="height=350px; width=100vw; background-image: url({heroBkg});"/>
     <div class="hero absolute">
       <div class="text-white lg:text-8xl sm:text-7xl font-bold relative ">Decide what content to trust</div>
       <div class="text-white lg:text-5xl sm:text-3xl font-normal relative ">Inspect tamper-evident records and compare edits, activity, and more.</div>
@@ -57,7 +57,7 @@
   <section id="section1" class="overflow-hidden">
     <div class="grid grid-cols-3 gap-4">
       <div class="w-full h-72 col-span-3 lg:col-span-2 order-1 bg-blue-800">
-        <img src={url(composition)} alt="Composition"/>
+        <img src={composition} alt="Composition"/>
       </div>
       <div class="w-full h-72 col-span-3 lg:col-span-1 order-2 text-center py-6 lg:py-11">
         <div class="text-black lg:text-5xl sm:text-3xl">{sectionOneText.header}</div>
@@ -70,7 +70,7 @@
     <div class="grid grid-cols-3 gap-4">
       <div class="w-full h-72 col-span-3 lg:col-span-2 lg:order-2 bg-gray-600">
       </div>
-      <div class="w-full h-72 col-span-3 lg:col-span-1 lg:order-1 py-6 lg:py-11">
+      <div class="w-full h-72 col-span-3 lg:col-span-1 lg:order-1 text-center py-6 lg:py-11">
         <div class="text-black lg:text-5xl sm:text-3xl">{sectionTwoText.header}</div>
         <div class="text-black lg:text-xl sm:text-smd">{sectionTwoText.body}</div>
         <div class="text-black font-bold lg:text-xl sm:text-smd">{sectionTwoText.cta}</div>
@@ -81,7 +81,7 @@
     <div class="grid grid-cols-3 gap-4">
       <div class="w-full h-72 col-span-3 lg:col-span-2 order-1 bg-blue-200">
       </div>
-      <div class="w-full h-72 col-span-3 lg:col-span-1 order-2 py-6 lg:py-11">
+      <div class="w-full h-72 col-span-3 lg:col-span-1 order-2 text-center py-6 lg:py-11">
         <div class="text-black lg:text-5xl sm:text-3xl">{sectionThreeText.header}</div>
         <div class="text-black lg:text-xl sm:text-smd">{sectionThreeText.body}</div>
         <div class="text-black font-bold lg:text-xl sm:text-smd">{sectionThreeText.cta}</div>
