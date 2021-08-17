@@ -27,7 +27,9 @@
     <button
       on:click={() => navigateToRoot()}
       class="flex select-none outline-none items-center">
-      <h1 class="font-black text-600 text-gray-900 leading-none">
+      <h1
+        data-test-id="app.name"
+        class="font-black text-600 text-gray-900 leading-none">
         {$_('comp.header.productName')}
       </h1>
       <div class="beta">{$_('comp.header.c2paBeta')}</div>

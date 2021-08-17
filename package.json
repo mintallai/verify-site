@@ -12,10 +12,12 @@
     "export": "routify export",
     "rollup": "rollup -c rollup.config.js -w",
     "routify": "routify",
-    "test": "jest"
+    "test:unit": "jest",
+    "test": "playwright test"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^4.0.3",
+    "@playwright/test": "^1.14.0",
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-node-resolve": "^8.1.0",
     "@rollup/plugin-replace": "^2.3.3",
