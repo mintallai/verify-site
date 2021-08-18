@@ -59,6 +59,7 @@
     bind:clientWidth={width}
     bind:clientHeight={height}>
     <input
+      data-test-id="viewer.fileInput"
       type="file"
       bind:this={fileInput}
       accept="image/jpeg,image/png"
@@ -83,6 +84,7 @@
         </div>
       {:else if !isLoading && thumbnailUrl}
         <img
+          data-test-id="viewer.thumbnail"
           src={thumbnailUrl}
           alt=""
           class="h-full w-full object-contain object-center" />
