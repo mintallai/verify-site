@@ -13,7 +13,9 @@
     "rollup": "rollup -c rollup.config.js -w",
     "routify": "routify",
     "test:unit": "jest",
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:watch": "npx nodemon -w tests -e 'ts' -x 'yarn test'",
+    "test:only": "npx nodemon -w tests -e 'ts' -x 'yarn test --grep @only'"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^4.0.3",

@@ -66,7 +66,7 @@
       class="hidden" />
     <div class="inner" use:cssVars={styles}>
       {#if uploadMode}
-        <div class="upload-content" in:fade>
+        <div data-test-id="viewer.upload" class="upload-content" in:fade>
           <DropFile
             width={58}
             height={99}
