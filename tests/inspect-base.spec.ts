@@ -39,7 +39,7 @@ test.describe('Inspect page - base functionality', () => {
     await expect(await inspectPage.assetLocator(2)).toHaveClass(/indented/);
   });
 
-  test.only('content credentials assets have proper badging', async ({
+  test('content credentials assets have proper badging', async ({
     inspectPage,
   }) => {
     await inspectPage.uploadImage('CAICAI.jpg');
