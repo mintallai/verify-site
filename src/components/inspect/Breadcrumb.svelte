@@ -20,14 +20,9 @@
   } from '../../lib/claim';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
-  import '@spectrum-web-components/tabs/sp-tabs.js';
-  import '@spectrum-web-components/tabs/sp-tab.js';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
-  import '@spectrum-web-components/action-menu/sp-action-menu.js';
-  import '@spectrum-web-components/menu/sp-menu.js';
-  import '@spectrum-web-components/menu/sp-menu-item.js';
 
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;

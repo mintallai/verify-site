@@ -58,7 +58,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@contentauth/toolkit": "0.2.0-c2pa.26",
+    "@contentauth/toolkit": "0.2.0-c2pa.17",
     "@contentauth/web-components": "0.2.0-c2pa.31",
     "@intl/adobe-locales": "^2.17.7",
     "@roxi/routify": "^2.7.3",
@@ -66,7 +66,6 @@
     "@spectrum-web-components/circle-loader": "^0.5.0",
     "@spectrum-web-components/coachmark": "^0.3.3",
     "@spectrum-web-components/icon": "^0.9.4",
-    "@spectrum-web-components/icons-ui": "^0.6.4",
     "@spectrum-web-components/icons-workflow": "^0.3.3",
     "@spectrum-web-components/menu": "^0.8.2",
     "@spectrum-web-components/tabs": "^0.5.4",

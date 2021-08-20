@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { _, date, time } from 'svelte-i18n';
+  import { _, date, time, locale } from 'svelte-i18n';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Alert from './Alert.svelte';
@@ -37,7 +37,7 @@
   $: {
     structureError = null;
     try {
-      categories = getCategories(claim);
+      categories = getCategories(claim, $locale);
       producer = getProducer(claim);
     } catch (err) {
       dbg('Got structure error', err);

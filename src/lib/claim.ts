@@ -1,5 +1,3 @@
-import { locale } from 'svelte-i18n';
-import { get } from 'svelte/store';
 import flow from 'lodash/fp/flow';
 import compact from 'lodash/fp/compact';
 import map from 'lodash/fp/map';
@@ -112,23 +110,32 @@ interface IDictionaryCategoryWithId extends IDictionaryCategory {
   id: string;
 }
 
+interface ITranslatedDictionaryCategory {
+  id: string;
+  icon: string;
+  label: string;
+  description: string;
+}
+
 /**
  * Uses the dictionary to translate an action name into category information
  */
 export function translateActionName(
   dictionary: IDictionary,
   actionId: string,
-): IDictionaryCategoryWithId {
+  locale: string,
+): ITranslatedDictionaryCategory {
   const categoryId = dictionary.actions[actionId]?.category ?? UNCATEGORIZED_ID;
   if (categoryId === UNCATEGORIZED_ID) {
     dbg('Could not find category for actionId', actionId);
   }
-  // TODO: Use proper locale
   const category = dictionary.categories[categoryId];
   if (category) {
     return {
-      ...category,
       id: categoryId,
+      icon: category.icon,
+      label: category.labels[locale],
+      description: category.descriptions[locale],
     };
   }
   return null;
@@ -140,13 +147,10 @@ export function translateActionName(
  */
 const processCategories = flow(
   compact,
-  map<IDictionaryCategoryWithId, IEditCategory>((category) => {
-    const localeKey = get(locale);
+  map<ITranslatedDictionaryCategory, IEditCategory>((category) => {
     return {
-      id: category.id,
+      ...category,
       icon: category.icon?.replace('{variant}', DEFAULT_ICON_VARIANT),
-      label: category.labels?.[localeKey],
-      description: category.descriptions?.[localeKey],
     };
   }),
   uniqBy((category) => category.id),
@@ -160,6 +164,7 @@ const processCategories = flow(
  */
 export function getCategories(
   claim: IEnhancedClaimReport,
+  locale: string,
 ): IEditCategory[] | null {
   const { dictionary } = claim;
   const actionAssertion = claim.assertions.find(
@@ -170,7 +175,7 @@ export function getCategories(
   if (dictionary && actions) {
     return processCategories(
       actions.map((action) =>
-        translateActionName(dictionary, action[ACTION_ID_KEY]),
+        translateActionName(dictionary, action[ACTION_ID_KEY], locale),
       ),
     );
   }
