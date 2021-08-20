@@ -8,6 +8,7 @@ declare module 'html-parse-stringify' {
 declare module 'svelte-css-vars';
 
 declare module '*.svg';
+declare module '*.png';
 
 declare var __breakpoints__;
 declare var process;
