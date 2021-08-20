@@ -1,6 +1,7 @@
 import {
   register,
   init,
+  locale,
   getLocaleFromQueryString,
   getLocaleFromNavigator,
 } from 'svelte-i18n';
@@ -10,7 +11,7 @@ import debug from 'debug';
 
 const dbg = debug('i18n');
 
-const DEFAULT_LOCALE = 'en-US';
+export const DEFAULT_LOCALE = 'en-US';
 const LOCALSTORAGE_KEY = 'locale';
 const GIT_REVISION = process.env.GIT_REVISION as string;
 
@@ -59,4 +60,9 @@ export function initI18n() {
     fallbackLocale: DEFAULT_LOCALE,
     initialLocale,
   });
+}
+
+export function setLanguage(lang: string) {
+  locale.set(lang);
+  window.localStorage.setItem(LOCALSTORAGE_KEY, lang);
 }

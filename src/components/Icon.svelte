@@ -2,6 +2,7 @@
   import {
     ChevronLeftIcon,
     ChevronRightIcon,
+    ChevronUpIcon,
     CloseIcon,
     DeviceDesktopIcon,
     HelpOutlineIcon,
@@ -12,6 +13,7 @@
   const IconsWorkflow = {
     ChevronLeftIcon,
     ChevronRightIcon,
+    ChevronUpIcon,
     CloseIcon,
     DeviceDesktopIcon,
     HelpOutlineIcon,
