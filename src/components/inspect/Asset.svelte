@@ -70,6 +70,7 @@
 </script>
 
 <div
+  data-test-id="asset.container"
   class="container"
   class:indented
   class:hover
@@ -99,7 +100,7 @@
         class="theme-spectrum" />
       <dl class="attributes multiline overflow-hidden self-center pr-2">
         <dt>{$_('comp.asset.fileName')}</dt>
-        <dd class="file-name" {title}>{title}</dd>
+        <dd data-test-id="asset.fileName" class="file-name" {title}>{title}</dd>
       </dl>
     {:else if source}
       <cai-thumbnail
@@ -108,7 +109,12 @@
         class="theme-spectrum" />
       <dl class="attributes multiline overflow-hidden self-center pr-2">
         <dt>{$_('comp.asset.fileName')}</dt>
-        <dd class="file-name" title={source.name}>{source.name}</dd>
+        <dd
+          data-test-id="asset.sourceFileName"
+          class="file-name"
+          title={source.name}>
+          {source.name}
+        </dd>
       </dl>
     {/if}
   </div>

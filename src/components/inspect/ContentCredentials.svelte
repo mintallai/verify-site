@@ -25,7 +25,7 @@
   onDestroy(() => isCompareSelectMode.set(false));
 </script>
 
-<div class="h-full relative">
+<div data-test-id="contentCredentials.section" class="h-full relative">
   <div class="p-4 pb-1">
     <h2 class="my-0 mb-2">
       <span>{$_('comp.contentCredentials.title')}</span>
@@ -35,7 +35,10 @@
     </div>
   </div>
   <div class="relative pl-4">
-    <div bind:this={container} class="grid space-y-4">
+    <div
+      bind:this={container}
+      data-test-id="contentCredentials.list"
+      class="grid space-y-4">
       {#each breadcrumbList as asset, index (asset.id)}
         <Asset
           {asset}
@@ -44,7 +47,7 @@
           current={asset.id === $primaryId}
           hasConnector={index > 0} />
       {/each}
-      <div class="grid space-y-4">
+      <div data-test-id="contentCredentials.ingredients" class="grid space-y-4">
         {#each assetList as asset (asset.id)}
           <div>
             <Asset
