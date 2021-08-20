@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _, locale } from 'svelte-i18n';
-  import { getLocalizedURL, lang } from '@intl/adobe-locales';
+  import { getLocalizedURL } from '@intl/adobe-locales';
   import { DEFAULT_LOCALE, setLanguage } from '../lib/i18n';
   import type { TippyProps } from '../lib/tippy';
   import { tippy } from '../lib/tippy';
@@ -13,7 +13,7 @@
     ['ja-JP', '日本語'],
   ];
 
-  let languageMenu;
+  let languageMenu: HTMLElement;
 
   const tippyOpts: Partial<TippyProps> = {
     interactive: true,
