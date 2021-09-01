@@ -328,10 +328,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@contentauth/toolkit@0.2.0-c2pa.13":
-  version "0.2.0-c2pa.13"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.2.0-c2pa.13/50b905f0d640741d97fa09b6cfea735e3a18752d4fe85a8e0ccaa8499a5e5b40#3bf5a56f355264ef490385906b6a5765d268cc2d"
-  integrity sha512-MSY5CeJszZA2UhhzcuzkUXVa8gMorSlF7EETxMkof+78epN/YMk/YnGoo8vVFe0EzBBiOsEhqudDnTVvrG+usQ==
+"@contentauth/toolkit@0.2.0-c2pa.14":
+  version "0.2.0-c2pa.14"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.2.0-c2pa.14/ccfce47ad4c8c1eed11b3d5fdd3e4f197ab73022046dd53753b9e3c60c02a03c#6a794aaade4c01c3e3ba0914a51bb99dbec8391e"
+  integrity sha512-TQB4PTHtqyMY1cS8yOmYZkxweOZxLub1pVKMkzJh1vnM5ZK5ttdFAqsY/beSSKS02oYIXhCAEU/FsU8/gf20GA==
 
 "@contentauth/web-components@0.2.0-c2pa.31":
   version "0.2.0-c2pa.31"
