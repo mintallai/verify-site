@@ -26,7 +26,7 @@ import debug from 'debug';
 const dbg = debug('claim');
 
 const ACTION_ASSERTION_LABEL = 'c2pa.actions';
-const ACTION_ID_KEY = 'stEvt:parameters';
+const ACTION_ID_KEY = 'parameters';
 const IDENTITY_ASSERTION_LABEL = 'c2pa.identity.v1';
 const CREATIVEWORK_ASSERTION_LABEL = 'stds.schema-org.CreativeWork';
 const DICTIONARY_ASSERTION_LABEL = 'adobe.dictionary';
