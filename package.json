@@ -58,7 +58,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@contentauth/toolkit": "0.2.0-c2pa.14",
+    "@contentauth/toolkit": "0.3.0",
     "@contentauth/web-components": "0.2.0-c2pa.31",
     "@intl/adobe-locales": "^2.17.7",
     "@roxi/routify": "^2.7.3",
