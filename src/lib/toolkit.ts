@@ -1,6 +1,6 @@
 import init, {
   get_store_report_from_array_buffer,
-} from '@contentauth/toolkit/pkg/web/toolkit';
+} from '@contentauth/toolkit/pkg/toolkit';
 import { IStoreReportResult } from './types';
 import debug from 'debug';
 
