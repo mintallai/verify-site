@@ -130,7 +130,7 @@ function baseConfig(config, ctx) {
       copy({
         targets: [
           {
-            src: [`node_modules/@contentauth/toolkit/pkg/web/**/*`],
+            src: [`node_modules/@contentauth/toolkit/pkg/**/*`],
             dest: `${distDir}/toolkit`,
           },
         ],
