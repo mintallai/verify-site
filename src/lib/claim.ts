@@ -217,7 +217,7 @@ export function getProducer(claim: IEnhancedClaimReport) {
     (x) => !x.hasOwnProperty('@id') && Array.isArray(x.credential),
   );
   // Return the display name if we get the structure we expect
-  if (assertion && producer) {
+  if (producer) {
     return producer.name;
   }
   // The assertion isn't available (this would happen if the producer opted out of this)
