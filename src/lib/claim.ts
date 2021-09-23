@@ -27,7 +27,6 @@ const dbg = debug('claim');
 
 const ACTION_ASSERTION_LABEL = 'c2pa.actions';
 const ACTION_ID_KEY = 'parameters';
-const IDENTITY_ASSERTION_LABEL = 'c2pa.identity.v1';
 const CREATIVEWORK_ASSERTION_LABEL = 'stds.schema-org.CreativeWork';
 const DICTIONARY_ASSERTION_LABEL = 'adobe.dictionary';
 const DEFAULT_ICON_VARIANT = 'dark';
@@ -209,30 +208,17 @@ export function getTitle(item: ViewableItem) {
 
 /**
  * Gets the producer from the identity assertion in the claim
- *
- * // TODO: Remove support for identity assertion when we are no longer using it
  */
 export function getProducer(claim: IEnhancedClaimReport) {
-  const assertion = claim.assertions.find((x) =>
-    [CREATIVEWORK_ASSERTION_LABEL, IDENTITY_ASSERTION_LABEL].includes(x.label),
+  const assertion = claim.assertions.find(
+    (x) => x.label === CREATIVEWORK_ASSERTION_LABEL,
   );
-  const isLegacyLabel = assertion?.label === IDENTITY_ASSERTION_LABEL;
-  const display = isLegacyLabel
-    ? assertion?.data?.display
-    : assertion?.data?.author[0]?.name;
-  if (isLegacyLabel) {
-    dbg(
-      'Found legacy identity assertion type instead of CreativeWork assertion',
-      assertion,
-    );
-  }
+  const producer = assertion?.data?.author?.find(
+    (x) => !x.hasOwnProperty('@id') && Array.isArray(x.credential),
+  );
   // Return the display name if we get the structure we expect
-  if (assertion && display) {
-    return display;
-  }
-  // The claim includes an identity assertion but not in a format we expect
-  if (assertion && !display) {
-    throw new Error(ClaimError.InvalidActionAssertion);
+  if (producer) {
+    return producer.name;
   }
   // The assertion isn't available (this would happen if the producer opted out of this)
   return null;
