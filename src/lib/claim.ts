@@ -209,30 +209,15 @@ export function getTitle(item: ViewableItem) {
 
 /**
  * Gets the producer from the identity assertion in the claim
- *
- * // TODO: Remove support for identity assertion when we are no longer using it
  */
 export function getProducer(claim: IEnhancedClaimReport) {
-  const assertion = claim.assertions.find((x) =>
-    [CREATIVEWORK_ASSERTION_LABEL, IDENTITY_ASSERTION_LABEL].includes(x.label),
+  const assertion = claim.assertions.find(
+    (x) => x.label === CREATIVEWORK_ASSERTION_LABEL,
   );
-  const isLegacyLabel = assertion?.label === IDENTITY_ASSERTION_LABEL;
-  const display = isLegacyLabel
-    ? assertion?.data?.display
-    : assertion?.data?.author[0]?.name;
-  if (isLegacyLabel) {
-    dbg(
-      'Found legacy identity assertion type instead of CreativeWork assertion',
-      assertion,
-    );
-  }
+  const authorName = assertion?.data?.author?.[0]?.name;
   // Return the display name if we get the structure we expect
-  if (assertion && display) {
-    return display;
-  }
-  // The claim includes an identity assertion but not in a format we expect
-  if (assertion && !display) {
-    throw new Error(ClaimError.InvalidActionAssertion);
+  if (assertion && authorName) {
+    return authorName;
   }
   // The assertion isn't available (this would happen if the producer opted out of this)
   return null;
