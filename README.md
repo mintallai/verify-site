@@ -2,6 +2,8 @@
 
 This project generates the CAI verify site front end.
 
+**Note:** This is the `next-c2pa` branch of the verify site, which provides support for the updated CAI claim structure (as of August 2021). This will be merged into `master` once our partners have switched their links to use the legacy verify site (at https://verify-alpha.contentauthenticity.org/).
+
 ## Get Started
 
 To run, check out this project and run:
@@ -9,6 +11,19 @@ To run, check out this project and run:
 ```
 yarn install
 yarn dev
+```
+
+## Debugging
+
+To view debug messages in the console, you can load your browser's inspector, go to the Console tab, and enter:
+
+```js
+// For all of the messages
+localStorage.debug = '*';
+// For just messages related to the toolkit and data store
+localStorage.debug = 'toolkit,store';
+// To turn off debug logs
+localStorage.debug = false;
 ```
 
 ## Branching and Tagging Policy

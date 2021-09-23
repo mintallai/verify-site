@@ -1,14 +1,17 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import { quintOut } from 'svelte/easing';
   import {
+    storeReport,
     navigateToId,
     compareWithId,
     primaryId,
-    errorsByIdentifier,
   } from '../../stores';
   import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
-  import '@contentauth/web-components/dist/components/Tooltip';
+  import { getThumbnailUrlForId, getTitle, hasClaim } from '../../lib/claim';
   import '@contentauth/web-components/dist/components/Thumbnail';
+  import '@contentauth/web-components/dist/components/Tooltip';
+  import type { ViewableItem } from '../../lib/types';
 
   let hover: boolean;
   export let asset: ViewableItem | null = null;
@@ -37,18 +40,20 @@
     if (hasErrors) {
       return {
         type: 'missing',
-        helpText:
-          'The producer edited this asset without attaching complete credentials',
+        helpText: $_('comp.asset.badgeMissingHelpText'),
       };
     }
     return {
       type: 'info',
-      helpText: 'This image has attribution and history data.',
+      helpText: $_('comp.asset.badgeInfoHelpText'),
     };
   }
 
-  $: hasErrors = !!$errorsByIdentifier[asset?._id]?.length;
-  $: isCurrent = asset?._id === $primaryId;
+  // FIXME: Make sure errors come through
+  // $: hasErrors = !!$errorsByIdentifier[asset?.id]?.length;
+  $: hasErrors = false;
+  $: isCurrent = asset?.id === $primaryId;
+  $: title = asset ? getTitle(asset) : '';
   $: compare = isCompareSelectMode && !isCurrent;
   $: {
     if (isCurrent) {
@@ -56,13 +61,12 @@
     }
   }
   $: badge =
-    asset?.type === 'claim'
+    asset && hasClaim(asset)
       ? getThumbnailBadge()
       : {
           type: 'none',
           helpText: null,
         };
-
 </script>
 
 <div
@@ -74,10 +78,9 @@
   on:mouseleave={() => (hover = false)}
   on:click={() => {
     if (asset && !isCurrent) {
-      isCompareSelectMode ? compareWithId(asset._id) : navigateToId(asset._id);
+      isCompareSelectMode ? compareWithId(asset.id) : navigateToId(asset.id);
     }
-  }}
->
+  }}>
   {#if hasConnector}
     <div class="connector" in:scaleIn />
   {/if}
@@ -89,24 +92,22 @@
     {/if}
     {#if asset}
       <cai-thumbnail
-        src={asset.thumbnail_url}
+        src={getThumbnailUrlForId($storeReport, asset.id)}
         selected={current}
         badge={badge.type}
         badgehelptext={badge.helpText}
-        class="theme-spectrum"
-      />
+        class="theme-spectrum" />
       <dl class="attributes multiline overflow-hidden self-center pr-2">
-        <dt>File Name</dt>
-        <dd class="file-name" title={asset.title}>{asset.title}</dd>
+        <dt>{$_('comp.asset.fileName')}</dt>
+        <dd class="file-name" {title}>{title}</dd>
       </dl>
     {:else if source}
       <cai-thumbnail
-        src={source.url}
+        src={source.dataUrl}
         selected={current}
-        class="theme-spectrum"
-      />
+        class="theme-spectrum" />
       <dl class="attributes multiline overflow-hidden self-center pr-2">
-        <dt>File Name</dt>
+        <dt>{$_('comp.asset.fileName')}</dt>
         <dd class="file-name" title={source.name}>{source.name}</dd>
       </dl>
     {/if}
@@ -144,5 +145,4 @@
     left: 36px;
     transform-origin: top;
   }
-
 </style>

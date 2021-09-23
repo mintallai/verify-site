@@ -1,11 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
+  import { _ } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
   import {
     urlParams,
-    summary,
+    storeReport,
     source,
     isMobileViewerShown,
   } from '../../stores';
@@ -13,7 +14,7 @@
   import DropFile from '../../../assets/svg/monochrome/drop-file.svg';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
 
-  export let thumbnailURL: string = null;
+  export let thumbnailUrl: string = null;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
   export let isError: boolean = false;
@@ -25,14 +26,17 @@
 
   $: {
     const padding = $isMobileViewerShown ? 0 : 20;
-    side = `${Math.min(width, height) - padding * 2}px`;
+    side =
+      height > padding * 2
+        ? `${Math.min(width, height) - padding * 2}px`
+        : `0px`;
   }
   $: styles = {
     width: side,
     height: side,
   };
   $: urlSource = $urlParams.source;
-  $: uploadMode = (!urlSource && !$source && !$summary) || isDragging;
+  $: uploadMode = (!urlSource && !$source && !$storeReport) || isDragging;
 
   function browseFile() {
     fileInput.click();
@@ -53,38 +57,35 @@
     class:upload={uploadMode}
     class:dragging={isDragging}
     bind:clientWidth={width}
-    bind:clientHeight={height}
-  >
+    bind:clientHeight={height}>
     <input
       type="file"
       bind:this={fileInput}
-      accept="image/jpeg"
-      class="hidden"
-    />
+      accept="image/jpeg,image/png"
+      class="hidden" />
     <div class="inner" use:cssVars={styles}>
       {#if uploadMode}
         <div class="upload-content" in:fade>
           <DropFile
             width={58}
             height={99}
-            class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}"
-          />
-          {#if $source || $summary}
-            <div class="message-heading">Drop your file</div>
+            class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}" />
+          {#if $source || $storeReport}
+            <div class="message-heading">{$_('comp.viewer.dropFile')}</div>
           {:else}
-            <div class="message-heading">Drag and drop your file</div>
+            <div class="message-heading">{$_('comp.viewer.dragDropFile')}</div>
             <div class="message-text">
-              <span class="link" on:click={browseFile}>Select a JPG</span> from your
-              computer
+              <span class="link" on:click={browseFile}>
+                {$_('comp.viewer.selectFromComputer')}
+              </span>
             </div>
           {/if}
         </div>
-      {:else if !isLoading && thumbnailURL}
+      {:else if !isLoading && thumbnailUrl}
         <img
-          src={thumbnailURL}
+          src={thumbnailUrl}
           alt=""
-          class="h-full w-full object-contain object-center"
-        />
+          class="h-full w-full object-contain object-center" />
       {:else}
         <div class="flex items-center justify-center">
           {#if isError}

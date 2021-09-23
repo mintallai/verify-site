@@ -1,5 +1,6 @@
 import childProcess from 'child_process';
 import fs from 'fs';
+import path from 'path';
 import svelte from 'rollup-plugin-svelte-hot';
 import Hmr from 'rollup-plugin-hot';
 import resolve from '@rollup/plugin-node-resolve';
@@ -9,6 +10,7 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import copy from 'rollup-plugin-copy';
 import del from 'del';
+import git from 'git-rev-sync';
 import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
@@ -16,6 +18,7 @@ import svelteSvg from '../etc/rollup/plugins/svelte-svg';
 
 // TODO: Convert this to esm
 const tailwindConfig = require('./tailwind.config');
+const { transformDictionaryJson } = require('./rollup/util/dictionary');
 
 const year = new Date().getFullYear();
 const newrelic = fs.readFileSync('etc/newrelic.html');
@@ -39,12 +42,17 @@ const isNollup = !!process.env.NOLLUP;
 function typeCheck() {
   return {
     writeBundle() {
-      childProcess.spawn('svelte-check', ['--ignore sdk'], {
+      childProcess.spawn('svelte-check', ['--ignore static'], {
         stdio: ['ignore', 'inherit', 'inherit'],
         shell: true,
       });
     },
   };
+}
+
+function getSupportedLocales() {
+  const dictPath = path.resolve(__dirname, './locales');
+  return fs.readdirSync(dictPath).map((file) => path.basename(file, '.json'));
 }
 
 export function createRollupConfigs(config) {
@@ -122,11 +130,23 @@ function baseConfig(config, ctx) {
       copy({
         targets: [
           {
-            src: [`node_modules/@contentauth/toolkit/pkg/web/**/*`],
+            src: [`node_modules/@contentauth/toolkit/pkg/**/*`],
             dest: `${distDir}/toolkit`,
           },
         ],
         copyOnce: true,
+        flatten: true,
+        verbose: true,
+      }),
+      copy({
+        targets: [
+          {
+            src: [`locales/*.json`],
+            dest: `${distDir}/locales`,
+            transform: transformDictionaryJson,
+          },
+        ],
+        copyOnce: false,
         flatten: true,
         verbose: true,
       }),
@@ -141,14 +161,18 @@ function baseConfig(config, ctx) {
       }),
       svelteSvg(),
       replace({
-        'process.env.NODE_ENV': production ? '"production"' : '"development"',
+        'process.env.NODE_ENV': JSON.stringify(
+          production ? 'production' : 'development',
+        ),
+        'process.env.GIT_REVISION': JSON.stringify(git.short()),
+        'process.env.SUPPORTED_LOCALES': JSON.stringify(getSupportedLocales()),
         __toolkit_wasm_src__:
           process.env.TOOLKIT_WASM_SRC || '/toolkit/toolkit_bg.wasm',
         __delay__: production ? '100' : '100',
         __breakpoints__: JSON.stringify(tailwindConfig.theme.screens),
-        __year__: new Date().getFullYear(),
+        __year__: JSON.stringify(new Date().getFullYear()),
       }),
-      embeddedTypescript({ sourceMap: !production }),
+      embeddedTypescript({ compilerOptions: { sourceMap: !production } }),
       typescript({
         sourceMap: !production,
       }),
@@ -156,7 +180,7 @@ function baseConfig(config, ctx) {
 
       production &&
         terser({
-          output: {
+          format: {
             comments: function (node, comment) {
               var text = comment.value;
               var type = comment.type;

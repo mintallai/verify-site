@@ -1,6 +1,10 @@
 import init, {
-  get_summary_from_array_buffer,
-} from '@contentauth/toolkit/pkg/web/toolkit';
+  get_store_report_from_array_buffer,
+} from '@contentauth/toolkit/pkg/toolkit';
+import { IStoreReportResult } from './types';
+import debug from 'debug';
+
+const dbg = debug('toolkit');
 
 // TODO: Update this with newrelic typescript defs
 declare global {
@@ -9,7 +13,17 @@ declare global {
   }
 }
 
-const JPEG_MIME_TYPE = /^image\/jpeg/;
+const VALID_MIME_TYPES = ['image/jpeg', 'image/png'];
+
+// Need to do this since some Content-Types are coming in such as
+// `image/jpeg; charset=utf-8`
+function sanitizeMimeType(type: string) {
+  return type.split(';')[0];
+}
+
+export function isValidMimeType(type: string) {
+  return VALID_MIME_TYPES.includes(sanitizeMimeType(type));
+}
 
 let toolkit: any;
 
@@ -20,7 +34,7 @@ export enum ToolkitError {
 
 function fileAsArrayBuffer(file: File): Promise<Uint8Array> {
   return new Promise((resolve, reject) => {
-    if (JPEG_MIME_TYPE.test(file.type)) {
+    if (isValidMimeType(file.type)) {
       const reader = new FileReader();
       reader.addEventListener('load', (evt: any) => {
         resolve(new Uint8Array(evt.target.result));
@@ -37,38 +51,62 @@ async function loadToolkit() {
     const res = await fetch(`__toolkit_wasm_src__`);
     const buf = await res.arrayBuffer();
     toolkit = await init(buf);
+    dbg('Loaded CAI toolkit');
   }
 }
 
-export async function getSummaryFromFile(file: File): Promise<ISummaryResult> {
+function validateStoreReport(result) {
+  if (result.head) {
+    return result;
+  }
+  // No claim
+  return false;
+}
+
+export async function getStoreReportFromFile(
+  file: File,
+): Promise<IStoreReportResult> {
   await loadToolkit();
+  const mimeType = sanitizeMimeType(file.type);
   const arrayBuffer = await fileAsArrayBuffer(file);
-  const summary = await get_summary_from_array_buffer(arrayBuffer, true);
+  const storeReport = await get_store_report_from_array_buffer(
+    arrayBuffer,
+    mimeType,
+  );
+  dbg('getStoreReportFromFile file:', file, 'toolkit reponse:', storeReport);
   return {
     source: 'file',
-    summary,
-    file,
-    arrayBuffer,
+    storeReport: validateStoreReport(storeReport),
+    filename: file.name,
+    data: new Blob([arrayBuffer], { type: mimeType }),
   };
 }
 
-export async function getSummaryFromUrl(url: string): Promise<ISummaryResult> {
+export async function getStoreReportFromUrl(
+  url: string,
+): Promise<IStoreReportResult> {
   await loadToolkit();
   const res = await fetch(url);
   if (res.ok) {
-    const contentType = res.headers.get('Content-Type');
-    if (JPEG_MIME_TYPE.test(contentType)) {
+    const mimeType = sanitizeMimeType(res.headers.get('Content-Type'));
+    if (isValidMimeType(mimeType)) {
       const arrayBuffer = await res.arrayBuffer();
-      const summary = await get_summary_from_array_buffer(arrayBuffer, true);
+      const storeReport = await get_store_report_from_array_buffer(
+        arrayBuffer,
+        mimeType,
+      );
+      dbg('getStoreReportFromUrl url:', url, 'toolkit reponse:', storeReport);
+      const { pathname } = new URL(url);
+      const filename = pathname?.split('/').pop() || 'Unknown';
       return {
         source: 'url',
-        summary,
-        url,
-        arrayBuffer,
+        storeReport: validateStoreReport(storeReport),
+        filename,
+        data: new Blob([arrayBuffer], { type: mimeType }),
       };
     }
     const invalidFileError = new Error(ToolkitError.InvalidFile);
-    window.newrelic?.noticeError(invalidFileError, { url, contentType });
+    window.newrelic?.noticeError(invalidFileError, { url, mimeType });
     throw invalidFileError;
   }
   const fetchError = new Error(ToolkitError.FetchError);

@@ -1,25 +1,32 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import Alert from '../Alert.svelte';
+  import type { IEnhancedClaimReport } from '../../lib/types';
+  import { getRecorder } from '../../lib/claim';
 
   export let type: 'original' | 'secureCapture' = 'original';
-  export let claim: IClaimSummary;
+  export let claim: IEnhancedClaimReport;
 </script>
 
 <Alert severity="info">
   <div class="text-base flex-grow">
-    <div class="font-bold text-gray-900 mb-3">Original creation</div>
+    <div class="font-bold text-gray-900 mb-3">
+      {$_('comp.originalCreation.title')}
+    </div>
     <div>
       {#if type === 'original'}
-        This photo was first produced in {claim.produced_with}.
+        {$_('comp.originalCreation.recorder', {
+          values: { application: getRecorder(claim) },
+        })}
       {:else if type === 'secureCapture'}
         <div>
-          This photo was captured by a secure device. <a
+          {$_('comp.originalCreation.secureCapture')}
+          <a
             href="https://contentauthenticity.org/faq#block-yui_3_17_2_1_1607115018705_17736"
             class="link"
-            target="_blank">Learn more</a
-          >
+            target="_blank">{$_('comp.originalCreation.learnMore')}</a>
         </div>
       {/if}
     </div>
-  </div></Alert
->
+  </div>
+</Alert>

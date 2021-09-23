@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import { slide } from 'svelte/transition';
   import Button from './Button.svelte';
   import {
@@ -25,24 +26,25 @@
   <div class="flex-shrink">
     <button
       on:click={() => navigateToRoot()}
-      class="flex select-none outline-none items-center"
-    >
-      <h1 class="font-black text-600 text-gray-900 leading-none">Verify</h1>
-      <div class="beta">Beta</div>
+      class="flex select-none outline-none items-center">
+      <h1 class="font-black text-600 text-gray-900 leading-none">
+        {$_('comp.header.productName')}
+      </h1>
+      <div class="beta">{$_('comp.header.beta')}</div>
     </button>
   </div>
   <div class="links full-menu">
-    <a href="#" on:click={upload} class="font-bold text-sm tracking-tight"
-      >Upload image</a
-    >
+    <button on:click={upload} class="font-bold text-sm tracking-tight">
+      {$_('comp.header.uploadImage')}
+    </button>
     <a
       href={getFaqUrl()}
       target="_blank"
-      class="font-bold text-sm tracking-tight">FAQ</a
-    >
+      class="font-bold text-sm tracking-tight">{$_('comp.header.faq')}</a>
   </div>
   <div class="ml-5 full-menu">
-    <Button href={$learnMoreUrl} outline={true}>Learn more</Button>
+    <Button href={$learnMoreUrl} outline={true}
+      >{$_('comp.header.learnMore')}</Button>
   </div>
   <div class="block md:hidden -mr-3">
     <fade-burger
@@ -50,13 +52,12 @@
       size="24"
       duration="0.2"
       class="text-gray-600 close"
-      pressed={$isBurgerMenuShown}
-    />
+      pressed={$isBurgerMenuShown} />
   </div>
   {#if $isBurgerMenuShown}
     <div transition:slide={{ duration: 300 }} class="burger-menu">
       <a href={getFaqUrl()} target="_blank">FAQ</a>
-      <a href={$learnMoreUrl}>Learn more</a>
+      <a href={$learnMoreUrl}>{$_('comp.header.learnMore')}</a>
     </div>
   {/if}
 </header>
@@ -78,7 +79,8 @@
   .links {
     @apply flex-grow text-right;
   }
-  .links a {
+  .links a,
+  .links button {
     @apply ml-4 text-gray-800;
   }
   .burger-menu {
@@ -92,10 +94,6 @@
   }
   .burger-menu a:last-of-type {
     @apply border-none;
-  }
-  cai-icon-adobe {
-    --cai-icon-width: 24px;
-    --cai-icon-height: 24px;
   }
   @screen md {
     .full-menu {

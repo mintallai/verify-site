@@ -1,4 +1,4 @@
-import { createRollupConfigs } from './scripts/base.config.js';
+import { createRollupConfigs } from './rollup/base.config.js';
 import autoPreprocess from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;

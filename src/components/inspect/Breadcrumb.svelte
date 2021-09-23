@@ -1,9 +1,10 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
+  import { _ } from 'svelte-i18n';
   import Icon from '../Icon.svelte';
   import {
     contentSourceIds,
-    assetsByIdentifier,
+    storeReport,
     primaryId,
     primaryAsset,
     navigateToId,
@@ -12,17 +13,16 @@
     CompareMode,
     isMobileViewerShown,
   } from '../../stores';
-  import { getBreadcrumbList } from '../../lib/claim';
+  import {
+    getBreadcrumbList,
+    getThumbnailUrlForId,
+    getTitle,
+  } from '../../lib/claim';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
-  import '@spectrum-web-components/tabs/sp-tabs.js';
-  import '@spectrum-web-components/tabs/sp-tab.js';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
-  import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/components/Thumbnail';
-  import '@spectrum-web-components/action-menu/sp-action-menu.js';
-  import '@spectrum-web-components/menu/sp-menu.js';
-  import '@spectrum-web-components/menu/sp-menu-item.js';
+  import '@contentauth/web-components/dist/components/Tooltip';
 
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
@@ -37,8 +37,8 @@
     navigateToId(this.value);
   }
 
-  $: breadcrumbList = getBreadcrumbList($contentSourceIds, $assetsByIdentifier);
-  $: homeId = breadcrumbList[0]?._id;
+  $: breadcrumbList = getBreadcrumbList($storeReport, $contentSourceIds);
+  $: homeId = breadcrumbList[0]?.id;
   $: showMenu =
     breadcrumbList.length > 1 &&
     ($isMobileViewerShown || breadcrumbList.length > 4);
@@ -48,18 +48,23 @@
   {#if isComparing}
     <div
       class="absolute flex items-center cursor-pointer"
-      on:click={() => dispatch('back')}
-    >
+      on:click={() => dispatch('back')}>
       <LeftArrow width="14" height="12" class="text-gray-800 mr-3" />
       <div class="breadcrumbs">
-        <div class="breadcrumb-item font-bold">Back</div>
+        <div class="breadcrumb-item font-bold">
+          {$_('comp.breadcrumb.back')}
+        </div>
       </div>
     </div>
     <div class="compare-tabs">
       <sp-theme color="light" scale="medium">
         <sp-tabs selected={$compareMode} on:change={handleCompareChange}>
-          <sp-tab label="Split" value={CompareMode.Split} />
-          <sp-tab label="Slider" value={CompareMode.Slider} />
+          <sp-tab
+            label={$_('comp.breadcrumb.split')}
+            value={CompareMode.Split} />
+          <sp-tab
+            label={$_('comp.breadcrumb.slider')}
+            value={CompareMode.Slider} />
         </sp-tabs>
       </sp-theme>
     </div>
@@ -68,21 +73,21 @@
       <sp-action-menu
         class="-ml-3"
         value={$primaryId}
-        on:change={handleMenuChange}
-      >
+        on:change={handleMenuChange}>
         <div slot="icon" class="py-2">
           <BreadcrumbDropdown
             slot="icon"
             width="20"
             height="16"
-            class="text-gray-800"
-          />
+            class="text-gray-800" />
         </div>
-        {#each breadcrumbList as asset, _ ({ id: asset._id, ctx: 'menu-item' })}
-          <sp-menu-item value={asset._id} class="checkbox-pos">
+        {#each breadcrumbList as asset, _ ({ id: asset.id, ctx: 'menu-item' })}
+          <sp-menu-item value={asset.id} class="checkbox-pos">
             <div class="menu-item pointer-events-none">
-              <cai-thumbnail src={asset.thumbnail_url} class="theme-spectrum" />
-              <div class="ml-2 text-100">{asset.title}</div>
+              <cai-thumbnail
+                src={getThumbnailUrlForId($storeReport, asset.id)}
+                class="theme-spectrum" />
+              <div class="ml-2 text-100">{getTitle(asset)}</div>
             </div>
           </sp-menu-item>
         {/each}
@@ -92,7 +97,7 @@
       <Icon size="s" name="ChevronRight" class="text-gray-800" />
     </div>
     <div class="breadcrumb-item" class:current={true}>
-      {$primaryAsset.title}
+      {getTitle($primaryAsset)}
     </div>
   {:else if homeId || noMetadata}
     {#if noMetadata && source}
@@ -100,7 +105,7 @@
         {source.name}
       </div>
     {:else if breadcrumbList}
-      {#each breadcrumbList as asset, index ({ id: asset._id, ctx: 'breadcrumb-list' })}
+      {#each breadcrumbList as asset, index ({ id: asset.id, ctx: 'breadcrumb-list' })}
         {#if index > 0}
           <div class="separator">
             <Icon size="s" name="ChevronRight" class="text-gray-800" />
@@ -108,10 +113,9 @@
         {/if}
         <div
           class="breadcrumb-item hover:underline"
-          class:current={asset._id === $primaryId}
-          on:click={() => navigateToId(asset._id)}
-        >
-          {asset.title}
+          class:current={asset.id === $primaryId}
+          on:click={() => navigateToId(asset.id)}>
+          {getTitle(asset)}
         </div>
       {/each}
     {/if}

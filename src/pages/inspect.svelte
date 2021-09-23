@@ -1,9 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
+  import { _ } from 'svelte-i18n';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
-  import { getSummaryFromUrl, ToolkitError } from '../lib/toolkit';
+  import { getStoreReportFromUrl, ToolkitError } from '../lib/toolkit';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
@@ -15,13 +16,14 @@
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
+  import { getAssociatedClaim, getThumbnailUrlForId } from '../lib/claim';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
     urlParams,
     source as sourceStore,
-    summary,
-    setSummary,
+    storeReport,
+    setStoreReport,
     navigateToId,
     secondaryId,
     primaryAsset,
@@ -29,10 +31,10 @@
     isBurgerMenuShown,
     isMobileViewerShown,
   } from '../stores';
-  import { getIdentifier } from '../lib/claim';
+  import type { ViewableItem } from '../lib/types';
 
   function handleClose(navigateToAsset: ViewableItem) {
-    navigateToId(getIdentifier(navigateToAsset));
+    navigateToId(navigateToAsset.id);
     secondaryId.set('');
   }
 
@@ -45,13 +47,15 @@
 
   $: source = $sourceStore;
   $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $summary || source;
-  $: isLoading = $summary === null && source === null;
+  $: hasContent = sourceParam || $storeReport || source;
+  $: isLoading = $storeReport === null && source === null;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
+  $: primaryClaim = primary && getAssociatedClaim($storeReport, primary);
+  $: secondaryClaim = secondary && getAssociatedClaim($storeReport, secondary);
   $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !!(source && !$summary);
+  $: noMetadata = !!(source && !$storeReport);
   $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
   $: errorMessage =
     error &&
@@ -63,8 +67,8 @@
     if (tour && tour.isActive() && isMobileViewer) {
       tour.cancel();
     }
-    // Clear errors if a summary has changed
-    if ($summary !== undefined) {
+    // Clear errors if the store report has changed
+    if ($storeReport !== undefined) {
       error = null;
     }
   }
@@ -93,12 +97,12 @@
 
     if (sourceParam) {
       try {
-        const result = await getSummaryFromUrl(sourceParam);
+        const result = await getStoreReportFromUrl(sourceParam);
         window.newrelic?.setCustomAttribute('source', sourceParam);
-        setSummary(result);
+        setStoreReport(result);
         if (isMobileViewer === false) {
           tour = startTour({
-            summary: $summary,
+            storeReport: $storeReport,
             start: tourFlag,
             force: forceTourFlag,
           });
@@ -110,7 +114,7 @@
 
     // This stops the drag state from rapidly changing during drag
     // They also use this pattern in the dragDrop library
-    let dragTimeout: number | undefined;
+    let dragTimeout: ReturnType<typeof setTimeout> | undefined;
     const cleanupDragDrop = dragDrop('main', {
       async onDrop(files: File[]) {
         clearTimeout(dragTimeout);
@@ -142,17 +146,18 @@
 </script>
 
 <svelte:window />
+<svelte:head>
+  <title>{$_('page.title')}</title>
+</svelte:head>
 <main
   class="theme-light"
   class:comparing={isComparing}
-  class:has-breadcrumb-bar={hasBreadcrumbBar}
->
+  class:has-breadcrumb-bar={hasBreadcrumbBar}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
       class="menu-overlay"
-      on:click={() => isBurgerMenuShown.update((shown) => !shown)}
-    />
+      on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
   {#if hasBreadcrumbBar}
@@ -160,8 +165,7 @@
       {isComparing}
       {noMetadata}
       {source}
-      on:back={partial(handleClose, secondary)}
-    />
+      on:back={partial(handleClose, secondary)} />
   {/if}
   {#if hasContent}
     {#if error}
@@ -182,26 +186,23 @@
       <section class="left-col">
         <ContentCredentials {source} />
       </section>
-      <Viewer thumbnailURL={source.url} isDragging={isDraggingOver} />
+      <Viewer thumbnailUrl={source.dataUrl} isDragging={isDraggingOver} />
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
     {:else if primary}
       <section class="left-col">
         {#if !isComparing}
-          <ContentCredentials
-            claim={primary?.type === 'claim' ? primary : null}
-          />
-        {:else if primary?.type === 'claim'}
+          <ContentCredentials claim={primaryClaim} />
+        {:else if primaryClaim}
           <div class="w-full p-4 pt-0 md:pt-4">
             <About
-              claim={primary}
+              claim={primaryClaim}
               {isComparing}
               {isMobileViewer}
-              on:close={partial(handleClose, secondary)}
-            />
+              on:close={partial(handleClose, secondary)} />
           </div>
-        {:else if primary?.type === 'reference'}
+        {:else if primary?.type === 'ingredient'}
           <div class="wrapper">
             <ContentCredentialsError {isComparing} />
           </div>
@@ -211,38 +212,35 @@
         <Comparison {primary} {secondary} />
       {:else}
         <Viewer
-          thumbnailURL={primary.thumbnail_url}
-          isDragging={isDraggingOver}
-        />
+          thumbnailUrl={getThumbnailUrlForId($storeReport, primary.id)}
+          isDragging={isDraggingOver} />
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing && primary?.type === 'claim'}
+        {#if !isComparing && primaryClaim}
           <div class="wrapper">
             <About
-              claim={primary}
+              claim={primaryClaim}
               {isComparing}
               {isMobileViewer}
-              on:close={partial(handleClose, secondary)}
-            />
+              on:close={partial(handleClose, secondary)} />
             {#if isMobileViewer}
-              <CompareLatestButton claim={primary} {isComparing} />
+              <CompareLatestButton claim={primaryClaim} {isComparing} />
             {/if}
           </div>
-        {:else if !isComparing && primary?.type === 'reference'}
+        {:else if !isComparing && primary?.type === 'ingredient'}
           <div class="wrapper">
             <ContentCredentialsError {isComparing} />
             {#if isMobileViewer}
               <CompareLatestButton claim={null} {isComparing} />
             {/if}
           </div>
-        {:else if secondary?.type === 'claim'}
+        {:else if secondaryClaim}
           <About
-            claim={secondary}
+            claim={secondaryClaim}
             {isComparing}
             {isMobileViewer}
-            on:close={partial(handleClose, primary)}
-          />
-        {:else if secondary?.type === 'reference'}
+            on:close={partial(handleClose, primary)} />
+        {:else if secondary?.type === 'ingredient'}
           <ContentCredentialsError {isComparing} />
         {/if}
       </section>
@@ -265,7 +263,7 @@
   main {
     --viewer-height: 375px;
 
-    @apply grid w-screen min-h-screen font-base;
+    @apply grid w-screen min-h-screen h-full font-base;
     grid-template-columns: 100%;
     grid-template-rows: 80px var(--viewer-height) 1fr 70px;
     grid-template-areas:
