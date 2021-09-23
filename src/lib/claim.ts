@@ -213,10 +213,12 @@ export function getProducer(claim: IEnhancedClaimReport) {
   const assertion = claim.assertions.find(
     (x) => x.label === CREATIVEWORK_ASSERTION_LABEL,
   );
-  const authorName = assertion?.data?.author?.[0]?.name;
+  const producer = assertion?.data?.author?.find(
+    (x) => !x.hasOwnProperty('@id') && Array.isArray(x.credential),
+  );
   // Return the display name if we get the structure we expect
-  if (assertion && authorName) {
-    return authorName;
+  if (assertion && producer) {
+    return producer.name;
   }
   // The assertion isn't available (this would happen if the producer opted out of this)
   return null;
