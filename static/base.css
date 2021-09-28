@@ -43,12 +43,10 @@ a.link {
 }
 
 dl.attributes {
-  @apply grid;
-  grid-template-columns: 40% 60%;
-  row-gap: 1em;
+  @apply grid gap-y-1;
 
   dt {
-    @apply font-bold text-75 uppercase text-gray-700;
+    @apply flex justify-between font-bold text-75 uppercase text-gray-700;
     line-height: 1.8;
     & cai-tooltip {
       @apply normal-case font-regular w-4 h-4;
@@ -56,20 +54,9 @@ dl.attributes {
   }
 
   dd {
-    @apply text-150 justify-start text-gray-900;
-  }
-
-  &.multiline {
-    @apply block;
-
-    dt {
-      @apply leading-medium;
-    }
-    dd {
-      @apply text-left justify-start mb-2;
-      &:last-child {
-        @apply mb-0;
-      }
+    @apply text-150 justify-start text-gray-900 mb-2;
+    &:last-child {
+      @apply mb-0;
     }
   }
 }

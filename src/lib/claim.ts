@@ -28,10 +28,12 @@ const dbg = debug('claim');
 const ACTION_ASSERTION_LABEL = 'c2pa.actions';
 const ACTION_ID_KEY = 'parameters';
 const CREATIVEWORK_ASSERTION_LABEL = 'stds.schema-org.CreativeWork';
+const BETA_LABEL = 'adobe.beta';
 const DICTIONARY_ASSERTION_LABEL = 'adobe.dictionary';
 const DEFAULT_ICON_VARIANT = 'dark';
 const UNCATEGORIZED_ID = 'UNCATEGORIZED';
 const ingredientIdRegExp = /^(\S+)\[(\d+)\]$/;
+export const DELIVERED_ACTION = 'adobe.delivered';
 
 export enum ClaimError {
   InvalidActionAssertion = 'INVALID_ACTION_ASSERTION',
@@ -172,11 +174,23 @@ export function getCategories(
   const actions = actionAssertion?.data?.actions;
   // A dictionary and actions are both available
   if (dictionary && actions) {
-    return processCategories(
+    let categories = processCategories(
       actions.map((action) =>
         translateActionName(dictionary, action[ACTION_ID_KEY], locale),
       ),
     );
+    // TODO: Replace this with dictionary
+    if (actions.length === 1 && actions[0].action === DELIVERED_ACTION) {
+      categories = [
+        {
+          id: DELIVERED_ACTION,
+          icon: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='15.061'%3E%3Cg fill='%236e6e6e'%3E%3Cpath data-name='Path 1' d='M10.544 11.3h-.917a.465.465 0 0 0-.458.471v1.412H1.834v-11.3h7.335v1.412a.465.465 0 0 0 .458.471h.917A.465.465 0 0 0 11 3.295V.471A.465.465 0 0 0 10.544 0H.458A.465.465 0 0 0 0 .471V14.59a.465.465 0 0 0 .458.471h10.086A.465.465 0 0 0 11 14.59v-2.824a.465.465 0 0 0-.456-.466Z'/%3E%3Cpath data-name='Path 2' d='m15.928 7.379-3.259-3.29A.425.425 0 0 0 12.403 4a.379.379 0 0 0-.4.353v2.295h-5.5a.473.473 0 0 0-.5.441v.883a.473.473 0 0 0 .5.441h5.5v2.295a.379.379 0 0 0 .4.353.425.425 0 0 0 .264-.088l3.262-3.286a.2.2 0 0 0 0-.309Z'/%3E%3C/g%3E%3C/svg%3E`,
+          label: 'Published image',
+          description: 'Received and distributed image',
+        },
+      ];
+    }
+    return categories;
   }
   // Action assertion exists but no dictionary URL is in the structure
   // This would happen for images that haven't transitioned to the new
@@ -248,6 +262,28 @@ export function getSignatureIssuer(claim: IEnhancedClaimReport) {
  */
 export function getSignatureDate(claim: IEnhancedClaimReport) {
   return claim.signature?.time ?? null;
+}
+
+/**
+ * Returns `true` if has a beta assertion
+ */
+export function getIsBeta(claim: IEnhancedClaimReport): boolean {
+  return !!claim.assertions.find((x) => x.label === BETA_LABEL)?.data?.version;
+}
+
+/**
+ * Returns the CreativeWork website if one exists
+ */
+export function getWebsite(claim: IEnhancedClaimReport): string | undefined {
+  const site = claim.assertions.find(
+    (x) => x.label === CREATIVEWORK_ASSERTION_LABEL,
+  )?.data?.url;
+  if (site) {
+    const url = new URL(site);
+    if (url.protocol === 'https:' && url.hostname === 'stock.adobe.com') {
+      return site;
+    }
+  }
 }
 
 /**

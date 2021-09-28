@@ -13,6 +13,18 @@ const colorOverrides = [
     active: false,
   },
   {
+    name: 'mergePaths',
+    active: false,
+  },
+  {
+    name: 'convertShapeToPath',
+    active: false,
+  },
+  {
+    name: 'convertPathData',
+    active: false,
+  },
+  {
     name: 'addAttributesToSVGElement',
     params: {
       attributes: [
