@@ -13,6 +13,7 @@
     getThumbnailUrlForId,
     getTitle,
     getIsBeta,
+    getIsOriginal,
     getWebsite,
     ClaimError,
   } from '../lib/claim';
@@ -35,7 +36,7 @@
   let structureError: Error | null = null;
   let secureCapture = false;
 
-  $: isOriginal = claim.ingredients.length === 0;
+  $: isOriginal = getIsOriginal(claim);
   $: {
     structureError = null;
     try {

@@ -21,7 +21,7 @@ export const supportedLanguages = groupBy(supportedLocales, lang);
 
 function getSupportedLocale(locale: string) {
   const prefix = locale.split('-')[0];
-  const matchingLocales = supportedLanguages[prefix] ?? [];
+  const matchingLocales: string[] = supportedLanguages[prefix] ?? [];
   if (matchingLocales.includes(locale)) {
     return locale;
   }

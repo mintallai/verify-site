@@ -213,6 +213,16 @@ export function getCategories(
   return null;
 }
 
+export function getIsOriginal(claim: IEnhancedClaimReport) {
+  const noIngredients = claim.ingredients.length === 0;
+  const actionAssertion = claim.assertions.find(
+    (x) => x.label === ACTION_ASSERTION_LABEL,
+  );
+  const actions = actionAssertion?.data?.actions;
+  const isDelivered = actions.find((x) => x.action === DELIVERED_ACTION);
+  return noIngredients && !isDelivered;
+}
+
 /**
  * Gets the title for the claim or ingredient
  */
