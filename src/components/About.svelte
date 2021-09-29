@@ -205,7 +205,7 @@
             <div class="whitespace-nowrap">{$_('comp.about.website')}</div>
             <cai-tooltip placement="left" class="theme-spectrum">
               <div slot="content" class="text-gray-900" style="width: 150px;">
-                {$_('comp.about.producedByHelpText')}
+                {$_('comp.about.websiteHelpText')}
               </div>
             </cai-tooltip>
           </dt>
