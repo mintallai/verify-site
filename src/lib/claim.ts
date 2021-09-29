@@ -180,6 +180,7 @@ export function getCategories(
       ),
     );
     // TODO: Replace this with dictionary
+    // Note: This is temporary and will not translate until we figure out dictionary support
     if (actions.length === 1 && actions[0].action === DELIVERED_ACTION) {
       categories = [
         {
