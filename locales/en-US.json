@@ -14,6 +14,7 @@
   "comp.about.signedByHelpText": "Cryptographic signatures assuring that this content record wasn’t tampered with.",
   "comp.about.signedOn": "Signed on",
   "comp.about.website": "Website",
+  "comp.about.websiteHelpText": "Website help text TBD",
   "comp.asset.badgeInfoHelpText": "This image has attribution and history data.",
   "comp.asset.badgeMissingHelpText": "The producer edited this asset without attaching complete credentials",
   "comp.asset.fileName": "File Name",
