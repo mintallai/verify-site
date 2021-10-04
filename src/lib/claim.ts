@@ -26,7 +26,6 @@ import debug from 'debug';
 const dbg = debug('claim');
 
 const ACTION_ASSERTION_LABEL = 'c2pa.actions';
-const ACTION_ID_KEY = 'parameters';
 const CREATIVEWORK_ASSERTION_LABEL = 'stds.schema-org.CreativeWork';
 const BETA_LABEL = 'adobe.beta';
 const DICTIONARY_ASSERTION_LABEL = 'adobe.dictionary';
@@ -176,7 +175,14 @@ export function getCategories(
   if (dictionary && actions) {
     return processCategories(
       actions.map((action) =>
-        translateActionName(dictionary, action[ACTION_ID_KEY], locale),
+        translateActionName(
+          dictionary,
+          // TODO: The Photoshop dictionary seems a bit weird that we are switching on `parameters`
+          // instead of `actions` (it has a top-level actions key with parameter values).
+          // We should see if there is a better structure for this.
+          action.action === 'c2pa.edited' ? action.parameters : action.action,
+          locale,
+        ),
       ),
     );
   }
