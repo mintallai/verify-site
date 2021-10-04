@@ -179,7 +179,7 @@ export function getCategories(
           dictionary,
           // TODO: The Photoshop dictionary seems a bit weird that we are switching on `parameters`
           // instead of `actions` (it has a top-level actions key with parameter values).
-          // We should see if there is a better structure for this.
+          // This will be discussed as part of this epic: https://app.shortcut.com/cai/epic/6806
           action.action === 'c2pa.edited' ? action.parameters : action.action,
           locale,
         ),
