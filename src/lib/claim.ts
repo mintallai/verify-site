@@ -26,9 +26,10 @@ import debug from 'debug';
 const dbg = debug('claim');
 
 const ACTION_ASSERTION_LABEL = 'c2pa.actions';
-const ACTION_ID_KEY = 'parameters';
 const CREATIVEWORK_ASSERTION_LABEL = 'stds.schema-org.CreativeWork';
+const BETA_LABEL = 'adobe.beta';
 const DICTIONARY_ASSERTION_LABEL = 'adobe.dictionary';
+const DELIVERED_ACTION = 'adobe.delivered';
 const DEFAULT_ICON_VARIANT = 'dark';
 const UNCATEGORIZED_ID = 'UNCATEGORIZED';
 const ingredientIdRegExp = /^(\S+)\[(\d+)\]$/;
@@ -174,7 +175,14 @@ export function getCategories(
   if (dictionary && actions) {
     return processCategories(
       actions.map((action) =>
-        translateActionName(dictionary, action[ACTION_ID_KEY], locale),
+        translateActionName(
+          dictionary,
+          // TODO: The Photoshop dictionary seems a bit weird that we are switching on `parameters`
+          // instead of `actions` (it has a top-level actions key with parameter values).
+          // This will be discussed as part of this epic: https://app.shortcut.com/cai/epic/6806
+          action.action === 'c2pa.edited' ? action.parameters : action.action,
+          locale,
+        ),
       ),
     );
   }
@@ -197,6 +205,16 @@ export function getCategories(
   }
   // No actions or dictionary (this would happen if the producer opted out of this)
   return null;
+}
+
+export function getIsOriginal(claim: IEnhancedClaimReport) {
+  const noIngredients = claim.ingredients.length === 0;
+  const actionAssertion = claim.assertions.find(
+    (x) => x.label === ACTION_ASSERTION_LABEL,
+  );
+  const actions = actionAssertion?.data?.actions;
+  const isDelivered = actions.find((x) => x.action === DELIVERED_ACTION);
+  return noIngredients && !isDelivered;
 }
 
 /**
@@ -248,6 +266,28 @@ export function getSignatureIssuer(claim: IEnhancedClaimReport) {
  */
 export function getSignatureDate(claim: IEnhancedClaimReport) {
   return claim.signature?.time ?? null;
+}
+
+/**
+ * Returns `true` if has a beta assertion
+ */
+export function getIsBeta(claim: IEnhancedClaimReport): boolean {
+  return !!claim.assertions.find((x) => x.label === BETA_LABEL)?.data?.version;
+}
+
+/**
+ * Returns the CreativeWork website if one exists
+ */
+export function getWebsite(claim: IEnhancedClaimReport): string | undefined {
+  const site = claim.assertions.find(
+    (x) => x.label === CREATIVEWORK_ASSERTION_LABEL,
+  )?.data?.url;
+  if (site) {
+    const url = new URL(site);
+    if (url.protocol === 'https:' && url.hostname === 'stock.adobe.com') {
+      return site;
+    }
+  }
 }
 
 /**

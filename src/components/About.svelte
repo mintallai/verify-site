@@ -12,6 +12,9 @@
     getSignatureIssuer,
     getThumbnailUrlForId,
     getTitle,
+    getIsBeta,
+    getIsOriginal,
+    getWebsite,
     ClaimError,
   } from '../lib/claim';
   import { asDate } from '../lib/util/format';
@@ -33,7 +36,7 @@
   let structureError: Error | null = null;
   let secureCapture = false;
 
-  $: isOriginal = claim.ingredients.length === 0;
+  $: isOriginal = getIsOriginal(claim);
   $: {
     structureError = null;
     try {
@@ -51,16 +54,14 @@
   $: signedBy = getSignatureIssuer(claim);
   $: sigDate = asDate(getSignatureDate(claim));
   $: recorder = getRecorder(claim);
+  $: isBeta = getIsBeta(claim);
+  $: website = getWebsite(claim);
 
   $: editsActivityStrings = JSON.stringify({
-    EDITS_ACTIVITY: $_('comp.about.editsActivity.header'),
-    HELP_TEXT: $_('comp.about.editsActivity.helpText'),
     NO_EDITS: $_('comp.about.editsActivity.none'),
   });
   $: assetsStrings = JSON.stringify({
-    ASSETS_USED: $_('comp.about.assets.header'),
     CLAIM_INFO_HELP_TEXT: $_('comp.about.assets.claimInfoHelpText'),
-    HELP_TEXT: $_('comp.about.assets.helpText'),
   });
 </script>
 
@@ -82,71 +83,11 @@
         </div>
       </div>
     {/if}
-    {#if producer}
-      <div>
-        <dl class="attributes">
-          <dt class="flex space-x-2">
-            <div class="whitespace-nowrap">{$_('comp.about.producedBy')}</div>
-            <cai-tooltip class="theme-spectrum">
-              <div slot="content" class="text-gray-900" style="width: 150px;">
-                {$_('comp.about.producedByHelpText')}
-              </div>
-            </cai-tooltip>
-          </dt>
-          <dd>{producer}</dd>
-        </dl>
-      </div>
-    {/if}
     <div>
       <dl class="attributes">
-        <dt>{$_('comp.about.producedWith')}</dt>
-        <dd class="flex space-x-2">
-          <div class="relative top-0.5">
-            <ProviderIcon provider={recorder} />
-          </div>
-          <div class="break-word">{recorder}</div>
-        </dd>
-      </dl>
-    </div>
-    {#if !(categories === null || structureError?.message === ClaimError.InvalidActionAssertion)}
-      <div>
-        <cai-panel-edits-activity
-          {categories}
-          stringmap={editsActivityStrings}
-          hidedescriptions={isMobileViewer && isComparing ? true : null}
-          class="theme-spectrum" />
-      </div>
-    {/if}
-    {#if isComparing || isMobileViewer}
-      <div>
-        <cai-panel-assets
-          stringmap={assetsStrings}
-          assets={assetsUsed}
-          on:asset-click={({ detail }) => {
-            const id = detail?.asset?.id;
-            if (id) {
-              navigateToId(id);
-              compareWithId(null);
-            }
-          }}
-          class="theme-spectrum">
-          <div slot="no-assets">
-            {#if isOriginal || secureCapture}
-              <OriginalCreation
-                type={secureCapture ? 'secureCapture' : 'original'}
-                {claim} />
-            {:else}
-              {$_('comp.about.none')}
-            {/if}
-          </div>
-        </cai-panel-assets>
-      </div>
-    {/if}
-    <div>
-      <dl class="attributes">
-        <dt class="flex space-x-2">
+        <dt>
           <div class="whitespace-nowrap">{$_('comp.about.signedBy')}</div>
-          <cai-tooltip class="theme-spectrum">
+          <cai-tooltip placement="left" class="theme-spectrum">
             <div slot="content" class="text-gray-900" style="width: 200px;">
               {$_('comp.about.signedByHelpText')}
             </div>
@@ -165,6 +106,116 @@
         </dd>
       </dl>
     </div>
+    <div>
+      <dl class="attributes">
+        <dt>{$_('comp.about.producedWith')}</dt>
+        <dd class="flex space-x-2">
+          <div class="relative top-0.5">
+            <ProviderIcon provider={recorder} />
+          </div>
+          <div class="break-word">
+            <div>{recorder}</div>
+            {#if isBeta}
+              <div class="text-gray-700">Content Credentials (Beta)</div>
+            {/if}
+          </div>
+        </dd>
+      </dl>
+    </div>
+    {#if !(categories === null || structureError?.message === ClaimError.InvalidActionAssertion)}
+      <div>
+        <dl class="attributes">
+          <dt>
+            <div class="whitespace-nowrap">
+              {$_('comp.about.editsActivity.header')}
+            </div>
+            <cai-tooltip placement="left" class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 200px;">
+                {$_('comp.about.editsActivity.helpText')}
+              </div>
+            </cai-tooltip>
+          </dt>
+          <dd class="mt-2">
+            <cai-panel-edits-activity
+              {categories}
+              stringmap={editsActivityStrings}
+              hidedescriptions={isMobileViewer && isComparing ? true : null}
+              class="theme-spectrum" />
+          </dd>
+        </dl>
+      </div>
+    {/if}
+    {#if isComparing || isMobileViewer}
+      <div>
+        <dl class="attributes">
+          <dt>
+            <div class="whitespace-nowrap">
+              {$_('comp.about.assets.header')}
+            </div>
+            <cai-tooltip placement="left" class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 200px;">
+                {$_('comp.about.assets.helpText')}
+              </div>
+            </cai-tooltip>
+          </dt>
+          <dd class="pt-2 pb-1">
+            <cai-panel-assets
+              stringmap={assetsStrings}
+              assets={assetsUsed}
+              on:asset-click={({ detail }) => {
+                const id = detail?.asset?.id;
+                if (id) {
+                  navigateToId(id);
+                  compareWithId(null);
+                }
+              }}
+              class="theme-spectrum">
+              <div slot="no-assets">
+                {#if isOriginal || secureCapture}
+                  <OriginalCreation
+                    type={secureCapture ? 'secureCapture' : 'original'}
+                    {claim} />
+                {:else}
+                  {$_('comp.about.none')}
+                {/if}
+              </div>
+            </cai-panel-assets>
+          </dd>
+        </dl>
+      </div>
+    {/if}
+    {#if producer}
+      <div>
+        <dl class="attributes">
+          <dt class="flex space-x-2">
+            <div class="whitespace-nowrap">{$_('comp.about.producedBy')}</div>
+            <cai-tooltip placement="left" class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 150px;">
+                {$_('comp.about.producedByHelpText')}
+              </div>
+            </cai-tooltip>
+          </dt>
+          <dd>{producer}</dd>
+        </dl>
+      </div>
+    {/if}
+    {#if website}
+      <div>
+        <dl class="attributes">
+          <dt class="flex space-x-2">
+            <div class="whitespace-nowrap">{$_('comp.about.website')}</div>
+            <cai-tooltip placement="left" class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 150px;">
+                {$_('comp.about.websiteHelpText')}
+              </div>
+            </cai-tooltip>
+          </dt>
+          <dd class="truncate">
+            <a href={website} target="_blank" class="link">{website}</a>
+          </dd>
+        </dl>
+      </div>
+    {/if}
   </div>
 </div>
 

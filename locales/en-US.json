@@ -1,7 +1,7 @@
 {
   "comp.about.assets.claimInfoHelpText": "This image has attribution and history data",
   "comp.about.assets.header": "Assets used",
-  "comp.about.assets.helpText": "Select one of the following assets to explore the tamper-evident editing and activity data that was attached on export.",
+  "comp.about.assets.helpText": "Any assets used or added to this content",
   "comp.about.editsActivity.header": "Edits and activity",
   "comp.about.editsActivity.helpText": "Categories of actions taken on this content, sorted alphabetically.",
   "comp.about.editsActivity.none": "None",
@@ -13,6 +13,8 @@
   "comp.about.signedBy": "Signed by",
   "comp.about.signedByHelpText": "Cryptographic signatures assuring that this content record wasn’t tampered with.",
   "comp.about.signedOn": "Signed on",
+  "comp.about.website": "Website",
+  "comp.about.websiteHelpText": "Website help text TBD",
   "comp.asset.badgeInfoHelpText": "This image has attribution and history data.",
   "comp.asset.badgeMissingHelpText": "The producer edited this asset without attaching complete credentials",
   "comp.asset.fileName": "File Name",
