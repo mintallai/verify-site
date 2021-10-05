@@ -39,6 +39,8 @@
   "comp.header.learnMore": "Learn more",
   "comp.header.productName": "Verify",
   "comp.header.uploadImage": "Upload image",
+  "comp.navigation.title": "Content and Ingredients",
+  "comp.navigation.subtitle": "Select a file to inspect its content credentials, or select Compare to start comparing two files.",
   "comp.originalCreation.learnMore": "Learn more",
   "comp.originalCreation.recorder": "This photo was first produced in {application}.",
   "comp.originalCreation.secureCapture": "This photo was captured by a secure device.",

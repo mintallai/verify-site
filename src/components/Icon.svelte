@@ -8,7 +8,7 @@
     HelpOutlineIcon,
     InfoIcon,
     ShowMenuIcon,
-  } from '@spectrum-web-components/icons-workflow/lib/icons';
+  } from '@spectrum-web-components/icons-workflow/src/icons.js';
 
   const IconsWorkflow = {
     ChevronLeftIcon,

@@ -26,7 +26,7 @@
   );
   $: currentLangString = currentLocaleMapping[1];
 
-  function handleLanguageChange(evt) {
+  function handleLanguageChange(evt: any) {
     setLanguage(evt.target.value);
   }
 </script>

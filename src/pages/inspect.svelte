@@ -12,7 +12,7 @@
   import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import ContentCredentials from '../components/inspect/ContentCredentials.svelte';
+  import Navigation from '../components/inspect/Navigation.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
@@ -184,7 +184,7 @@
       </section>
     {:else if noMetadata}
       <section class="left-col">
-        <ContentCredentials {source} />
+        <Navigation {source} />
       </section>
       <Viewer thumbnailUrl={source.dataUrl} isDragging={isDraggingOver} />
       <section class="right-col p-4">
@@ -193,7 +193,7 @@
     {:else if primary}
       <section class="left-col">
         {#if !isComparing}
-          <ContentCredentials claim={primaryClaim} />
+          <Navigation claim={primaryClaim} />
         {:else if primaryClaim}
           <div class="w-full p-4 pt-0 md:pt-4">
             <About
