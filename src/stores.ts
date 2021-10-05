@@ -1,6 +1,7 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { enhanceReport, resolveId } from './lib/claim';
+import type { ImageProvenance, Claim, Ingredient } from '@contentauth/sdk';
 import type {
   IEnhancedStoreReport,
   IStoreReportResult,
@@ -184,12 +185,9 @@ async function setSource(result: IStoreReportResult | null) {
 /**
  * Contains the current store report of the loaded asset.
  */
-export const storeReport = writable<IEnhancedStoreReport | null>(
-  null,
-  (set) => {
-    return () => {};
-  },
-);
+export const provenance = writable<ImageProvenance | null>(null, (set) => {
+  return () => {};
+});
 
 function disposePreviousThumbnails(thumbnailUrls: string[]) {
   dbg('Disposing previous claim thumbnails', thumbnailUrls);
@@ -202,38 +200,30 @@ function disposePreviousThumbnails(thumbnailUrls: string[]) {
  * @param data Data provided by on of the `getStore*` toolkit functions, or `null` to clear the
  *             existing info, and show the upload screen
  */
-export async function setStoreReport(result: IStoreReportResult | null) {
-  dbg('Calling setStoreReport');
+export async function setProvenance(result: ImageProvenance | null) {
+  dbg('Calling setProvenance');
 
   // Set new data and set source information
-  const data = result?.storeReport;
-  const existingThumbnails = get(storeReport)?.thumbnailUrls ?? [];
+  // const data = result?.storeReport;
+  // const existingThumbnails = get(storeReport)?.thumbnailUrls ?? [];
 
-  setSource(result);
-  // If null is passed as the result, we are in the process of loading a new image
-  if (result === null) {
-    storeReport.set(null);
-  }
+  // setSource(result);
 
-  if (data) {
-    const enhancedReport = await enhanceReport(data);
-    dbg('Setting enhanced store report', enhancedReport);
-    storeReport.set(enhancedReport);
-    disposePreviousThumbnails(existingThumbnails);
+  if (result?.exists) {
+    provenance.set(result);
     navigateToRoot();
-  } else if (data === false) {
-    dbg('No store report found');
-    storeReport.set(null);
-    disposePreviousThumbnails(existingThumbnails);
+  } else {
+    dbg('No provenance found');
+    provenance.set(null);
   }
 }
 
 /**
  * Calculates the root claim ID (the ID of the latest claim) contained in the store report.
  */
-export const rootClaimId = derived<[typeof storeReport], string | null>(
-  [storeReport],
-  ([$storeReport]) => $storeReport?.head ?? null,
+export const rootClaimId = derived<[typeof provenance], string | null>(
+  [provenance],
+  ([$provenance]) => $provenance?.activeClaim.id ?? null,
 );
 
 /**
@@ -283,18 +273,18 @@ export const errorsByIdentifier = derived<
  * Convenience accessor for the claim/ingredient data that's linked to the `primaryId`.
  */
 export const primaryAsset = derived<
-  [typeof storeReport, typeof primaryId],
-  ViewableItem | null
->([storeReport, primaryId], ([$storeReport, $primaryId]) => {
-  return $storeReport ? resolveId($storeReport, $primaryId) : null;
+  [typeof provenance, typeof primaryId],
+  ViewableItem | undefined
+>([provenance, primaryId], ([$provenance, $primaryId]) => {
+  return $provenance?.resolveId($primaryId);
 });
 
 /**
  * Convenience accessor for the claim/ingredient data that's linked to the `secondaryId`.
  */
 export const secondaryAsset = derived<
-  [typeof storeReport, typeof secondaryId],
-  ViewableItem | null
->([storeReport, secondaryId], ([$storeReport, $secondaryId]) => {
-  return $storeReport ? resolveId($storeReport, $secondaryId) : null;
+  [typeof provenance, typeof secondaryId],
+  ViewableItem | undefined
+>([provenance, secondaryId], ([$provenance, $secondaryId]) => {
+  return $provenance?.resolveId($secondaryId);
 });

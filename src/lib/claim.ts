@@ -6,6 +6,7 @@ import sortBy from 'lodash/fp/sortBy';
 import toPairs from 'lodash/fp/toPairs';
 import zipObject from 'lodash/zipObject';
 import pMemoize from 'p-memoize';
+import { Claim, ImageProvenance } from './sdk';
 import type {
   IEnhancedClaimReport,
   IEnhancedIngredient,
@@ -22,6 +23,7 @@ import type {
   IEditCategory,
 } from './types';
 import debug from 'debug';
+import { Ingredient } from '@contentauth/sdk';
 
 const dbg = debug('claim');
 
@@ -207,11 +209,9 @@ export function getCategories(
   return null;
 }
 
-export function getIsOriginal(claim: IEnhancedClaimReport) {
+export function getIsOriginal(claim: Claim) {
   const noIngredients = claim.ingredients.length === 0;
-  const actionAssertion = claim.assertions.find(
-    (x) => x.label === ACTION_ASSERTION_LABEL,
-  );
+  const actionAssertion = claim.findAssertion(ACTION_ASSERTION_LABEL);
   const actions = actionAssertion?.data?.actions;
   const isDelivered = actions.find((x) => x.action === DELIVERED_ACTION);
   return noIngredients && !isDelivered;
@@ -243,45 +243,17 @@ export function getProducer(claim: IEnhancedClaimReport) {
 }
 
 /**
- * Gets information on the software that created this claim from the `recorder` field
- */
-export function getRecorder(claim: IEnhancedClaimReport) {
-  try {
-    const [softwareName] = claim.recorder.split('(');
-    return softwareName.trim();
-  } catch (err) {
-    return 'Unknown';
-  }
-}
-
-/**
- * Gets the entity that issued this claim
- */
-export function getSignatureIssuer(claim: IEnhancedClaimReport) {
-  return claim.signature?.issuer ?? null;
-}
-
-/**
- * Gets the date corresponding to the signature time
- */
-export function getSignatureDate(claim: IEnhancedClaimReport) {
-  return claim.signature?.time ?? null;
-}
-
-/**
  * Returns `true` if has a beta assertion
  */
-export function getIsBeta(claim: IEnhancedClaimReport): boolean {
-  return !!claim.assertions.find((x) => x.label === BETA_LABEL)?.data?.version;
+export function getIsBeta(claim: Claim): boolean {
+  return !!claim.findAssertion(BETA_LABEL)?.data?.version;
 }
 
 /**
  * Returns the CreativeWork website if one exists
  */
-export function getWebsite(claim: IEnhancedClaimReport): string | undefined {
-  const site = claim.assertions.find(
-    (x) => x.label === CREATIVEWORK_ASSERTION_LABEL,
-  )?.data?.url;
+export function getWebsite(claim: Claim): string | undefined {
+  const site = claim.findAssertion(CREATIVEWORK_ASSERTION_LABEL)?.data?.url;
   if (site) {
     const url = new URL(site);
     if (url.protocol === 'https:' && url.hostname === 'stock.adobe.com') {
@@ -436,14 +408,11 @@ export function hasClaim(item: ViewableItem) {
 /**
  * Gets the claim data associated with a ViewableItem (claim/ingredient)
  */
-export function getAssociatedClaim(
-  $storeReport: IEnhancedStoreReport,
-  item: ViewableItem,
-): IEnhancedClaimReport | null {
-  if (item.type === 'claim') {
+export function getAssociatedClaim(item: ViewableItem): ViewableItem | null {
+  if (item instanceof Claim) {
     return item;
-  } else if (item.type === 'ingredient' && item.provenance) {
-    return resolveId($storeReport, item.provenance) as IEnhancedClaimReport;
+  } else if (item instanceof Ingredient) {
+    return item.parent;
   }
   return null;
 }

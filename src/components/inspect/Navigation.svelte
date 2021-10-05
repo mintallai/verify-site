@@ -6,20 +6,20 @@
   import OriginalCreation from './OriginalCreation.svelte';
   import {
     contentSourceIds,
-    storeReport,
+    provenance,
     primaryId,
     isCompareSelectMode,
   } from '../../stores';
   import { getAssetList, getBreadcrumbList } from '../../lib/claim';
-  import type { IEnhancedClaimReport } from '../../lib/types';
+  import type { Claim } from '../../lib/sdk';
 
-  export let claim: IEnhancedClaimReport | null = null;
+  export let claim: Claim | null = null;
   export let source: ISourceInfo | null = null;
   let container: any;
   let secureCapture: false;
 
-  $: assetList = claim ? getAssetList($storeReport, claim.id) : [];
-  $: breadcrumbList = getBreadcrumbList($storeReport, $contentSourceIds);
+  $: assetList = [];
+  $: breadcrumbList = [];
   $: combined = [...breadcrumbList, ...assetList];
 
   onDestroy(() => isCompareSelectMode.set(false));

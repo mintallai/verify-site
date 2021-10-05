@@ -1,3 +1,4 @@
+import type { Claim, Ingredient } from '@contentauth/sdk';
 // Global types
 // TODO: Move to @contentauth/types when this is validated
 
@@ -169,4 +170,4 @@ export interface IEnhancedStoreReport extends IStoreReport {
   thumbnailUrls: string[];
 }
 
-export type ViewableItem = IEnhancedClaimReport | IEnhancedIngredient;
+export type ViewableItem = Claim | Ingredient;

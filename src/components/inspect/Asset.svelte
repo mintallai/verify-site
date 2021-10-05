@@ -2,7 +2,7 @@
   import { _ } from 'svelte-i18n';
   import { quintOut } from 'svelte/easing';
   import {
-    storeReport,
+    provenance,
     navigateToId,
     compareWithId,
     primaryId,
@@ -92,7 +92,7 @@
     {/if}
     {#if asset}
       <cai-thumbnail
-        src={getThumbnailUrlForId($storeReport, asset.id)}
+        src={''}
         selected={current}
         badge={badge.type}
         badgehelptext={badge.helpText}

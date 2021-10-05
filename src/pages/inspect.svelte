@@ -5,6 +5,7 @@
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
   import { getStoreReportFromUrl, ToolkitError } from '../lib/toolkit';
+  import { getSdk, Claim, Ingredient } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
@@ -22,8 +23,8 @@
   import {
     urlParams,
     source as sourceStore,
-    storeReport,
-    setStoreReport,
+    provenance,
+    setProvenance,
     navigateToId,
     secondaryId,
     primaryAsset,
@@ -47,15 +48,15 @@
 
   $: source = $sourceStore;
   $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $storeReport || source;
-  $: isLoading = $storeReport === null && source === null;
+  $: hasContent = sourceParam || $provenance || source;
+  $: isLoading = $provenance === null && source === null;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
-  $: primaryClaim = primary && getAssociatedClaim($storeReport, primary);
-  $: secondaryClaim = secondary && getAssociatedClaim($storeReport, secondary);
+  $: primaryClaim = primary && getAssociatedClaim(primary);
+  $: secondaryClaim = secondary && getAssociatedClaim(secondary);
   $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !!(source && !$storeReport);
+  $: noMetadata = !!(source && !$provenance);
   $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
   $: errorMessage =
     error &&
@@ -68,7 +69,7 @@
       tour.cancel();
     }
     // Clear errors if the store report has changed
-    if ($storeReport !== undefined) {
+    if ($provenance !== undefined) {
       error = null;
     }
   }
@@ -97,15 +98,16 @@
 
     if (sourceParam) {
       try {
-        const result = await getStoreReportFromUrl(sourceParam);
-        window.newrelic?.setCustomAttribute('source', sourceParam);
-        setStoreReport(result);
+        const sdk = await getSdk();
+        const result = await sdk.processImage(sourceParam);
+        await window.newrelic?.setCustomAttribute('source', sourceParam);
+        setProvenance(result);
         if (isMobileViewer === false) {
-          tour = startTour({
-            storeReport: $storeReport,
-            start: tourFlag,
-            force: forceTourFlag,
-          });
+          // tour = startTour({
+          //   provenance: $provenance,
+          //   start: tourFlag,
+          //   force: forceTourFlag,
+          // });
         }
       } catch (err) {
         error = err?.message;
@@ -186,7 +188,7 @@
       <section class="left-col">
         <Navigation {source} />
       </section>
-      <Viewer thumbnailUrl={source.dataUrl} isDragging={isDraggingOver} />
+      <Viewer thumbnail={{ url: source.dataUrl }} isDragging={isDraggingOver} />
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
@@ -202,7 +204,7 @@
               {isMobileViewer}
               on:close={partial(handleClose, secondary)} />
           </div>
-        {:else if primary?.type === 'ingredient'}
+        {:else if primary instanceof Ingredient}
           <div class="wrapper">
             <ContentCredentialsError {isComparing} />
           </div>
@@ -211,9 +213,9 @@
       {#if isComparing}
         <Comparison {primary} {secondary} />
       {:else}
-        <Viewer
-          thumbnailUrl={getThumbnailUrlForId($storeReport, primary.id)}
-          isDragging={isDraggingOver} />
+        {#await primary?.asset?.generateThumbnailUrl() then thumbnail}
+          <Viewer {thumbnail} isDragging={isDraggingOver} />
+        {/await}
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primaryClaim}
@@ -227,7 +229,7 @@
               <CompareLatestButton claim={primaryClaim} {isComparing} />
             {/if}
           </div>
-        {:else if !isComparing && primary?.type === 'ingredient'}
+        {:else if !isComparing && primary instanceof Ingredient}
           <div class="wrapper">
             <ContentCredentialsError {isComparing} />
             {#if isMobileViewer}
@@ -240,7 +242,7 @@
             {isComparing}
             {isMobileViewer}
             on:close={partial(handleClose, primary)} />
-        {:else if secondary?.type === 'ingredient'}
+        {:else if secondary instanceof Ingredient}
           <ContentCredentialsError {isComparing} />
         {/if}
       </section>

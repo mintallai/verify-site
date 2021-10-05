@@ -1,10 +1,10 @@
 <script lang="ts">
   import cssVars from 'svelte-css-vars';
   import partial from 'lodash/partial';
-  import { storeReport, isMobileViewerShown } from '../../../stores';
+  import { provenance, isMobileViewerShown } from '../../../stores';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
-  import type { ViewableItem } from '../../../lib/types'
+  import type { ViewableItem } from '../../../lib/types';
   import { getThumbnailUrlForId, getTitle } from '../../../lib/claim';
 
   enum Layout {
@@ -55,24 +55,21 @@
   class:mobile={$isMobileViewerShown}
   class:layout-stacked={layout === Layout.Stacked}
   class:layout-side={layout === Layout.SideBySide}
-  use:cssVars={styles}
->
+  use:cssVars={styles}>
   <div class="primary thumbnail" class:invisible={!layout}>
     <img
       use:tippy={{ content: getTitle(primary), ...tippyOpts }}
-      src={getThumbnailUrlForId($storeReport, primary.id)}
+      src={''}
       alt=""
-      on:load={partial(processImage, 'primary')}
-    />
+      on:load={partial(processImage, 'primary')} />
   </div>
   <div class="divider" />
   <div class="secondary thumbnail" class:invisible={!layout}>
     <img
       use:tippy={{ content: getTitle(secondary), ...tippyOpts }}
-      src={getThumbnailUrlForId($storeReport, secondary.id)}
+      src={''}
       alt=""
-      on:load={partial(processImage, 'secondary')}
-    />
+      on:load={partial(processImage, 'secondary')} />
   </div>
 </div>
 

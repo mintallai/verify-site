@@ -13,6 +13,7 @@ import del from 'del';
 import git from 'git-rev-sync';
 import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
+import { wasm } from '@rollup/plugin-wasm';
 import typescript from '@rollup/plugin-typescript';
 import svelteSvg from '../etc/rollup/plugins/svelte-svg';
 
@@ -133,6 +134,10 @@ function baseConfig(config, ctx) {
             src: [`node_modules/@contentauth/toolkit/pkg/**/*`],
             dest: `${distDir}/toolkit`,
           },
+          {
+            src: [`node_modules/@contentauth/sdk/dist/cai-sdk.worker.min.js`],
+            dest: distDir,
+          },
         ],
         copyOnce: true,
         flatten: true,
@@ -151,6 +156,9 @@ function baseConfig(config, ctx) {
         verbose: true,
       }),
       typeCheck(),
+      wasm({
+        publicPath: 'build/',
+      }),
       svelte(svelteConfig),
 
       // resolve matching modules from current working directory

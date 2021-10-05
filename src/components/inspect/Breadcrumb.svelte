@@ -4,7 +4,7 @@
   import Icon from '../Icon.svelte';
   import {
     contentSourceIds,
-    storeReport,
+    provenance,
     primaryId,
     primaryAsset,
     navigateToId,
@@ -37,7 +37,7 @@
     navigateToId(this.value);
   }
 
-  $: breadcrumbList = getBreadcrumbList($storeReport, $contentSourceIds);
+  $: breadcrumbList = [];
   $: homeId = breadcrumbList[0]?.id;
   $: showMenu =
     breadcrumbList.length > 1 &&
@@ -84,9 +84,7 @@
         {#each breadcrumbList as asset, _ ({ id: asset.id, ctx: 'menu-item' })}
           <sp-menu-item value={asset.id} class="checkbox-pos">
             <div class="menu-item pointer-events-none">
-              <cai-thumbnail
-                src={getThumbnailUrlForId($storeReport, asset.id)}
-                class="theme-spectrum" />
+              <cai-thumbnail src={''} class="theme-spectrum" />
               <div class="ml-2 text-100">{getTitle(asset)}</div>
             </div>
           </sp-menu-item>
@@ -96,9 +94,7 @@
     <div class="separator -ml-2">
       <Icon size="s" name="ChevronRight" class="text-gray-800" />
     </div>
-    <div class="breadcrumb-item" class:current={true}>
-      {getTitle($primaryAsset)}
-    </div>
+    <div class="breadcrumb-item" class:current={true} />
   {:else if homeId || noMetadata}
     {#if noMetadata && source}
       <div class="breadcrumb-item" class:current={true}>
