@@ -96,7 +96,7 @@
         selected={current}
         badge={badge.type}
         badgehelptext={badge.helpText}
-        class="theme-spectrum thumbnail" />
+        class="theme-spectrum" />
       <dl class="attributes overflow-hidden self-center pr-2">
         <dt>{$_('comp.asset.fileName')}</dt>
         <dd class="file-name" {title}>{title}</dd>
@@ -105,7 +105,7 @@
       <cai-thumbnail
         src={source.dataUrl}
         selected={current}
-        class="theme-spectrum thumbnail" />
+        class="theme-spectrum" />
       <dl class="attributes overflow-hidden self-center pr-2">
         <dt>{$_('comp.asset.fileName')}</dt>
         <dd class="file-name" title={source.name}>{source.name}</dd>
@@ -117,11 +117,6 @@
 <style lang="postcss">
   .container {
     @apply relative mb-1 transition duration-200 z-0 cursor-pointer;
-  }
-  .thumbnail {
-    --cai-thumbnail-size: 48px;
-    --cai-thumbnail-badge-icon-width: 14px;
-    --cai-thumbnail-badge-icon-height: 14px;
   }
   .item {
     @apply grid gap-3 max-w-full bg-transparent transition-all duration-200 border-blue-500 border-r-0;

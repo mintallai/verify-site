@@ -1,15 +1,15 @@
 <script lang="ts">
+  import { beforeUpdate, onDestroy } from 'svelte';
   import { _, date, time, locale } from 'svelte-i18n';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Alert from './Alert.svelte';
   import { navigateToId, compareWithId, provenance } from '../stores';
   import {
-    getThumbnailUrlForId,
+    getAssetsUsed,
     getIsBeta,
     getIsOriginal,
     getWebsite,
-    ClaimError,
   } from '../lib/claim';
   import '@contentauth/web-components/dist/components/panels/Assets';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
@@ -31,6 +31,8 @@
   export let isMobileViewer: boolean = false;
   let element: HTMLElement;
   let secureCapture = false;
+  let assetsUsed = [];
+  let thumbnailDisposers = [];
 
   $: isOriginal = getIsOriginal(claim);
   $: actionsAssertion = claim.findAssertion(
@@ -40,7 +42,6 @@
     AssertionLabel.CreativeWork,
   ) as CreativeWorkAssertion | null;
   $: producer = creativeWorkAssertion?.producer?.name ?? '';
-  $: assetsUsed = claim.ingredients;
   $: title = claim.title;
   $: signedBy = claim.signature.issuer;
   $: sigDate = claim.signature.date;
@@ -53,6 +54,10 @@
   });
   $: assetsStrings = JSON.stringify({
     CLAIM_INFO_HELP_TEXT: $_('comp.about.assets.claimInfoHelpText'),
+  });
+
+  onDestroy(() => {
+    thumbnailDisposers.forEach((fn) => fn());
   });
 </script>
 

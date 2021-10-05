@@ -195,11 +195,11 @@
     {:else if primary}
       <section class="left-col">
         {#if !isComparing}
-          <Navigation claim={primaryClaim} />
-        {:else if primaryClaim}
+          <Navigation claim={primary} />
+        {:else if primary instanceof Claim}
           <div class="w-full p-4 pt-0 md:pt-4">
             <About
-              claim={primaryClaim}
+              claim={primary}
               {isComparing}
               {isMobileViewer}
               on:close={partial(handleClose, secondary)} />
@@ -218,15 +218,15 @@
         {/await}
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing && primaryClaim}
+        {#if !isComparing && primary instanceof Claim}
           <div class="wrapper">
             <About
-              claim={primaryClaim}
+              claim={primary}
               {isComparing}
               {isMobileViewer}
               on:close={partial(handleClose, secondary)} />
             {#if isMobileViewer}
-              <CompareLatestButton claim={primaryClaim} {isComparing} />
+              <CompareLatestButton claim={primary} {isComparing} />
             {/if}
           </div>
         {:else if !isComparing && primary instanceof Ingredient}
@@ -236,9 +236,9 @@
               <CompareLatestButton claim={null} {isComparing} />
             {/if}
           </div>
-        {:else if secondaryClaim}
+        {:else if secondary instanceof Claim}
           <About
-            claim={secondaryClaim}
+            claim={secondary}
             {isComparing}
             {isMobileViewer}
             on:close={partial(handleClose, primary)} />

@@ -32,18 +32,20 @@
 </script>
 
 <footer>
-  <div bind:this={languageMenu}>
-    <sp-menu value={currentLocale}>
-      {#each mapping as [code, label]}
-        <sp-menu-item
-          value={code}
-          selected={code === currentLocale}
-          on:click={handleLanguageChange}>
-          {label}
-        </sp-menu-item>
-      {/each}
-    </sp-menu>
-  </div>
+  {#if false}
+    <div bind:this={languageMenu}>
+      <sp-menu value={currentLocale}>
+        {#each mapping as [code, label]}
+          <sp-menu-item
+            value={code}
+            selected={code === currentLocale}
+            on:click={handleLanguageChange}>
+            {label}
+          </sp-menu-item>
+        {/each}
+      </sp-menu>
+    </div>
+  {/if}
   <sp-theme color="light" scale="medium" class="w-full">
     <div class="flex justify-center items-center text-75">
       <span>
@@ -59,7 +61,7 @@
             $locale,
           )}
           target="_blank">{$_('comp.footer.termsOfUse')}</a>
-        {#if languageMenu}
+        {#if false}
           <button
             use:tippy={{ content: languageMenu, ...tippyOpts }}
             slot="trigger"

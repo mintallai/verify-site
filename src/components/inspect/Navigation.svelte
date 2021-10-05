@@ -11,9 +11,10 @@
     isCompareSelectMode,
   } from '../../stores';
   import { getAssetList, getBreadcrumbList } from '../../lib/claim';
-  import type { Claim } from '../../lib/sdk';
+  import type { ViewableItem } from '../../lib/types';
+  import { Claim } from '../../lib/sdk';
 
-  export let claim: Claim | null = null;
+  export let claim: ViewableItem | null = null;
   export let source: ISourceInfo | null = null;
   let container: any;
   let secureCapture: false;
@@ -56,7 +57,7 @@
       </div>
     </div>
   </div>
-  {#if secureCapture}
+  {#if secureCapture && claim instanceof Claim}
     <div class="mx-4">
       <OriginalCreation type="secureCapture" {claim} />
     </div>
