@@ -4,7 +4,7 @@
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Alert from './Alert.svelte';
-  import { navigateToId, compareWithId, provenance } from '../stores';
+  import { navigateToPath, compareWithId, provenance } from '../stores';
   import {
     getAssetsUsed,
     getIsBeta,
@@ -152,7 +152,8 @@
             on:asset-click={({ detail }) => {
               const id = detail?.asset?.id;
               if (id) {
-                navigateToId(id);
+                // TODO: Update this to pass in the proper path
+                navigateToPath([id]);
                 compareWithId(null);
               }
             }}

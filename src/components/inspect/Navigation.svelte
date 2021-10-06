@@ -14,10 +14,6 @@
   let container: any;
   let secureCapture: false;
 
-  $: assetList = [];
-  $: breadcrumbList = [];
-  $: combined = [...breadcrumbList, ...assetList];
-
   onDestroy(() => isCompareSelectMode.set(false));
 </script>
 
@@ -31,7 +27,6 @@
     </div>
   </div>
   <div class="relative pl-4">
-    {console.log('hierarchy', $hierarchy)}
     <div bind:this={container} class="grid space-y-4">
       {#if $hierarchy}
         <HierarchyNode node={$hierarchy} />
@@ -43,7 +38,7 @@
       <OriginalCreation type="secureCapture" {claim} />
     </div>
   {/if}
-  {#if combined.length > 1}
+  {#if $hierarchy.children}
     <div
       class="sticky bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent">
       <div class="pointer-events-auto">

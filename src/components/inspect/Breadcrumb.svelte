@@ -4,7 +4,6 @@
   import Icon from '../Icon.svelte';
   import {
     primaryId,
-    navigateToId,
     compareMode,
     setCompareMode,
     CompareMode,
@@ -27,7 +26,7 @@
   }
 
   function handleMenuChange() {
-    navigateToId(this.value);
+    // navigateToId(this.value);
   }
 
   $: breadcrumbList = [];
@@ -94,8 +93,7 @@
         {/if}
         <div
           class="breadcrumb-item hover:underline"
-          class:current={asset.id === $primaryId}
-          on:click={() => navigateToId(asset.id)}>
+          class:current={asset.id === $primaryId}>
           TITLE_GOES_HERE
         </div>
       {/each}

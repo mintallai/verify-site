@@ -4,8 +4,9 @@ export type ViewableItem = Claim | Ingredient;
 
 export interface ITreeNode {
   id: string;
+  path: string[];
   name: string;
-  hasClaim: boolean;
+  claim?: Claim;
   asset?: Asset;
   isExpanded?: boolean;
   children?: ITreeNode[];

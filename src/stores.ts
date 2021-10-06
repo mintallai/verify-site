@@ -1,5 +1,6 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
+import last from 'lodash/last';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ImageProvenance, Claim, Ingredient } from './lib/sdk';
 import type { ViewableItem, ITreeNode } from './lib/types';
@@ -38,11 +39,23 @@ export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
  */
 export const contentSourceIds = writable<string[]>([]);
 
+export const collapsedBranches = writable<Set<string>>(new Set());
+
+export function toggleBranch(id: string) {
+  collapsedBranches.update((prev) => {
+    if (prev.has(id)) {
+      prev.delete(id);
+      return prev;
+    }
+    return prev.add(id);
+  });
+}
+
 /**
- * The primary univeral ID (claim/parent/ingredient) that is being shown in the
+ * The primary universal ID (claim/parent/ingredient) that is being shown in the
  * viewer. If a `secondaryId` is _also_ set, a comparison view shows up.
  */
-export const primaryId = writable<string>('');
+export const primaryPath = writable<string[]>([]);
 
 /**
  * The secondary universal ID (claim/parent/ingredient) that is used as the thumbnail
@@ -90,40 +103,16 @@ export function getFaqUrl(id: string = FAQ_VERIFY_SECTION_ID): string {
 /**
  * Navigates the view to a new claim in the manifest. Used when clicking on different content sources.
  *
- * @param newId The claim ID to show in the viewer/highlight in content sources
- * @param clearBreadcrumbs `true` to clear the breadcrumbs/history
+ * @param path The path to navigate to
  * @param logEvent `true` to log this event in New Relic
  */
-export function navigateToId(
-  newId: string,
-  clearBreadcrumbs = false,
-  logEvent = true,
-): void {
-  dbg('Navigating to id', newId, {
-    clearBreadcrumbs,
-    contentSourceIds: get(contentSourceIds),
-  });
-  const currId = get(primaryId);
-  contentSourceIds.update((ids) => {
-    if (clearBreadcrumbs) {
-      return [newId];
-    }
-    if (ids.includes(newId)) {
-      return ids.slice(0, ids.indexOf(newId) + 1);
-    } else if (ids.length && newId !== currId) {
-      // Don't add the current ID if it's not changing (in the case of closing a secondary asset)
-      return [...ids, newId];
-    } else if (!ids.length && newId) {
-      // Initial load
-      return [newId];
-    } else {
-      return ids;
-    }
-  });
-  primaryId.set(newId);
+export function navigateToPath(path: string[], logEvent = true): void {
+  dbg('Navigating to path', path);
+
+  primaryPath.set(path);
   scrollTo(0, 0);
   if (logEvent) {
-    window.newrelic?.addPageAction('navigateToId', { id: newId });
+    window.newrelic?.addPageAction('navigateToPath', { path });
   }
 }
 
@@ -184,9 +173,22 @@ export function navigateToRoot(logEvent = true): void {
   const rootId = get(rootClaimId);
   if (rootId) {
     secondaryId.set('');
-    navigateToId(rootId, true, logEvent);
+    navigateToPath([rootId], logEvent);
   }
 }
+
+/**
+ * The primary universal ID (claim/parent/ingredient) that is being shown in the
+ * viewer. If a `secondaryId` is _also_ set, a comparison view shows up.
+ */
+export const primaryId = derived<[typeof primaryPath], string>(
+  [primaryPath],
+  ([$primaryPath]) => {
+    const id = last($primaryPath) ?? '';
+    console.log('got id', id);
+    return id;
+  },
+);
 
 /**
  * Convenience accessor for the claim/ingredient data that's linked to the `primaryId`.
@@ -195,6 +197,7 @@ export const primaryAsset = derived<
   [typeof provenance, typeof primaryId],
   ViewableItem | undefined
 >([provenance, primaryId], ([$provenance, $primaryId]) => {
+  console.log('$primaryId', $primaryId);
   return $provenance?.resolveId($primaryId);
 });
 
@@ -209,21 +212,29 @@ export const secondaryAsset = derived<
 });
 
 function parseProvenance(node: Claim | Ingredient): ITreeNode {
+  let path = [];
+  let curr = node;
+  while (curr) {
+    path.push(curr.id);
+    curr = curr.parent;
+  }
   if (node instanceof Claim) {
     return {
       id: node.id,
+      path,
       name: node.title,
-      hasClaim: true,
+      claim: node,
       asset: node.asset ?? undefined,
       children: node.ingredients?.map(parseProvenance),
     };
   }
   const ingredient = node as Ingredient;
   return {
-    id: ingredient.claim?.id ?? ingredient.id,
+    id: ingredient.id,
+    path,
     name: ingredient.title,
     asset: ingredient,
-    hasClaim: !!ingredient.claim,
+    claim: ingredient.claim,
     children: ingredient.claim?.ingredients.map(parseProvenance) ?? [],
   };
 }

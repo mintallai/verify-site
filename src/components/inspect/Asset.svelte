@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import { quintOut } from 'svelte/easing';
-  import { navigateToId, compareWithId, primaryId } from '../../stores';
+  import { compareWithId, primaryId } from '../../stores';
   import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
@@ -73,7 +73,7 @@
   on:mouseleave={() => (hover = false)}
   on:click={() => {
     if (asset && !isCurrent) {
-      isCompareSelectMode ? compareWithId(asset.id) : navigateToId(asset.id);
+      // isCompareSelectMode ? compareWithId(asset.id) : navigateToId(asset.id);
     }
   }}>
   {#if hasConnector}

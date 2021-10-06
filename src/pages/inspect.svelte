@@ -22,7 +22,7 @@
     urlParams,
     provenance,
     setProvenance,
-    navigateToId,
+    navigateToPath,
     secondaryId,
     primaryAsset,
     secondaryAsset,
@@ -32,7 +32,8 @@
   import type { ViewableItem } from '../lib/types';
 
   function handleClose(navigateToAsset: ViewableItem) {
-    navigateToId(navigateToAsset.id);
+    // TODO: Implement this
+    // navigateToPath(navigateToAsset.id);
     secondaryId.set('');
   }
 
@@ -138,6 +139,8 @@
   });
 </script>
 
+{console.log('$primaryAsset', $primaryAsset)}
+
 <svelte:window />
 <svelte:head>
   <title>{$_('page.title')}</title>
@@ -191,11 +194,7 @@
           <Navigation claim={primary} />
         {:else if primary instanceof Claim}
           <div class="w-full p-4 pt-0 md:pt-4">
-            <About
-              claim={primary}
-              {isComparing}
-              {isMobileViewer}
-              on:close={partial(handleClose, secondary)} />
+            <About claim={primary} {isComparing} {isMobileViewer} />
           </div>
         {:else if primary instanceof Ingredient}
           <div class="wrapper">
@@ -213,11 +212,7 @@
       <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary instanceof Claim}
           <div class="wrapper">
-            <About
-              claim={primary}
-              {isComparing}
-              {isMobileViewer}
-              on:close={partial(handleClose, secondary)} />
+            <About claim={primary} {isComparing} {isMobileViewer} />
             {#if isMobileViewer}
               <CompareLatestButton claim={primary} {isComparing} />
             {/if}
@@ -230,11 +225,7 @@
             {/if}
           </div>
         {:else if secondary instanceof Claim}
-          <About
-            claim={secondary}
-            {isComparing}
-            {isMobileViewer}
-            on:close={partial(handleClose, primary)} />
+          <About claim={secondary} {isComparing} {isMobileViewer} />
         {:else if secondary instanceof Ingredient}
           <ContentCredentialsError {isComparing} />
         {/if}
