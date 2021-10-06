@@ -46,7 +46,7 @@
   $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
   $: hasContent = sourceParam || $provenance;
-  $: isLoading = $provenance === null && source === null;
+  $: isLoading = !$provenance;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);

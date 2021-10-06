@@ -131,10 +131,6 @@ function baseConfig(config, ctx) {
       copy({
         targets: [
           {
-            src: [`node_modules/@contentauth/toolkit/pkg/**/*`],
-            dest: `${distDir}/toolkit`,
-          },
-          {
             src: [`node_modules/@contentauth/sdk/dist/cai-sdk.worker.min.js`],
             dest: distDir,
           },
@@ -151,7 +147,7 @@ function baseConfig(config, ctx) {
             transform: transformDictionaryJson,
           },
         ],
-        copyOnce: false,
+        copyOnce: true,
         flatten: true,
         verbose: true,
       }),
@@ -174,9 +170,7 @@ function baseConfig(config, ctx) {
         ),
         'process.env.GIT_REVISION': JSON.stringify(git.short()),
         'process.env.SUPPORTED_LOCALES': JSON.stringify(getSupportedLocales()),
-        __toolkit_wasm_src__:
-          process.env.TOOLKIT_WASM_SRC || '/toolkit/toolkit_bg.wasm',
-        __delay__: production ? '100' : '100',
+        __delay__: production ? '0' : '0',
         __breakpoints__: JSON.stringify(tailwindConfig.theme.screens),
         __year__: JSON.stringify(new Date().getFullYear()),
       }),
