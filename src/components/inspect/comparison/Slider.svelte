@@ -3,9 +3,7 @@
   import cssVars from 'svelte-css-vars';
   import interact from 'interactjs';
   import type { DragEvent } from '@interactjs/types';
-  import { provenance } from '../../../stores';
   import Icon from '../../Icon.svelte';
-  import { getThumbnailUrlForId, getTitle } from '../../../lib/claim';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
   import type { ViewableItem } from '../../../lib/types';
@@ -73,15 +71,11 @@
     </div>
   </div>
   <div class="primary">
-    <div
-      class="thumbnail"
-      use:tippy={{ content: getTitle(primary), ...tippyOpts }}>
+    <div class="thumbnail" use:tippy={{ content: primary.title, ...tippyOpts }}>
       <img src={''} alt="" />
     </div>
   </div>
-  <div
-    class="secondary"
-    use:tippy={{ content: getTitle(secondary), ...tippyOpts }}>
+  <div class="secondary" use:tippy={{ content: secondary.title, ...tippyOpts }}>
     <div class="thumbnail"><img src={''} alt="" /></div>
   </div>
 </div>

@@ -9,7 +9,6 @@ import {
   secondaryId,
   navigateToRoot,
 } from '../stores';
-import { IEnhancedStoreReport } from './types';
 
 const COMPLETE_LOCALSTORAGE_KEY = 'hasSeenTour';
 const DELAY_MS = 500;
@@ -35,18 +34,18 @@ function createComponent(tour, props) {
   return component.getElement();
 }
 
-function getParentRef(storeReport: IEnhancedStoreReport) {
+function getParentRef(storeReport: any) {
   const { claims, head } = storeReport;
   const rootClaim = claims[head];
   return rootClaim?.ingredients.find((x) => x.is_parent && !!x.provenance);
 }
 
-async function gotoRootClaim(storeReport: IEnhancedStoreReport) {
+async function gotoRootClaim(storeReport: any) {
   navigateToId(storeReport?.head, false, false);
   return delay(DELAY_MS);
 }
 
-async function gotoParentClaim(storeReport: IEnhancedStoreReport) {
+async function gotoParentClaim(storeReport: any) {
   const parentRef = getParentRef(storeReport);
   if (parentRef) {
     secondaryId.set('');
@@ -55,7 +54,7 @@ async function gotoParentClaim(storeReport: IEnhancedStoreReport) {
   }
 }
 
-async function gotoCompare(storeReport: IEnhancedStoreReport) {
+async function gotoCompare(storeReport: any) {
   const parentRef = getParentRef(storeReport);
   if (parentRef) {
     navigateToId(parentRef.id, false, false);
@@ -64,7 +63,7 @@ async function gotoCompare(storeReport: IEnhancedStoreReport) {
   }
 }
 
-export function createTour(storeReport: IEnhancedStoreReport) {
+export function createTour(storeReport: any) {
   const tour = new Shepherd.Tour({
     defaultStepOptions: {
       popperOptions: {

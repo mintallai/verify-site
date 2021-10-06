@@ -1,12 +1,8 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
-import { enhanceReport, resolveId } from './lib/claim';
-import type { ImageProvenance, Claim, Ingredient } from '@contentauth/sdk';
-import type {
-  IEnhancedStoreReport,
-  IStoreReportResult,
-  ViewableItem,
-} from './lib/types';
+import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
+import { ImageProvenance, Claim, Ingredient } from './lib/sdk';
+import type { ViewableItem, ITreeNode } from './lib/types';
 import debug from 'debug';
 
 const dbg = debug('store');
@@ -150,64 +146,17 @@ export function compareWithId(id: string, logEvent = true): void {
 }
 
 /**
- * Contains info about the source file that was uploaded/dragged in
- */
-export const source = writable<ISourceInfo | null>(null, (set) => {
-  return () => {};
-});
-
-/**
- * Sets the information about the source of the asset that we are inspecting, whether it
- * is from the `source` URL parameter or a file that was dragged in.
- *
- * @param result The result from the `getStore*` toolkit functions
- */
-async function setSource(result: IStoreReportResult | null) {
-  const existingUrl = get(source)?.dataUrl;
-  // Clean up the previous blobURL
-  if (existingUrl && /^blob:/.test(existingUrl)) {
-    dbg('Disposing previous source URL', existingUrl);
-    URL.revokeObjectURL(existingUrl);
-  }
-  if (result) {
-    const newSource = {
-      name: result.filename,
-      dataUrl: URL.createObjectURL(result.data),
-    };
-    dbg('Setting source', newSource);
-    source.set(newSource);
-  } else {
-    dbg('Setting source to null');
-    source.set(null);
-  }
-}
-
-/**
- * Contains the current store report of the loaded asset.
+ * Contains the ImageProvenance of the loaded asset.
  */
 export const provenance = writable<ImageProvenance | null>(null, (set) => {
   return () => {};
 });
 
-function disposePreviousThumbnails(thumbnailUrls: string[]) {
-  dbg('Disposing previous claim thumbnails', thumbnailUrls);
-  thumbnailUrls.forEach((dataUrl) => URL.revokeObjectURL(dataUrl));
-}
-
 /**
- * Sets the store report of the loaded asset.
- *
- * @param data Data provided by on of the `getStore*` toolkit functions, or `null` to clear the
- *             existing info, and show the upload screen
+ * Sets the ImageProvenance of the loaded asset.
  */
 export async function setProvenance(result: ImageProvenance | null) {
   dbg('Calling setProvenance');
-
-  // Set new data and set source information
-  // const data = result?.storeReport;
-  // const existingThumbnails = get(storeReport)?.thumbnailUrls ?? [];
-
-  // setSource(result);
 
   if (result?.exists) {
     provenance.set(result);
@@ -240,36 +189,6 @@ export function navigateToRoot(logEvent = true): void {
 }
 
 /**
- * // FIXME: Make sure we account for this
-export const errorsByIdentifier = derived<
-  [typeof summary],
-  { [identifier: string]: IErrorIdentifierMap }
->([summary], ([$summary]) => {
-  if ($summary) {
-    const nestedDepth = 3; // Errors are nested references[x].errors
-    const errors = reduceDeep(
-      $summary,
-      (acc, value, key, parent, ctx) => {
-        if (key === 'errors' && value.length) {
-          // head claim error
-          if (ctx.depth < nestedDepth) {
-            return {};
-          }
-          const parentClaim = ctx.parents[ctx.depth - nestedDepth].value;
-          const id = getIdentifier(parentClaim);
-          acc[id] ? acc[id].push(value) : (acc[id] = value);
-        }
-        return acc;
-      },
-      {},
-    );
-    return errors;
-  }
-  return {};
-});
-*/
-
-/**
  * Convenience accessor for the claim/ingredient data that's linked to the `primaryId`.
  */
 export const primaryAsset = derived<
@@ -287,4 +206,35 @@ export const secondaryAsset = derived<
   ViewableItem | undefined
 >([provenance, secondaryId], ([$provenance, $secondaryId]) => {
   return $provenance?.resolveId($secondaryId);
+});
+
+function parseProvenance(node: Claim | Ingredient): ITreeNode {
+  if (node instanceof Claim) {
+    return {
+      id: node.id,
+      name: node.title,
+      hasClaim: true,
+      asset: node.asset ?? undefined,
+      children: node.ingredients?.map(parseProvenance),
+    };
+  }
+  const ingredient = node as Ingredient;
+  return {
+    id: ingredient.claim?.id ?? ingredient.id,
+    name: ingredient.title,
+    asset: ingredient,
+    hasClaim: !!ingredient.claim,
+    children: ingredient.claim?.ingredients.map(parseProvenance) ?? [],
+  };
+}
+
+export const hierarchy = derived<
+  [typeof provenance],
+  HierarchyNode<ITreeNode> | null
+>([provenance], ([$provenance]) => {
+  const activeClaim = $provenance?.activeClaim;
+  if (activeClaim) {
+    return d3Hierarchy(parseProvenance(activeClaim));
+  }
+  return null;
 });

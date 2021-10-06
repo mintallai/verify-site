@@ -4,12 +4,7 @@
   import { _ } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
-  import {
-    urlParams,
-    provenance,
-    source,
-    isMobileViewerShown,
-  } from '../../stores';
+  import { urlParams, provenance, isMobileViewerShown } from '../../stores';
   import { loadFile } from '../../lib/file';
   import DropFile from '../../../assets/svg/monochrome/drop-file.svg';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
@@ -40,7 +35,7 @@
     height: side,
   };
   $: urlSource = $urlParams.source;
-  $: uploadMode = (!urlSource && !$source && !$provenance) || isDragging;
+  $: uploadMode = (!urlSource && !$provenance) || isDragging;
 
   function browseFile() {
     fileInput.click();
@@ -62,7 +57,7 @@
 <div class="viewer-wrapper">
   <div
     class="viewer"
-    class:no-source={!$source && !$provenance}
+    class:no-source={!$provenance}
     class:upload={uploadMode}
     class:dragging={isDragging}
     bind:clientWidth={width}
@@ -79,7 +74,7 @@
             width={58}
             height={99}
             class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}" />
-          {#if $source || $provenance}
+          {#if $provenance}
             <div class="message-heading">{$_('comp.viewer.dropFile')}</div>
           {:else}
             <div class="message-heading">{$_('comp.viewer.dragDropFile')}</div>

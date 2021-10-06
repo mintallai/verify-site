@@ -14,6 +14,13 @@ import '@spectrum-web-components/picker/sp-picker.js';
 import '@spectrum-web-components/tabs/sp-tabs.js';
 import '@spectrum-web-components/tabs/sp-tab.js';
 
+// TODO: Update this with newrelic typescript defs
+declare global {
+  interface Window {
+    newrelic: any;
+  }
+}
+
 initI18n();
 
 const app = HMR(App, { target: document.body }, 'app-root');

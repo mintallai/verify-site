@@ -26,8 +26,3 @@ declare interface IUrlParams {
 declare interface IErrorIdentifierMap {
   [claimID: string]: IErrorSummary[];
 }
-
-declare interface ISourceInfo {
-  name: string;
-  dataUrl: string;
-}

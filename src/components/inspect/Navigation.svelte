@@ -4,18 +4,13 @@
   import Asset from './Asset.svelte';
   import Button from '../Button.svelte';
   import OriginalCreation from './OriginalCreation.svelte';
-  import {
-    contentSourceIds,
-    provenance,
-    primaryId,
-    isCompareSelectMode,
-  } from '../../stores';
-  import { getAssetList, getBreadcrumbList } from '../../lib/claim';
+  import HierarchyNode from './HierarchyNode.svelte';
+  import { primaryId, hierarchy, isCompareSelectMode } from '../../stores';
   import type { ViewableItem } from '../../lib/types';
-  import { Claim } from '../../lib/sdk';
+  import { Claim, Source } from '../../lib/sdk';
 
   export let claim: ViewableItem | null = null;
-  export let source: ISourceInfo | null = null;
+  export let source: Source | null = null;
   let container: any;
   let secureCapture: false;
 
@@ -36,25 +31,11 @@
     </div>
   </div>
   <div class="relative pl-4">
+    {console.log('hierarchy', $hierarchy)}
     <div bind:this={container} class="grid space-y-4">
-      {#each breadcrumbList as asset, index (asset.id)}
-        <Asset
-          {asset}
-          isCompareSelectMode={$isCompareSelectMode}
-          id={`record-${index}`}
-          current={asset.id === $primaryId}
-          hasConnector={index > 0} />
-      {/each}
-      <div class="grid space-y-4">
-        {#each assetList as asset (asset.id)}
-          <div>
-            <Asset
-              {asset}
-              isCompareSelectMode={$isCompareSelectMode}
-              indented />
-          </div>
-        {/each}
-      </div>
+      {#if $hierarchy}
+        <HierarchyNode node={$hierarchy} />
+      {/if}
     </div>
   </div>
   {#if secureCapture && claim instanceof Claim}

@@ -4,7 +4,6 @@
   import { _ } from 'svelte-i18n';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
-  import { getStoreReportFromUrl, ToolkitError } from '../lib/toolkit';
   import { getSdk, Claim, Ingredient } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
@@ -17,12 +16,10 @@
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
-  import { getAssociatedClaim, getThumbnailUrlForId } from '../lib/claim';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
     urlParams,
-    source as sourceStore,
     provenance,
     setProvenance,
     navigateToId,
@@ -40,29 +37,23 @@
   }
 
   let isDraggingOver = false;
-  let error: ToolkitError;
+  let error = false;
   let tour: ReturnType<typeof startTour>;
   let breakpoints = __breakpoints__;
   let mdBreakpoint = `(max-width: ${breakpoints.md})`;
   let lgBreakpoint = `(max-width: ${breakpoints.lg})`;
 
-  $: source = $sourceStore;
+  $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $provenance || source;
+  $: hasContent = sourceParam || $provenance;
   $: isLoading = $provenance === null && source === null;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
-  $: primaryClaim = primary && getAssociatedClaim(primary);
-  $: secondaryClaim = secondary && getAssociatedClaim(secondary);
   $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !!(source && !$provenance);
+  $: noMetadata = !$provenance?.exists;
   $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
-  $: errorMessage =
-    error &&
-    (error === ToolkitError.InvalidFile
-      ? 'Unsupported file type'
-      : 'Something went wrong');
+  $: errorMessage = error && 'Unknown';
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && isMobileViewer) {
@@ -188,7 +179,9 @@
       <section class="left-col">
         <Navigation {source} />
       </section>
-      <Viewer thumbnail={{ url: source.dataUrl }} isDragging={isDraggingOver} />
+      {#await $provenance?.source?.generateUrl() then thumbnail}
+        <Viewer {thumbnail} isDragging={isDraggingOver} />
+      {/await}
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>

@@ -1,22 +1,17 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import { quintOut } from 'svelte/easing';
-  import {
-    provenance,
-    navigateToId,
-    compareWithId,
-    primaryId,
-  } from '../../stores';
+  import { navigateToId, compareWithId, primaryId } from '../../stores';
   import NestedArrow from '../../../assets/svg/monochrome/nested-arrow.svg';
-  import { getThumbnailUrlForId, getTitle, hasClaim } from '../../lib/claim';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
+  import { Claim, Ingredient, Source } from '../../lib/sdk';
   import type { ViewableItem } from '../../lib/types';
 
   let hover: boolean;
   export let asset: ViewableItem | null = null;
   export let id: string | null = null;
-  export let source: ISourceInfo | null = null;
+  export let source: Source | null = null;
   export let indented: boolean = false;
   export let hasConnector: boolean = false;
   export let current: boolean = false;
@@ -53,7 +48,7 @@
   // $: hasErrors = !!$errorsByIdentifier[asset?.id]?.length;
   $: hasErrors = false;
   $: isCurrent = asset?.id === $primaryId;
-  $: title = asset ? getTitle(asset) : '';
+  $: title = asset ? asset.title : '';
   $: compare = isCompareSelectMode && !isCurrent;
   $: {
     if (isCurrent) {
@@ -61,7 +56,7 @@
     }
   }
   $: badge =
-    asset && hasClaim(asset)
+    asset instanceof Claim || (asset instanceof Ingredient && asset.claim)
       ? getThumbnailBadge()
       : {
           type: 'none',
@@ -102,13 +97,10 @@
         <dd class="file-name" {title}>{title}</dd>
       </dl>
     {:else if source}
-      <cai-thumbnail
-        src={source.dataUrl}
-        selected={current}
-        class="theme-spectrum" />
+      <cai-thumbnail src={''} selected={current} class="theme-spectrum" />
       <dl class="attributes overflow-hidden self-center pr-2">
         <dt>{$_('comp.asset.fileName')}</dt>
-        <dd class="file-name" title={source.name}>{source.name}</dd>
+        <dd class="file-name" title={source.filename}>{source.filename}</dd>
       </dl>
     {/if}
   </div>
