@@ -10,7 +10,7 @@
     navigateToPath,
     isCompareSelectMode,
   } from '../../stores';
-  import { getBadgeProps } from '../../lib/claim';
+  import { getBadgeProps, getPath } from '../../lib/claim';
   import type { HierarchyNode } from 'd3-hierarchy';
   import type { ITreeNode } from '../../lib/types';
 
@@ -19,15 +19,16 @@
   $: data = node.data;
   $: children = node.children ?? [];
   $: hasChildren = children.length > 0;
+  $: path = getPath(node);
   $: isExpanded = !$collapsedBranches.has(data.id);
-  $: isSelected = equal($primaryPath, data.path);
+  $: isSelected = equal($primaryPath, path);
   $: compare = $isCompareSelectMode && !isSelected;
 
   function handleClick() {
     if (compare) {
-      compareWithPath(data.path);
+      compareWithPath(path);
     } else {
-      navigateToPath(data.path);
+      navigateToPath(path);
     }
   }
 </script>
@@ -55,7 +56,7 @@
     </div>
   </div>
   <div class="pl-6 space-y-5" class:hidden={!isExpanded}>
-    {#each children as childNode (childNode.data.path.toString())}
+    {#each children as childNode (getPath(childNode).toString())}
       <svelte:self node={childNode} />
     {/each}
   </div>

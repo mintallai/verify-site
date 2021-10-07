@@ -11,7 +11,6 @@ export type ViewableItem = Claim | Ingredient;
 
 export interface ITreeNode {
   id: string;
-  path: string[];
   name: string;
   claim?: Claim;
   asset?: Asset;

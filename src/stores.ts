@@ -220,17 +220,9 @@ export const secondaryAsset = derived<
 });
 
 function parseProvenance(node: Claim | Ingredient): ITreeNode {
-  let path = [];
-  let curr = node;
-  const id = node instanceof Claim ? node.id : node.claim?.id ?? node.id;
-  while (curr) {
-    path.unshift(id);
-    curr = curr.parent;
-  }
   if (node instanceof Claim) {
     return {
-      id,
-      path,
+      id: node.id,
       name: node.title,
       claim: node,
       asset: node.asset ?? undefined,
@@ -239,8 +231,7 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
   }
   const ingredient = node as Ingredient;
   return {
-    id,
-    path,
+    id: node.claim?.id ?? node.id,
     name: ingredient.title,
     asset: ingredient,
     claim: ingredient.claim,

@@ -1,6 +1,7 @@
 import compact from 'lodash/fp/compact';
+import { HierarchyNode } from 'd3-hierarchy';
 import { Claim, Ingredient } from './sdk';
-import type { IBadgeProps, ViewableItem } from './types';
+import type { IBadgeProps, ITreeNode, ViewableItem } from './types';
 import debug from 'debug';
 
 const dbg = debug('claim');
@@ -24,25 +25,18 @@ export function getIsOriginal(claim: Claim) {
   return noIngredients && !isDelivered;
 }
 
-export async function getAssetsUsed(claim: Claim) {
-  const ingredients = claim.ingredients ?? [];
-  const thumbnailPromises = ingredients.map((ingredient) =>
-    ingredient.generateThumbnailUrl(),
-  );
-  const thumbnails = await Promise.all(thumbnailPromises);
-  const assets = ingredients.map((ingredient, idx) => ({
-    id: ingredient.id,
-    claimId: ingredient.claim?.id,
-    thumbnailUrl: thumbnails[idx].url,
-  }));
-  return {
-    assets,
-    disposers: compact(thumbnails.map((x) => x.dispose)),
-  };
-}
-
 interface IBadgePropsInput {
   claim?: Claim;
+}
+
+export function getPath(node: HierarchyNode<ITreeNode>) {
+  const path = [];
+  let curr = node;
+  while (curr) {
+    path.unshift(curr.data.id);
+    curr = curr.parent;
+  }
+  return path;
 }
 
 export function getBadgeProps({ claim }: IBadgePropsInput): IBadgeProps {

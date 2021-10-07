@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { beforeUpdate, onDestroy } from 'svelte';
+  import { onDestroy } from 'svelte';
   import { _, date, time, locale } from 'svelte-i18n';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
+  import Thumbnail from './Thumbnail.svelte';
   import Alert from './Alert.svelte';
   import { navigateToChild, compareWithPath, provenance } from '../stores';
   import {
-    getAssetsUsed,
+    getBadgeProps,
     getIsBeta,
     getIsOriginal,
     getWebsite,
   } from '../lib/claim';
-  import '@contentauth/web-components/dist/components/panels/Assets';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
@@ -31,7 +31,6 @@
   export let isMobileViewer: boolean = false;
   let element: HTMLElement;
   let secureCapture = false;
-  let assetsUsed = [];
   let thumbnailDisposers = [];
 
   $: isOriginal = getIsOriginal(claim);
@@ -43,6 +42,7 @@
   ) as CreativeWorkAssertion | null;
   $: producer = creativeWorkAssertion?.producer?.name ?? '';
   $: title = claim.title;
+  $: assets = claim.ingredients?.length ? claim.ingredients : null;
   $: signedBy = claim.signature.issuer;
   $: sigDate = claim.signature.date;
   $: recorder = claim.formatRecorder(RecorderFormat.ProgramNameAndVersion);
@@ -146,28 +146,28 @@
           </cai-tooltip>
         </dt>
         <dd class="pt-2 pb-1">
-          <cai-panel-assets
-            stringmap={assetsStrings}
-            assets={assetsUsed}
-            on:asset-click={({ detail }) => {
-              const id = detail?.asset?.id;
-              if (id) {
-                // TODO: Update this to pass in the proper path
-                navigateToChild(id);
-                compareWithPath(null);
-              }
-            }}
-            class="theme-spectrum">
-            <div slot="no-assets">
-              {#if isOriginal || secureCapture}
-                <OriginalCreation
-                  type={secureCapture ? 'secureCapture' : 'original'}
-                  {claim} />
-              {:else}
-                {$_('comp.about.none')}
-              {/if}
+          {#if assets}
+            <div class="assets-used">
+              {#each assets as asset}
+                {#await asset.generateThumbnailUrl() then thumbnail}
+                  <div
+                    class="w-12 h-12 cursor-pointer"
+                    on:click={() =>
+                      navigateToChild(asset.claim?.id ?? asset.id)}>
+                    <Thumbnail
+                      {thumbnail}
+                      {...getBadgeProps({ claim: asset.claim })} />
+                  </div>
+                {/await}
+              {/each}
             </div>
-          </cai-panel-assets>
+          {:else if isOriginal || secureCapture}
+            <OriginalCreation
+              type={secureCapture ? 'secureCapture' : 'original'}
+              {claim} />
+          {:else}
+            {$_('comp.about.none')}
+          {/if}
         </dd>
       </dl>
     </div>
@@ -222,6 +222,10 @@
   .file-name .value {
     @apply text-150 text-gray-900 font-bold truncate;
     max-width: calc((100vw / 2) - 30px);
+  }
+  .assets-used {
+    @apply grid gap-3;
+    grid-template-columns: repeat(auto-fit, 48px);
   }
   @screen md {
     .info {

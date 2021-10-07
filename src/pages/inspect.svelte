@@ -139,8 +139,6 @@
   });
 </script>
 
-{console.log('$primaryAsset', $primaryAsset)}
-
 <svelte:window />
 <svelte:head>
   <title>{$_('page.title')}</title>
