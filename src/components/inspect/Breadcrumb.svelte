@@ -3,21 +3,13 @@
   import { _ } from 'svelte-i18n';
   import Icon from '../Icon.svelte';
   import {
-    contentSourceIds,
-    storeReport,
     primaryId,
-    primaryAsset,
-    navigateToId,
     compareMode,
     setCompareMode,
     CompareMode,
     isMobileViewerShown,
   } from '../../stores';
-  import {
-    getBreadcrumbList,
-    getThumbnailUrlForId,
-    getTitle,
-  } from '../../lib/claim';
+  import { Source } from '../../lib/sdk';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
@@ -26,7 +18,7 @@
 
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
-  export let source: ISourceInfo | null = null;
+  export let source: Source | null = null;
   const dispatch = createEventDispatcher();
 
   function handleCompareChange() {
@@ -34,10 +26,10 @@
   }
 
   function handleMenuChange() {
-    navigateToId(this.value);
+    // navigateToId(this.value);
   }
 
-  $: breadcrumbList = getBreadcrumbList($storeReport, $contentSourceIds);
+  $: breadcrumbList = [];
   $: homeId = breadcrumbList[0]?.id;
   $: showMenu =
     breadcrumbList.length > 1 &&
@@ -81,28 +73,16 @@
             height="16"
             class="text-gray-800" />
         </div>
-        {#each breadcrumbList as asset, _ ({ id: asset.id, ctx: 'menu-item' })}
-          <sp-menu-item value={asset.id} class="checkbox-pos">
-            <div class="menu-item pointer-events-none">
-              <cai-thumbnail
-                src={getThumbnailUrlForId($storeReport, asset.id)}
-                class="theme-spectrum" />
-              <div class="ml-2 text-100">{getTitle(asset)}</div>
-            </div>
-          </sp-menu-item>
-        {/each}
       </sp-action-menu>
     </sp-theme>
     <div class="separator -ml-2">
       <Icon size="s" name="ChevronRight" class="text-gray-800" />
     </div>
-    <div class="breadcrumb-item" class:current={true}>
-      {getTitle($primaryAsset)}
-    </div>
+    <div class="breadcrumb-item" class:current={true} />
   {:else if homeId || noMetadata}
     {#if noMetadata && source}
       <div class="breadcrumb-item" class:current={true}>
-        {source.name}
+        {source.filename}
       </div>
     {:else if breadcrumbList}
       {#each breadcrumbList as asset, index ({ id: asset.id, ctx: 'breadcrumb-list' })}
@@ -113,9 +93,8 @@
         {/if}
         <div
           class="breadcrumb-item hover:underline"
-          class:current={asset.id === $primaryId}
-          on:click={() => navigateToId(asset.id)}>
-          {getTitle(asset)}
+          class:current={asset.id === $primaryId}>
+          TITLE_GOES_HERE
         </div>
       {/each}
     {/if}
@@ -136,13 +115,6 @@
   }
   .separator {
     @apply inline-block relative px-2;
-  }
-  .menu-item {
-    @apply flex items-center;
-    --cai-thumbnail-size: 32px;
-  }
-  .checkbox-pos {
-    --spectrum-listitem-icon-margin-top: 8px;
   }
   .compare-tabs {
     @apply flex flex-grow justify-center;

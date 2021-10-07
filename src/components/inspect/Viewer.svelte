@@ -4,17 +4,16 @@
   import { _ } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
-  import {
-    urlParams,
-    storeReport,
-    source,
-    isMobileViewerShown,
-  } from '../../stores';
+  import { urlParams, provenance, isMobileViewerShown } from '../../stores';
   import { loadFile } from '../../lib/file';
   import DropFile from '../../../assets/svg/monochrome/drop-file.svg';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
+  import type { IThumbnail } from '../../lib/sdk';
+  import debug from 'debug';
 
-  export let thumbnailUrl: string = null;
+  const dbg = debug('viewer');
+
+  export let thumbnail: IThumbnail | null = null;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
   export let isError: boolean = false;
@@ -36,7 +35,7 @@
     height: side,
   };
   $: urlSource = $urlParams.source;
-  $: uploadMode = (!urlSource && !$source && !$storeReport) || isDragging;
+  $: uploadMode = (!urlSource && !$provenance) || isDragging;
 
   function browseFile() {
     fileInput.click();
@@ -45,7 +44,12 @@
   onMount(() => {
     fileInput.addEventListener('change', loadFile, false);
     return () => {
+      const dispose = thumbnail?.dispose;
       fileInput.removeEventListener('change', loadFile);
+      if (dispose) {
+        dbg('Disposing previous thumbnail', thumbnail);
+        dispose();
+      }
     };
   });
 </script>
@@ -53,7 +57,7 @@
 <div class="viewer-wrapper">
   <div
     class="viewer"
-    class:no-source={!$source}
+    class:no-source={!$provenance}
     class:upload={uploadMode}
     class:dragging={isDragging}
     bind:clientWidth={width}
@@ -70,7 +74,7 @@
             width={58}
             height={99}
             class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}" />
-          {#if $source || $storeReport}
+          {#if $provenance}
             <div class="message-heading">{$_('comp.viewer.dropFile')}</div>
           {:else}
             <div class="message-heading">{$_('comp.viewer.dragDropFile')}</div>
@@ -81,9 +85,9 @@
             </div>
           {/if}
         </div>
-      {:else if !isLoading && thumbnailUrl}
+      {:else if !isLoading && thumbnail}
         <img
-          src={thumbnailUrl}
+          src={thumbnail.url}
           alt=""
           class="h-full w-full object-contain object-center" />
       {:else}

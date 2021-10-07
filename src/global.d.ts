@@ -10,6 +10,7 @@ declare module 'svelte-css-vars';
 declare module '@intl/adobe-locales';
 
 declare module '@contentauth/web-components/*';
+declare module '@contentauth/sdk/dist/*';
 
 declare module '*.svg';
 
@@ -24,9 +25,4 @@ declare interface IUrlParams {
 
 declare interface IErrorIdentifierMap {
   [claimID: string]: IErrorSummary[];
-}
-
-declare interface ISourceInfo {
-  name: string;
-  dataUrl: string;
 }

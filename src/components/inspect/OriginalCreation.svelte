@@ -1,11 +1,10 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import Alert from '../Alert.svelte';
-  import type { IEnhancedClaimReport } from '../../lib/types';
-  import { getRecorder } from '../../lib/claim';
+  import { Claim, RecorderFormat } from '../../lib/sdk';
 
   export let type: 'original' | 'secureCapture' = 'original';
-  export let claim: IEnhancedClaimReport;
+  export let claim: Claim;
 </script>
 
 <Alert severity="info">
@@ -16,7 +15,11 @@
     <div>
       {#if type === 'original'}
         {$_('comp.originalCreation.recorder', {
-          values: { application: getRecorder(claim) },
+          values: {
+            application: claim.formatRecorder(
+              RecorderFormat.ProgramNameAndVersion,
+            ),
+          },
         })}
       {:else if type === 'secureCapture'}
         <div>

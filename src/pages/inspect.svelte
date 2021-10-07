@@ -4,7 +4,7 @@
   import { _ } from 'svelte-i18n';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
-  import { getStoreReportFromUrl, ToolkitError } from '../lib/toolkit';
+  import { getSdk, Claim, Ingredient } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
@@ -12,20 +12,18 @@
   import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import ContentCredentials from '../components/inspect/ContentCredentials.svelte';
+  import Navigation from '../components/inspect/Navigation.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
-  import { getAssociatedClaim, getThumbnailUrlForId } from '../lib/claim';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
     urlParams,
-    source as sourceStore,
-    storeReport,
-    setStoreReport,
-    navigateToId,
-    secondaryId,
+    provenance,
+    setProvenance,
+    navigateToPath,
+    compareWithPath,
     primaryAsset,
     secondaryAsset,
     isBurgerMenuShown,
@@ -34,41 +32,36 @@
   import type { ViewableItem } from '../lib/types';
 
   function handleClose(navigateToAsset: ViewableItem) {
-    navigateToId(navigateToAsset.id);
-    secondaryId.set('');
+    // TODO: Implement this
+    // navigateToPath(navigateToAsset.id);
+    compareWithPath(null);
   }
 
   let isDraggingOver = false;
-  let error: ToolkitError;
+  let error = false;
   let tour: ReturnType<typeof startTour>;
   let breakpoints = __breakpoints__;
   let mdBreakpoint = `(max-width: ${breakpoints.md})`;
   let lgBreakpoint = `(max-width: ${breakpoints.lg})`;
 
-  $: source = $sourceStore;
+  $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $storeReport || source;
-  $: isLoading = $storeReport === null && source === null;
+  $: hasContent = sourceParam || $provenance;
+  $: isLoading = !$provenance;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
-  $: primaryClaim = primary && getAssociatedClaim($storeReport, primary);
-  $: secondaryClaim = secondary && getAssociatedClaim($storeReport, secondary);
   $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !!(source && !$storeReport);
+  $: noMetadata = !$provenance?.exists;
   $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
-  $: errorMessage =
-    error &&
-    (error === ToolkitError.InvalidFile
-      ? 'Unsupported file type'
-      : 'Something went wrong');
+  $: errorMessage = error && 'Unknown';
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && isMobileViewer) {
       tour.cancel();
     }
     // Clear errors if the store report has changed
-    if ($storeReport !== undefined) {
+    if ($provenance !== undefined) {
       error = null;
     }
   }
@@ -97,15 +90,16 @@
 
     if (sourceParam) {
       try {
-        const result = await getStoreReportFromUrl(sourceParam);
-        window.newrelic?.setCustomAttribute('source', sourceParam);
-        setStoreReport(result);
+        const sdk = await getSdk();
+        const result = await sdk.processImage(sourceParam);
+        await window.newrelic?.setCustomAttribute('source', sourceParam);
+        setProvenance(result);
         if (isMobileViewer === false) {
-          tour = startTour({
-            storeReport: $storeReport,
-            start: tourFlag,
-            force: forceTourFlag,
-          });
+          // tour = startTour({
+          //   provenance: $provenance,
+          //   start: tourFlag,
+          //   force: forceTourFlag,
+          // });
         }
       } catch (err) {
         error = err?.message;
@@ -184,25 +178,23 @@
       </section>
     {:else if noMetadata}
       <section class="left-col">
-        <ContentCredentials {source} />
+        <Navigation {source} />
       </section>
-      <Viewer thumbnailUrl={source.dataUrl} isDragging={isDraggingOver} />
+      {#await $provenance?.source?.generateUrl() then thumbnail}
+        <Viewer {thumbnail} isDragging={isDraggingOver} />
+      {/await}
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
     {:else if primary}
       <section class="left-col">
         {#if !isComparing}
-          <ContentCredentials claim={primaryClaim} />
-        {:else if primaryClaim}
+          <Navigation claim={primary} />
+        {:else if primary instanceof Claim}
           <div class="w-full p-4 pt-0 md:pt-4">
-            <About
-              claim={primaryClaim}
-              {isComparing}
-              {isMobileViewer}
-              on:close={partial(handleClose, secondary)} />
+            <About claim={primary} {isComparing} {isMobileViewer} />
           </div>
-        {:else if primary?.type === 'ingredient'}
+        {:else if primary instanceof Ingredient}
           <div class="wrapper">
             <ContentCredentialsError {isComparing} />
           </div>
@@ -211,36 +203,30 @@
       {#if isComparing}
         <Comparison {primary} {secondary} />
       {:else}
-        <Viewer
-          thumbnailUrl={getThumbnailUrlForId($storeReport, primary.id)}
-          isDragging={isDraggingOver} />
+        {#await primary?.asset?.generateThumbnailUrl() then thumbnail}
+          <div transition:fade={{ duration: 150 }}>
+            <Viewer {thumbnail} isDragging={isDraggingOver} />
+          </div>
+        {/await}
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing && primaryClaim}
+        {#if !isComparing && primary instanceof Claim}
           <div class="wrapper">
-            <About
-              claim={primaryClaim}
-              {isComparing}
-              {isMobileViewer}
-              on:close={partial(handleClose, secondary)} />
+            <About claim={primary} {isComparing} {isMobileViewer} />
             {#if isMobileViewer}
-              <CompareLatestButton claim={primaryClaim} {isComparing} />
+              <CompareLatestButton claim={primary} {isComparing} />
             {/if}
           </div>
-        {:else if !isComparing && primary?.type === 'ingredient'}
+        {:else if !isComparing && primary instanceof Ingredient}
           <div class="wrapper">
             <ContentCredentialsError {isComparing} />
             {#if isMobileViewer}
               <CompareLatestButton claim={null} {isComparing} />
             {/if}
           </div>
-        {:else if secondaryClaim}
-          <About
-            claim={secondaryClaim}
-            {isComparing}
-            {isMobileViewer}
-            on:close={partial(handleClose, primary)} />
-        {:else if secondary?.type === 'ingredient'}
+        {:else if secondary instanceof Claim}
+          <About claim={secondary} {isComparing} {isMobileViewer} />
+        {:else if secondary instanceof Ingredient}
           <ContentCredentialsError {isComparing} />
         {/if}
       </section>
@@ -262,6 +248,9 @@
 <style lang="postcss">
   main {
     --viewer-height: 375px;
+    --cai-thumbnail-size: 48px;
+    --cai-thumbnail-badge-icon-width: 16px;
+    --cai-thumbnail-badge-icon-height: 16px;
 
     @apply grid w-screen min-h-screen h-full font-base;
     grid-template-columns: 100%;
