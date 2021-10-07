@@ -233,8 +233,8 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
   return {
     id: node.claim?.id ?? node.id,
     name: ingredient.title,
-    asset: ingredient,
     claim: ingredient.claim,
+    asset: ingredient.claim?.asset ?? ingredient,
     children: ingredient.claim?.ingredients.map(parseProvenance) ?? [],
   };
 }
@@ -245,6 +245,9 @@ export const hierarchy = derived<
 >([provenance], ([$provenance]) => {
   const activeClaim = $provenance?.activeClaim;
   if (activeClaim) {
+    // TODO: We can access the errors like so:
+    // const errors = $provenance?.errors;
+    // $provenance.source has the thumbnail and filename of the image that was dragged in
     return d3Hierarchy(parseProvenance(activeClaim));
   }
   return null;
