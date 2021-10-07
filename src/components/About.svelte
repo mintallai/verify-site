@@ -4,7 +4,7 @@
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Alert from './Alert.svelte';
-  import { navigateToPath, compareWithId, provenance } from '../stores';
+  import { navigateToChild, compareWithPath, provenance } from '../stores';
   import {
     getAssetsUsed,
     getIsBeta,
@@ -153,8 +153,8 @@
               const id = detail?.asset?.id;
               if (id) {
                 // TODO: Update this to pass in the proper path
-                navigateToPath([id]);
-                compareWithId(null);
+                navigateToChild(id);
+                compareWithPath(null);
               }
             }}
             class="theme-spectrum">

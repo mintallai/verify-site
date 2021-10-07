@@ -23,7 +23,7 @@
     provenance,
     setProvenance,
     navigateToPath,
-    secondaryId,
+    compareWithPath,
     primaryAsset,
     secondaryAsset,
     isBurgerMenuShown,
@@ -34,7 +34,7 @@
   function handleClose(navigateToAsset: ViewableItem) {
     // TODO: Implement this
     // navigateToPath(navigateToAsset.id);
-    secondaryId.set('');
+    compareWithPath(null);
   }
 
   let isDraggingOver = false;
@@ -206,7 +206,9 @@
         <Comparison {primary} {secondary} />
       {:else}
         {#await primary?.asset?.generateThumbnailUrl() then thumbnail}
-          <Viewer {thumbnail} isDragging={isDraggingOver} />
+          <div transition:fade={{ duration: 150 }}>
+            <Viewer {thumbnail} isDragging={isDraggingOver} />
+          </div>
         {/await}
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
@@ -248,6 +250,9 @@
 <style lang="postcss">
   main {
     --viewer-height: 375px;
+    --cai-thumbnail-size: 48px;
+    --cai-thumbnail-badge-icon-width: 16px;
+    --cai-thumbnail-badge-icon-height: 16px;
 
     @apply grid w-screen min-h-screen h-full font-base;
     grid-template-columns: 100%;

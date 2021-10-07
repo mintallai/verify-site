@@ -1,6 +1,6 @@
 import compact from 'lodash/fp/compact';
 import { Claim, Ingredient } from './sdk';
-import type { ViewableItem } from './types';
+import type { IBadgeProps, ViewableItem } from './types';
 import debug from 'debug';
 
 const dbg = debug('claim');
@@ -39,6 +39,19 @@ export async function getAssetsUsed(claim: Claim) {
     assets,
     disposers: compact(thumbnails.map((x) => x.dispose)),
   };
+}
+
+interface IBadgePropsInput {
+  claim?: Claim;
+}
+
+export function getBadgeProps({ claim }: IBadgePropsInput): IBadgeProps {
+  if (claim) {
+    return {
+      badgeType: 'info',
+      badgeHelpText: 'comp.asset.badgeInfoHelpText',
+    };
+  }
 }
 
 /**

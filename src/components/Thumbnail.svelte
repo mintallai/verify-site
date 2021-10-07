@@ -1,13 +1,13 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import { onDestroy } from 'svelte';
   import { IThumbnail } from '../lib/sdk';
-
-  type BadgeType = 'none' | 'info' | 'missing';
+  import { IBadgeProps } from '../lib/types';
 
   export let thumbnail: IThumbnail;
   export let isSelected = false;
-  export let badgeType: BadgeType = 'none';
-  export let badgeHelpText: string | null = null;
+  export let badgeType: IBadgeProps['badgeType'] = 'none';
+  export let badgeHelpText: IBadgeProps['badgeHelpText'] = null;
 
   $: src = thumbnail.url;
 
@@ -20,5 +20,5 @@
   {src}
   selected={isSelected}
   badge={badgeType}
-  badgehelptext={badgeHelpText}
+  badgehelptext={badgeHelpText ? $_(badgeHelpText) : null}
   class="theme-spectrum" />

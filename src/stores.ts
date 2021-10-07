@@ -1,6 +1,5 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
-import last from 'lodash/last';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ImageProvenance, Claim, Ingredient } from './lib/sdk';
 import type { ViewableItem, ITreeNode } from './lib/types';
@@ -61,7 +60,7 @@ export const primaryPath = writable<string[]>([]);
  * The secondary universal ID (claim/parent/ingredient) that is used as the thumbnail
  * to compare with.
  */
-export const secondaryId = writable<string>('');
+export const secondaryPath = writable<string[]>([]);
 
 export const isBurgerMenuShown = writable<boolean>(false);
 
@@ -116,20 +115,25 @@ export function navigateToPath(path: string[], logEvent = true): void {
   }
 }
 
+export function navigateToChild(id: string, logEvent = true): void {
+  const currPath = get(primaryPath);
+  navigateToPath([...currPath, id], logEvent);
+}
+
 /**
  * Launches the comparison view between the exsiting `primaryId` and the passed in `id`.
  *
  * @param id The claim ID of the claim to compare with
  * @param logEvent `true` to log this event in New Relic
  */
-export function compareWithId(id: string, logEvent = true): void {
-  dbg('Comparing with', id);
-  secondaryId.set(id);
+export function compareWithPath(path: string[] | null, logEvent = true): void {
+  dbg('Comparing with', path);
+  secondaryPath.set(path ?? []);
   scrollTo(0, 0);
   if (logEvent) {
-    window.newrelic?.addPageAction('compareWithId', {
+    window.newrelic?.addPageAction('compareWithPath', {
       id: get(primaryId),
-      comparingWith: id,
+      comparingWith: path,
     });
   }
 }
@@ -172,7 +176,7 @@ export const rootClaimId = derived<[typeof provenance], string | null>(
 export function navigateToRoot(logEvent = true): void {
   const rootId = get(rootClaimId);
   if (rootId) {
-    secondaryId.set('');
+    secondaryPath.set([]);
     navigateToPath([rootId], logEvent);
   }
 }
@@ -184,9 +188,14 @@ export function navigateToRoot(logEvent = true): void {
 export const primaryId = derived<[typeof primaryPath], string>(
   [primaryPath],
   ([$primaryPath]) => {
-    const id = last($primaryPath) ?? '';
-    console.log('got id', id);
-    return id;
+    return $primaryPath.slice(-1)[0];
+  },
+);
+
+export const secondaryId = derived<[typeof secondaryPath], string>(
+  [secondaryPath],
+  ([$secondaryPath]) => {
+    return $secondaryPath.slice(-1)[0];
   },
 );
 
@@ -197,7 +206,6 @@ export const primaryAsset = derived<
   [typeof provenance, typeof primaryId],
   ViewableItem | undefined
 >([provenance, primaryId], ([$provenance, $primaryId]) => {
-  console.log('$primaryId', $primaryId);
   return $provenance?.resolveId($primaryId);
 });
 
@@ -214,13 +222,14 @@ export const secondaryAsset = derived<
 function parseProvenance(node: Claim | Ingredient): ITreeNode {
   let path = [];
   let curr = node;
+  const id = node instanceof Claim ? node.id : node.claim?.id ?? node.id;
   while (curr) {
-    path.push(curr.id);
+    path.unshift(id);
     curr = curr.parent;
   }
   if (node instanceof Claim) {
     return {
-      id: node.id,
+      id,
       path,
       name: node.title,
       claim: node,
@@ -230,7 +239,7 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
   }
   const ingredient = node as Ingredient;
   return {
-    id: ingredient.id,
+    id,
     path,
     name: ingredient.title,
     asset: ingredient,

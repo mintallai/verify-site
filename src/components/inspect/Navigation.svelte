@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import { _ } from 'svelte-i18n';
-  import Asset from './Asset.svelte';
   import Button from '../Button.svelte';
   import OriginalCreation from './OriginalCreation.svelte';
   import HierarchyNode from './HierarchyNode.svelte';
@@ -52,7 +51,7 @@
   {#if source && !claim}
     <div class="relative pl-4">
       <div bind:this={container} class="grid space-y-4">
-        <Asset {source} current={true} />
+        <!-- <Asset {source} current={true} /> -->
       </div>
     </div>
   {/if}
