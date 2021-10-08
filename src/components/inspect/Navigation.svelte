@@ -17,7 +17,7 @@
 </script>
 
 <div class="h-full relative">
-  <div class="p-4 pb-1">
+  <div class="nav-width p-4 pb-1">
     <h2 class="my-0 mb-2">
       <span>{$_('comp.navigation.title')}</span>
     </h2>
@@ -39,7 +39,7 @@
   {/if}
   {#if $hierarchy?.children}
     <div
-      class="sticky bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent">
+      class="sticky nav-width bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent">
       <div class="pointer-events-auto">
         <Button
           on:click={() => isCompareSelectMode.update((x) => !x)}
@@ -56,3 +56,9 @@
     </div>
   {/if}
 </div>
+
+<style lang="postcss">
+  .nav-width {
+    max-width: var(--nav-width, 320px);
+  }
+</style>

@@ -4,6 +4,7 @@
   import { isMobileViewerShown } from '../../../stores';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
+  import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
   import type { ViewableItem } from '../../../lib/types';
 
   enum Layout {
@@ -58,7 +59,8 @@
   <div class="primary thumbnail" class:invisible={!layout}>
     <img
       use:tippy={{ content: primary.title, ...tippyOpts }}
-      src={''}
+      use:thumbnail={primary.asset}
+      on:thumbnail={handleImgSrc}
       alt=""
       on:load={partial(processImage, 'primary')} />
   </div>
@@ -66,7 +68,8 @@
   <div class="secondary thumbnail" class:invisible={!layout}>
     <img
       use:tippy={{ content: secondary.title, ...tippyOpts }}
-      src={''}
+      use:thumbnail={secondary.asset}
+      on:thumbnail={handleImgSrc}
       alt=""
       on:load={partial(processImage, 'secondary')} />
   </div>

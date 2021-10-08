@@ -28,6 +28,8 @@
     secondaryAsset,
     isBurgerMenuShown,
     isMobileViewerShown,
+    isLoading,
+    setIsLoading,
   } from '../stores';
   import type { ViewableItem } from '../lib/types';
 
@@ -46,8 +48,7 @@
 
   $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $provenance;
-  $: isLoading = !$provenance;
+  $: hasContent = sourceParam || $provenance || $isLoading;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
@@ -90,10 +91,12 @@
 
     if (sourceParam) {
       try {
+        setIsLoading(true);
         const sdk = await getSdk();
         const result = await sdk.processImage(sourceParam);
         await window.newrelic?.setCustomAttribute('source', sourceParam);
         setProvenance(result);
+        setIsLoading(false);
         if (isMobileViewer === false) {
           // tour = startTour({
           //   provenance: $provenance,
@@ -163,17 +166,17 @@
   {/if}
   {#if hasContent}
     {#if error}
-      <section class="left-col" class:loading={isLoading} />
+      <section class="left-col" class:loading={$isLoading} />
       <Viewer isError={!!error} />
       <section class="right-col p-4">
         <Alert severity="error">{errorMessage}</Alert>
       </section>
-    {:else if isLoading}
-      <section class="left-col" class:loading={isLoading}>
+    {:else if $isLoading}
+      <section class="left-col" class:loading={$isLoading}>
         <CircleLoader />
       </section>
       <Viewer isLoading={true} isDragging={isDraggingOver} />
-      <section class="right-col" class:loading={isLoading}>
+      <section class="right-col" class:loading={$isLoading}>
         <CircleLoader />
       </section>
     {:else if noMetadata}
@@ -201,9 +204,7 @@
       {#if isComparing}
         <Comparison {primary} {secondary} />
       {:else}
-        <div transition:fade={{ duration: 150 }}>
-          <Viewer asset={primary?.asset} isDragging={isDraggingOver} />
-        </div>
+        <Viewer asset={primary?.asset} isDragging={isDraggingOver} />
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary instanceof Claim}

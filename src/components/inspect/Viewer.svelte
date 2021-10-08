@@ -36,7 +36,7 @@
     height: side,
   };
   $: urlSource = $urlParams.source;
-  $: uploadMode = (!urlSource && !$provenance) || isDragging;
+  $: uploadMode = (!urlSource && !$provenance && !isLoading) || isDragging;
 
   function browseFile() {
     fileInput.click();
@@ -53,7 +53,7 @@
 <div class="viewer-wrapper">
   <div
     class="viewer"
-    class:no-source={!$provenance}
+    class:no-source={!$provenance && !isLoading}
     class:upload={uploadMode}
     class:dragging={isDragging}
     bind:clientWidth={width}
@@ -81,7 +81,7 @@
             </div>
           {/if}
         </div>
-      {:else if !isLoading && asset}
+      {:else if !isLoading}
         <img
           use:thumbnail={asset}
           on:thumbnail={handleImgSrc}

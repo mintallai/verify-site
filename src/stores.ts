@@ -1,7 +1,7 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
-import { ImageProvenance, Claim, Ingredient } from './lib/sdk';
+import { ImageProvenance, Claim, Ingredient, Source } from './lib/sdk';
 import type { ViewableItem, ITreeNode } from './lib/types';
 import debug from 'debug';
 
@@ -11,6 +11,8 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
+
+export const sourceSym = Symbol('source');
 
 /**
  * Syncs the URL params to the state
@@ -38,9 +40,9 @@ export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
  */
 export const contentSourceIds = writable<string[]>([]);
 
-export const collapsedBranches = writable<Set<string>>(new Set());
+export const collapsedBranches = writable<Set<string | Symbol>>(new Set());
 
-export function toggleBranch(id: string) {
+export function toggleBranch(id: string | Symbol) {
   collapsedBranches.update((prev) => {
     if (prev.has(id)) {
       prev.delete(id);
@@ -61,6 +63,8 @@ export const primaryPath = writable<string[]>([]);
  * to compare with.
  */
 export const secondaryPath = writable<string[]>([]);
+
+export const isLoading = writable<boolean>(false);
 
 export const isBurgerMenuShown = writable<boolean>(false);
 
@@ -97,6 +101,10 @@ export function setCompareMode(mode: CompareMode) {
  */
 export function getFaqUrl(id: string = FAQ_VERIFY_SECTION_ID): string {
   return `${FAQ_URL}#${id}`;
+}
+
+export function setIsLoading(loading) {
+  isLoading.set(loading);
 }
 
 /**
@@ -151,7 +159,7 @@ export const provenance = writable<ImageProvenance | null>(null, (set) => {
 export async function setProvenance(result: ImageProvenance | null) {
   dbg('Calling setProvenance');
 
-  if (result?.exists) {
+  if (result) {
     provenance.set(result);
     navigateToRoot();
   } else {
@@ -165,7 +173,7 @@ export async function setProvenance(result: ImageProvenance | null) {
  */
 export const rootClaimId = derived<[typeof provenance], string | null>(
   [provenance],
-  ([$provenance]) => $provenance?.activeClaim.id ?? null,
+  ([$provenance]) => $provenance?.activeClaim?.id ?? null,
 );
 
 /**
@@ -219,7 +227,7 @@ export const secondaryAsset = derived<
   return $provenance?.resolveId($secondaryId);
 });
 
-function parseProvenance(node: Claim | Ingredient): ITreeNode {
+function parseProvenance(node: Claim | Ingredient | Source): ITreeNode {
   if (node instanceof Claim) {
     return {
       id: node.id,
@@ -229,26 +237,35 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
       children: node.ingredients?.map(parseProvenance),
     };
   }
-  const ingredient = node as Ingredient;
-  return {
-    id: node.claim?.id ?? node.id,
-    name: ingredient.title,
-    claim: ingredient.claim,
-    asset: ingredient.claim?.asset ?? ingredient,
-    children: ingredient.claim?.ingredients.map(parseProvenance) ?? [],
-  };
+  if (node instanceof Ingredient) {
+    return {
+      id: node.claim?.id ?? node.id,
+      name: node.title,
+      claim: node.claim,
+      asset: node.claim?.asset ?? node,
+      children: node.claim?.ingredients.map(parseProvenance) ?? [],
+    };
+  }
+  if (node instanceof Source) {
+    return {
+      id: sourceSym,
+      name: node.filename,
+      claim: null,
+      asset: node,
+    };
+  }
 }
 
 export const hierarchy = derived<
   [typeof provenance],
   HierarchyNode<ITreeNode> | null
 >([provenance], ([$provenance]) => {
-  const activeClaim = $provenance?.activeClaim;
-  if (activeClaim) {
+  const root = $provenance?.activeClaim ?? $provenance?.source;
+  if (root) {
     // TODO: We can access the errors like so:
     // const errors = $provenance?.errors;
     // $provenance.source has the thumbnail and filename of the image that was dragged in
-    return d3Hierarchy(parseProvenance(activeClaim));
+    return d3Hierarchy(parseProvenance(root));
   }
   return null;
 });

@@ -27,8 +27,6 @@
   export let claim: Claim;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
-  let element: HTMLElement;
-  let secureCapture = false;
 
   $: isOriginal = getIsOriginal(claim);
   $: actionsAssertion = claim.findAssertion(
@@ -53,7 +51,7 @@
 </script>
 
 <div class="w-full flex justify-center">
-  <div class="info w-full max-w-xs lg:pb-4" bind:this={element}>
+  <div class="info w-full max-w-xs">
     <div>
       <dl class="attributes">
         <dt>
@@ -140,39 +138,40 @@
       {/if}
     {/await}
     <div>
-      <dl class="attributes">
-        <dt>
-          <div class="whitespace-nowrap">
-            {$_('comp.about.assets.header')}
-          </div>
-          <cai-tooltip placement="left" class="theme-spectrum">
-            <div slot="content" class="text-gray-900" style="width: 200px;">
-              {$_('comp.about.assets.helpText')}
+      {#if isOriginal}
+        <OriginalCreation type="original" {claim} />
+      {:else}
+        <dl class="attributes">
+          <dt>
+            <div class="whitespace-nowrap">
+              {$_('comp.about.assets.header')}
             </div>
-          </cai-tooltip>
-        </dt>
-        <dd class="pt-2 pb-1">
-          {#if assets}
-            <div class="assets-used">
-              {#each assets as asset}
-                <div
-                  class="w-12 h-12 cursor-pointer"
-                  on:click={() => navigateToChild(asset.claim?.id ?? asset.id)}>
-                  <Thumbnail
-                    {asset}
-                    {...getBadgeProps({ claim: asset.claim })} />
-                </div>
-              {/each}
-            </div>
-          {:else if isOriginal || secureCapture}
-            <OriginalCreation
-              type={secureCapture ? 'secureCapture' : 'original'}
-              {claim} />
-          {:else}
-            {$_('comp.about.none')}
-          {/if}
-        </dd>
-      </dl>
+            <cai-tooltip placement="left" class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 200px;">
+                {$_('comp.about.assets.helpText')}
+              </div>
+            </cai-tooltip>
+          </dt>
+          <dd class="pt-2 pb-1">
+            {#if assets}
+              <div class="assets-used">
+                {#each assets as asset}
+                  <div
+                    class="w-12 h-12 cursor-pointer"
+                    on:click={() =>
+                      navigateToChild(asset.claim?.id ?? asset.id)}>
+                    <Thumbnail
+                      {asset}
+                      {...getBadgeProps({ claim: asset.claim })} />
+                  </div>
+                {/each}
+              </div>
+            {:else}
+              {$_('comp.about.none')}
+            {/if}
+          </dd>
+        </dl>
+      {/if}
     </div>
     {#if producer}
       <div>
@@ -217,7 +216,7 @@
     @apply pt-0;
   }
   .info > div:last-child {
-    @apply border-none pb-0;
+    @apply border-none;
   }
   .assets-used {
     @apply grid gap-3;

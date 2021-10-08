@@ -20,37 +20,45 @@
   $: asset = data.asset;
   $: children = node.children ?? [];
   $: hasChildren = children.length > 0;
+  $: isSingle = node.depth === 0 && !hasChildren;
   $: path = getPath(node);
   $: isExpanded = !$collapsedBranches.has(data.id);
   $: isSelected = equal($primaryPath, path);
   $: compare = $isCompareSelectMode && !isSelected;
 
   function handleClick() {
-    if (compare) {
-      compareWithPath(path);
-    } else {
-      navigateToPath(path);
+    if (!isSelected) {
+      if (compare) {
+        compareWithPath(path);
+      } else {
+        navigateToPath(path);
+      }
     }
   }
 </script>
 
-<div class="container" class:compare>
-  <div class="item">
-    <div class="callout" />
+<div class="container">
+  <div class="item" class:single={isSingle} data-item-id={data.id.toString()}>
+    {#if !isSingle}
+      <div class="callout" class:compare />
+      <div
+        class="flex items-center justify-center h-full"
+        class:cursor-pointer={hasChildren}
+        on:click={() => hasChildren && toggleBranch(data.id)}>
+        {#if hasChildren}
+          <div class="arrow" class:expanded={isExpanded}>
+            <ExpandHierarchy width="11" height="6" class="text-black" />
+          </div>
+        {/if}
+      </div>
+    {/if}
     <div
-      class="flex items-center justify-center h-full"
-      class:cursor-pointer={hasChildren}
-      on:click={() => hasChildren && toggleBranch(data.id)}>
-      {#if hasChildren}
-        <div class="arrow" class:expanded={isExpanded}>
-          <ExpandHierarchy width="11" height="6" class="text-black" />
-        </div>
-      {/if}
-    </div>
-    <div class="cursor-pointer w-12 h-12" on:click={handleClick}>
+      class="w-12 h-12"
+      class:cursor-pointer={!isSelected}
+      on:click={handleClick}>
       <Thumbnail {asset} {isSelected} {...getBadgeProps(data)} />
     </div>
-    <div class="pl-3 cursor-pointer" on:click={handleClick}>
+    <div class="pl-3" class:cursor-pointer={!isSelected} on:click={handleClick}>
       <h6>File name</h6>
       <div>{data.name}</div>
     </div>
@@ -72,10 +80,13 @@
     min-height: 0;
     min-width: 0;
   }
+  .item.single {
+    grid-template-columns: 48px auto;
+  }
   .callout {
     @apply absolute left-0 w-0 h-12 bg-blue-500 transition-all duration-200;
   }
-  .compare .callout {
+  .callout.compare {
     @apply w-1;
   }
   .arrow {

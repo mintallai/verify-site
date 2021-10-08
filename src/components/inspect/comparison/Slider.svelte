@@ -8,7 +8,6 @@
   import { tippy } from '../../../lib/tippy';
   import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
   import type { ViewableItem } from '../../../lib/types';
-  import type { IThumbnail } from '../../../lib/sdk';
 
   export let side = 0;
   let slider: HTMLDivElement;
@@ -23,8 +22,6 @@
 
   export let primary: ViewableItem;
   export let secondary: ViewableItem;
-  let primaryThumbnailUrl = '';
-  let secondaryThumbnailUrl = '';
 
   let tippyOpts: Partial<TippyProps> = {
     placement: 'top',

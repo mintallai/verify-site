@@ -34,7 +34,6 @@ export function thumbnail(node: Node, asset?: Asset | Source) {
       if (asset) {
         const prevHash = await currAsset?.computeHash();
         const currHash = await asset.computeHash();
-        console.log('prevHash, currHash', prevHash, currHash);
         if (prevHash !== currHash) {
           const result = await generateThumbnail(node, asset);
           currThumbnail?.dispose?.();

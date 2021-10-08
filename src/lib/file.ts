@@ -1,9 +1,10 @@
-import { setProvenance } from '../stores';
+import { setIsLoading, setProvenance } from '../stores';
 import { getSdk } from './sdk';
 
 export async function processFiles(files: File[] | FileList) {
   const fileArray = Array.from(files);
   if (fileArray.length) {
+    setIsLoading(true);
     const sdk = await getSdk();
     const file = fileArray[0];
     setProvenance(null);
@@ -12,6 +13,7 @@ export async function processFiles(files: File[] | FileList) {
     });
     const result = await sdk.processImage(file);
     setProvenance(result);
+    setIsLoading(false);
   }
 }
 

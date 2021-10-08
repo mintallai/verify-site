@@ -10,10 +10,10 @@ export async function getSdk() {
       wasmSrc,
       workerSrc: 'cai-sdk.worker.min.js',
       downloadOptions: {
-        inspectSize: 65535,
+        inspectSize: 0,
       },
       poolOptions: {
-        size: 1,
+        size: Math.min(navigator.hardwareConcurrency, 4),
       },
     });
   }
