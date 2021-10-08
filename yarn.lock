@@ -915,10 +915,10 @@
   resolved "https://npm.pkg.github.com/download/@contentauth/detector/0.2.7/4d797c67a9786d415c15400188eba4115dc17c650e7cc58e5cd443e427dd9d43#9d8bff2879e10380f678d052ddd02308eb910880"
   integrity sha512-yNso8vDxc3m24hFM0vN/DI1slB+lF35PO2xgCxcYabO2/a64pIymEGnVZLQkXSAK9fQ5gAoWiwdNDoCOTHZVpg==
 
-"@contentauth/sdk@0.7.2-alpha.3":
-  version "0.7.2-alpha.3"
-  resolved "https://npm.pkg.github.com/download/@contentauth/sdk/0.7.2-alpha.3/ab467e2919993fca5fc3aa9d028d25a86ac5ff1c4d6b6f42650bebe779a402ee#214bb55d11fff452491352d18b4369bc471cb763"
-  integrity sha512-ftbsWfRmhiaMto7Qo+yujTCQiFQmsEMAhTggAbbnI4u6hvvHBHZEOFfdV82Iclg66uVoDXEw1M77CWmCsJK8nQ==
+"@contentauth/sdk@0.7.2-alpha.9":
+  version "0.7.2-alpha.9"
+  resolved "https://npm.pkg.github.com/download/@contentauth/sdk/0.7.2-alpha.9/4d6bbec0917e5bde6b0672c625b1b4f8b09b69eb223a0f7dab11fe51ff1c4c0e#65ea88ab659c5db94a4f8562f1e0469d8d0619a3"
+  integrity sha512-u2m6N9WypMu+rhXDMqydsiLRFl5rtEQQKzk/b/WOOTRMjW23nb2EhRzV/27cbA2UUYozDn+iNC8Zrk7WkQwMRg==
   dependencies:
     "@contentauth/detector" "^0.2.7"
     "@contentauth/toolkit" "^0.6.7"
