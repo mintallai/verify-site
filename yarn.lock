@@ -1438,17 +1438,17 @@
     "@spectrum-web-components/icons-ui" "^0.6.11"
     tslib "^2.0.0"
 
-"@spectrum-web-components/action-menu@^0.11.4":
-  version "0.11.4"
-  resolved "https://registry.yarnpkg.com/@spectrum-web-components/action-menu/-/action-menu-0.11.4.tgz#1a9f77b27b70b187e3a7619604b9bbf5851d6b8b"
-  integrity sha512-TcsnMH1R2oX48QDIVxb8Xn2upm/5GW6WZuYjdcqBZ7y2jKkYRZ44Ckfru+s2E5b8qRnu2K3G7yfZZLKHJabhOg==
+"@spectrum-web-components/action-menu@^0.11.5":
+  version "0.11.5"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/action-menu/-/action-menu-0.11.5.tgz#e433e174f25af861e267049be29a75be058dac35"
+  integrity sha512-mj093I8B0BHsUOnYx/UmmOjflIfAhYdnfWw4wwrJ2i7q7od20Cmd3lDG0SdluNmBjwA2v713amsi/TrE/S94lg==
   dependencies:
     "@spectrum-web-components/action-button" "^0.5.8"
     "@spectrum-web-components/base" "^0.4.5"
     "@spectrum-web-components/icon" "^0.9.11"
     "@spectrum-web-components/icons-workflow" "^0.6.11"
-    "@spectrum-web-components/menu" "^0.9.4"
-    "@spectrum-web-components/picker" "^0.7.3"
+    "@spectrum-web-components/menu" "^0.9.5"
+    "@spectrum-web-components/picker" "^0.7.4"
     "@spectrum-web-components/shared" "^0.12.8"
     tslib "^2.0.0"
 
@@ -1533,10 +1533,10 @@
     "@spectrum-web-components/base" "^0.4.5"
     tslib "^2.0.0"
 
-"@spectrum-web-components/menu@^0.9.4":
-  version "0.9.4"
-  resolved "https://registry.yarnpkg.com/@spectrum-web-components/menu/-/menu-0.9.4.tgz#ff473f7699dfd47cdeeba947aa89cb9d58056866"
-  integrity sha512-YoMKsGadN8mrqHV7ZLjkZurko3TDsmiku3gyJMnK51hDkxtnZr/co0pUqUgg2QqJhx/ZAXJVCpB6OV/v2fD3Gw==
+"@spectrum-web-components/menu@^0.9.5":
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/menu/-/menu-0.9.5.tgz#83bea9719c5771521d7d54e0af34220362a9e3fc"
+  integrity sha512-pivZDWZdDIKS8Ez+00GH3lQ8MoGHRBAX4iVAVUFIZ+LB7LQ+Q3yzPGDbwwfEZPvmtCOVH17JpIXVnF8ItNxWxw==
   dependencies:
     "@spectrum-web-components/action-button" "^0.5.8"
     "@spectrum-web-components/base" "^0.4.5"
@@ -1558,17 +1558,17 @@
     popper-max-size-modifier "^0.2.0"
     tslib "^2.0.0"
 
-"@spectrum-web-components/picker@^0.7.3":
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/@spectrum-web-components/picker/-/picker-0.7.3.tgz#ce82530d1f09c13a76b99a70418a6ba98029537e"
-  integrity sha512-vd+Tzi25VhmhRyZTw9QHx7Inw9dJHmSb7x+6Zwyn8JTGe1auUSVm6KecbKx1JdzWOHB4Jszc8nLpc0KZP9AzfA==
+"@spectrum-web-components/picker@^0.7.4":
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/picker/-/picker-0.7.4.tgz#867ce6e0d86b9244d49c42bcf0ef3832e029e326"
+  integrity sha512-vyF0iSWsg4JpRq/wzQ3eDiFsaXfVfHpZn7YKaIaKzMoUCa1FqEdDpQTfp+cIeROzLjwEueZuqOglOrxQHpWnbQ==
   dependencies:
     "@spectrum-web-components/base" "^0.4.5"
     "@spectrum-web-components/button" "^0.14.8"
     "@spectrum-web-components/icon" "^0.9.11"
     "@spectrum-web-components/icons-ui" "^0.6.11"
     "@spectrum-web-components/icons-workflow" "^0.6.11"
-    "@spectrum-web-components/menu" "^0.9.4"
+    "@spectrum-web-components/menu" "^0.9.5"
     "@spectrum-web-components/overlay" "^0.11.15"
     "@spectrum-web-components/popover" "^0.9.17"
     "@spectrum-web-components/shared" "^0.12.8"

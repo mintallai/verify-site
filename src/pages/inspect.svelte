@@ -7,7 +7,7 @@
   import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
-  import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
+  import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
   import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
   import Header from '../components/Header.svelte';
@@ -54,7 +54,7 @@
   $: isComparing = !!(primary && secondary);
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
-  $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
+  $: hasTopNav = hasContent && (noMetadata || primary);
   $: errorMessage = error && 'Unknown';
   $: {
     // Cancel the tour if the overlay is showing
@@ -149,7 +149,7 @@
 <main
   class="theme-light"
   class:comparing={isComparing}
-  class:has-breadcrumb-bar={hasBreadcrumbBar}>
+  class:has-top-nav={hasTopNav}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -157,8 +157,8 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if hasBreadcrumbBar}
-    <Breadcrumb
+  {#if hasTopNav}
+    <TopNavigation
       {isComparing}
       {noMetadata}
       {source}
@@ -260,7 +260,7 @@
       'right'
       'footer';
   }
-  main.has-breadcrumb-bar {
+  main.has-top-nav {
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 70px;
     grid-template-areas:
       'header'
@@ -299,7 +299,7 @@
       'left right'
       'footer footer';
   }
-  main.comparing.has-breadcrumb-bar {
+  main.comparing.has-top-nav {
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
     grid-template-areas:
       'header header'
@@ -322,8 +322,8 @@
         'left viewer right'
         'footer footer footer';
     }
-    main.has-breadcrumb-bar,
-    main.comparing.has-breadcrumb-bar {
+    main.has-top-nav,
+    main.comparing.has-top-nav {
       grid-template-rows: 80px 60px 1fr 55px;
       grid-template-areas:
         'header header header'

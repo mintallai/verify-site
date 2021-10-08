@@ -8,9 +8,9 @@ import '@spectrum-web-components/action-menu/sp-action-menu.js';
 import '@spectrum-web-components/circle-loader/sp-circle-loader.js';
 import '@spectrum-web-components/coachmark/sp-coachmark.js';
 import '@spectrum-web-components/icon';
+import '@spectrum-web-components/picker/sp-picker.js';
 import '@spectrum-web-components/menu/sp-menu.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
-import '@spectrum-web-components/picker/sp-picker.js';
 import '@spectrum-web-components/tabs/sp-tabs.js';
 import '@spectrum-web-components/tabs/sp-tab.js';
 

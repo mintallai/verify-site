@@ -21,6 +21,6 @@ export interface ITreeNode {
   claim?: Claim;
   asset?: Asset | Source;
   isExpanded?: boolean;
-  errors: IError;
+  errors: IError[];
   children?: ITreeNode[];
 }
