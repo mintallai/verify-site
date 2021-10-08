@@ -1,6 +1,6 @@
 import { Asset, Source, IThumbnail } from './sdk';
 
-interface IThumbnailEvent {
+export interface IThumbnailEvent {
   target: Node;
   url: string;
 }
@@ -23,18 +23,24 @@ async function generateThumbnail(node, asset: Asset | Source) {
 }
 
 export function thumbnail(node: Node, asset?: Asset | Source) {
+  let currAsset = asset;
   let currThumbnail: IThumbnail;
   if (asset) {
     generateThumbnail(node, asset).then((result) => (currThumbnail = result));
   }
 
   return {
-    update(asset?: Asset | Source) {
+    async update(asset?: Asset | Source) {
       if (asset) {
-        generateThumbnail(node, asset).then((result) => {
+        const prevHash = await currAsset?.computeHash();
+        const currHash = await asset.computeHash();
+        console.log('prevHash, currHash', prevHash, currHash);
+        if (prevHash !== currHash) {
+          const result = await generateThumbnail(node, asset);
           currThumbnail?.dispose?.();
           currThumbnail = result;
-        });
+          currAsset = asset;
+        }
       }
     },
 

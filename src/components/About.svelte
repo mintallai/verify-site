@@ -38,6 +38,7 @@
     AssertionLabel.CreativeWork,
   ) as CreativeWorkAssertion | null;
   $: producer = creativeWorkAssertion?.producer?.name ?? '';
+  $: asset = claim.asset;
   $: title = claim.title;
   $: assets = claim.ingredients?.length ? claim.ingredients : null;
   $: signedBy = claim.signature.issuer;
@@ -64,11 +65,9 @@
           </cai-tooltip>
         </dt>
         <dd class="flex space-x-2 items-center mt-1">
-          {#await claim.asset.generateThumbnailUrl() then thumbnail}
-            <div class="w-12 h-12">
-              <Thumbnail {thumbnail} {...getBadgeProps({ claim })} />
-            </div>
-          {/await}
+          <div class="w-12 h-12">
+            <Thumbnail {asset} {...getBadgeProps({ claim })} />
+          </div>
           <div>
             <h6>File name</h6>
             <div>{title}</div>
@@ -156,16 +155,13 @@
           {#if assets}
             <div class="assets-used">
               {#each assets as asset}
-                {#await asset.generateThumbnailUrl() then thumbnail}
-                  <div
-                    class="w-12 h-12 cursor-pointer"
-                    on:click={() =>
-                      navigateToChild(asset.claim?.id ?? asset.id)}>
-                    <Thumbnail
-                      {thumbnail}
-                      {...getBadgeProps({ claim: asset.claim })} />
-                  </div>
-                {/await}
+                <div
+                  class="w-12 h-12 cursor-pointer"
+                  on:click={() => navigateToChild(asset.claim?.id ?? asset.id)}>
+                  <Thumbnail
+                    {asset}
+                    {...getBadgeProps({ claim: asset.claim })} />
+                </div>
               {/each}
             </div>
           {:else if isOriginal || secureCapture}

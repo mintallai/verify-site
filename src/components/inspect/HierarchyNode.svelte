@@ -17,6 +17,7 @@
   export let node: HierarchyNode<ITreeNode>;
 
   $: data = node.data;
+  $: asset = data.asset;
   $: children = node.children ?? [];
   $: hasChildren = children.length > 0;
   $: path = getPath(node);
@@ -46,11 +47,9 @@
         </div>
       {/if}
     </div>
-    {#await data.asset.generateThumbnailUrl() then thumbnail}
-      <div class="cursor-pointer w-12 h-12" on:click={handleClick}>
-        <Thumbnail {thumbnail} {isSelected} {...getBadgeProps(data)} />
-      </div>
-    {/await}
+    <div class="cursor-pointer w-12 h-12" on:click={handleClick}>
+      <Thumbnail {asset} {isSelected} {...getBadgeProps(data)} />
+    </div>
     <div class="pl-3 cursor-pointer" on:click={handleClick}>
       <h6>File name</h6>
       <div>{data.name}</div>
