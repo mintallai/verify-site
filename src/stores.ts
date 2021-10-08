@@ -11,8 +11,7 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
-
-export const sourceSym = Symbol('source');
+const SOURCE_ID = '__source__';
 
 /**
  * Syncs the URL params to the state
@@ -40,9 +39,9 @@ export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
  */
 export const contentSourceIds = writable<string[]>([]);
 
-export const collapsedBranches = writable<Set<string | Symbol>>(new Set());
+export const collapsedBranches = writable<Set<string>>(new Set());
 
-export function toggleBranch(id: string | Symbol) {
+export function toggleBranch(id: string) {
   collapsedBranches.update((prev) => {
     if (prev.has(id)) {
       prev.delete(id);
@@ -169,27 +168,6 @@ export async function setProvenance(result: ImageProvenance | null) {
 }
 
 /**
- * Calculates the root claim ID (the ID of the latest claim) contained in the store report.
- */
-export const rootClaimId = derived<[typeof provenance], string | null>(
-  [provenance],
-  ([$provenance]) => $provenance?.activeClaim?.id ?? null,
-);
-
-/**
- * Convenience function to navigate to the root claim
- *
- * @param logEvent `true` to log this event in New Relic
- */
-export function navigateToRoot(logEvent = true): void {
-  const rootId = get(rootClaimId);
-  if (rootId) {
-    secondaryPath.set([]);
-    navigateToPath([rootId], logEvent);
-  }
-}
-
-/**
  * The primary universal ID (claim/parent/ingredient) that is being shown in the
  * viewer. If a `secondaryId` is _also_ set, a comparison view shows up.
  */
@@ -214,7 +192,9 @@ export const primaryAsset = derived<
   [typeof provenance, typeof primaryId],
   ViewableItem | undefined
 >([provenance, primaryId], ([$provenance, $primaryId]) => {
-  return $provenance?.resolveId($primaryId);
+  return $primaryId === SOURCE_ID
+    ? $provenance?.source
+    : $provenance?.resolveId($primaryId);
 });
 
 /**
@@ -227,13 +207,14 @@ export const secondaryAsset = derived<
   return $provenance?.resolveId($secondaryId);
 });
 
-function parseProvenance(node: Claim | Ingredient | Source): ITreeNode {
+function parseProvenance(node: Claim | Ingredient): ITreeNode {
   if (node instanceof Claim) {
     return {
       id: node.id,
       name: node.title,
       claim: node,
       asset: node.asset ?? undefined,
+      errors: node.errors,
       children: node.ingredients?.map(parseProvenance),
     };
   }
@@ -243,15 +224,8 @@ function parseProvenance(node: Claim | Ingredient | Source): ITreeNode {
       name: node.title,
       claim: node.claim,
       asset: node.claim?.asset ?? node,
+      errors: node.errors,
       children: node.claim?.ingredients.map(parseProvenance) ?? [],
-    };
-  }
-  if (node instanceof Source) {
-    return {
-      id: sourceSym,
-      name: node.filename,
-      claim: null,
-      asset: node,
     };
   }
 }
@@ -260,12 +234,45 @@ export const hierarchy = derived<
   [typeof provenance],
   HierarchyNode<ITreeNode> | null
 >([provenance], ([$provenance]) => {
-  const root = $provenance?.activeClaim ?? $provenance?.source;
-  if (root) {
-    // TODO: We can access the errors like so:
-    // const errors = $provenance?.errors;
-    // $provenance.source has the thumbnail and filename of the image that was dragged in
-    return d3Hierarchy(parseProvenance(root));
+  if ($provenance) {
+    const { source, activeClaim, errors } = $provenance;
+    // We have a normal claim structure and no top-level errors
+    if (activeClaim && !errors.length) {
+      return d3Hierarchy(parseProvenance(activeClaim));
+    }
+    // We have top-level errors or no metadata on this image
+    // Show the source
+    if (source && (errors.length || !activeClaim)) {
+      return d3Hierarchy({
+        id: SOURCE_ID,
+        name: source.filename,
+        claim: null,
+        asset: source,
+        errors,
+        children: activeClaim ? [parseProvenance(activeClaim)] : [],
+      });
+    }
   }
   return null;
 });
+
+/**
+ * Calculates the root claim ID (the ID of the latest claim) contained in the store report.
+ */
+export const rootId = derived<[typeof hierarchy], string | undefined>(
+  [hierarchy],
+  ([$hierarchy]) => $hierarchy?.data?.id,
+);
+
+/**
+ * Convenience function to navigate to the root claim
+ *
+ * @param logEvent `true` to log this event in New Relic
+ */
+export function navigateToRoot(logEvent = true): void {
+  const id = get(rootId);
+  if (id) {
+    secondaryPath.set([]);
+    navigateToPath([id], logEvent);
+  }
+}

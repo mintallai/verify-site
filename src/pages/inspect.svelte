@@ -4,7 +4,7 @@
   import { _ } from 'svelte-i18n';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
-  import { getSdk, Claim, Ingredient } from '../lib/sdk';
+  import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
@@ -203,6 +203,8 @@
       </section>
       {#if isComparing}
         <Comparison {primary} {secondary} />
+      {:else if primary instanceof Source}
+        <Viewer asset={primary} isDragging={isDraggingOver} />
       {:else}
         <Viewer asset={primary?.asset} isDragging={isDraggingOver} />
       {/if}

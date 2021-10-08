@@ -48,13 +48,6 @@
       </div>
     </div>
   {/if}
-  {#if source && !claim}
-    <div class="relative pl-4">
-      <div bind:this={container} class="grid space-y-4">
-        <!-- <Asset {source} current={true} /> -->
-      </div>
-    </div>
-  {/if}
 </div>
 
 <style lang="postcss">

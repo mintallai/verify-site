@@ -3,6 +3,7 @@
   import partial from 'lodash/partial';
   import { isMobileViewerShown } from '../../../stores';
   import type { TippyProps } from '../../../lib/tippy';
+  import { Source } from '../../../lib/sdk';
   import { tippy } from '../../../lib/tippy';
   import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
   import type { ViewableItem } from '../../../lib/types';
@@ -57,21 +58,39 @@
   class:layout-side={layout === Layout.SideBySide}
   use:cssVars={styles}>
   <div class="primary thumbnail" class:invisible={!layout}>
-    <img
-      use:tippy={{ content: primary.title, ...tippyOpts }}
-      use:thumbnail={primary.asset}
-      on:thumbnail={handleImgSrc}
-      alt=""
-      on:load={partial(processImage, 'primary')} />
+    {#if primary instanceof Source}
+      <img
+        use:tippy={{ content: primary.filename, ...tippyOpts }}
+        use:thumbnail={primary}
+        on:thumbnail={handleImgSrc}
+        alt=""
+        on:load={partial(processImage, 'primary')} />
+    {:else}
+      <img
+        use:tippy={{ content: primary.title, ...tippyOpts }}
+        use:thumbnail={primary.asset}
+        on:thumbnail={handleImgSrc}
+        alt=""
+        on:load={partial(processImage, 'primary')} />
+    {/if}
   </div>
   <div class="divider" />
   <div class="secondary thumbnail" class:invisible={!layout}>
-    <img
-      use:tippy={{ content: secondary.title, ...tippyOpts }}
-      use:thumbnail={secondary.asset}
-      on:thumbnail={handleImgSrc}
-      alt=""
-      on:load={partial(processImage, 'secondary')} />
+    {#if secondary instanceof Source}
+      <img
+        use:tippy={{ content: secondary.filename, ...tippyOpts }}
+        use:thumbnail={secondary}
+        on:thumbnail={handleImgSrc}
+        alt=""
+        on:load={partial(processImage, 'secondary')} />
+    {:else}
+      <img
+        use:tippy={{ content: secondary.title, ...tippyOpts }}
+        use:thumbnail={secondary.asset}
+        on:thumbnail={handleImgSrc}
+        alt=""
+        on:load={partial(processImage, 'secondary')} />
+    {/if}
   </div>
 </div>
 
