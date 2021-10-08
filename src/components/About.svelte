@@ -118,7 +118,7 @@
         </dd>
       </dl>
     </div>
-    {#await actionsAssertion.getCategories($locale) then categories}
+    {#await actionsAssertion?.getCategories($locale) then categories}
       {#if categories}
         <div>
           <dl class="attributes">

@@ -20,7 +20,7 @@ export function getIsOriginal(claim: Claim) {
   const noIngredients = claim.ingredients.length === 0;
   const actionAssertion = claim.findAssertion(ACTION_ASSERTION_LABEL);
   const actions = actionAssertion?.data?.actions;
-  const isDelivered = actions.find((x) => x.action === DELIVERED_ACTION);
+  const isDelivered = actions?.find((x) => x.action === DELIVERED_ACTION);
   return noIngredients && !isDelivered;
 }
 
