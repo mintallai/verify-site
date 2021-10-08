@@ -19,6 +19,7 @@
     ActionsAssertion,
     CreativeWorkAssertion,
     RecorderFormat,
+    AdobeCryptoAddressesAssertion,
   } from '../lib/sdk';
   import debug from 'debug';
 
@@ -35,6 +36,9 @@
   $: creativeWorkAssertion = claim.findAssertion(
     AssertionLabel.CreativeWork,
   ) as CreativeWorkAssertion | null;
+  $: cryptoAssertion = claim.findAssertion(
+    AssertionLabel.AdobeCryptoAddresses,
+  ) as AdobeCryptoAddressesAssertion | null;
   $: producer = creativeWorkAssertion?.producer?.name ?? '';
   $: asset = claim.asset;
   $: title = claim.title;
@@ -44,6 +48,8 @@
   $: recorder = claim.formatRecorder(RecorderFormat.ProgramNameAndVersion);
   $: isBeta = getIsBeta(claim);
   $: website = getWebsite(claim);
+  $: socialAccounts = creativeWorkAssertion?.socialAccounts ?? [];
+  $: cryptoAddresses = cryptoAssertion?.data?.ethereum ?? [];
 
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
@@ -205,6 +211,48 @@
         </dl>
       </div>
     {/if}
+    {#if socialAccounts.length || cryptoAddresses.length}
+      <div class="space-y-4">
+        {#if socialAccounts.length}
+          <dl class="attributes">
+            <dt class="flex space-x-2">
+              <div class="whitespace-nowrap">{$_('comp.about.social')}</div>
+              <cai-tooltip placement="left" class="theme-spectrum">
+                <div slot="content" class="text-gray-900" style="width: 150px;">
+                  {$_('comp.about.social.helpText')}
+                </div>
+              </cai-tooltip>
+            </dt>
+            <dd class="social-accounts">
+              {#each socialAccounts as account (account['@id'])}
+                <div class="relative top-0.5">
+                  <ProviderIcon provider={account['@id']} class="mr-2" />
+                </div>
+                <a href={account['@id']} target="_blank" class="link"
+                  >@{account.name}</a>
+              {/each}
+            </dd>
+          </dl>
+        {/if}
+        {#if cryptoAddresses.length}
+          <dl class="attributes">
+            <dt class="flex space-x-2">
+              <div class="whitespace-nowrap">{$_('comp.about.crypto')}</div>
+              <cai-tooltip placement="left" class="theme-spectrum">
+                <div slot="content" class="text-gray-900" style="width: 150px;">
+                  {$_('comp.about.crypto.helpText')}
+                </div>
+              </cai-tooltip>
+            </dt>
+            <dd>
+              {#each cryptoAddresses as address}
+                <div class="break-all">{address.toString().toLowerCase()}</div>
+              {/each}
+            </dd>
+          </dl>
+        {/if}
+      </div>
+    {/if}
   </div>
 </div>
 
@@ -221,6 +269,10 @@
   .assets-used {
     @apply grid gap-3;
     grid-template-columns: repeat(auto-fit, 48px);
+  }
+  .social-accounts {
+    @apply grid gap-x-2 gap-y-1 items-center;
+    grid-template-columns: 16px auto;
   }
   @screen md {
     .info {

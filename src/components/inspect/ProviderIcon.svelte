@@ -1,17 +1,25 @@
 <script lang="ts">
   import AdobeLogo from '../../../assets/svg/color/logos/adobe.svg';
   import AdobeStockLogo from '../../../assets/svg/color/logos/adobe-stock.svg';
+  import BehanceLogo from '../../../assets/svg/color/logos/behance.svg';
+  import FacebookLogo from '../../../assets/svg/color/logos/facebook.svg';
+  import InstagramLogo from '../../../assets/svg/color/logos/instagram.svg';
   import PhotoshopLogo from '../../../assets/svg/color/logos/photoshop.svg';
   import TruepicLogo from '../../../assets/svg/color/logos/truepic.svg';
+  import TwitterLogo from '../../../assets/svg/color/logos/twitter.svg';
 
   export let provider: string;
   let className: string = '';
 
   const matchers = [
-    { pattern: /photoshop/i, icon: PhotoshopLogo },
-    { pattern: /adobe\sstock/i, icon: AdobeStockLogo },
     { pattern: /adobe/i, icon: AdobeLogo },
+    { pattern: /adobe\sstock/i, icon: AdobeStockLogo },
+    { pattern: /behance\.net/i, icon: BehanceLogo },
+    { pattern: /facebook\.com/i, icon: FacebookLogo },
+    { pattern: /instagram\.com/i, icon: InstagramLogo },
+    { pattern: /photoshop/i, icon: PhotoshopLogo },
     { pattern: /truepic/i, icon: TruepicLogo },
+    { pattern: /twitter\.com/i, icon: TwitterLogo },
   ];
 
   $: iconComponent =
