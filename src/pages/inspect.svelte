@@ -180,9 +180,7 @@
       <section class="left-col">
         <Navigation {source} />
       </section>
-      {#await $provenance?.source?.generateUrl() then thumbnail}
-        <Viewer {thumbnail} isDragging={isDraggingOver} />
-      {/await}
+      <Viewer asset={$provenance?.source} isDragging={isDraggingOver} />
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
@@ -203,11 +201,9 @@
       {#if isComparing}
         <Comparison {primary} {secondary} />
       {:else}
-        {#await primary?.asset?.generateThumbnailUrl() then thumbnail}
-          <div transition:fade={{ duration: 150 }}>
-            <Viewer {thumbnail} isDragging={isDraggingOver} />
-          </div>
-        {/await}
+        <div transition:fade={{ duration: 150 }}>
+          <Viewer asset={primary?.asset} isDragging={isDraggingOver} />
+        </div>
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary instanceof Claim}

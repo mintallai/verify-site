@@ -35,6 +35,7 @@
 
 <div class="container" class:compare>
   <div class="item">
+    <div class="callout" />
     <div
       class="flex items-center justify-center h-full"
       class:cursor-pointer={hasChildren}
@@ -64,16 +65,19 @@
 
 <style lang="postcss">
   .container {
-    @apply relative space-y-5 mb-1 transition duration-200 z-0;
+    @apply space-y-5 mb-1 transition duration-200 z-0;
   }
   .item {
-    @apply grid items-center max-w-full bg-transparent transition-all duration-200 border-blue-500 border-r-0;
+    @apply grid items-center max-w-full bg-transparent;
     grid-template-columns: 24px 48px auto;
     min-height: 0;
     min-width: 0;
   }
-  .compare .item {
-    @apply border-l-4;
+  .callout {
+    @apply absolute left-0 w-0 h-12 bg-blue-500 transition-all duration-200;
+  }
+  .compare .callout {
+    @apply w-1;
   }
   .arrow {
     @apply transition transform -rotate-90 px-3 -ml-3;

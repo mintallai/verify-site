@@ -1,4 +1,3 @@
-import compact from 'lodash/fp/compact';
 import { HierarchyNode } from 'd3-hierarchy';
 import { Claim, Ingredient } from './sdk';
 import type { IBadgeProps, ITreeNode, ViewableItem } from './types';
@@ -43,7 +42,7 @@ export function getBadgeProps({ claim }: IBadgePropsInput): IBadgeProps {
   if (claim) {
     return {
       badgeType: 'info',
-      badgeHelpText: 'comp.asset.badgeInfoHelpText',
+      badgeHelpText: 'comp.asset.badgeInfo.helpText',
     };
   }
 }
@@ -66,16 +65,4 @@ export function getWebsite(claim: Claim): string | undefined {
       return site;
     }
   }
-}
-
-/**
- * Gets the claim data associated with a ViewableItem (claim/ingredient)
- */
-export function getAssociatedClaim(item: ViewableItem): ViewableItem | null {
-  if (item instanceof Claim) {
-    return item;
-  } else if (item instanceof Ingredient) {
-    return item.parent;
-  }
-  return null;
 }

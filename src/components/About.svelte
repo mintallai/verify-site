@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
   import { _, date, time, locale } from 'svelte-i18n';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Thumbnail from './Thumbnail.svelte';
-  import Alert from './Alert.svelte';
-  import { navigateToChild, compareWithPath, provenance } from '../stores';
+  import { navigateToChild } from '../stores';
   import {
     getBadgeProps,
     getIsBeta,
@@ -31,7 +29,6 @@
   export let isMobileViewer: boolean = false;
   let element: HTMLElement;
   let secureCapture = false;
-  let thumbnailDisposers = [];
 
   $: isOriginal = getIsOriginal(claim);
   $: actionsAssertion = claim.findAssertion(
@@ -52,30 +49,40 @@
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
   });
-  $: assetsStrings = JSON.stringify({
-    CLAIM_INFO_HELP_TEXT: $_('comp.about.assets.claimInfoHelpText'),
-  });
-
-  onDestroy(() => {
-    thumbnailDisposers.forEach((fn) => fn());
-  });
 </script>
 
 <div class="w-full flex justify-center">
   <div class="info w-full max-w-xs lg:pb-4" bind:this={element}>
-    {#if isComparing}
-      <div class="file-name">
-        <div class="label">{$_('comp.about.fileName')}</div>
-        <div class="value">{title}</div>
-      </div>
-    {/if}
+    <div>
+      <dl class="attributes">
+        <dt>
+          <div>{$_('comp.about.contentCredentials.header')}</div>
+          <cai-tooltip placement="left" class="theme-spectrum">
+            <div slot="content" class="text-gray-900" style="width: 200px;">
+              {$_('comp.about.contentCredentials.helpText')}
+            </div>
+          </cai-tooltip>
+        </dt>
+        <dd class="flex space-x-2 items-center mt-1">
+          {#await claim.asset.generateThumbnailUrl() then thumbnail}
+            <div class="w-12 h-12">
+              <Thumbnail {thumbnail} {...getBadgeProps({ claim })} />
+            </div>
+          {/await}
+          <div>
+            <h6>File name</h6>
+            <div>{title}</div>
+          </div>
+        </dd>
+      </dl>
+    </div>
     <div>
       <dl class="attributes">
         <dt>
           <div class="whitespace-nowrap">{$_('comp.about.signedBy')}</div>
           <cai-tooltip placement="left" class="theme-spectrum">
             <div slot="content" class="text-gray-900" style="width: 200px;">
-              {$_('comp.about.signedByHelpText')}
+              {$_('comp.about.signedBy.helpText')}
             </div>
           </cai-tooltip>
         </dt>
@@ -95,9 +102,9 @@
     <div>
       <dl class="attributes">
         <dt>{$_('comp.about.producedWith')}</dt>
-        <dd class="flex space-x-2">
+        <dd class="flex">
           <div class="relative top-0.5">
-            <ProviderIcon provider={recorder} />
+            <ProviderIcon provider={recorder} class="mr-2" />
           </div>
           <div class="break-word">
             <div>{recorder}</div>
@@ -178,7 +185,7 @@
             <div class="whitespace-nowrap">{$_('comp.about.producedBy')}</div>
             <cai-tooltip placement="left" class="theme-spectrum">
               <div slot="content" class="text-gray-900" style="width: 150px;">
-                {$_('comp.about.producedByHelpText')}
+                {$_('comp.about.producedBy.helpText')}
               </div>
             </cai-tooltip>
           </dt>
@@ -193,7 +200,7 @@
             <div class="whitespace-nowrap">{$_('comp.about.website')}</div>
             <cai-tooltip placement="left" class="theme-spectrum">
               <div slot="content" class="text-gray-900" style="width: 150px;">
-                {$_('comp.about.websiteHelpText')}
+                {$_('comp.about.website.helpText')}
               </div>
             </cai-tooltip>
           </dt>
@@ -215,13 +222,6 @@
   }
   .info > div:last-child {
     @apply border-none pb-0;
-  }
-  .file-name .label {
-    @apply text-75 text-gray-700 font-bold uppercase mb-1;
-  }
-  .file-name .value {
-    @apply text-150 text-gray-900 font-bold truncate;
-    max-width: calc((100vw / 2) - 30px);
   }
   .assets-used {
     @apply grid gap-3;

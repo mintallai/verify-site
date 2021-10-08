@@ -17,6 +17,12 @@ declare module '*.svg';
 declare var __breakpoints__;
 declare var process;
 
+declare namespace svelte.JSX {
+  interface HTMLAttributes<T> {
+    onthumbnail?: (event: any) => any;
+  }
+}
+
 declare interface IUrlParams {
   source: string;
   tourFlag: boolean;

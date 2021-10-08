@@ -6,7 +6,9 @@
   import Icon from '../../Icon.svelte';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
+  import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
   import type { ViewableItem } from '../../../lib/types';
+  import type { IThumbnail } from '../../../lib/sdk';
 
   export let side = 0;
   let slider: HTMLDivElement;
@@ -21,6 +23,8 @@
 
   export let primary: ViewableItem;
   export let secondary: ViewableItem;
+  let primaryThumbnailUrl = '';
+  let secondaryThumbnailUrl = '';
 
   let tippyOpts: Partial<TippyProps> = {
     placement: 'top',
@@ -72,11 +76,13 @@
   </div>
   <div class="primary">
     <div class="thumbnail" use:tippy={{ content: primary.title, ...tippyOpts }}>
-      <img src={''} alt="" />
+      <img use:thumbnail={primary.asset} on:thumbnail={handleImgSrc} alt="" />
     </div>
   </div>
   <div class="secondary" use:tippy={{ content: secondary.title, ...tippyOpts }}>
-    <div class="thumbnail"><img src={''} alt="" /></div>
+    <div class="thumbnail">
+      <img use:thumbnail={secondary.asset} on:thumbnail={handleImgSrc} alt="" />
+    </div>
   </div>
 </div>
 

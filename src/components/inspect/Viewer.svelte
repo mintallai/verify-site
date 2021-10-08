@@ -8,12 +8,13 @@
   import { loadFile } from '../../lib/file';
   import DropFile from '../../../assets/svg/monochrome/drop-file.svg';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
-  import type { IThumbnail } from '../../lib/sdk';
+  import { thumbnail, handleImgSrc } from '../../lib/thumbnail';
+  import type { Asset, Source } from '../../lib/sdk';
   import debug from 'debug';
 
   const dbg = debug('viewer');
 
-  export let thumbnail: IThumbnail | null = null;
+  export let asset: Asset | Source | undefined = undefined;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
   export let isError: boolean = false;
@@ -44,12 +45,7 @@
   onMount(() => {
     fileInput.addEventListener('change', loadFile, false);
     return () => {
-      const dispose = thumbnail?.dispose;
       fileInput.removeEventListener('change', loadFile);
-      if (dispose) {
-        dbg('Disposing previous thumbnail', thumbnail);
-        dispose();
-      }
     };
   });
 </script>
@@ -85,9 +81,10 @@
             </div>
           {/if}
         </div>
-      {:else if !isLoading && thumbnail}
+      {:else if !isLoading && asset}
         <img
-          src={thumbnail.url}
+          use:thumbnail={asset}
+          on:thumbnail={handleImgSrc}
           alt=""
           class="h-full w-full object-contain object-center" />
       {:else}

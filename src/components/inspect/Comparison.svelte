@@ -3,7 +3,8 @@
   import Slider from './comparison/Slider.svelte';
   import CircleLoader from '../CircleLoader.svelte';
   import { compareMode, CompareMode, isMobileViewerShown } from '../../stores';
-  import type { ViewableItem } from '../../lib/types'
+  import type { IThumbnail } from '../../lib/sdk';
+  import type { ViewableItem } from '../../lib/types';
 
   const MIN_SIDE_PX = 256;
 

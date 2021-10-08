@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { afterUpdate } from 'svelte';
   import AdobeLogo from '../../../assets/svg/color/logos/adobe.svg';
   import AdobeStockLogo from '../../../assets/svg/color/logos/adobe-stock.svg';
   import PhotoshopLogo from '../../../assets/svg/color/logos/photoshop.svg';
   import TruepicLogo from '../../../assets/svg/color/logos/truepic.svg';
 
   export let provider: string;
-  let iconComponent = null;
+  let className: string = '';
 
   const matchers = [
     { pattern: /photoshop/i, icon: PhotoshopLogo },
@@ -15,13 +14,15 @@
     { pattern: /truepic/i, icon: TruepicLogo },
   ];
 
-  afterUpdate(() => {
-    iconComponent =
-      matchers.find(({ pattern }) => pattern.test(provider?.toString() ?? ''))
-        ?.icon || null;
-  });
+  $: iconComponent =
+    matchers.find(({ pattern }) => pattern.test(provider?.toString() ?? ''))
+      ?.icon ?? null;
+
+  export { className as class };
 </script>
 
-<div class="flex">
-  <svelte:component this={iconComponent} width="16" height="16" />
-</div>
+{#if iconComponent}
+  <div class={`w-4 h-4 ${className}`}>
+    <svelte:component this={iconComponent} width="16" height="16" />
+  </div>
+{/if}
