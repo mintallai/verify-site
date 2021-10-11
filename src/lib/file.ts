@@ -11,9 +11,18 @@ export async function processFiles(files: File[] | FileList) {
     window.newrelic?.addPageAction('loadedUserFile', {
       type: file.type,
     });
-    const result = await sdk.processImage(file);
-    setProvenance(result);
-    setIsLoading(false);
+    try {
+      const result = await sdk.processImage(file);
+      setProvenance(result);
+    } catch (err) {
+      console.error('Could not process file:', err);
+      window.newrelic?.noticeError(err, {
+        source: 'file',
+        type: file.type,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 }
 

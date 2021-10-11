@@ -915,10 +915,10 @@
   resolved "https://npm.pkg.github.com/download/@contentauth/detector/0.2.7/4d797c67a9786d415c15400188eba4115dc17c650e7cc58e5cd443e427dd9d43#9d8bff2879e10380f678d052ddd02308eb910880"
   integrity sha512-yNso8vDxc3m24hFM0vN/DI1slB+lF35PO2xgCxcYabO2/a64pIymEGnVZLQkXSAK9fQ5gAoWiwdNDoCOTHZVpg==
 
-"@contentauth/sdk@0.7.2-alpha.9":
-  version "0.7.2-alpha.9"
-  resolved "https://npm.pkg.github.com/download/@contentauth/sdk/0.7.2-alpha.9/4d6bbec0917e5bde6b0672c625b1b4f8b09b69eb223a0f7dab11fe51ff1c4c0e#65ea88ab659c5db94a4f8562f1e0469d8d0619a3"
-  integrity sha512-u2m6N9WypMu+rhXDMqydsiLRFl5rtEQQKzk/b/WOOTRMjW23nb2EhRzV/27cbA2UUYozDn+iNC8Zrk7WkQwMRg==
+"@contentauth/sdk@0.7.2-alpha.10":
+  version "0.7.2-alpha.10"
+  resolved "https://npm.pkg.github.com/download/@contentauth/sdk/0.7.2-alpha.10/21f82a1ad758f441d9c18fcb2a305f309b54502762d323bd92a1db90727da86f#3f9b887d4ceebbe21eda5d19b13293061df49b33"
+  integrity sha512-nS+zI1vGWlsgtzdBtuVF4nQfJ+js/exqVyT2SPFjZKoPOcHwePoPxv+cY3jNKwxQuVnePQXs3Nfo3Ni+//pocQ==
   dependencies:
     "@contentauth/detector" "^0.2.7"
     "@contentauth/toolkit" "^0.6.7"
@@ -1325,11 +1325,6 @@
   dependencies:
     "@rollup/pluginutils" "^3.0.1"
     resolve "^1.14.1"
-
-"@rollup/plugin-wasm@^5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-wasm/-/plugin-wasm-5.1.2.tgz#5ebd767a14eb7cc98f45aee817e3efbe15c944d8"
-  integrity sha512-eiOuMHBNY0EGTq3LCebg4IQ6/SOvKjmGetzqKajJWcbDQkrQZvHihZKKnBJYY7NuuvjNqCLdEViYr5aAZms63g==
 
 "@rollup/pluginutils@^3.0.1", "@rollup/pluginutils@^3.0.8", "@rollup/pluginutils@^3.1.0":
   version "3.1.0"

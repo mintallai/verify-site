@@ -92,11 +92,19 @@
     if (sourceParam) {
       try {
         setIsLoading(true);
-        const sdk = await getSdk();
-        const result = await sdk.processImage(sourceParam);
-        await window.newrelic?.setCustomAttribute('source', sourceParam);
-        setProvenance(result);
-        setIsLoading(false);
+        try {
+          const sdk = await getSdk();
+          const result = await sdk.processImage(sourceParam);
+          await window.newrelic?.setCustomAttribute('source', sourceParam);
+          setProvenance(result);
+        } catch (err) {
+          console.error('Could not process file:', err);
+          window.newrelic?.noticeError(err, {
+            source: 'url',
+          });
+        } finally {
+          setIsLoading(false);
+        }
         if (isMobileViewer === false) {
           // tour = startTour({
           //   provenance: $provenance,
