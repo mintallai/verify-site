@@ -1452,15 +1452,6 @@
     "@spectrum-web-components/shared" "^0.12.8"
     tslib "^2.0.0"
 
-"@spectrum-web-components/base@^0.3.0":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@spectrum-web-components/base/-/base-0.3.3.tgz#533c1ef8723769a587039680b57560657814ad85"
-  integrity sha512-SPZLxbikN2o+KVntmklDlUC+4NaZGDR1Rg9P9Ck/VAsogTGmmgevjUIkauwI9udFsFsEFp9E7CP+0zvPVfwKHg==
-  dependencies:
-    lit-element "^2.4.0"
-    lit-html "^1.0.0"
-    tslib "^2.0.0"
-
 "@spectrum-web-components/base@^0.4.5":
   version "0.4.5"
   resolved "https://registry.yarnpkg.com/@spectrum-web-components/base/-/base-0.4.5.tgz#cd6945faa03c2dad6685877335fef5f103c7735f"
@@ -1479,14 +1470,6 @@
     "@spectrum-web-components/icon" "^0.9.11"
     "@spectrum-web-components/icons-ui" "^0.6.11"
     "@spectrum-web-components/shared" "^0.12.8"
-    tslib "^2.0.0"
-
-"@spectrum-web-components/circle-loader@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@spectrum-web-components/circle-loader/-/circle-loader-0.5.0.tgz#eb2f9db822ac0e3d6a9fd0ca0f4eb7ab0e319ac4"
-  integrity sha512-QP4zH0OeXfYERA02bOnroTwKU9h2jaifrjss0/uKRm5bybkh5/FUMRBkDQFZXEP9nPtAN4nqL7eJH6eO99sEaA==
-  dependencies:
-    "@spectrum-web-components/base" "^0.3.0"
     tslib "^2.0.0"
 
 "@spectrum-web-components/coachmark@^0.6.8":
@@ -1523,6 +1506,15 @@
   dependencies:
     "@spectrum-web-components/base" "^0.4.5"
     "@spectrum-web-components/icon" "^0.9.11"
+    tslib "^2.0.0"
+
+"@spectrum-web-components/icons@^0.7.8":
+  version "0.7.8"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/icons/-/icons-0.7.8.tgz#174c6bb476e291c11bd5932fcecc6067d584d444"
+  integrity sha512-L59hgvavZsPqIUqSwj/NSVh9BbST2+O28GroqlMfiKpmX6ooprZlYfc7xcauD+X+2Y/miU192YkwkhfuzUZKZQ==
+  dependencies:
+    "@spectrum-web-components/base" "^0.4.5"
+    "@spectrum-web-components/iconset" "^0.5.7"
     tslib "^2.0.0"
 
 "@spectrum-web-components/iconset@^0.5.7":
@@ -1581,6 +1573,14 @@
   dependencies:
     "@spectrum-web-components/base" "^0.4.5"
     "@spectrum-web-components/overlay" "^0.11.15"
+    tslib "^2.0.0"
+
+"@spectrum-web-components/progress-circle@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/progress-circle/-/progress-circle-0.2.8.tgz#bf2f20351df7d667915129df04d84bc94c11edc9"
+  integrity sha512-cy0BNI1MkYd5ZEm6u6I5g4rdsxY0m3M0NTadtqWqTV5en6voJQwMNewfT+W1josL5DITz1I2vDb3BfSp5EW/YQ==
+  dependencies:
+    "@spectrum-web-components/base" "^0.4.5"
     tslib "^2.0.0"
 
 "@spectrum-web-components/shared@^0.12.8":
@@ -2132,11 +2132,6 @@ acorn@^8.1.0, acorn@^8.2.4, acorn@^8.4.1:
   version "8.5.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.5.0.tgz#4512ccb99b3698c752591e9bb4472e38ad43cee2"
   integrity sha512-yXbYeFy+jUuYd3/CDcg2NkIYE991XYX/bje7LmjJigUciaeO1JR4XxXgCIV1/Zc/dRuFEyw1L0pbA+qynJkW5Q==
-
-add@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/add/-/add-2.0.6.tgz#248f0a9f6e5a528ef2295dbeec30532130ae2235"
-  integrity sha1-JI8Kn25aUo7yKV2+7DBTITCuIjU=
 
 agent-base@6:
   version "6.0.2"

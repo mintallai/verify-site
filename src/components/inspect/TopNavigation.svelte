@@ -21,42 +21,49 @@
   export let source: Source | null = null;
   const dispatch = createEventDispatcher();
 
-  $: selectedCompareText =
-    $compareMode === CompareMode.Slider
-      ? 'comp.topNavigation.slider'
-      : 'comp.topNavigation.split';
-
   function handleNavChange() {
     // TODO: Change page
   }
 
   function handleMenuChange() {
-    // navigateToId(this.value);
+    // TODO: Change page
+  }
+
+  function handleCompareChange() {
+    setCompareMode(this.value);
   }
 
   $: showMenu = $isMobileViewerShown;
 </script>
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
-  <sp-theme color="light" scale="medium" class="w-full">
+  <sp-theme color="lightest" scale="medium" class="w-full">
     {#if isComparing}
-      <div
-        class="flex items-center cursor-pointer"
-        on:click={() => dispatch('back')}>
-        <LeftArrow width="14" height="12" class="text-gray-800 mr-2" />
-        <div>
-          {$_('comp.topNavigation.back')}
+      <div class="flex space-x-5 py-3">
+        <div
+          class="flex items-center cursor-pointer"
+          on:click={() => dispatch('back')}>
+          <LeftArrow width="14" height="12" class="text-gray-800 mr-2" />
+          <div>
+            {$_('comp.topNavigation.back')}
+          </div>
+        </div>
+        <div class="flex pl-5 items-center border-l border-gray-300">
+          <sp-picker
+            id="compare-picker"
+            on:change={handleCompareChange}
+            value={$compareMode}
+            quiet
+            size="m">
+            <sp-menu-item value={CompareMode.Slider}>
+              {$_('comp.topNavigation.slider')}
+            </sp-menu-item>
+            <sp-menu-item value={CompareMode.Split}>
+              {$_('comp.topNavigation.split')}
+            </sp-menu-item>
+          </sp-picker>
         </div>
       </div>
-      <!-- <div>
-          <sp-field-label for="compare-picker" size="m">
-            {$_(selectedCompareText)}
-          </sp-field-label>
-          <sp-picker id="compare-picker" quiet size="m" label="Selection type">
-            <sp-menu-item>{$_('comp.topNavigation.slider')}</sp-menu-item>
-            <sp-menu-item>{$_('comp.topNavigation.split')}</sp-menu-item>
-          </sp-picker>
-        </div> -->
     {:else if showMenu}
       <sp-action-menu
         class="-ml-3"
@@ -78,8 +85,11 @@
       <sp-tabs
         selected="inspect"
         on:change={handleNavChange}
-        class="nav-tabs mt-1">
-        <sp-tab label={$_('comp.topNavigation.overview')} value="overview" />
+        class="nav-tabs mt-1 -ml-4">
+        <sp-tab
+          label={$_('comp.topNavigation.overview')}
+          value="overview"
+          disabled />
         <sp-tab label={$_('comp.topNavigation.inspect')} value="inspect" />
       </sp-tabs>
     {/if}
@@ -88,6 +98,8 @@
 
 <style lang="postcss">
   .container {
+    --spectrum-picker-m-text-color: var(--black);
+    --spectrum-picker-m-text-color-hover: var(--black);
     @apply flex bg-white border-b-2 border-gray-200 px-5 max-w-full z-30 items-stretch;
     grid-area: breadcrumb;
     height: 60px;

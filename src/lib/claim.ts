@@ -28,6 +28,9 @@ interface IBadgePropsInput {
   claim?: Claim;
 }
 
+/**
+ * Gets the path of IDs from the current node to the root node (active claim)
+ */
 export function getPath(node: HierarchyNode<ITreeNode>) {
   const path = [];
   let curr = node;
@@ -38,6 +41,9 @@ export function getPath(node: HierarchyNode<ITreeNode>) {
   return path;
 }
 
+/**
+ * Generates the badge props (used by the `cai-thumbnail`) from the claim data
+ */
 export function getBadgeProps({ claim }: IBadgePropsInput): IBadgeProps {
   if (claim) {
     return {

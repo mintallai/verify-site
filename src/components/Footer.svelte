@@ -14,6 +14,7 @@
   ];
 
   let languageMenu: HTMLElement;
+  let showLanguagePicker = false;
 
   const tippyOpts: Partial<TippyProps> = {
     interactive: true,
@@ -32,7 +33,7 @@
 </script>
 
 <footer>
-  {#if false}
+  {#if showLanguagePicker}
     <div bind:this={languageMenu}>
       <sp-menu value={currentLocale}>
         {#each mapping as [code, label]}
@@ -46,7 +47,7 @@
       </sp-menu>
     </div>
   {/if}
-  <sp-theme color="light" scale="medium" class="w-full">
+  <sp-theme color="lightest" scale="medium" class="w-full">
     <div class="flex justify-center items-center text-75">
       <span>
         {$_('comp.footer.copyright', { values: { year: '__year__' } })}
@@ -61,7 +62,7 @@
             $locale,
           )}
           target="_blank">{$_('comp.footer.termsOfUse')}</a>
-        {#if false}
+        {#if showLanguagePicker}
           <button
             use:tippy={{ content: languageMenu, ...tippyOpts }}
             slot="trigger"
