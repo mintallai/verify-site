@@ -1,7 +1,7 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
-import { ImageProvenance, Claim, Ingredient } from './lib/sdk';
+import { ImageProvenance, Claim, Ingredient, Source } from './lib/sdk';
 import type { ViewableItem, ITreeNode } from './lib/types';
 import debug from 'debug';
 
@@ -11,6 +11,7 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
+const SOURCE_ID = '__source__';
 
 /**
  * Syncs the URL params to the state
@@ -62,6 +63,8 @@ export const primaryPath = writable<string[]>([]);
  */
 export const secondaryPath = writable<string[]>([]);
 
+export const isLoading = writable<boolean>(false);
+
 export const isBurgerMenuShown = writable<boolean>(false);
 
 export const isMobileViewerShown = writable<boolean>(false);
@@ -97,6 +100,10 @@ export function setCompareMode(mode: CompareMode) {
  */
 export function getFaqUrl(id: string = FAQ_VERIFY_SECTION_ID): string {
   return `${FAQ_URL}#${id}`;
+}
+
+export function setIsLoading(loading) {
+  isLoading.set(loading);
 }
 
 /**
@@ -151,33 +158,12 @@ export const provenance = writable<ImageProvenance | null>(null, (set) => {
 export async function setProvenance(result: ImageProvenance | null) {
   dbg('Calling setProvenance');
 
-  if (result?.exists) {
+  if (result) {
     provenance.set(result);
     navigateToRoot();
   } else {
     dbg('No provenance found');
     provenance.set(null);
-  }
-}
-
-/**
- * Calculates the root claim ID (the ID of the latest claim) contained in the store report.
- */
-export const rootClaimId = derived<[typeof provenance], string | null>(
-  [provenance],
-  ([$provenance]) => $provenance?.activeClaim.id ?? null,
-);
-
-/**
- * Convenience function to navigate to the root claim
- *
- * @param logEvent `true` to log this event in New Relic
- */
-export function navigateToRoot(logEvent = true): void {
-  const rootId = get(rootClaimId);
-  if (rootId) {
-    secondaryPath.set([]);
-    navigateToPath([rootId], logEvent);
   }
 }
 
@@ -206,7 +192,9 @@ export const primaryAsset = derived<
   [typeof provenance, typeof primaryId],
   ViewableItem | undefined
 >([provenance, primaryId], ([$provenance, $primaryId]) => {
-  return $provenance?.resolveId($primaryId);
+  return $primaryId === SOURCE_ID
+    ? $provenance?.source
+    : $provenance?.resolveId($primaryId);
 });
 
 /**
@@ -226,29 +214,65 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
       name: node.title,
       claim: node,
       asset: node.asset ?? undefined,
+      errors: node.errors,
       children: node.ingredients?.map(parseProvenance),
     };
   }
-  const ingredient = node as Ingredient;
-  return {
-    id: node.claim?.id ?? node.id,
-    name: ingredient.title,
-    claim: ingredient.claim,
-    asset: ingredient.claim?.asset ?? ingredient,
-    children: ingredient.claim?.ingredients.map(parseProvenance) ?? [],
-  };
+  if (node instanceof Ingredient) {
+    return {
+      id: node.claim?.id ?? node.id,
+      name: node.title,
+      claim: node.claim,
+      asset: node.claim?.asset ?? node,
+      errors: node.errors,
+      children: node.claim?.ingredients.map(parseProvenance) ?? [],
+    };
+  }
 }
 
 export const hierarchy = derived<
   [typeof provenance],
   HierarchyNode<ITreeNode> | null
 >([provenance], ([$provenance]) => {
-  const activeClaim = $provenance?.activeClaim;
-  if (activeClaim) {
-    // TODO: We can access the errors like so:
-    // const errors = $provenance?.errors;
-    // $provenance.source has the thumbnail and filename of the image that was dragged in
-    return d3Hierarchy(parseProvenance(activeClaim));
+  if ($provenance) {
+    const { source, activeClaim, errors } = $provenance;
+    // We have a normal claim structure and no top-level errors
+    if (activeClaim && !errors.length) {
+      return d3Hierarchy(parseProvenance(activeClaim));
+    }
+    // We have top-level errors or no metadata on this image
+    // Show the source
+    if (source && (errors.length || !activeClaim)) {
+      return d3Hierarchy({
+        id: SOURCE_ID,
+        name: source.filename,
+        claim: null,
+        asset: source,
+        errors,
+        children: activeClaim ? [parseProvenance(activeClaim)] : [],
+      });
+    }
   }
   return null;
 });
+
+/**
+ * Calculates the root claim ID (the ID of the latest claim) contained in the store report.
+ */
+export const rootId = derived<[typeof hierarchy], string | undefined>(
+  [hierarchy],
+  ([$hierarchy]) => $hierarchy?.data?.id,
+);
+
+/**
+ * Convenience function to navigate to the root claim
+ *
+ * @param logEvent `true` to log this event in New Relic
+ */
+export function navigateToRoot(logEvent = true): void {
+  const id = get(rootId);
+  if (id) {
+    secondaryPath.set([]);
+    navigateToPath([id], logEvent);
+  }
+}

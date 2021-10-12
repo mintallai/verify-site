@@ -1,4 +1,10 @@
-import type { Claim, Ingredient, Asset } from '@contentauth/sdk';
+import type {
+  Claim,
+  Ingredient,
+  Asset,
+  Source,
+  IError,
+} from '@contentauth/sdk';
 
 export type BadgeType = 'none' | 'info' | 'missing';
 
@@ -7,13 +13,14 @@ export interface IBadgeProps {
   badgeHelpText: string | null;
 }
 
-export type ViewableItem = Claim | Ingredient;
+export type ViewableItem = Claim | Ingredient | Source;
 
 export interface ITreeNode {
   id: string;
   name: string;
   claim?: Claim;
-  asset?: Asset;
+  asset?: Asset | Source;
   isExpanded?: boolean;
+  errors: IError[];
   children?: ITreeNode[];
 }

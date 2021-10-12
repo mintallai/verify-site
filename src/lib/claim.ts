@@ -1,4 +1,3 @@
-import compact from 'lodash/fp/compact';
 import { HierarchyNode } from 'd3-hierarchy';
 import { Claim, Ingredient } from './sdk';
 import type { IBadgeProps, ITreeNode, ViewableItem } from './types';
@@ -21,7 +20,7 @@ export function getIsOriginal(claim: Claim) {
   const noIngredients = claim.ingredients.length === 0;
   const actionAssertion = claim.findAssertion(ACTION_ASSERTION_LABEL);
   const actions = actionAssertion?.data?.actions;
-  const isDelivered = actions.find((x) => x.action === DELIVERED_ACTION);
+  const isDelivered = actions?.find((x) => x.action === DELIVERED_ACTION);
   return noIngredients && !isDelivered;
 }
 
@@ -29,6 +28,9 @@ interface IBadgePropsInput {
   claim?: Claim;
 }
 
+/**
+ * Gets the path of IDs from the current node to the root node (active claim)
+ */
 export function getPath(node: HierarchyNode<ITreeNode>) {
   const path = [];
   let curr = node;
@@ -39,11 +41,14 @@ export function getPath(node: HierarchyNode<ITreeNode>) {
   return path;
 }
 
+/**
+ * Generates the badge props (used by the `cai-thumbnail`) from the claim data
+ */
 export function getBadgeProps({ claim }: IBadgePropsInput): IBadgeProps {
   if (claim) {
     return {
       badgeType: 'info',
-      badgeHelpText: 'comp.asset.badgeInfoHelpText',
+      badgeHelpText: 'comp.asset.badgeInfo.helpText',
     };
   }
 }
@@ -66,16 +71,4 @@ export function getWebsite(claim: Claim): string | undefined {
       return site;
     }
   }
-}
-
-/**
- * Gets the claim data associated with a ViewableItem (claim/ingredient)
- */
-export function getAssociatedClaim(item: ViewableItem): ViewableItem | null {
-  if (item instanceof Claim) {
-    return item;
-  } else if (item instanceof Ingredient) {
-    return item.parent;
-  }
-  return null;
 }

@@ -4,10 +4,10 @@
   import { _ } from 'svelte-i18n';
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
-  import { getSdk, Claim, Ingredient } from '../lib/sdk';
+  import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
-  import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
+  import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
   import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
   import Header from '../components/Header.svelte';
@@ -28,6 +28,8 @@
     secondaryAsset,
     isBurgerMenuShown,
     isMobileViewerShown,
+    isLoading,
+    setIsLoading,
   } from '../stores';
   import type { ViewableItem } from '../lib/types';
 
@@ -46,14 +48,13 @@
 
   $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $provenance;
-  $: isLoading = !$provenance;
+  $: hasContent = sourceParam || $provenance || $isLoading;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
-  $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
+  $: hasTopNav = hasContent && (noMetadata || primary);
   $: errorMessage = error && 'Unknown';
   $: {
     // Cancel the tour if the overlay is showing
@@ -90,10 +91,20 @@
 
     if (sourceParam) {
       try {
-        const sdk = await getSdk();
-        const result = await sdk.processImage(sourceParam);
-        await window.newrelic?.setCustomAttribute('source', sourceParam);
-        setProvenance(result);
+        setIsLoading(true);
+        try {
+          const sdk = await getSdk();
+          const result = await sdk.processImage(sourceParam);
+          await window.newrelic?.setCustomAttribute('source', sourceParam);
+          setProvenance(result);
+        } catch (err) {
+          console.error('Could not process file:', err);
+          window.newrelic?.noticeError(err, {
+            source: 'url',
+          });
+        } finally {
+          setIsLoading(false);
+        }
         if (isMobileViewer === false) {
           // tour = startTour({
           //   provenance: $provenance,
@@ -146,7 +157,7 @@
 <main
   class="theme-light"
   class:comparing={isComparing}
-  class:has-breadcrumb-bar={hasBreadcrumbBar}>
+  class:has-top-nav={hasTopNav}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -154,8 +165,8 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if hasBreadcrumbBar}
-    <Breadcrumb
+  {#if hasTopNav}
+    <TopNavigation
       {isComparing}
       {noMetadata}
       {source}
@@ -163,26 +174,24 @@
   {/if}
   {#if hasContent}
     {#if error}
-      <section class="left-col" class:loading={isLoading} />
+      <section class="left-col" class:loading={$isLoading} />
       <Viewer isError={!!error} />
       <section class="right-col p-4">
         <Alert severity="error">{errorMessage}</Alert>
       </section>
-    {:else if isLoading}
-      <section class="left-col" class:loading={isLoading}>
+    {:else if $isLoading}
+      <section class="left-col" class:loading={$isLoading}>
         <CircleLoader />
       </section>
       <Viewer isLoading={true} isDragging={isDraggingOver} />
-      <section class="right-col" class:loading={isLoading}>
+      <section class="right-col" class:loading={$isLoading}>
         <CircleLoader />
       </section>
     {:else if noMetadata}
       <section class="left-col">
         <Navigation {source} />
       </section>
-      {#await $provenance?.source?.generateUrl() then thumbnail}
-        <Viewer {thumbnail} isDragging={isDraggingOver} />
-      {/await}
+      <Viewer asset={$provenance?.source} isDragging={isDraggingOver} />
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
@@ -202,12 +211,10 @@
       </section>
       {#if isComparing}
         <Comparison {primary} {secondary} />
+      {:else if primary instanceof Source}
+        <Viewer asset={primary} isDragging={isDraggingOver} />
       {:else}
-        {#await primary?.asset?.generateThumbnailUrl() then thumbnail}
-          <div transition:fade={{ duration: 150 }}>
-            <Viewer {thumbnail} isDragging={isDraggingOver} />
-          </div>
-        {/await}
+        <Viewer asset={primary?.asset} isDragging={isDraggingOver} />
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary instanceof Claim}
@@ -261,7 +268,7 @@
       'right'
       'footer';
   }
-  main.has-breadcrumb-bar {
+  main.has-top-nav {
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 70px;
     grid-template-areas:
       'header'
@@ -300,7 +307,7 @@
       'left right'
       'footer footer';
   }
-  main.comparing.has-breadcrumb-bar {
+  main.comparing.has-top-nav {
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
     grid-template-areas:
       'header header'
@@ -323,8 +330,8 @@
         'left viewer right'
         'footer footer footer';
     }
-    main.has-breadcrumb-bar,
-    main.comparing.has-breadcrumb-bar {
+    main.has-top-nav,
+    main.comparing.has-top-nav {
       grid-template-rows: 80px 60px 1fr 55px;
       grid-template-areas:
         'header header header'

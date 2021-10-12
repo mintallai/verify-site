@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
   import { _, date, time, locale } from 'svelte-i18n';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Thumbnail from './Thumbnail.svelte';
-  import Alert from './Alert.svelte';
-  import { navigateToChild, compareWithPath, provenance } from '../stores';
+  import { navigateToChild } from '../stores';
   import {
     getBadgeProps,
     getIsBeta,
@@ -21,6 +19,7 @@
     ActionsAssertion,
     CreativeWorkAssertion,
     RecorderFormat,
+    AdobeCryptoAddressesAssertion,
   } from '../lib/sdk';
   import debug from 'debug';
 
@@ -29,9 +28,6 @@
   export let claim: Claim;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
-  let element: HTMLElement;
-  let secureCapture = false;
-  let thumbnailDisposers = [];
 
   $: isOriginal = getIsOriginal(claim);
   $: actionsAssertion = claim.findAssertion(
@@ -40,7 +36,11 @@
   $: creativeWorkAssertion = claim.findAssertion(
     AssertionLabel.CreativeWork,
   ) as CreativeWorkAssertion | null;
+  $: cryptoAssertion = claim.findAssertion(
+    AssertionLabel.AdobeCryptoAddresses,
+  ) as AdobeCryptoAddressesAssertion | null;
   $: producer = creativeWorkAssertion?.producer?.name ?? '';
+  $: asset = claim.asset;
   $: title = claim.title;
   $: assets = claim.ingredients?.length ? claim.ingredients : null;
   $: signedBy = claim.signature.issuer;
@@ -48,34 +48,44 @@
   $: recorder = claim.formatRecorder(RecorderFormat.ProgramNameAndVersion);
   $: isBeta = getIsBeta(claim);
   $: website = getWebsite(claim);
+  $: socialAccounts = creativeWorkAssertion?.socialAccounts ?? [];
+  $: cryptoAddresses = cryptoAssertion?.data?.ethereum ?? [];
 
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
   });
-  $: assetsStrings = JSON.stringify({
-    CLAIM_INFO_HELP_TEXT: $_('comp.about.assets.claimInfoHelpText'),
-  });
-
-  onDestroy(() => {
-    thumbnailDisposers.forEach((fn) => fn());
-  });
 </script>
 
 <div class="w-full flex justify-center">
-  <div class="info w-full max-w-xs lg:pb-4" bind:this={element}>
-    {#if isComparing}
-      <div class="file-name">
-        <div class="label">{$_('comp.about.fileName')}</div>
-        <div class="value">{title}</div>
-      </div>
-    {/if}
+  <div class="info w-full max-w-xs">
+    <div>
+      <dl class="attributes">
+        <dt>
+          <div>{$_('comp.about.contentCredentials.header')}</div>
+          <cai-tooltip placement="left" class="theme-spectrum">
+            <div slot="content" class="text-gray-900" style="width: 200px;">
+              {$_('comp.about.contentCredentials.helpText')}
+            </div>
+          </cai-tooltip>
+        </dt>
+        <dd class="flex space-x-2 items-center mt-1">
+          <div class="w-12 h-12">
+            <Thumbnail {asset} {...getBadgeProps({ claim })} />
+          </div>
+          <div>
+            <h6>File name</h6>
+            <div>{title}</div>
+          </div>
+        </dd>
+      </dl>
+    </div>
     <div>
       <dl class="attributes">
         <dt>
           <div class="whitespace-nowrap">{$_('comp.about.signedBy')}</div>
           <cai-tooltip placement="left" class="theme-spectrum">
             <div slot="content" class="text-gray-900" style="width: 200px;">
-              {$_('comp.about.signedByHelpText')}
+              {$_('comp.about.signedBy.helpText')}
             </div>
           </cai-tooltip>
         </dt>
@@ -95,9 +105,9 @@
     <div>
       <dl class="attributes">
         <dt>{$_('comp.about.producedWith')}</dt>
-        <dd class="flex space-x-2">
+        <dd class="flex">
           <div class="relative top-0.5">
-            <ProviderIcon provider={recorder} />
+            <ProviderIcon provider={recorder} class="mr-2" />
           </div>
           <div class="break-word">
             <div>{recorder}</div>
@@ -108,7 +118,7 @@
         </dd>
       </dl>
     </div>
-    {#await actionsAssertion.getCategories($locale) then categories}
+    {#await actionsAssertion?.getCategories($locale) then categories}
       {#if categories}
         <div>
           <dl class="attributes">
@@ -134,42 +144,40 @@
       {/if}
     {/await}
     <div>
-      <dl class="attributes">
-        <dt>
-          <div class="whitespace-nowrap">
-            {$_('comp.about.assets.header')}
-          </div>
-          <cai-tooltip placement="left" class="theme-spectrum">
-            <div slot="content" class="text-gray-900" style="width: 200px;">
-              {$_('comp.about.assets.helpText')}
+      {#if isOriginal}
+        <OriginalCreation type="original" {claim} />
+      {:else}
+        <dl class="attributes">
+          <dt>
+            <div class="whitespace-nowrap">
+              {$_('comp.about.assets.header')}
             </div>
-          </cai-tooltip>
-        </dt>
-        <dd class="pt-2 pb-1">
-          {#if assets}
-            <div class="assets-used">
-              {#each assets as asset}
-                {#await asset.generateThumbnailUrl() then thumbnail}
+            <cai-tooltip placement="left" class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 200px;">
+                {$_('comp.about.assets.helpText')}
+              </div>
+            </cai-tooltip>
+          </dt>
+          <dd class="pt-2 pb-1">
+            {#if assets}
+              <div class="assets-used">
+                {#each assets as asset}
                   <div
                     class="w-12 h-12 cursor-pointer"
                     on:click={() =>
                       navigateToChild(asset.claim?.id ?? asset.id)}>
                     <Thumbnail
-                      {thumbnail}
+                      {asset}
                       {...getBadgeProps({ claim: asset.claim })} />
                   </div>
-                {/await}
-              {/each}
-            </div>
-          {:else if isOriginal || secureCapture}
-            <OriginalCreation
-              type={secureCapture ? 'secureCapture' : 'original'}
-              {claim} />
-          {:else}
-            {$_('comp.about.none')}
-          {/if}
-        </dd>
-      </dl>
+                {/each}
+              </div>
+            {:else}
+              {$_('comp.about.none')}
+            {/if}
+          </dd>
+        </dl>
+      {/if}
     </div>
     {#if producer}
       <div>
@@ -178,7 +186,7 @@
             <div class="whitespace-nowrap">{$_('comp.about.producedBy')}</div>
             <cai-tooltip placement="left" class="theme-spectrum">
               <div slot="content" class="text-gray-900" style="width: 150px;">
-                {$_('comp.about.producedByHelpText')}
+                {$_('comp.about.producedBy.helpText')}
               </div>
             </cai-tooltip>
           </dt>
@@ -193,7 +201,7 @@
             <div class="whitespace-nowrap">{$_('comp.about.website')}</div>
             <cai-tooltip placement="left" class="theme-spectrum">
               <div slot="content" class="text-gray-900" style="width: 150px;">
-                {$_('comp.about.websiteHelpText')}
+                {$_('comp.about.website.helpText')}
               </div>
             </cai-tooltip>
           </dt>
@@ -201,6 +209,48 @@
             <a href={website} target="_blank" class="link">{website}</a>
           </dd>
         </dl>
+      </div>
+    {/if}
+    {#if socialAccounts.length || cryptoAddresses.length}
+      <div class="space-y-4">
+        {#if socialAccounts.length}
+          <dl class="attributes">
+            <dt class="flex space-x-2">
+              <div class="whitespace-nowrap">{$_('comp.about.social')}</div>
+              <cai-tooltip placement="left" class="theme-spectrum">
+                <div slot="content" class="text-gray-900" style="width: 150px;">
+                  {$_('comp.about.social.helpText')}
+                </div>
+              </cai-tooltip>
+            </dt>
+            <dd class="social-accounts">
+              {#each socialAccounts as account (account['@id'])}
+                <div class="relative top-0.5">
+                  <ProviderIcon provider={account['@id']} class="mr-2" />
+                </div>
+                <a href={account['@id']} target="_blank" class="link"
+                  >@{account.name}</a>
+              {/each}
+            </dd>
+          </dl>
+        {/if}
+        {#if cryptoAddresses.length}
+          <dl class="attributes">
+            <dt class="flex space-x-2">
+              <div class="whitespace-nowrap">{$_('comp.about.crypto')}</div>
+              <cai-tooltip placement="left" class="theme-spectrum">
+                <div slot="content" class="text-gray-900" style="width: 150px;">
+                  {$_('comp.about.crypto.helpText')}
+                </div>
+              </cai-tooltip>
+            </dt>
+            <dd>
+              {#each cryptoAddresses as address}
+                <div class="break-all">{address.toString().toLowerCase()}</div>
+              {/each}
+            </dd>
+          </dl>
+        {/if}
       </div>
     {/if}
   </div>
@@ -214,18 +264,15 @@
     @apply pt-0;
   }
   .info > div:last-child {
-    @apply border-none pb-0;
-  }
-  .file-name .label {
-    @apply text-75 text-gray-700 font-bold uppercase mb-1;
-  }
-  .file-name .value {
-    @apply text-150 text-gray-900 font-bold truncate;
-    max-width: calc((100vw / 2) - 30px);
+    @apply border-none;
   }
   .assets-used {
     @apply grid gap-3;
     grid-template-columns: repeat(auto-fit, 48px);
+  }
+  .social-accounts {
+    @apply grid gap-x-2 gap-y-1 items-center;
+    grid-template-columns: 16px auto;
   }
   @screen md {
     .info {

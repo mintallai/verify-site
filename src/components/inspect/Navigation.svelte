@@ -4,7 +4,7 @@
   import Button from '../Button.svelte';
   import OriginalCreation from './OriginalCreation.svelte';
   import HierarchyNode from './HierarchyNode.svelte';
-  import { primaryId, hierarchy, isCompareSelectMode } from '../../stores';
+  import { hierarchy, isCompareSelectMode } from '../../stores';
   import type { ViewableItem } from '../../lib/types';
   import { Claim, Source } from '../../lib/sdk';
 
@@ -17,7 +17,7 @@
 </script>
 
 <div class="h-full relative">
-  <div class="p-4 pb-1">
+  <div class="nav-width p-4 pb-1">
     <h2 class="my-0 mb-2">
       <span>{$_('comp.navigation.title')}</span>
     </h2>
@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="relative pl-4">
-    <div bind:this={container} class="grid space-y-4">
+    <div bind:this={container} class="grid space-y-4 pt-2">
       {#if $hierarchy}
         <HierarchyNode node={$hierarchy} />
       {/if}
@@ -37,9 +37,9 @@
       <OriginalCreation type="secureCapture" {claim} />
     </div>
   {/if}
-  {#if $hierarchy.children}
+  {#if $hierarchy?.children}
     <div
-      class="sticky bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent">
+      class="sticky nav-width bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent">
       <div class="pointer-events-auto">
         <Button
           on:click={() => isCompareSelectMode.update((x) => !x)}
@@ -48,11 +48,10 @@
       </div>
     </div>
   {/if}
-  {#if source && !claim}
-    <div class="relative pl-4">
-      <div bind:this={container} class="grid space-y-4">
-        <!-- <Asset {source} current={true} /> -->
-      </div>
-    </div>
-  {/if}
 </div>
+
+<style lang="postcss">
+  .nav-width {
+    max-width: var(--nav-width, 320px);
+  }
+</style>
