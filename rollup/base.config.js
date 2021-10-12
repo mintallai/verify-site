@@ -182,6 +182,13 @@ function baseConfig(config, ctx) {
       commonjs(),
       url({
         publicPath: '/build/',
+        include: [
+          '**/*.noparse.svg',
+          '**/*.png',
+          '**/*.jp(e)?g',
+          '**/*.gif',
+          '**/*.webp',
+        ],
       }),
 
       production &&

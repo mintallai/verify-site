@@ -8,6 +8,8 @@
   import heroBkg from '../../assets/svg/home/adjustedHero.noparse.svg';
   import Arrow from '../../assets/svg/monochrome/arrow-back.svg';
 
+  // Section 0
+  import hero from '../../assets/png/hero.png';
   // Section 1
   import composition from '../../assets/png/composition@2x.png';
   // Section 2 image
@@ -29,13 +31,18 @@
     <div
       class="w-screen object-fill bg-cover bg-center"
       style="max-height: 600px; min-height: 500px; background-image: url({heroBkg});" />
-    <div class="hero">
-      <div
-        class="text-white lg:text-8xl text-7xl font-bold font-serif text-center">
-        {$_('page.hero.tagline')}
+    <div class="hero grid grid-cols-6 gap-4">
+      <div class="w-full col-span-6 lg:col-span-3 order-1">
+        <div
+          class="text-white lg:text-8xl text-7xl font-bold font-serif text-center">
+          {$_('page.hero.tagline')}
+        </div>
+        <div class="text-white lg:text-5xl text-3xl font-normal text-center">
+          {$_('page.hero.description')}
+        </div>
       </div>
-      <div class="text-white lg:text-5xl text-3xl font-normal text-center">
-        {$_('page.hero.description')}
+      <div class="w-full lg:col-span-4 order-2 sm:hidden">
+        <img src={hero} alt="Person taking picture with smartphone" />
       </div>
       <sp-button
         variant="primary"
