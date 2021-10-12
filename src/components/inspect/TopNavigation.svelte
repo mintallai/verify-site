@@ -16,6 +16,9 @@
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
 
+  type Page = 'overview' | 'inspect';
+
+  export let currentPage: Page = 'overview';
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
   export let source: Source | null = null;
@@ -83,13 +86,10 @@
       <div class="breadcrumb-item" class:current={true} />
     {:else}
       <sp-tabs
-        selected="inspect"
+        selected={currentPage}
         on:change={handleNavChange}
         class="nav-tabs mt-1 -ml-4">
-        <sp-tab
-          label={$_('comp.topNavigation.overview')}
-          value="overview"
-          disabled />
+        <sp-tab label={$_('comp.topNavigation.overview')} value="overview" />
         <sp-tab label={$_('comp.topNavigation.inspect')} value="inspect" />
       </sp-tabs>
     {/if}

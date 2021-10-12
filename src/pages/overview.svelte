@@ -6,16 +6,13 @@
   import dragDrop from 'drag-drop';
   import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
-  import Alert from '../components/Alert.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
   import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import Navigation from '../components/inspect/Navigation.svelte';
-  import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
-  import Viewer from '../components/inspect/Viewer.svelte';
+  import TreeView from '../components/overview/TreeView.svelte';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
@@ -54,7 +51,6 @@
   $: isComparing = !!(primary && secondary);
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
-  $: hasTopNav = hasContent && (noMetadata || primary);
   $: errorMessage = error && 'Unknown';
   $: {
     // Cancel the tour if the overlay is showing
@@ -154,10 +150,7 @@
 <svelte:head>
   <title>{$_('page.title')}</title>
 </svelte:head>
-<main
-  class="theme-light"
-  class:comparing={isComparing}
-  class:has-top-nav={hasTopNav}>
+<main class="theme-light">
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -165,90 +158,21 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if hasTopNav}
-    <TopNavigation
-      {isComparing}
-      {noMetadata}
-      {source}
-      currentPage="inspect"
-      on:back={partial(handleClose, secondary)} />
-  {/if}
+  <TopNavigation
+    {isComparing}
+    {noMetadata}
+    {source}
+    currentPage="overview"
+    on:back={partial(handleClose, secondary)} />
   {#if hasContent}
-    {#if error}
-      <section class="left-col" class:loading={$isLoading} />
-      <Viewer isError={!!error} />
-      <section class="right-col p-4">
-        <Alert severity="error">{errorMessage}</Alert>
-      </section>
-    {:else if $isLoading}
-      <section class="left-col" class:loading={$isLoading}>
-        <CircleLoader />
-      </section>
-      <Viewer isLoading={true} isDragging={isDraggingOver} />
-      <section class="right-col" class:loading={$isLoading}>
-        <CircleLoader />
-      </section>
-    {:else if noMetadata}
-      <section class="left-col">
-        <Navigation {source} />
-      </section>
-      <Viewer asset={$provenance?.source} isDragging={isDraggingOver} />
-      <section class="right-col p-4">
-        <ContentCredentialsError {isComparing} />
-      </section>
-    {:else if primary}
-      <section class="left-col">
-        {#if !isComparing}
-          <Navigation claim={primary} />
-        {:else if primary instanceof Claim}
-          <div class="w-full p-4 pt-0 md:pt-4">
-            <About claim={primary} {isComparing} {isMobileViewer} />
-          </div>
-        {:else if primary instanceof Ingredient}
-          <div class="wrapper">
-            <ContentCredentialsError {isComparing} />
-          </div>
-        {/if}
-      </section>
-      {#if isComparing}
-        <Comparison {primary} {secondary} />
-      {:else if primary instanceof Source}
-        <Viewer asset={primary} isDragging={isDraggingOver} />
-      {:else}
-        <Viewer asset={primary?.asset} isDragging={isDraggingOver} />
+    <TreeView />
+    <section class="right-col p-4 pt-0 md:pt-4">
+      {#if primary instanceof Claim}
+        <div class="wrapper">
+          <About claim={primary} {isComparing} {isMobileViewer} />
+        </div>
       {/if}
-      <section class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing && primary instanceof Claim}
-          <div class="wrapper">
-            <About claim={primary} {isComparing} {isMobileViewer} />
-            {#if isMobileViewer}
-              <CompareLatestButton claim={primary} {isComparing} />
-            {/if}
-          </div>
-        {:else if !isComparing && primary instanceof Ingredient}
-          <div class="wrapper">
-            <ContentCredentialsError {isComparing} />
-            {#if isMobileViewer}
-              <CompareLatestButton claim={null} {isComparing} />
-            {/if}
-          </div>
-        {:else if secondary instanceof Claim}
-          <About claim={secondary} {isComparing} {isMobileViewer} />
-        {:else if secondary instanceof Ingredient}
-          <ContentCredentialsError {isComparing} />
-        {/if}
-      </section>
-    {/if}
-  {:else}
-    <section />
-    <Viewer isDragging={isDraggingOver} />
-    {#if error}
-      <section class="right-col p-4">
-        <Alert severity="error">{errorMessage}</Alert>
-      </section>
-    {:else}
-      <section />
-    {/if}
+    </section>
   {/if}
   <Footer />
 </main>
@@ -262,14 +186,6 @@
 
     @apply grid w-screen min-h-screen h-full font-base;
     grid-template-columns: 100%;
-    grid-template-rows: 80px var(--viewer-height) 1fr 70px;
-    grid-template-areas:
-      'header'
-      'viewer'
-      'right'
-      'footer';
-  }
-  main.has-top-nav {
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 70px;
     grid-template-areas:
       'header'
@@ -292,53 +208,21 @@
     @apply max-h-full;
     grid-area: right;
   }
-  main.comparing section.right-col > .wrapper {
-    @apply sticky top-10;
-  }
   .menu-overlay {
     @apply fixed inset-0 z-20;
     background-color: rgba(0, 0, 0, 0.2);
-  }
-  main.comparing {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 80px var(--viewer-height) 1fr 55px;
-    grid-template-areas:
-      'header header'
-      'viewer viewer'
-      'left right'
-      'footer footer';
-  }
-  main.comparing.has-top-nav {
-    grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
-    grid-template-areas:
-      'header header'
-      'breadcrumb breadcrumb'
-      'viewer viewer'
-      'left right'
-      'footer footer';
-  }
-  main.comparing section.left-col {
-    @apply flex;
   }
   @screen lg {
     main,
     main.comparing {
       @apply fixed inset-0;
-      grid-template-columns: 320px 1fr 320px;
-      grid-template-rows: 80px 1fr 55px;
-      grid-template-areas:
-        'header header header'
-        'left viewer right'
-        'footer footer footer';
-    }
-    main.has-top-nav,
-    main.comparing.has-top-nav {
+      grid-template-columns: 1fr 320px;
       grid-template-rows: 80px 60px 1fr 55px;
       grid-template-areas:
-        'header header header'
-        'breadcrumb breadcrumb breadcrumb'
-        'left viewer right'
-        'footer footer footer';
+        'header header'
+        'breadcrumb breadcrumb'
+        'viewer right'
+        'footer footer';
     }
     section {
       @apply overflow-auto;
