@@ -1,27 +1,27 @@
 import {
   register,
   init,
+  locale,
   getLocaleFromQueryString,
   getLocaleFromNavigator,
 } from 'svelte-i18n';
+import { lang } from '@intl/adobe-locales';
 import groupBy from 'lodash/groupBy';
 import debug from 'debug';
 
 const dbg = debug('i18n');
 
-const DEFAULT_LOCALE = 'en-US';
+export const DEFAULT_LOCALE = 'en-US';
 const LOCALSTORAGE_KEY = 'locale';
-const SUPPORTED_LOCALES = process.env.SUPPORTED_LOCALES as string[];
 const GIT_REVISION = process.env.GIT_REVISION as string;
 
-const supportedLanguages = groupBy(
-  SUPPORTED_LOCALES,
-  (locale) => locale.split('-')[0],
-);
+export const supportedLocales = process.env.SUPPORTED_LOCALES as string[];
+
+export const supportedLanguages = groupBy(supportedLocales, lang);
 
 function getSupportedLocale(locale: string) {
   const prefix = locale.split('-')[0];
-  const matchingLocales = supportedLanguages[prefix] ?? [];
+  const matchingLocales: string[] = supportedLanguages[prefix] ?? [];
   if (matchingLocales.includes(locale)) {
     return locale;
   }
@@ -32,7 +32,7 @@ function getSupportedLocale(locale: string) {
 }
 
 export function initI18n() {
-  SUPPORTED_LOCALES.forEach((locale) => {
+  supportedLocales.forEach((locale) => {
     register(locale, async () => {
       const url = `/locales/${locale}.json?rev=${GIT_REVISION}`;
       dbg(`Fetching locale information for ${locale} from ${url}`);
@@ -60,4 +60,9 @@ export function initI18n() {
     fallbackLocale: DEFAULT_LOCALE,
     initialLocale,
   });
+}
+
+export function setLanguage(lang: string) {
+  locale.set(lang);
+  window.localStorage.setItem(LOCALSTORAGE_KEY, lang);
 }

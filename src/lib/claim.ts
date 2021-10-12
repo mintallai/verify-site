@@ -26,11 +26,10 @@ import debug from 'debug';
 const dbg = debug('claim');
 
 const ACTION_ASSERTION_LABEL = 'c2pa.actions';
-const ACTION_ID_KEY = 'stEvt:parameters';
-const IDENTITY_ASSERTION_LABEL = 'c2pa.identity.v1';
 const CREATIVEWORK_ASSERTION_LABEL = 'stds.schema-org.CreativeWork';
+const BETA_LABEL = 'adobe.beta';
 const DICTIONARY_ASSERTION_LABEL = 'adobe.dictionary';
-const DEFAULT_LOCALE = 'en-US';
+const DELIVERED_ACTION = 'adobe.delivered';
 const DEFAULT_ICON_VARIANT = 'dark';
 const UNCATEGORIZED_ID = 'UNCATEGORIZED';
 const ingredientIdRegExp = /^(\S+)\[(\d+)\]$/;
@@ -111,23 +110,32 @@ interface IDictionaryCategoryWithId extends IDictionaryCategory {
   id: string;
 }
 
+interface ITranslatedDictionaryCategory {
+  id: string;
+  icon: string;
+  label: string;
+  description: string;
+}
+
 /**
  * Uses the dictionary to translate an action name into category information
  */
 export function translateActionName(
   dictionary: IDictionary,
   actionId: string,
-): IDictionaryCategoryWithId {
+  locale: string,
+): ITranslatedDictionaryCategory {
   const categoryId = dictionary.actions[actionId]?.category ?? UNCATEGORIZED_ID;
   if (categoryId === UNCATEGORIZED_ID) {
     dbg('Could not find category for actionId', actionId);
   }
-  // TODO: Use proper locale
   const category = dictionary.categories[categoryId];
   if (category) {
     return {
-      ...category,
       id: categoryId,
+      icon: category.icon,
+      label: category.labels[locale],
+      description: category.descriptions[locale],
     };
   }
   return null;
@@ -139,12 +147,12 @@ export function translateActionName(
  */
 const processCategories = flow(
   compact,
-  map<IDictionaryCategoryWithId, IEditCategory>((category) => ({
-    id: category.id,
-    icon: category.icon?.replace('{variant}', DEFAULT_ICON_VARIANT),
-    label: category.labels?.[DEFAULT_LOCALE],
-    description: category.descriptions?.[DEFAULT_LOCALE],
-  })),
+  map<ITranslatedDictionaryCategory, IEditCategory>((category) => {
+    return {
+      ...category,
+      icon: category.icon?.replace('{variant}', DEFAULT_ICON_VARIANT),
+    };
+  }),
   uniqBy((category) => category.id),
   sortBy((category) => category.label),
 );
@@ -156,6 +164,7 @@ const processCategories = flow(
  */
 export function getCategories(
   claim: IEnhancedClaimReport,
+  locale: string,
 ): IEditCategory[] | null {
   const { dictionary } = claim;
   const actionAssertion = claim.assertions.find(
@@ -166,7 +175,14 @@ export function getCategories(
   if (dictionary && actions) {
     return processCategories(
       actions.map((action) =>
-        translateActionName(dictionary, action[ACTION_ID_KEY]),
+        translateActionName(
+          dictionary,
+          // TODO: The Photoshop dictionary seems a bit weird that we are switching on `parameters`
+          // instead of `actions` (it has a top-level actions key with parameter values).
+          // This will be discussed as part of this epic: https://app.shortcut.com/cai/epic/6806
+          action.action === 'c2pa.edited' ? action.parameters : action.action,
+          locale,
+        ),
       ),
     );
   }
@@ -191,6 +207,16 @@ export function getCategories(
   return null;
 }
 
+export function getIsOriginal(claim: IEnhancedClaimReport) {
+  const noIngredients = claim.ingredients.length === 0;
+  const actionAssertion = claim.assertions.find(
+    (x) => x.label === ACTION_ASSERTION_LABEL,
+  );
+  const actions = actionAssertion?.data?.actions;
+  const isDelivered = actions.find((x) => x.action === DELIVERED_ACTION);
+  return noIngredients && !isDelivered;
+}
+
 /**
  * Gets the title for the claim or ingredient
  */
@@ -200,30 +226,17 @@ export function getTitle(item: ViewableItem) {
 
 /**
  * Gets the producer from the identity assertion in the claim
- *
- * // TODO: Remove support for identity assertion when we are no longer using it
  */
 export function getProducer(claim: IEnhancedClaimReport) {
-  const assertion = claim.assertions.find((x) =>
-    [CREATIVEWORK_ASSERTION_LABEL, IDENTITY_ASSERTION_LABEL].includes(x.label),
+  const assertion = claim.assertions.find(
+    (x) => x.label === CREATIVEWORK_ASSERTION_LABEL,
   );
-  const isLegacyLabel = assertion?.label === IDENTITY_ASSERTION_LABEL;
-  const display = isLegacyLabel
-    ? assertion?.data?.display
-    : assertion?.data?.author[0]?.name;
-  if (isLegacyLabel) {
-    dbg(
-      'Found legacy identity assertion type instead of CreativeWork assertion',
-      assertion,
-    );
-  }
+  const producer = assertion?.data?.author?.find(
+    (x) => !x.hasOwnProperty('@id') && Array.isArray(x.credential),
+  );
   // Return the display name if we get the structure we expect
-  if (assertion && display) {
-    return display;
-  }
-  // The claim includes an identity assertion but not in a format we expect
-  if (assertion && !display) {
-    throw new Error(ClaimError.InvalidActionAssertion);
+  if (producer) {
+    return producer.name;
   }
   // The assertion isn't available (this would happen if the producer opted out of this)
   return null;
@@ -253,6 +266,28 @@ export function getSignatureIssuer(claim: IEnhancedClaimReport) {
  */
 export function getSignatureDate(claim: IEnhancedClaimReport) {
   return claim.signature?.time ?? null;
+}
+
+/**
+ * Returns `true` if has a beta assertion
+ */
+export function getIsBeta(claim: IEnhancedClaimReport): boolean {
+  return !!claim.assertions.find((x) => x.label === BETA_LABEL)?.data?.version;
+}
+
+/**
+ * Returns the CreativeWork website if one exists
+ */
+export function getWebsite(claim: IEnhancedClaimReport): string | undefined {
+  const site = claim.assertions.find(
+    (x) => x.label === CREATIVEWORK_ASSERTION_LABEL,
+  )?.data?.url;
+  if (site) {
+    const url = new URL(site);
+    if (url.protocol === 'https:' && url.hostname === 'stock.adobe.com') {
+      return site;
+    }
+  }
 }
 
 /**

@@ -8,6 +8,7 @@ groups:
     - leuenber
     - dstein
     - mensch
+    - jfarzan
 
 features:
   everything:

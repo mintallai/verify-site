@@ -41,6 +41,9 @@ module.exports = merge(spectrumConfig, {
         '7xl': 'var(--font-size-1000)',
         '8xl': 'var(--font-size-1300)',
       },
+      fontFamily: {
+        serif: 'var(--family-serif)',
+      },
       opacity: {
         '0': '0',
       },

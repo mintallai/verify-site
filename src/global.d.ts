@@ -7,6 +7,10 @@ declare module 'html-parse-stringify' {
 
 declare module 'svelte-css-vars';
 
+declare module '@intl/adobe-locales';
+
+declare module '@contentauth/web-components/*';
+
 declare module '*.svg';
 declare module '*.png';
 
