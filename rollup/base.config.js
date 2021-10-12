@@ -14,7 +14,6 @@ import git from 'git-rev-sync';
 import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
 import { wasm } from '@rollup/plugin-wasm';
-import url from '@rollup/plugin-url';
 import typescript from '@rollup/plugin-typescript';
 import svelteSvg from '../etc/rollup/plugins/svelte-svg';
 
@@ -132,6 +131,18 @@ function baseConfig(config, ctx) {
       copy({
         targets: [
           {
+            src: [`node_modules/@contentauth/sdk/dist/cai-sdk.worker.min.js`],
+            dest: distDir,
+          },
+        ],
+        copyOnce: true,
+        flatten: true,
+        verbose: true,
+      }),
+
+      copy({
+        targets: [
+          {
             src: [`locales/*.json`],
             dest: `${distDir}/locales`,
             transform: transformDictionaryJson,
@@ -169,11 +180,6 @@ function baseConfig(config, ctx) {
         sourceMap: !production,
       }),
       commonjs(),
-      url({
-        include: ['**/*.worker(.min)?.js'],
-        limit: 0,
-        publicPath: 'build/',
-      }),
 
       production &&
         terser({
