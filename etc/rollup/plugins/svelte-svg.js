@@ -1,4 +1,4 @@
-import { optimize, extendDefaultPlugins } from 'svgo';
+import { optimize } from 'svgo';
 import { flow, camelCase, upperFirst } from 'lodash/fp';
 import path from 'path';
 import svelte from 'svelte/compiler';
@@ -7,22 +7,19 @@ import { createFilter } from '@rollup/pluginutils';
 const classCase = flow([camelCase, upperFirst]);
 
 const colorOverrides = [
-  'removeDimensions',
   {
-    name: 'removeViewBox',
-    active: false,
-  },
-  {
-    name: 'mergePaths',
-    active: false,
-  },
-  {
-    name: 'convertShapeToPath',
-    active: false,
-  },
-  {
-    name: 'convertPathData',
-    active: false,
+    name: 'preset-default',
+    params: {
+      overrides: {
+        removeViewBox: false,
+        mergePaths: false,
+        convertShapeToPath: false,
+        convertPathData: false,
+        convertColors: false,
+        removeUselessStrokeAndFill: false,
+        cleanupIDs: false,
+      },
+    },
   },
   {
     name: 'addAttributesToSVGElement',
@@ -92,7 +89,7 @@ export default function rollupSvelteSvg(options = {}) {
         const { name, dir } = path.parse(id);
         const isMonochrome = dir.split(path.sep).includes('monochrome');
         const overrides = isMonochrome ? monochromeOverrides : colorOverrides;
-        const config = { path: id, plugins: extendDefaultPlugins(overrides) };
+        const config = { path: id, plugins: overrides };
         const optimized = optimize(svg.trim(), config);
         const { code, map } = renderElement({
           name,

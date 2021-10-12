@@ -3,12 +3,12 @@
   import cssVars from 'svelte-css-vars';
   import interact from 'interactjs';
   import type { DragEvent } from '@interactjs/types';
-  import { storeReport } from '../../../stores'
   import Icon from '../../Icon.svelte';
-  import { getThumbnailUrlForId, getTitle } from '../../../lib/claim';
+  import { Source } from '../../../lib/sdk';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
-  import type { ViewableItem } from '../../../lib/types'
+  import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
+  import type { ViewableItem } from '../../../lib/types';
 
   export let side = 0;
   let slider: HTMLDivElement;
@@ -73,13 +73,40 @@
     </div>
   </div>
   <div class="primary">
-    <div class="thumbnail" use:tippy={{ content: getTitle(primary), ...tippyOpts }}>
-      <img src={getThumbnailUrlForId($storeReport, primary.id)} alt="" />
+    {#if primary instanceof Source}
+      <div
+        class="thumbnail"
+        use:tippy={{ content: primary.filename, ...tippyOpts }}>
+        <img use:thumbnail={primary} on:thumbnail={handleImgSrc} alt="" />
+      </div>
+    {:else}
+      <div
+        class="thumbnail"
+        use:tippy={{ content: primary.title, ...tippyOpts }}>
+        <img use:thumbnail={primary.asset} on:thumbnail={handleImgSrc} alt="" />
+      </div>
+    {/if}
+  </div>
+  {#if secondary instanceof Source}
+    <div
+      class="secondary"
+      use:tippy={{ content: secondary.filename, ...tippyOpts }}>
+      <div class="thumbnail">
+        <img use:thumbnail={secondary} on:thumbnail={handleImgSrc} alt="" />
+      </div>
     </div>
-  </div>
-  <div class="secondary" use:tippy={{ content: getTitle(secondary), ...tippyOpts }}>
-    <div class="thumbnail"><img src={getThumbnailUrlForId($storeReport, secondary.id)} alt="" /></div>
-  </div>
+  {:else}
+    <div
+      class="secondary"
+      use:tippy={{ content: secondary.title, ...tippyOpts }}>
+      <div class="thumbnail">
+        <img
+          use:thumbnail={secondary.asset}
+          on:thumbnail={handleImgSrc}
+          alt="" />
+      </div>
+    </div>
+  {/if}
 </div>
 
 <style lang="postcss">

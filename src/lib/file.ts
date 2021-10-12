@@ -1,27 +1,28 @@
-import {
-  getStoreReportFromFile,
-  isValidMimeType,
-  ToolkitError,
-} from '../lib/toolkit';
-import { setStoreReport } from '../stores';
+import { setIsLoading, setProvenance } from '../stores';
+import { getSdk } from './sdk';
 
 export async function processFiles(files: File[] | FileList) {
   const fileArray = Array.from(files);
-  const validFiles = fileArray.filter((file) => isValidMimeType(file.type));
-  if (validFiles.length) {
-    const file = validFiles[0];
-    setStoreReport(null);
+  if (fileArray.length) {
+    setIsLoading(true);
+    const sdk = await getSdk();
+    const file = fileArray[0];
+    setProvenance(null);
     window.newrelic?.addPageAction('loadedUserFile', {
       type: file.type,
     });
-    const result = await getStoreReportFromFile(file);
-    setStoreReport(result);
-  } else if (fileArray.length) {
-    const invalidTypeError = new Error(ToolkitError.InvalidFile);
-    window.newrelic?.noticeError(invalidTypeError, {
-      type: fileArray[0]?.type,
-    });
-    throw invalidTypeError;
+    try {
+      const result = await sdk.processImage(file);
+      setProvenance(result);
+    } catch (err) {
+      console.error('Could not process file:', err);
+      window.newrelic?.noticeError(err, {
+        source: 'file',
+        type: file.type,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 }
 

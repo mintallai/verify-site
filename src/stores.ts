@@ -1,11 +1,8 @@
 import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
-import { enhanceReport, resolveId } from './lib/claim';
-import type {
-  IEnhancedStoreReport,
-  IStoreReportResult,
-  ViewableItem,
-} from './lib/types';
+import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
+import { ImageProvenance, Claim, Ingredient, Source } from './lib/sdk';
+import type { ViewableItem, ITreeNode } from './lib/types';
 import debug from 'debug';
 
 const dbg = debug('store');
@@ -14,6 +11,7 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
+const SOURCE_ID = '__source__';
 
 /**
  * Syncs the URL params to the state
@@ -41,17 +39,31 @@ export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
  */
 export const contentSourceIds = writable<string[]>([]);
 
+export const collapsedBranches = writable<Set<string>>(new Set());
+
+export function toggleBranch(id: string) {
+  collapsedBranches.update((prev) => {
+    if (prev.has(id)) {
+      prev.delete(id);
+      return prev;
+    }
+    return prev.add(id);
+  });
+}
+
 /**
- * The primary univeral ID (claim/parent/ingredient) that is being shown in the
+ * The primary universal ID (claim/parent/ingredient) that is being shown in the
  * viewer. If a `secondaryId` is _also_ set, a comparison view shows up.
  */
-export const primaryId = writable<string>('');
+export const primaryPath = writable<string[]>([]);
 
 /**
  * The secondary universal ID (claim/parent/ingredient) that is used as the thumbnail
  * to compare with.
  */
-export const secondaryId = writable<string>('');
+export const secondaryPath = writable<string[]>([]);
+
+export const isLoading = writable<boolean>(false);
 
 export const isBurgerMenuShown = writable<boolean>(false);
 
@@ -90,44 +102,29 @@ export function getFaqUrl(id: string = FAQ_VERIFY_SECTION_ID): string {
   return `${FAQ_URL}#${id}`;
 }
 
+export function setIsLoading(loading) {
+  isLoading.set(loading);
+}
+
 /**
  * Navigates the view to a new claim in the manifest. Used when clicking on different content sources.
  *
- * @param newId The claim ID to show in the viewer/highlight in content sources
- * @param clearBreadcrumbs `true` to clear the breadcrumbs/history
+ * @param path The path to navigate to
  * @param logEvent `true` to log this event in New Relic
  */
-export function navigateToId(
-  newId: string,
-  clearBreadcrumbs = false,
-  logEvent = true,
-): void {
-  dbg('Navigating to id', newId, {
-    clearBreadcrumbs,
-    contentSourceIds: get(contentSourceIds),
-  });
-  const currId = get(primaryId);
-  contentSourceIds.update((ids) => {
-    if (clearBreadcrumbs) {
-      return [newId];
-    }
-    if (ids.includes(newId)) {
-      return ids.slice(0, ids.indexOf(newId) + 1);
-    } else if (ids.length && newId !== currId) {
-      // Don't add the current ID if it's not changing (in the case of closing a secondary asset)
-      return [...ids, newId];
-    } else if (!ids.length && newId) {
-      // Initial load
-      return [newId];
-    } else {
-      return ids;
-    }
-  });
-  primaryId.set(newId);
+export function navigateToPath(path: string[], logEvent = true): void {
+  dbg('Navigating to path', path);
+
+  primaryPath.set(path);
   scrollTo(0, 0);
   if (logEvent) {
-    window.newrelic?.addPageAction('navigateToId', { id: newId });
+    window.newrelic?.addPageAction('navigateToPath', { path });
   }
+}
+
+export function navigateToChild(id: string, logEvent = true): void {
+  const currPath = get(primaryPath);
+  navigateToPath([...currPath, id], logEvent);
 }
 
 /**
@@ -136,104 +133,135 @@ export function navigateToId(
  * @param id The claim ID of the claim to compare with
  * @param logEvent `true` to log this event in New Relic
  */
-export function compareWithId(id: string, logEvent = true): void {
-  dbg('Comparing with', id);
-  secondaryId.set(id);
+export function compareWithPath(path: string[] | null, logEvent = true): void {
+  dbg('Comparing with', path);
+  secondaryPath.set(path ?? []);
   scrollTo(0, 0);
   if (logEvent) {
-    window.newrelic?.addPageAction('compareWithId', {
+    window.newrelic?.addPageAction('compareWithPath', {
       id: get(primaryId),
-      comparingWith: id,
+      comparingWith: path,
     });
   }
 }
 
 /**
- * Contains info about the source file that was uploaded/dragged in
+ * Contains the ImageProvenance of the loaded asset.
  */
-export const source = writable<ISourceInfo | null>(null, (set) => {
+export const provenance = writable<ImageProvenance | null>(null, (set) => {
   return () => {};
 });
 
 /**
- * Sets the information about the source of the asset that we are inspecting, whether it
- * is from the `source` URL parameter or a file that was dragged in.
- *
- * @param result The result from the `getStore*` toolkit functions
+ * Sets the ImageProvenance of the loaded asset.
  */
-async function setSource(result: IStoreReportResult | null) {
-  const existingUrl = get(source)?.dataUrl;
-  // Clean up the previous blobURL
-  if (existingUrl && /^blob:/.test(existingUrl)) {
-    dbg('Disposing previous source URL', existingUrl);
-    URL.revokeObjectURL(existingUrl);
-  }
+export async function setProvenance(result: ImageProvenance | null) {
+  dbg('Calling setProvenance');
+
   if (result) {
-    const newSource = {
-      name: result.filename,
-      dataUrl: URL.createObjectURL(result.data),
-    };
-    dbg('Setting source', newSource);
-    source.set(newSource);
+    provenance.set(result);
+    navigateToRoot();
   } else {
-    dbg('Setting source to null');
-    source.set(null);
+    dbg('No provenance found');
+    provenance.set(null);
   }
 }
 
 /**
- * Contains the current store report of the loaded asset.
+ * The primary universal ID (claim/parent/ingredient) that is being shown in the
+ * viewer. If a `secondaryId` is _also_ set, a comparison view shows up.
  */
-export const storeReport = writable<IEnhancedStoreReport | null>(
-  null,
-  (set) => {
-    return () => {};
+export const primaryId = derived<[typeof primaryPath], string>(
+  [primaryPath],
+  ([$primaryPath]) => {
+    return $primaryPath.slice(-1)[0];
   },
 );
 
-function disposePreviousThumbnails(thumbnailUrls: string[]) {
-  dbg('Disposing previous claim thumbnails', thumbnailUrls);
-  thumbnailUrls.forEach((dataUrl) => URL.revokeObjectURL(dataUrl));
-}
+export const secondaryId = derived<[typeof secondaryPath], string>(
+  [secondaryPath],
+  ([$secondaryPath]) => {
+    return $secondaryPath.slice(-1)[0];
+  },
+);
 
 /**
- * Sets the store report of the loaded asset.
- *
- * @param data Data provided by on of the `getStore*` toolkit functions, or `null` to clear the
- *             existing info, and show the upload screen
+ * Convenience accessor for the claim/ingredient data that's linked to the `primaryId`.
  */
-export async function setStoreReport(result: IStoreReportResult | null) {
-  dbg('Calling setStoreReport');
+export const primaryAsset = derived<
+  [typeof provenance, typeof primaryId],
+  ViewableItem | undefined
+>([provenance, primaryId], ([$provenance, $primaryId]) => {
+  return $primaryId === SOURCE_ID
+    ? $provenance?.source
+    : $provenance?.resolveId($primaryId);
+});
 
-  // Set new data and set source information
-  const data = result?.storeReport;
-  const existingThumbnails = get(storeReport)?.thumbnailUrls ?? [];
+/**
+ * Convenience accessor for the claim/ingredient data that's linked to the `secondaryId`.
+ */
+export const secondaryAsset = derived<
+  [typeof provenance, typeof secondaryId],
+  ViewableItem | undefined
+>([provenance, secondaryId], ([$provenance, $secondaryId]) => {
+  return $provenance?.resolveId($secondaryId);
+});
 
-  setSource(result);
-  // If null is passed as the result, we are in the process of loading a new image
-  if (result === null) {
-    storeReport.set(null);
+function parseProvenance(node: Claim | Ingredient): ITreeNode {
+  if (node instanceof Claim) {
+    return {
+      id: node.id,
+      name: node.title,
+      claim: node,
+      asset: node.asset ?? undefined,
+      errors: node.errors,
+      children: node.ingredients?.map(parseProvenance),
+    };
   }
-
-  if (data) {
-    const enhancedReport = await enhanceReport(data);
-    dbg('Setting enhanced store report', enhancedReport);
-    storeReport.set(enhancedReport);
-    disposePreviousThumbnails(existingThumbnails);
-    navigateToRoot();
-  } else if (data === false) {
-    dbg('No store report found');
-    storeReport.set(null);
-    disposePreviousThumbnails(existingThumbnails);
+  if (node instanceof Ingredient) {
+    return {
+      id: node.claim?.id ?? node.id,
+      name: node.title,
+      claim: node.claim,
+      asset: node.claim?.asset ?? node,
+      errors: node.errors,
+      children: node.claim?.ingredients.map(parseProvenance) ?? [],
+    };
   }
 }
+
+export const hierarchy = derived<
+  [typeof provenance],
+  HierarchyNode<ITreeNode> | null
+>([provenance], ([$provenance]) => {
+  if ($provenance) {
+    const { source, activeClaim, errors } = $provenance;
+    // We have a normal claim structure and no top-level errors
+    if (activeClaim && !errors.length) {
+      return d3Hierarchy(parseProvenance(activeClaim));
+    }
+    // We have top-level errors or no metadata on this image
+    // Show the source
+    if (source && (errors.length || !activeClaim)) {
+      return d3Hierarchy({
+        id: SOURCE_ID,
+        name: source.filename,
+        claim: null,
+        asset: source,
+        errors,
+        children: activeClaim ? [parseProvenance(activeClaim)] : [],
+      });
+    }
+  }
+  return null;
+});
 
 /**
  * Calculates the root claim ID (the ID of the latest claim) contained in the store report.
  */
-export const rootClaimId = derived<[typeof storeReport], string | null>(
-  [storeReport],
-  ([$storeReport]) => $storeReport?.head ?? null,
+export const rootId = derived<[typeof hierarchy], string | undefined>(
+  [hierarchy],
+  ([$hierarchy]) => $hierarchy?.data?.id,
 );
 
 /**
@@ -242,59 +270,9 @@ export const rootClaimId = derived<[typeof storeReport], string | null>(
  * @param logEvent `true` to log this event in New Relic
  */
 export function navigateToRoot(logEvent = true): void {
-  const rootId = get(rootClaimId);
-  if (rootId) {
-    secondaryId.set('');
-    navigateToId(rootId, true, logEvent);
+  const id = get(rootId);
+  if (id) {
+    secondaryPath.set([]);
+    navigateToPath([id], logEvent);
   }
 }
-
-/**
- * // FIXME: Make sure we account for this
-export const errorsByIdentifier = derived<
-  [typeof summary],
-  { [identifier: string]: IErrorIdentifierMap }
->([summary], ([$summary]) => {
-  if ($summary) {
-    const nestedDepth = 3; // Errors are nested references[x].errors
-    const errors = reduceDeep(
-      $summary,
-      (acc, value, key, parent, ctx) => {
-        if (key === 'errors' && value.length) {
-          // head claim error
-          if (ctx.depth < nestedDepth) {
-            return {};
-          }
-          const parentClaim = ctx.parents[ctx.depth - nestedDepth].value;
-          const id = getIdentifier(parentClaim);
-          acc[id] ? acc[id].push(value) : (acc[id] = value);
-        }
-        return acc;
-      },
-      {},
-    );
-    return errors;
-  }
-  return {};
-});
-*/
-
-/**
- * Convenience accessor for the claim/ingredient data that's linked to the `primaryId`.
- */
-export const primaryAsset = derived<
-  [typeof storeReport, typeof primaryId],
-  ViewableItem | null
->([storeReport, primaryId], ([$storeReport, $primaryId]) => {
-  return $storeReport ? resolveId($storeReport, $primaryId) : null;
-});
-
-/**
- * Convenience accessor for the claim/ingredient data that's linked to the `secondaryId`.
- */
-export const secondaryAsset = derived<
-  [typeof storeReport, typeof secondaryId],
-  ViewableItem | null
->([storeReport, secondaryId], ([$storeReport, $secondaryId]) => {
-  return $storeReport ? resolveId($storeReport, $secondaryId) : null;
-});
