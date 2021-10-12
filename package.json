@@ -20,6 +20,7 @@
     "@rollup/plugin-node-resolve": "^8.1.0",
     "@rollup/plugin-replace": "^2.3.3",
     "@rollup/plugin-typescript": "^5.0.2",
+    "@rollup/plugin-wasm": "^5.1.2",
     "@rollup/pluginutils": "^4.1.0",
     "@tsconfig/svelte": "^2.0.1",
     "@types/d3-hierarchy": "2.0.0",
@@ -59,7 +60,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@contentauth/sdk": "0.7.2-alpha.14",
+    "@contentauth/sdk": "0.7.2-alpha.15",
     "@contentauth/web-components": "0.3.1",
     "@intl/adobe-locales": "^2.17.7",
     "@roxi/routify": "^2.7.3",

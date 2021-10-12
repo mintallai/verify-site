@@ -13,6 +13,7 @@ import del from 'del';
 import git from 'git-rev-sync';
 import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
+import { wasm } from '@rollup/plugin-wasm';
 import typescript from '@rollup/plugin-typescript';
 import svelteSvg from '../etc/rollup/plugins/svelte-svg';
 
@@ -130,17 +131,15 @@ function baseConfig(config, ctx) {
       copy({
         targets: [
           {
-            src: [
-              `node_modules/@contentauth/sdk/dist/assets/wasm/toolkit_bg.wasm`,
-              `node_modules/@contentauth/sdk/dist/cai-sdk.worker.min.js`,
-            ],
-            dest: `${distDir}/sdk`,
+            src: [`node_modules/@contentauth/sdk/dist/cai-sdk.worker.min.js`],
+            dest: distDir,
           },
         ],
         copyOnce: true,
         flatten: true,
         verbose: true,
       }),
+
       copy({
         targets: [
           {
@@ -152,6 +151,9 @@ function baseConfig(config, ctx) {
         copyOnce: true,
         flatten: true,
         verbose: true,
+      }),
+      wasm({
+        publicPath: 'build/',
       }),
       typeCheck(),
       svelte(svelteConfig),
