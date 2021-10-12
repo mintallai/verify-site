@@ -915,22 +915,22 @@
   resolved "https://npm.pkg.github.com/download/@contentauth/detector/0.2.7/4d797c67a9786d415c15400188eba4115dc17c650e7cc58e5cd443e427dd9d43#9d8bff2879e10380f678d052ddd02308eb910880"
   integrity sha512-yNso8vDxc3m24hFM0vN/DI1slB+lF35PO2xgCxcYabO2/a64pIymEGnVZLQkXSAK9fQ5gAoWiwdNDoCOTHZVpg==
 
-"@contentauth/sdk@0.7.2-alpha.13":
-  version "0.7.2-alpha.13"
-  resolved "https://npm.pkg.github.com/download/@contentauth/sdk/0.7.2-alpha.13/3a32c60d5ab9b5f071db13b7399d2e815a3211fc856f3fccc836f8351066b99c#5f8b08d9fc3fb15a040fefa86b47623a58790608"
-  integrity sha512-qo7jCoAkeOllOCMrXLw7bn6SQGBBeKY70jVXZ336fQbsPO72ht6f17YQ0bm84sQdQKUCxybb8y0RoN/HfJnjKA==
+"@contentauth/sdk@0.7.2-alpha.14":
+  version "0.7.2-alpha.14"
+  resolved "https://npm.pkg.github.com/download/@contentauth/sdk/0.7.2-alpha.14/d34bf75d5de8b171e43b34bf569797260a10ad437b96202e9a697acc4b3d8ab3#b51a78c09c08580cbcdc9c5f2e7cc52c51ffb00a"
+  integrity sha512-Opbx9QpQ/R6VoftizcECg1TCkrte0ZUrFSPctOxmWSz3Zyw/9LKCQjCytuFKnUP1r9ecUKEpvdETwvPrrz3prw==
   dependencies:
     "@contentauth/detector" "^0.2.7"
-    "@contentauth/toolkit" "^0.6.7"
+    "@contentauth/toolkit" "^0.6.8-alpha.14+364892c"
     date-fns "^2.24.0"
     lodash "^4.17.21"
     make-error "^1.3.6"
     threads "^1.6.5"
 
-"@contentauth/toolkit@^0.6.7":
-  version "0.6.7"
-  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.6.7/dec7797660d7c2590eb0afffae8b9835480e11d0067d62893ab5094b068329ad#6b5462a93407ae81e0c90b574238a7eb1763c7b1"
-  integrity sha512-2NOA7442oAwf2NXteNbtSolKsLH2DtNVskH6STMVPXC7heRc4m0HV83paCHMA6IcYkYB6BYIiG6uxEFnh1PKOA==
+"@contentauth/toolkit@^0.6.8-alpha.14+364892c":
+  version "0.6.8-alpha.14"
+  resolved "https://npm.pkg.github.com/download/@contentauth/toolkit/0.6.8-alpha.14/fa6778ed18d148163ec081aa365a90deee888994f7fa9fcfcff08d09e53ac83a#0ba902a240911d04e6bcf1b0ae933df3f50b4364"
+  integrity sha512-vfe76yzUBO62PKcdLJWxC9ZVdZUWiA0ygdXe/3g9xIXsh7bqhIDVTg0OP4Y+oTbCKerASHvbiciSDtVys/ok1g==
 
 "@contentauth/web-components@0.3.1":
   version "0.3.1"
