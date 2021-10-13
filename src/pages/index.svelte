@@ -11,11 +11,11 @@
   // Section 0
   import hero from '../../assets/png/hero@2x.png';
   // Section 1
-  import composition from '../../assets/png/section1@2x.png';
+  import section1 from '../../assets/png/section1@2x.png';
   // Section 2 image
-  import dancer from '../../assets/png/section2@2x.png';
+  import section2 from '../../assets/png/section2@2x.png';
   // Section 3 image
-  import snowyGiza from '../../assets/png/section3@2x.png';
+  import section3 from '../../assets/png/section3@2x.png';
 
   function upload(evt: Event) {
     window.newrelic?.addPageAction('uploadClick');
@@ -56,15 +56,15 @@
   <section id="section1">
     <div class="grid grid-cols-3 gap-4">
       <div class="w-full col-span-3 lg:col-span-2 order-1">
-        <img src={composition} alt="Composition of woman and city skyline" />
+        <img src={section1} alt="Composition of woman and city skyline" />
       </div>
       <div
-        class="w-full col-span-3 lg:col-span-1 order-2 lg:justify-center items-center flex px-4 sm:pb-5">
+        class="w-full col-span-3 lg:col-span-1 order-2 items-center flex px-4 sm:pb-5">
         <div>
           <div class="heading lg:text-5xl">
-            {$_('page.composition.header')}
+            {$_('page.sectionOne.header')}
           </div>
-          <div class="body lg:text-xl">{$_('page.composition.body')}</div>
+          <div class="body lg:text-xl">{$_('page.sectionOne.body')}</div>
           <div class="inline-block align-middle">
             <div class="cta lg:text-xl sm:text-smd">
               {$_('page.cta.viewMore')}
@@ -78,15 +78,15 @@
   <section id="section2">
     <div class="grid grid-cols-3 gap-4">
       <div class="w-full col-span-3 lg:col-span-2 lg:order-2">
-        <img src={dancer} alt="Dancer in studio stretching" />
+        <img src={section2} alt="Yellow vector art" />
       </div>
       <div
-        class="w-full col-span-3 lg:col-span-1 lg:order-1 lg:justify-center items-center flex lg:pl-8 pl-4 pr-4 sm:pb-5">
+        class="w-full col-span-3 lg:col-span-1 lg:order-1 items-center flex lg:pl-8 pl-4 pr-4 sm:pb-5">
         <div>
           <div class="heading lg:text-5xl">
-            {$_('page.dancer.header')}
+            {$_('page.sectionTwo.header')}
           </div>
-          <div class="body lg:text-xl">{$_('page.dancer.body')}</div>
+          <div class="body lg:text-xl">{$_('page.sectionTwo.body')}</div>
           <div class="inline-block align-middle">
             <div class="cta lg:text-xl sm:text-smd">
               {$_('page.cta.viewMore')}
@@ -100,15 +100,15 @@
   <section id="section3">
     <div class="grid grid-cols-3 gap-4">
       <div class="w-full col-span-3 lg:col-span-2 order-1">
-        <img src={snowyGiza} alt="Snowy Giza" />
+        <img src={section3} alt="Kaleidescope vector art" />
       </div>
       <div
-        class="w-full col-span-3 lg:col-span-1 order-2 lg:justify-center items-center flex px-4 sm:pb-5">
+        class="w-full col-span-3 lg:col-span-1 order-2 items-center flex px-4 sm:pb-5">
         <div>
           <div class="heading lg:text-5xl">
-            {$_('page.snowyGiza.header')}
+            {$_('page.sectionThree.header')}
           </div>
-          <div class="body lg:text-xl">{$_('page.snowyGiza.body')}</div>
+          <div class="body lg:text-xl">{$_('page.sectionThree.body')}</div>
           <div class="inline-block align-middle">
             <div class="cta lg:text-xl sm:text-smd">
               {$_('page.cta.viewMore')}
@@ -128,7 +128,6 @@
     @apply font-base;
   }
   .hero {
-    /* @apply absolute inset-0 flex justify-center items-center flex-col; */
     width: 100vw;
   }
   section {
@@ -138,7 +137,7 @@
   }
 
   .heading {
-    @apply text-black font-serif text-3xl text-left pb-4;
+    @apply text-black text-3xl text-left pb-4 font-home font-bold;
   }
 
   .body {
@@ -146,7 +145,7 @@
   }
 
   .cta {
-    @apply inline-block text-black font-bold text-left pb-4;
+    @apply inline-block text-black font-bold text-left pb-4 font-home;
   }
 
   sp-button {
