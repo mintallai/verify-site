@@ -8,17 +8,18 @@
 </script>
 
 <rect
-  height={height + 2}
-  width={width + 2}
-  y={-height / 2 - 1}
-  x={-width / 2 - 1}
-  fill="rgb(234,234,234)"
-  rx={4} />
+  {height}
+  {width}
+  y={-height / 2}
+  x={-width / 2}
+  fill="#777"
+  fill-opacity="0.8">
+  rx={4}></rect>
 <text
   dy="60px"
   font-size={12}
   font-family="adobe-clean"
   text-anchor="middle"
-  fill="#2b2b2b">
+  fill="#000">
   {node.data.name}
 </text>

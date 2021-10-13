@@ -18,7 +18,7 @@
     if ($hierarchy) {
       const d3Tree = D3Tree<ITreeNode>();
       d3Tree.size([width, height]);
-      d3Tree.nodeSize([nodeWidth + hPad, nodeHeight + vPad]);
+      d3Tree.nodeSize([nodeWidth + vPad, nodeHeight + hPad]);
       d3Tree.separation((a, b) => (a.parent === b.parent ? 2 : 1) / a.depth);
       tree = d3Tree($hierarchy);
     }
