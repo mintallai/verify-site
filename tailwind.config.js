@@ -43,6 +43,7 @@ module.exports = merge(spectrumConfig, {
       },
       fontFamily: {
         serif: 'var(--family-serif)',
+        home: 'var(--family-home)',
       },
       opacity: {
         '0': '0',
