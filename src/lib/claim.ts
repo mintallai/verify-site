@@ -1,3 +1,4 @@
+import equal from 'fast-deep-equal';
 import { HierarchyNode } from 'd3-hierarchy';
 import { Claim, Ingredient } from './sdk';
 import type { IBadgeProps, ITreeNode, ViewableItem } from './types';
@@ -39,6 +40,10 @@ export function getPath(node: HierarchyNode<ITreeNode>) {
     curr = curr.parent;
   }
   return path;
+}
+
+export function isInPath(pathArray: string[], nodePath: string[]) {
+  return equal(nodePath, pathArray.slice(0, nodePath.length));
 }
 
 /**

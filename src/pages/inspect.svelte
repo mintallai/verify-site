@@ -54,7 +54,6 @@
   $: isComparing = !!(primary && secondary);
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
-  $: hasTopNav = hasContent && (noMetadata || primary);
   $: errorMessage = error && 'Unknown';
   $: {
     // Cancel the tour if the overlay is showing
@@ -89,7 +88,7 @@
       matchMedia(bp).addEventListener('change', handleBreakpointChange),
     );
 
-    if (sourceParam) {
+    if (sourceParam && !$provenance) {
       try {
         setIsLoading(true);
         try {
@@ -154,10 +153,7 @@
 <svelte:head>
   <title>{$_('page.title')}</title>
 </svelte:head>
-<main
-  class="theme-light"
-  class:comparing={isComparing}
-  class:has-top-nav={hasTopNav}>
+<main class="theme-light" class:comparing={isComparing}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -165,14 +161,12 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if hasTopNav}
-    <TopNavigation
-      {isComparing}
-      {noMetadata}
-      {source}
-      currentPage="inspect"
-      on:back={partial(handleClose, secondary)} />
-  {/if}
+  <TopNavigation
+    {isComparing}
+    {noMetadata}
+    {source}
+    currentPage="inspect"
+    on:back={partial(handleClose, secondary)} />
   {#if hasContent}
     {#if error}
       <section class="left-col" class:loading={$isLoading} />
@@ -262,14 +256,6 @@
 
     @apply grid w-screen min-h-screen h-full font-base;
     grid-template-columns: 100%;
-    grid-template-rows: 80px var(--viewer-height) 1fr 70px;
-    grid-template-areas:
-      'header'
-      'viewer'
-      'right'
-      'footer';
-  }
-  main.has-top-nav {
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 70px;
     grid-template-areas:
       'header'
@@ -300,15 +286,6 @@
     background-color: rgba(0, 0, 0, 0.2);
   }
   main.comparing {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 80px var(--viewer-height) 1fr 55px;
-    grid-template-areas:
-      'header header'
-      'viewer viewer'
-      'left right'
-      'footer footer';
-  }
-  main.comparing.has-top-nav {
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
     grid-template-areas:
       'header header'
@@ -325,14 +302,6 @@
     main.comparing {
       @apply fixed inset-0;
       grid-template-columns: 320px 1fr 320px;
-      grid-template-rows: 80px 1fr 55px;
-      grid-template-areas:
-        'header header header'
-        'left viewer right'
-        'footer footer footer';
-    }
-    main.has-top-nav,
-    main.comparing.has-top-nav {
       grid-template-rows: 80px 60px 1fr 55px;
       grid-template-areas:
         'header header header'

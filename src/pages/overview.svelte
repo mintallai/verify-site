@@ -85,7 +85,7 @@
       matchMedia(bp).addEventListener('change', handleBreakpointChange),
     );
 
-    if (sourceParam) {
+    if (sourceParam && !$provenance) {
       try {
         setIsLoading(true);
         try {
@@ -171,6 +171,8 @@
         <div class="wrapper">
           <About claim={primary} {isComparing} {isMobileViewer} />
         </div>
+      {:else}
+        <ContentCredentialsError />
       {/if}
     </section>
   {/if}

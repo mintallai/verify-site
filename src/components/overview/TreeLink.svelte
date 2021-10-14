@@ -4,6 +4,7 @@
   import type { HierarchyPointLink } from 'd3-hierarchy';
 
   export let link: HierarchyPointLink<ITreeNode>;
+  export let ancestor: boolean = false;
   export let nodeWidth: number;
   export let nodeHeight: number;
 
@@ -42,16 +43,16 @@
   $: target = link.target;
   $: path = curve(d3Path(), source.x, source.y, target.x, target.y);
   $: pathData = path.toString();
-  $: {
-    console.log('pathData', pathData);
-  }
 </script>
 
-<path d={pathData} class="link" />
+<path d={pathData} class="link" class:ancestor />
 
 <style lang="postcss">
   .link {
-    @apply stroke-current stroke-2 text-gray-400;
+    @apply stroke-current stroke-2 text-gray-400 transition-all;
     fill: none;
+  }
+  .link.ancestor {
+    @apply text-gray-700;
   }
 </style>

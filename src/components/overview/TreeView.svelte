@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { hierarchy } from '../../stores';
+  import { primaryPath, hierarchy } from '../../stores';
+  import { getPath, isInPath } from '../../lib/claim';
   import TreeNode from './TreeNode.svelte';
   import TreeLink from './TreeLink.svelte';
   import type { ITreeNode } from '../../lib/types';
@@ -58,7 +59,23 @@
       tree = d3Tree($hierarchy);
     }
   }
-  $: links = tree?.links() ?? [];
+  $: links = (tree?.links() ?? [])
+    .map((link, idx) => {
+      const { source, target } = link;
+      const ancestor =
+        isInPath($primaryPath, getPath(source)) &&
+        isInPath($primaryPath, getPath(target));
+      return { link, idx, ancestor };
+    })
+    .sort((a, b) => {
+      if (a.ancestor && !b.ancestor) {
+        return 1;
+      }
+      if (!a.ancestor && b.ancestor) {
+        return -1;
+      }
+      return 0;
+    });
   $: descendants = (tree?.descendants() ?? []).map(
     (node) => node as HierarchyPointNode<ITreeNode>,
   );
@@ -92,9 +109,9 @@
   <svg bind:this={svg} {width} {height}>
     <g bind:this={bounds}>
       <g transform={`translate(${tx}, ${ty})`}>
-        {#each links as link, key (key)}
+        {#each links as { link, idx, ancestor }, key (idx)}
           <g>
-            <TreeLink {link} {nodeWidth} {nodeHeight} />
+            <TreeLink {link} {ancestor} {nodeWidth} {nodeHeight} />
           </g>
         {/each}
         {#each descendants as node, key (key)}
