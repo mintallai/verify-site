@@ -4,24 +4,54 @@
   import type { HierarchyPointLink } from 'd3-hierarchy';
 
   export let link: HierarchyPointLink<ITreeNode>;
+  export let nodeWidth: number;
+  export let nodeHeight: number;
 
-  // Default LinkVertical bezier curve implementation from D3
-  function curveVertical(
+  function curve(
     context: Path,
     x0: number,
     y0: number,
     x1: number,
     y1: number,
   ) {
-    context.moveTo(x0, y0);
-    context.bezierCurveTo(x0, (y0 = (y0 + y1) / 2), x1, y0, x1, y1);
+    const startY = y0 + nodeHeight / 2;
+    const endY = y1 - nodeHeight / 2;
+    context.moveTo(x0, startY);
+    if (x0 === x1) {
+      context.lineTo(x1, endY);
+      return context;
+    }
+    const midOffset = (endY - startY) / 2;
+    const midY = startY + midOffset;
+    const left = x0 > x1;
+    if (left) {
+      const midX = x0 - midOffset;
+      context.bezierCurveTo(x0, midY, x0 - 20, midY, midX, midY);
+      context.lineTo(x1 + midOffset, midY);
+      context.bezierCurveTo(x1 + midOffset, midY, x1, midY, x1, endY);
+    } else {
+      const midX = x0 + midOffset;
+      context.bezierCurveTo(x0, midY, x0 + 20, midY, midX, midY);
+      context.lineTo(x1 - midOffset, midY);
+      context.bezierCurveTo(x1 - midOffset, midY, x1, midY, x1, endY);
+    }
     return context;
   }
 
   $: source = link.source;
   $: target = link.target;
-  $: path = curveVertical(d3Path(), source.x, source.y, target.x, target.y);
+  $: path = curve(d3Path(), source.x, source.y, target.x, target.y);
   $: pathData = path.toString();
+  $: {
+    console.log('pathData', pathData);
+  }
 </script>
 
-<path d={pathData} fill="none" stroke="#000" stroke-width="1" />
+<path d={pathData} class="link" />
+
+<style lang="postcss">
+  .link {
+    @apply stroke-current stroke-2 text-gray-400;
+    fill: none;
+  }
+</style>

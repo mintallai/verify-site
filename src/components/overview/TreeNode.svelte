@@ -5,21 +5,21 @@
   export let node: HierarchyPointNode<ITreeNode>;
   export let width: number;
   export let height: number;
+
+  $: x = -width / 2;
+  $: y = -height / 2;
 </script>
 
-<rect
-  {height}
-  {width}
-  y={-height / 2}
-  x={-width / 2}
-  fill="#777"
-  fill-opacity="0.8">
-  rx={4}></rect>
-<text
-  dy="60px"
-  font-size={12}
-  font-family="adobe-clean"
-  text-anchor="middle"
-  fill="#000">
-  {node.data.name}
-</text>
+<rect {height} {width} {x} {y} class="node" />
+<foreignObject {height} {width} {x} {y}>
+  <div>{node.data.name}</div>
+</foreignObject>
+
+<style lang="postcss">
+  .node {
+    @apply stroke-current stroke-2 text-gray-400;
+    fill: var(--white);
+    rx: 6px;
+    ry: 6px;
+  }
+</style>

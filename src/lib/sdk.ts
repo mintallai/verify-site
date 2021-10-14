@@ -1,15 +1,13 @@
 import { ContentAuth } from '@contentauth/sdk';
-import wasmModule from '@contentauth/sdk/dist/assets/wasm/toolkit_bg.wasm';
 
 let sdk: ContentAuth;
 
 export async function getSdk() {
   if (!sdk) {
     try {
-      const wasmSrc = await wasmModule();
       sdk = new ContentAuth({
-        wasmSrc,
-        workerSrc: 'cai-sdk.worker.min.js',
+        wasmSrc: 'sdk/toolkit_bg.wasm',
+        workerSrc: 'sdk/cai-sdk.worker.min.js',
         downloadOptions: {
           inspectSize: 0,
         },
