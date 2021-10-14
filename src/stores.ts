@@ -219,6 +219,18 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
     };
   }
   if (node instanceof Ingredient) {
+    if (node.errors.length > 0) {
+      return {
+        id: node.asset?.id ?? node.id,
+        name: node.asset?.title ?? node.title,
+        // There are currently no error cases accounted for but OTGP. 
+        // The `claim` value will need to be adjusted based on the type of error.
+        claim: null, 
+        asset: node.asset ?? node,
+        errors: node.asset?.errors,
+        children: [parseProvenance(node.claim)] ?? [],
+      };
+    }
     return {
       id: node.claim?.id ?? node.id,
       name: node.title,
