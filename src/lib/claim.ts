@@ -1,6 +1,6 @@
 import { HierarchyNode } from 'd3-hierarchy';
 import { Claim, Ingredient } from './sdk';
-import type { IBadgeProps, ITreeNode, ViewableItem } from './types';
+import { ErrorTypes, IBadgeProps, ITreeNode, ViewableItem } from './types';
 import debug from 'debug';
 
 const dbg = debug('claim');
@@ -46,12 +46,23 @@ export function getPath(node: HierarchyNode<ITreeNode>) {
  * Generates the badge props (used by the `cai-thumbnail`) from the claim data
  */
 export function getBadgeProps({ claim, errors }: IBadgePropsInput): IBadgeProps {
-  // Change to accomdate different types of errors
+  // Change to accomdate different types of errors + multiple errors on a single asset
   if (errors?.length > 0) {
-    return {
-      badgeType: 'missing',
-      badgeHelpText: 'comp.asset.badgeMissing.HelpText',
+    switch (errors[0].code) {
+      case ErrorTypes.ASSET_HASH:
+        return {
+          badgeType: 'missing',
+          badgeHelpText: 'comp.asset.badgeMissing.HelpText',
+        };
+      case ErrorTypes.SIGNATURE: 
+        return {
+          badgeType: 'alert',
+          badgeHelpText: 'comp.asset.badgeError.HelpText',
+        };
+      default:
+        break;
     }
+    
   }
   if (claim) {
     return {

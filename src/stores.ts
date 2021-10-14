@@ -2,7 +2,7 @@ import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ImageProvenance, Claim, Ingredient, Source } from './lib/sdk';
-import type { ViewableItem, ITreeNode } from './lib/types';
+import { ViewableItem, ITreeNode, ErrorTypes } from './lib/types';
 import debug from 'debug';
 
 const dbg = debug('store');
@@ -225,7 +225,7 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
         name: node.asset?.title ?? node.title,
         // There are currently no error cases accounted for but OTGP. 
         // The `claim` value will need to be adjusted based on the type of error.
-        claim: null, 
+        claim: node.errors[0].code === ErrorTypes.ASSET_HASH ? null : node.asset, 
         asset: node.asset ?? node,
         errors: node.asset?.errors,
         children: [parseProvenance(node.claim)] ?? [],
@@ -248,6 +248,7 @@ export const hierarchy = derived<
 >([provenance], ([$provenance]) => {
   if ($provenance) {
     const { source, activeClaim, errors } = $provenance;
+    console.log('[call hierarchy<derived>]::$provenance >', $provenance)
     // We have a normal claim structure and no top-level errors
     if (activeClaim && !errors.length) {
       return d3Hierarchy(parseProvenance(activeClaim));
