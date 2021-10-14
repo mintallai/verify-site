@@ -25,7 +25,8 @@ export function getIsOriginal(claim: Claim) {
 }
 
 interface IBadgePropsInput {
-  claim?: Claim;
+  claim?: Claim | Ingredient;
+  errors?: any[];
 }
 
 /**
@@ -44,21 +45,15 @@ export function getPath(node: HierarchyNode<ITreeNode>) {
 /**
  * Generates the badge props (used by the `cai-thumbnail`) from the claim data
  */
-export function getBadgeProps({ claim }: IBadgePropsInput): IBadgeProps {
-  // OTGP asset
-  if (!claim) {
+export function getBadgeProps({ claim, errors }: IBadgePropsInput): IBadgeProps {
+  // Change to accomdate different types of errors
+  if (errors?.length > 0) {
     return {
       badgeType: 'missing',
       badgeHelpText: 'comp.asset.badgeMissing.HelpText',
     }
   }
   if (claim) {
-    // if (claim.errors.length > 0) {
-    //   return {
-    //     badgeType: 'error',
-    //     badgeHelpText: 'comp.asset.badgeError.HelpText',
-    //   }
-    // }
     return {
       badgeType: 'info',
       badgeHelpText: 'comp.asset.badgeInfo.helpText',
