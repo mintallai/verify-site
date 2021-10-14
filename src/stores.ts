@@ -248,7 +248,6 @@ export const hierarchy = derived<
 >([provenance], ([$provenance]) => {
   if ($provenance) {
     const { source, activeClaim, errors } = $provenance;
-    // console.log('[call hierarchy<derived>]::$provenance >', $provenance)
     // We have a normal claim structure and no top-level errors
     if (activeClaim && !errors.length) {
       return d3Hierarchy(parseProvenance(activeClaim));
