@@ -5,10 +5,12 @@
   import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
   import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
+  import { getBadgeProps } from '../lib/claim';
   import About from '../components/About.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
   import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
+  import Thumbnail from '../components/Thumbnail.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
@@ -171,8 +173,35 @@
         <div class="wrapper">
           <About claim={primary} {isComparing} {isMobileViewer} />
         </div>
-      {:else}
-        <ContentCredentialsError />
+      {:else if primary instanceof Ingredient}
+        <div class="w-full flex justify-center">
+          <div class="info w-full max-w-xs">
+            <div>
+              <dl class="attributes">
+                <dt>
+                  <div>{$_('comp.about.contentCredentials.header')}</div>
+                  <cai-tooltip placement="left" class="theme-spectrum">
+                    <div
+                      slot="content"
+                      class="text-gray-900"
+                      style="width: 200px;">
+                      {$_('comp.about.contentCredentials.helpText')}
+                    </div>
+                  </cai-tooltip>
+                </dt>
+                <dd class="flex space-x-2 items-center mt-1">
+                  <div class="w-12 h-12">
+                    <Thumbnail asset={primary} />
+                  </div>
+                  <div>
+                    <h6>File name</h6>
+                    <div>{primary.data.title}</div>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
       {/if}
     </section>
   {/if}
