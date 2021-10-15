@@ -39,7 +39,7 @@
     compareWithPath(null);
   }
 
-  let isDraggingOver = false;
+  let isDragging = false;
   let error = false;
   let tour: ReturnType<typeof startTour>;
   let breakpoints = __breakpoints__;
@@ -122,7 +122,7 @@
     const cleanupDragDrop = dragDrop('main', {
       async onDrop(files: File[]) {
         clearTimeout(dragTimeout);
-        isDraggingOver = false;
+        isDragging = false;
         try {
           await processFiles(files);
         } catch (err) {
@@ -131,11 +131,11 @@
       },
       onDragOver() {
         clearTimeout(dragTimeout);
-        isDraggingOver = true;
+        isDragging = true;
       },
       onDragLeave() {
         dragTimeout = setTimeout(() => {
-          isDraggingOver = false;
+          isDragging = false;
         }, 50);
       },
     });
@@ -178,7 +178,7 @@
       <section class="left-col" class:loading={$isLoading}>
         <CircleLoader />
       </section>
-      <Viewer isLoading={true} isDragging={isDraggingOver} />
+      <Viewer isLoading={true} {isDragging} />
       <section class="right-col" class:loading={$isLoading}>
         <CircleLoader />
       </section>
@@ -186,7 +186,7 @@
       <section class="left-col">
         <Navigation {source} />
       </section>
-      <Viewer asset={$provenance?.source} isDragging={isDraggingOver} />
+      <Viewer asset={$provenance?.source} {isDragging} />
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
@@ -207,9 +207,9 @@
       {#if isComparing}
         <Comparison {primary} {secondary} />
       {:else if primary instanceof Source}
-        <Viewer asset={primary} isDragging={isDraggingOver} />
+        <Viewer asset={primary} {isDragging} />
       {:else}
-        <Viewer asset={primary?.asset} isDragging={isDraggingOver} />
+        <Viewer asset={primary?.asset} {isDragging} />
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary instanceof Claim}
@@ -235,7 +235,7 @@
     {/if}
   {:else}
     <section />
-    <Viewer isDragging={isDraggingOver} />
+    <Viewer {isDragging} />
     {#if error}
       <section class="right-col p-4">
         <Alert severity="error">{errorMessage}</Alert>

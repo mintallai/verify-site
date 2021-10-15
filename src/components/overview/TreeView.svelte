@@ -6,7 +6,12 @@
   import TreeLink from './TreeLink.svelte';
   import type { ITreeNode } from '../../lib/types';
   import { select as d3Select, Selection } from 'd3-selection';
-  import { zoom as d3Zoom, ZoomBehavior, zoomIdentity } from 'd3-zoom';
+  import {
+    zoom as d3Zoom,
+    ZoomBehavior,
+    zoomIdentity,
+    ZoomTransform,
+  } from 'd3-zoom';
   import { tree as D3Tree, HierarchyPointNode } from 'd3-hierarchy';
   import ZoomIn from '../../../assets/svg/monochrome/zoom-in.svg';
   import ZoomOut from '../../../assets/svg/monochrome/zoom-out.svg';
@@ -21,6 +26,7 @@
   let svg: SVGElement;
   let bounds: SVGGraphicsElement;
   let boundsSel;
+  let boundsTransform: ZoomTransform;
   let tree: HierarchyPointNode<ITreeNode>;
   let zoom: ZoomBehavior<any, any>;
 
@@ -28,7 +34,7 @@
     const svgSel = d3Select(svg);
     boundsSel = d3Select(bounds);
     zoom = d3Zoom().on('zoom', (evt) => {
-      boundsSel.attr('transform', evt.transform);
+      boundsTransform = evt.transform;
     });
     svgSel.call(zoom).call(zoom.transform, zoomIdentity);
 
@@ -58,6 +64,9 @@
       d3Tree.separation((a, b) => (a.parent === b.parent ? 2 : 1) / a.depth);
       tree = d3Tree($hierarchy);
     }
+  }
+  $: {
+    boundsSel?.attr('transform', boundsTransform);
   }
   $: links = (tree?.links() ?? [])
     .map((link, idx) => {

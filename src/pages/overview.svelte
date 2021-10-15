@@ -2,18 +2,15 @@
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
   import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
-  import { getBadgeProps } from '../lib/claim';
   import About from '../components/About.svelte';
+  import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
+  import FileDropper from '../components/FileDropper.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
-  import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
-  import Thumbnail from '../components/Thumbnail.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import TreeView from '../components/overview/TreeView.svelte';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
@@ -21,7 +18,6 @@
     urlParams,
     provenance,
     setProvenance,
-    navigateToPath,
     compareWithPath,
     primaryAsset,
     secondaryAsset,
@@ -30,15 +26,8 @@
     isLoading,
     setIsLoading,
   } from '../stores';
-  import type { ViewableItem } from '../lib/types';
 
-  function handleClose(navigateToAsset: ViewableItem) {
-    // TODO: Implement this
-    // navigateToPath(navigateToAsset.id);
-    compareWithPath(null);
-  }
-
-  let isDraggingOver = false;
+  let isDragging = false;
   let error = false;
   let tour: ReturnType<typeof startTour>;
   let breakpoints = __breakpoints__;
@@ -48,6 +37,7 @@
   $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
   $: hasContent = sourceParam || $provenance || $isLoading;
+  $: isUploadMode = !hasContent || isDragging;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
@@ -121,7 +111,7 @@
     const cleanupDragDrop = dragDrop('main', {
       async onDrop(files: File[]) {
         clearTimeout(dragTimeout);
-        isDraggingOver = false;
+        isDragging = false;
         try {
           await processFiles(files);
         } catch (err) {
@@ -130,11 +120,11 @@
       },
       onDragOver() {
         clearTimeout(dragTimeout);
-        isDraggingOver = true;
+        isDragging = true;
       },
       onDragLeave() {
         dragTimeout = setTimeout(() => {
-          isDraggingOver = false;
+          isDragging = false;
         }, 50);
       },
     });
@@ -152,7 +142,7 @@
 <svelte:head>
   <title>{$_('page.title')}</title>
 </svelte:head>
-<main class="theme-light">
+<main class="theme-light" class:full-width={isUploadMode && !$provenance}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -160,12 +150,16 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  <TopNavigation
-    {isComparing}
-    {noMetadata}
-    {source}
-    currentPage="overview"
-    on:back={partial(handleClose, secondary)} />
+  <TopNavigation {isComparing} {noMetadata} {source} currentPage="overview" />
+  <div class="dragdrop">
+    <FileDropper {isUploadMode} {isDragging} />
+    {#if isUploadMode}
+      <div
+        class="upload-bg"
+        class:dragging={isDragging}
+        in:fade={{ duration: 150 }} />
+    {/if}
+  </div>
   {#if hasContent}
     <TreeView />
     <section class="right-col p-4 pt-0 md:pt-4">
@@ -173,35 +167,8 @@
         <div class="wrapper">
           <About claim={primary} {isComparing} {isMobileViewer} />
         </div>
-      {:else if primary instanceof Ingredient}
-        <div class="w-full flex justify-center">
-          <div class="info w-full max-w-xs">
-            <div>
-              <dl class="attributes">
-                <dt>
-                  <div>{$_('comp.about.contentCredentials.header')}</div>
-                  <cai-tooltip placement="left" class="theme-spectrum">
-                    <div
-                      slot="content"
-                      class="text-gray-900"
-                      style="width: 200px;">
-                      {$_('comp.about.contentCredentials.helpText')}
-                    </div>
-                  </cai-tooltip>
-                </dt>
-                <dd class="flex space-x-2 items-center mt-1">
-                  <div class="w-12 h-12">
-                    <Thumbnail asset={primary} />
-                  </div>
-                  <div>
-                    <h6>File name</h6>
-                    <div>{primary.data.title}</div>
-                  </div>
-                </dd>
-              </dl>
-            </div>
-          </div>
-        </div>
+      {:else}
+        <AboutNoClaim {primary} />
       {/if}
     </section>
   {/if}
@@ -243,9 +210,19 @@
     @apply fixed inset-0 z-20;
     background-color: rgba(0, 0, 0, 0.2);
   }
+  .dragdrop {
+    @apply contents relative w-full h-full overflow-hidden;
+  }
+  .upload-bg {
+    @apply bg-gray-75 absolute inset-0 z-10;
+  }
+  .upload-bg.dragging {
+    @apply text-blue-500;
+    background: linear-gradient(var(--drag-bg-color), var(--drag-bg-color)),
+      linear-gradient(var(--white), var(--white));
+  }
   @screen lg {
-    main,
-    main.comparing {
+    main {
       @apply fixed inset-0;
       grid-template-columns: 1fr 320px;
       grid-template-rows: 80px 60px 1fr 55px;
@@ -253,6 +230,14 @@
         'header header'
         'breadcrumb breadcrumb'
         'viewer right'
+        'footer footer';
+    }
+    main.full-width {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'header header'
+        'breadcrumb breadcrumb'
+        'viewer viewer'
         'footer footer';
     }
     section {

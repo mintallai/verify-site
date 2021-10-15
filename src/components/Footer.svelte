@@ -32,7 +32,7 @@
   }
 </script>
 
-<footer>
+<footer class="z-20 bg-white">
   {#if showLanguagePicker}
     <div bind:this={languageMenu}>
       <sp-menu value={currentLocale}>
