@@ -47,10 +47,17 @@
 
   function handleZoomOut() {
     const sel = svgSel.transition();
+    const bbox = bounds.getBBox();
     const minScale = getMinScale(width, height);
     sel.call(
       zoom.transform,
-      zoomIdentity.translate(width / 2, height / 2).scale(minScale),
+      zoomIdentity
+        .translate(width / 2, height / 2)
+        .scale(minScale)
+        .translate(
+          -(bbox.x * 2 + bbox.width) / 2,
+          -(bbox.y * 2 + bbox.height) / 2,
+        ),
     );
   }
 
@@ -59,6 +66,7 @@
     boundsSel = d3Select(bounds);
     svgSel
       .call(zoom)
+      // Initially center on the root
       .call(zoom.transform, zoomIdentity.translate(width / 2, height * 0.2));
 
     return () => {
@@ -67,6 +75,7 @@
   });
 
   $: {
+    // Once the hierarchy is ready, create the tree
     if ($hierarchy) {
       const d3Tree = D3Tree<ITreeNode>();
       d3Tree.size([width, height]);
@@ -86,6 +95,7 @@
         isInPath($primaryPath, getPath(target));
       return { link, idx, ancestor };
     })
+    // Make sure the highlighted (ancestor) paths appear on top
     .sort((a, b) => {
       if (a.ancestor && !b.ancestor) {
         return 1;
@@ -100,6 +110,7 @@
   );
   $: {
     if (bounds) {
+      // Set the proper scaleExtent whenever the width/height changes
       zoom?.scaleExtent([getMinScale(width, height), 1]);
     }
   }
