@@ -52,12 +52,12 @@ export function getBadgeProps({ claim, errors }: IBadgePropsInput): IBadgeProps 
       case ErrorTypes.ASSET_HASH:
         return {
           badgeType: 'missing',
-          badgeHelpText: 'comp.asset.badgeMissing.HelpText',
+          badgeHelpText: 'comp.asset.badgeMissing.helpText',
         };
       case ErrorTypes.SIGNATURE: 
         return {
           badgeType: 'alert',
-          badgeHelpText: 'comp.asset.badgeError.HelpText',
+          badgeHelpText: 'comp.asset.badgeError.helpText',
         };
       default:
         break;
