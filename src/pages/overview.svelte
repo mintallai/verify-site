@@ -168,14 +168,18 @@
     {:else}
       <TreeView />
     {/if}
-    <section class="right-col p-4 pt-0 md:pt-4">
-      {#if primary instanceof Claim}
-        <div class="wrapper">
+    <section class="right-col p-4 pt-0 md:pt-4" class:loading={$isLoading}>
+      <div class="wrapper">
+        {#if primary instanceof Claim}
           <About claim={primary} {isComparing} {isMobileViewer} />
-        </div>
-      {:else if !$isLoading}
-        <AboutNoClaim {primary} />
-      {/if}
+        {:else if true}
+          <div class="flex items-center justify-center">
+            <CircleLoader />
+          </div>
+        {:else}
+          <AboutNoClaim {primary} />
+        {/if}
+      </div>
     </section>
   {/if}
   <Footer />
@@ -203,10 +207,6 @@
   }
   section.loading {
     @apply flex items-center justify-center;
-  }
-  section.left-col {
-    @apply hidden;
-    grid-area: left;
   }
   section.right-col {
     @apply max-h-full;
