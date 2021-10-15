@@ -22,7 +22,6 @@
     window.location.assign('/inspect');
     evt.preventDefault();
   }
-  // height is 500px on mobile
 </script>
 
 <div class="theme-light overflow-show">
@@ -31,7 +30,7 @@
     <div class="hero grid grid-cols-10">
       <div
         class="row-span-full col-start-1 col-span-5 self-center order-3 ml-16">
-        <div class="text-white lg:text-8xl text-7xl font-bold font-serif">
+        <div class="text-white lg:text-8xl text-7xl font-bold font-home">
           {$_('page.hero.tagline')}
         </div>
         <div class="text-white lg:text-5xl text-3xl font-normal">
@@ -56,7 +55,7 @@
   <section id="section1">
     <div class="grid grid-cols-3 gap-4">
       <div class="w-full col-span-3 lg:col-span-2 order-1">
-        <img src={section1} alt="Composition of woman and city skyline" />
+        <img src={section1} alt="Icy lake at dusk" />
       </div>
       <div
         class="w-full col-span-3 lg:col-span-1 order-2 items-center flex px-4 sm:pb-5">
