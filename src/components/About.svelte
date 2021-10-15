@@ -166,9 +166,7 @@
                     class="w-12 h-12 cursor-pointer"
                     on:click={() =>
                       navigateToChild(asset.claim?.id ?? asset.id)}>
-                    <Thumbnail
-                      {asset}
-                      {...getBadgeProps({ claim: asset.claim })} />
+                    <Thumbnail {asset} {...getBadgeProps(asset)} />
                   </div>
                 {/each}
               </div>

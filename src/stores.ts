@@ -2,7 +2,7 @@ import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ImageProvenance, Claim, Ingredient, Source } from './lib/sdk';
-import type { ViewableItem, ITreeNode } from './lib/types';
+import { ViewableItem, ITreeNode, ErrorTypes } from './lib/types';
 import debug from 'debug';
 
 const dbg = debug('store');
@@ -219,6 +219,18 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
     };
   }
   if (node instanceof Ingredient) {
+    if (node.errors.length > 0) {
+      return {
+        id: node.asset?.id ?? node.id,
+        name: node.asset?.title ?? node.title,
+        // There are currently no error cases accounted for but OTGP. 
+        // The `claim` value will need to be adjusted based on the type of error.
+        claim: node.errors[0].code === ErrorTypes.ASSET_HASH ? null : node.asset, 
+        asset: node.asset ?? node,
+        errors: node.asset?.errors,
+        children: [parseProvenance(node.claim)] ?? [],
+      };
+    }
     return {
       id: node.claim?.id ?? node.id,
       name: node.title,
