@@ -8,6 +8,9 @@
   export let nodeWidth: number;
   export let nodeHeight: number;
 
+  // This creates the connectors using the same line shape that is used in the design.
+  // Since there were none in the D3 library that looked like the ones in the mock, we
+  // had to make our own, so we create a custom path using this function.
   function curve(
     context: Path,
     x0: number,
