@@ -10,6 +10,7 @@
     zoom as d3Zoom,
     ZoomBehavior,
     zoomIdentity,
+    zoomTransform,
     ZoomTransform,
   } from 'd3-zoom';
   import { tree as D3Tree, HierarchyPointNode } from 'd3-hierarchy';
@@ -18,44 +19,53 @@
 
   let width = 1;
   let height = 1;
-  let margin = 50;
+  let margin = 0.95;
   let nodeWidth = 294;
   let nodeHeight = 100;
   let hPad = 50;
   let vPad = 50;
   let svg: SVGElement;
+  let svgSel;
   let bounds: SVGGraphicsElement;
   let boundsSel;
   let boundsTransform: ZoomTransform;
   let tree: HierarchyPointNode<ITreeNode>;
-  let zoom: ZoomBehavior<any, any>;
+  let zoom = d3Zoom().on('zoom', (evt) => {
+    boundsTransform = evt.transform;
+  });
+
+  function getMinScale(svgWidth, svgHeight) {
+    const bbox = bounds.getBBox();
+    const xRatio = bbox.width / svgWidth;
+    const yRatio = bbox.height / svgHeight;
+    return Math.min(1, margin / Math.max(xRatio, yRatio));
+  }
+
+  function handleZoomIn() {
+    zoom.scaleTo(svgSel.transition(), 1);
+  }
+
+  function handleZoomOut() {
+    const sel = svgSel.transition();
+    const minScale = getMinScale(width, height);
+    sel.call(
+      zoom.transform,
+      zoomIdentity.translate(width / 2, height / 2).scale(minScale),
+    );
+  }
 
   onMount(() => {
-    const svgSel = d3Select(svg);
+    svgSel = d3Select(svg);
     boundsSel = d3Select(bounds);
-    zoom = d3Zoom().on('zoom', (evt) => {
-      boundsTransform = evt.transform;
-    });
-    svgSel.call(zoom).call(zoom.transform, zoomIdentity);
+    svgSel
+      .call(zoom)
+      .call(zoom.transform, zoomIdentity.translate(width / 2, height * 0.2));
 
     return () => {
       svgSel.on('.zoom', null);
     };
   });
 
-  function handleZoomIn() {
-    zoom?.scaleTo(boundsSel.transition(), 1);
-  }
-
-  function handleZoomOut() {
-    const sel = boundsSel.transition();
-    console.log('dims', dims);
-    zoom?.scaleTo(sel, scale);
-    // zoom?.translateTo(sel, 0, dims.yMin + dims.yMax / 2);
-  }
-
-  $: tx = width / 2;
-  $: ty = height * 0.2;
   $: {
     if ($hierarchy) {
       const d3Tree = D3Tree<ITreeNode>();
@@ -88,26 +98,10 @@
   $: descendants = (tree?.descendants() ?? []).map(
     (node) => node as HierarchyPointNode<ITreeNode>,
   );
-  // We're manually calculating the dimensions and not relying on `getBBox()` or `getBoundingClientRect()`
-  // here since these aren't immediately available on the group element
-  $: dims = descendants.reduce(
-    (acc, { x, y }) => {
-      return {
-        xMin: Math.min(acc.xMin, x),
-        xMax: Math.max(acc.xMax, x + nodeWidth),
-        yMin: Math.min(acc.yMin, y),
-        yMax: Math.max(acc.yMax, y + nodeHeight),
-      };
-    },
-    { xMin: 0, xMax: 0, yMin: 0, yMax: 0 },
-  );
-  $: scale = Math.min(
-    width / (dims.xMax - dims.xMin + margin * 2),
-    height / (dims.yMax - dims.yMin + margin * 2),
-    1,
-  );
   $: {
-    zoom?.scaleExtent([scale, 1]);
+    if (bounds) {
+      zoom?.scaleExtent([getMinScale(width, height), 1]);
+    }
   }
 </script>
 
@@ -115,30 +109,28 @@
   class="relative bg-gray-75 w-full h-full overflow-hidden"
   bind:clientWidth={width}
   bind:clientHeight={height}>
-  <svg bind:this={svg} {width} {height}>
+  <svg bind:this={svg} {width} {height} view-box={`0 0 ${width} ${height}`}>
     <g bind:this={bounds}>
-      <g transform={`translate(${tx}, ${ty})`}>
-        {#each links as { link, idx, ancestor }, key (idx)}
-          <g>
-            <TreeLink {link} {ancestor} {nodeWidth} {nodeHeight} />
-          </g>
-        {/each}
-        {#each descendants as node, key (key)}
-          <g transform={`translate(${node.x}, ${node.y})`}>
-            <TreeNode {node} width={nodeWidth} height={nodeHeight} />
-          </g>
-        {/each}
-      </g>
+      {#each links as { link, idx, ancestor }, key (idx)}
+        <g>
+          <TreeLink {link} {ancestor} {nodeWidth} {nodeHeight} />
+        </g>
+      {/each}
+      {#each descendants as node, key (key)}
+        <g transform={`translate(${node.x}, ${node.y})`}>
+          <TreeNode {node} width={nodeWidth} height={nodeHeight} />
+        </g>
+      {/each}
     </g>
   </svg>
-  <!-- <div class="controls">
+  <div class="controls">
     <div class="in" on:click={handleZoomIn}>
       <ZoomIn width="20" height="20" class="text-gray-700" />
     </div>
     <div class="out" on:click={handleZoomOut}>
       <ZoomOut width="20" height="3" class="text-gray-700" />
     </div>
-  </div> -->
+  </div>
 </div>
 
 <style lang="postcss">

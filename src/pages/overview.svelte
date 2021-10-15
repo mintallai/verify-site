@@ -161,13 +161,19 @@
     {/if}
   </div>
   {#if hasContent}
-    <TreeView />
+    {#if $isLoading}
+      <div class="w-full h-full bg-gray-75 flex items-center justify-center">
+        <CircleLoader />
+      </div>
+    {:else}
+      <TreeView />
+    {/if}
     <section class="right-col p-4 pt-0 md:pt-4">
       {#if primary instanceof Claim}
         <div class="wrapper">
           <About claim={primary} {isComparing} {isMobileViewer} />
         </div>
-      {:else}
+      {:else if !$isLoading}
         <AboutNoClaim {primary} />
       {/if}
     </section>
