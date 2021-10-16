@@ -172,7 +172,7 @@
       <div class="wrapper">
         {#if primary instanceof Claim}
           <About claim={primary} {isComparing} {isMobileViewer} />
-        {:else if true}
+        {:else if $isLoading}
           <div class="flex items-center justify-center">
             <CircleLoader />
           </div>
