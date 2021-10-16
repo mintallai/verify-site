@@ -35,10 +35,13 @@
   });
 
   function getMinScale(svgWidth, svgHeight) {
-    const bbox = bounds.getBBox();
-    const xRatio = bbox.width / svgWidth;
-    const yRatio = bbox.height / svgHeight;
-    return Math.min(1, margin / Math.max(xRatio, yRatio));
+    const bbox = bounds?.getBBox();
+    if (bbox) {
+      const xRatio = bbox.width / svgWidth;
+      const yRatio = bbox.height / svgHeight;
+      return Math.min(1, margin / Math.max(xRatio, yRatio));
+    }
+    return 1;
   }
 
   function handleZoomIn() {
@@ -48,7 +51,6 @@
   function handleZoomOut() {
     const sel = svgSel.transition();
     const bbox = bounds.getBBox();
-    const minScale = getMinScale(width, height);
     sel.call(
       zoom.transform,
       zoomIdentity
@@ -80,7 +82,7 @@
       const d3Tree = D3Tree<ITreeNode>();
       d3Tree.size([width, height]);
       d3Tree.nodeSize([nodeWidth + vPad, nodeHeight + hPad]);
-      d3Tree.separation((a, b) => (a.parent === b.parent ? 2 : 1) / a.depth);
+      d3Tree.separation((a, b) => (a.parent == b.parent ? 1 : 2));
       tree = d3Tree($hierarchy);
     }
   }
@@ -108,11 +110,10 @@
   $: descendants = (tree?.descendants() ?? []).map(
     (node) => node as HierarchyPointNode<ITreeNode>,
   );
+  $: minScale = getMinScale(width, height);
   $: {
-    if (bounds) {
-      // Set the proper scaleExtent whenever the width/height changes
-      zoom?.scaleExtent([getMinScale(width, height), 1]);
-    }
+    // Set the proper scaleExtent whenever the width/height changes
+    zoom?.scaleExtent([minScale, 1]);
   }
 </script>
 
@@ -135,10 +136,16 @@
     </g>
   </svg>
   <div class="controls">
-    <div class="in" on:click={handleZoomIn}>
+    <div
+      class="in"
+      class:disabled={boundsTransform?.k === 1}
+      on:click={handleZoomIn}>
       <ZoomIn width="20" height="20" class="text-gray-700" />
     </div>
-    <div class="out" on:click={handleZoomOut}>
+    <div
+      class="out"
+      class:disabled={boundsTransform?.k === minScale}
+      on:click={handleZoomOut}>
       <ZoomOut width="20" height="3" class="text-gray-700" />
     </div>
   </div>
@@ -151,7 +158,7 @@
     height: 88px;
   }
   .controls > div {
-    @apply flex items-center justify-center mx-1.5 cursor-pointer;
+    @apply flex items-center justify-center mx-1.5 cursor-pointer transition-opacity;
   }
   .controls .in {
     @apply border-b border-gray-300;
@@ -159,5 +166,8 @@
   }
   .controls .out {
     height: 40px;
+  }
+  .controls .disabled {
+    @apply pointer-events-none cursor-default opacity-30;
   }
 </style>
