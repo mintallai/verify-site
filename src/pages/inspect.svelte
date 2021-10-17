@@ -2,7 +2,6 @@
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import partial from 'lodash/partial';
   import dragDrop from 'drag-drop';
   import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
@@ -22,7 +21,6 @@
     urlParams,
     provenance,
     setProvenance,
-    navigateToPath,
     compareWithPath,
     primaryAsset,
     secondaryAsset,
@@ -31,11 +29,8 @@
     isLoading,
     setIsLoading,
   } from '../stores';
-  import type { ViewableItem } from '../lib/types';
 
-  function handleClose(navigateToAsset: ViewableItem) {
-    // TODO: Implement this
-    // navigateToPath(navigateToAsset.id);
+  function handleClose() {
     compareWithPath(null);
   }
 
@@ -166,7 +161,7 @@
     {noMetadata}
     {source}
     currentPage="inspect"
-    on:back={partial(handleClose, secondary)} />
+    on:back={handleClose} />
   {#if hasContent}
     {#if error}
       <section class="left-col" class:loading={$isLoading} />

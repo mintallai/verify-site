@@ -50,7 +50,7 @@
           <img
             use:thumbnail={asset}
             on:thumbnail={handleImgSrc}
-            alt=""
+            alt="Thumbnail"
             class="h-full w-full object-contain object-center" />
         {:else}
           <div class="flex items-center justify-center">

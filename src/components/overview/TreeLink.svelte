@@ -5,7 +5,6 @@
 
   export let link: HierarchyPointLink<ITreeNode>;
   export let ancestor: boolean = false;
-  export let nodeWidth: number;
   export let nodeHeight: number;
 
   // This creates the connectors using the same line shape that is used in the design.

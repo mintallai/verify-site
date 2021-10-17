@@ -5,14 +5,8 @@
   import TreeNode from './TreeNode.svelte';
   import TreeLink from './TreeLink.svelte';
   import type { ITreeNode } from '../../lib/types';
-  import { select as d3Select, Selection } from 'd3-selection';
-  import {
-    zoom as d3Zoom,
-    ZoomBehavior,
-    zoomIdentity,
-    zoomTransform,
-    ZoomTransform,
-  } from 'd3-zoom';
+  import { select as d3Select } from 'd3-selection';
+  import { zoom as d3Zoom, zoomIdentity, ZoomTransform } from 'd3-zoom';
   import { tree as D3Tree, HierarchyPointNode } from 'd3-hierarchy';
   import ZoomIn from '../../../assets/svg/monochrome/zoom-in.svg';
   import ZoomOut from '../../../assets/svg/monochrome/zoom-out.svg';
@@ -25,16 +19,16 @@
   let hPad = 50;
   let vPad = 50;
   let svg: SVGElement;
-  let svgSel;
+  let svgSel: any;
   let bounds: SVGGraphicsElement;
-  let boundsSel;
+  let boundsSel: any;
   let boundsTransform: ZoomTransform;
   let tree: HierarchyPointNode<ITreeNode>;
   let zoom = d3Zoom().on('zoom', (evt) => {
     boundsTransform = evt.transform;
   });
 
-  function getMinScale(svgWidth, svgHeight) {
+  function getMinScale(svgWidth: number, svgHeight: number) {
     const bbox = bounds?.getBBox();
     if (bbox) {
       const xRatio = bbox.width / svgWidth;
@@ -123,9 +117,9 @@
   bind:clientHeight={height}>
   <svg bind:this={svg} {width} {height} view-box={`0 0 ${width} ${height}`}>
     <g bind:this={bounds}>
-      {#each links as { link, idx, ancestor }, key (idx)}
+      {#each links as { link, idx, ancestor }, _i (idx)}
         <g>
-          <TreeLink {link} {ancestor} {nodeWidth} {nodeHeight} />
+          <TreeLink {link} {ancestor} {nodeHeight} />
         </g>
       {/each}
       {#each descendants as node, key (key)}
