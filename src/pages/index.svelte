@@ -11,11 +11,11 @@
   // Section 0
   import hero from '../../assets/png/hero@2x.png';
   // Section 1
-  import section1 from '../../assets/png/section1@2x.png';
+  import section1 from '../../assets/png/AdobeStock_55134478-edit.png';
   // Section 2 image
-  import section2 from '../../assets/png/section2@2x.png';
+  import section2 from '../../assets/png/original-drawing2.png';
   // Section 3 image
-  import section3 from '../../assets/png/section3@2x.png';
+  import section3 from '../../assets/png/PencilTape.png';
 
   function upload(evt: Event) {
     window.newrelic?.addPageAction('uploadClick');
@@ -44,7 +44,7 @@
         </sp-button>
       </div>
       <div
-        class="row-span-full col-span-6 col-end-11 self-center order-2 mr-16">
+        class="overlap row-span-full col-span-6 col-end-11 self-center order-2 mr-16 object-contain">
         <img src={hero} alt="Person taking picture with smartphone" />
       </div>
       <div
@@ -128,6 +128,11 @@
   }
   .hero {
     width: 100vw;
+  }
+
+  .overlap {
+    margin-top: 10%;
+    margin-bottom: 10%;
   }
   section {
     width: 100vw;
