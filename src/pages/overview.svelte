@@ -5,16 +5,13 @@
   import dragDrop from 'drag-drop';
   import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
-  import Alert from '../components/Alert.svelte';
+  import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
+  import FileDropper from '../components/FileDropper.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
-  import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import Navigation from '../components/inspect/Navigation.svelte';
-  import Comparison from '../components/inspect/Comparison.svelte';
-  import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
-  import Viewer from '../components/inspect/Viewer.svelte';
+  import TreeView from '../components/overview/TreeView.svelte';
   import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
   import {
@@ -30,10 +27,6 @@
     setIsLoading,
   } from '../stores';
 
-  function handleClose() {
-    compareWithPath(null);
-  }
-
   let isDragging = false;
   let error = false;
   let tour: ReturnType<typeof startTour>;
@@ -44,6 +37,7 @@
   $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
   $: hasContent = sourceParam || $provenance || $isLoading;
+  $: isUploadMode = !hasContent || isDragging;
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
   $: isComparing = !!(primary && secondary);
@@ -148,7 +142,7 @@
 <svelte:head>
   <title>{$_('page.title')}</title>
 </svelte:head>
-<main class="theme-light" class:comparing={isComparing}>
+<main class="theme-light" class:full-width={isUploadMode && !$provenance}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -156,88 +150,37 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  <TopNavigation
-    {isComparing}
-    {noMetadata}
-    {source}
-    currentPage="inspect"
-    on:back={handleClose} />
+  <TopNavigation {isComparing} {noMetadata} {source} currentPage="overview" />
+  <div class="dragdrop">
+    <FileDropper {isUploadMode} {isDragging} />
+    {#if isUploadMode}
+      <div
+        class="upload-bg"
+        class:dragging={isDragging}
+        in:fade={{ duration: 150 }} />
+    {/if}
+  </div>
   {#if hasContent}
-    {#if error}
-      <section class="left-col" class:loading={$isLoading} />
-      <Viewer isError={!!error} />
-      <section class="right-col p-4">
-        <Alert severity="error">{errorMessage}</Alert>
-      </section>
-    {:else if $isLoading}
-      <section class="left-col" class:loading={$isLoading}>
+    {#if $isLoading}
+      <div class="w-full h-full bg-gray-75 flex items-center justify-center">
         <CircleLoader />
-      </section>
-      <Viewer isLoading={true} {isDragging} />
-      <section class="right-col" class:loading={$isLoading}>
-        <CircleLoader />
-      </section>
-    {:else if noMetadata}
-      <section class="left-col">
-        <Navigation {source} />
-      </section>
-      <Viewer asset={$provenance?.source} {isDragging} />
-      <section class="right-col p-4">
-        <ContentCredentialsError {isComparing} />
-      </section>
-    {:else if primary}
-      <section class="left-col">
-        {#if !isComparing}
-          <Navigation claim={primary} />
-        {:else if primary instanceof Claim}
-          <div class="w-full p-4 pt-0 md:pt-4">
-            <About claim={primary} {isComparing} {isMobileViewer} />
-          </div>
-        {:else if primary instanceof Ingredient}
-          <div class="wrapper">
-            <ContentCredentialsError {isComparing} />
-          </div>
-        {/if}
-      </section>
-      {#if isComparing}
-        <Comparison {primary} {secondary} />
-      {:else if primary instanceof Source}
-        <Viewer asset={primary} {isDragging} />
-      {:else}
-        <Viewer asset={primary?.asset} {isDragging} />
-      {/if}
-      <section class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing && primary instanceof Claim}
-          <div class="wrapper">
-            <About claim={primary} {isComparing} {isMobileViewer} />
-            {#if isMobileViewer}
-              <CompareLatestButton claim={primary} {isComparing} />
-            {/if}
-          </div>
-        {:else if !isComparing && primary instanceof Ingredient}
-          <div class="wrapper">
-            <ContentCredentialsError {isComparing} />
-            {#if isMobileViewer}
-              <CompareLatestButton claim={null} {isComparing} />
-            {/if}
-          </div>
-        {:else if secondary instanceof Claim}
-          <About claim={secondary} {isComparing} {isMobileViewer} />
-        {:else if secondary instanceof Ingredient}
-          <ContentCredentialsError {isComparing} />
-        {/if}
-      </section>
-    {/if}
-  {:else}
-    <section />
-    <Viewer {isDragging} />
-    {#if error}
-      <section class="right-col p-4">
-        <Alert severity="error">{errorMessage}</Alert>
-      </section>
+      </div>
     {:else}
-      <section />
+      <TreeView />
     {/if}
+    <section class="right-col p-4 pt-0 md:pt-4" class:loading={$isLoading}>
+      <div class="wrapper">
+        {#if primary instanceof Claim}
+          <About claim={primary} {isComparing} {isMobileViewer} />
+        {:else if $isLoading}
+          <div class="flex items-center justify-center">
+            <CircleLoader />
+          </div>
+        {:else}
+          <AboutNoClaim {primary} />
+        {/if}
+      </div>
+    </section>
   {/if}
   <Footer />
 </main>
@@ -265,44 +208,43 @@
   section.loading {
     @apply flex items-center justify-center;
   }
-  section.left-col {
-    @apply hidden;
-    grid-area: left;
-  }
   section.right-col {
     @apply max-h-full;
     grid-area: right;
-  }
-  main.comparing section.right-col > .wrapper {
-    @apply sticky top-10;
   }
   .menu-overlay {
     @apply fixed inset-0 z-20;
     background-color: rgba(0, 0, 0, 0.2);
   }
-  main.comparing {
-    grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
-    grid-template-areas:
-      'header header'
-      'breadcrumb breadcrumb'
-      'viewer viewer'
-      'left right'
-      'footer footer';
+  .dragdrop {
+    @apply contents relative w-full h-full overflow-hidden;
   }
-  main.comparing section.left-col {
-    @apply flex;
+  .upload-bg {
+    @apply bg-gray-75 absolute inset-0 z-10;
+  }
+  .upload-bg.dragging {
+    @apply text-blue-500;
+    background: linear-gradient(var(--drag-bg-color), var(--drag-bg-color)),
+      linear-gradient(var(--white), var(--white));
   }
   @screen lg {
-    main,
-    main.comparing {
+    main {
       @apply fixed inset-0;
-      grid-template-columns: 320px 1fr 320px;
+      grid-template-columns: 1fr 320px;
       grid-template-rows: 80px 60px 1fr 55px;
       grid-template-areas:
-        'header header header'
-        'breadcrumb breadcrumb breadcrumb'
-        'left viewer right'
-        'footer footer footer';
+        'header header'
+        'breadcrumb breadcrumb'
+        'viewer right'
+        'footer footer';
+    }
+    main.full-width {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'header header'
+        'breadcrumb breadcrumb'
+        'viewer viewer'
+        'footer footer';
     }
     section {
       @apply overflow-auto;

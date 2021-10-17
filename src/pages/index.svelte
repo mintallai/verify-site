@@ -1,3 +1,4 @@
+<!-- routify:options reset=true -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
 

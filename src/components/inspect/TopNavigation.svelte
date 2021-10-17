@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto, params, url } from '@roxi/routify';
   import { createEventDispatcher } from 'svelte';
   import { _ } from 'svelte-i18n';
   import Icon from '../Icon.svelte';
@@ -16,13 +17,16 @@
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
 
+  type Page = 'overview' | 'inspect';
+
+  export let currentPage: Page = 'overview';
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
   export let source: Source | null = null;
   const dispatch = createEventDispatcher();
 
   function handleNavChange() {
-    // TODO: Change page
+    $goto(this.selected, $params);
   }
 
   function handleMenuChange() {
@@ -83,14 +87,11 @@
       <div class="breadcrumb-item" class:current={true} />
     {:else}
       <sp-tabs
-        selected="inspect"
+        selected={$url()}
         on:change={handleNavChange}
         class="nav-tabs mt-1 -ml-4">
-        <sp-tab
-          label={$_('comp.topNavigation.overview')}
-          value="overview"
-          disabled />
-        <sp-tab label={$_('comp.topNavigation.inspect')} value="inspect" />
+        <sp-tab label={$_('comp.topNavigation.overview')} value="/overview" />
+        <sp-tab label={$_('comp.topNavigation.inspect')} value="/inspect" />
       </sp-tabs>
     {/if}
   </sp-theme>
