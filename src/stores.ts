@@ -208,7 +208,6 @@ export const secondaryAsset = derived<
 });
 
 function parseProvenance(node: Claim | Ingredient): ITreeNode {
-  console.log('[call parseProvenance]::node >', node);
   if (node instanceof Claim) {
     return {
       id: node.id,

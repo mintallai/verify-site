@@ -60,9 +60,12 @@ export function getBadgeProps({ claim, errors }: IBadgePropsInput): IBadgeProps 
           badgeHelpText: 'comp.asset.badgeError.helpText',
         };
       case ErrorTypes.UNKNOWN:
+        if (errors[0]?.description?.includes("smart object")) {
+          return;
+        }
         return {
           badgeType: 'alert',
-          badgeHelpText: errors[0].description,
+          badgeHelpText: 'comp.asset.badgeError.helpText',
         };
       default:
         return {

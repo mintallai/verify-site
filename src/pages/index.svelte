@@ -15,7 +15,7 @@
   // Section 2 image
   import section2 from '../../assets/png/original-drawing2.png';
   // Section 3 image
-  import section3 from '../../assets/png/PencilTape.png';
+  import section3 from '../../assets/png/ThePencilTape.png';
 
   function upload(evt: Event) {
     window.newrelic?.addPageAction('uploadClick');
