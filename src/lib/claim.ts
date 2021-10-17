@@ -59,11 +59,16 @@ export function getBadgeProps({ claim, errors }: IBadgePropsInput): IBadgeProps 
           badgeType: 'alert',
           badgeHelpText: 'comp.asset.badgeError.helpText',
         };
-      default:
+      case ErrorTypes.UNKNOWN:
         return {
           badgeType: 'alert',
           badgeHelpText: errors[0].description,
-        }
+        };
+      default:
+        return {
+          badgeType: 'alert',
+          badgeHelpText: 'comp.asset.badgeError.helpText',
+        };
     }
     
   }

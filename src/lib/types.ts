@@ -28,4 +28,5 @@ export interface ITreeNode {
 export enum ErrorTypes {
   ASSET_HASH = "ASSET_HASH",
   SIGNATURE = "SIGNATURE",
+  UNKNOWN = "UNKNOWN",
 }

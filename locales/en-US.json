@@ -23,7 +23,7 @@
   "comp.about.website": "Website",
   "comp.asset.badgeInfo.helpText": "This image has attribution and history data.",
   "comp.asset.badgeMissing.helpText": "This asset was edited but, but the info for it is incomplete or missing.",
-  "comp.asset.badgeError.helpText": "There was an error on this claim.",
+  "comp.asset.badgeError.helpText": "Something went wrong. The content credentials for this file are unavailable.",
   "comp.asset.fileName": "File Name",
   "comp.comparison.compareToLatestVersion": "Compare to latest version",
   "comp.contentCredentials.compare": "Compare credentials",
