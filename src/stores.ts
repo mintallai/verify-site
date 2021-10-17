@@ -208,6 +208,7 @@ export const secondaryAsset = derived<
 });
 
 function parseProvenance(node: Claim | Ingredient): ITreeNode {
+  console.log('[call parseProvenance]::node >', node);
   if (node instanceof Claim) {
     return {
       id: node.id,
@@ -228,7 +229,7 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
         claim: node.errors[0].code === ErrorTypes.ASSET_HASH ? null : node.asset, 
         asset: node.asset ?? node,
         errors: node.asset?.errors,
-        children: [parseProvenance(node.claim)] ?? [],
+        children: node.claim ? [parseProvenance(node.claim)] : [],
       };
     }
     return {
@@ -240,6 +241,7 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
       children: node.claim?.ingredients.map(parseProvenance) ?? [],
     };
   }
+  return;
 }
 
 export const hierarchy = derived<

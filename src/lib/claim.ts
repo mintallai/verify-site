@@ -60,7 +60,10 @@ export function getBadgeProps({ claim, errors }: IBadgePropsInput): IBadgeProps 
           badgeHelpText: 'comp.asset.badgeError.helpText',
         };
       default:
-        break;
+        return {
+          badgeType: 'alert',
+          badgeHelpText: errors[0].description,
+        }
     }
     
   }
