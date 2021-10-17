@@ -46,6 +46,7 @@
     'Lucida Grande', sans-serif;
   --family-code: 'Source Code Pro', Monaco, monospace;
   --family-serif: adobe-clean-serif, 'Source Serif Pro', Georgia, serif;
+  --family-home: 'acumin-pro',
   --font-family-ar: myriad-arabic, adobe-clean, 'Source Sans Pro', -apple-system,
     BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Trebuchet MS',
     'Lucida Grande', sans-serif;
@@ -79,6 +80,7 @@
   --font-size-800: 32px;
   --font-size-900: 36px;
   --font-size-1000: 40px;
+  --font-size-1300: 60px;
   --fuchsia-400: rgb(207, 62, 220);
   --fuchsia-500: rgb(192, 56, 204);
   --fuchsia-600: rgb(177, 48, 189);

@@ -156,7 +156,7 @@ services:
             stage: deploy---Stage
             build_on_rollback: true
             deploy_token: false
-            required: true
+            required: false
             unstable_allowed: false
             build_params:
               - name: TYPE
@@ -211,7 +211,7 @@ services:
             stage: deploy---Prod
             build_on_rollback: true
             deploy_token: false
-            required: true
+            required: false
             unstable_allowed: false
             build_params:
               - name: TYPE

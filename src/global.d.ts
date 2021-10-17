@@ -13,6 +13,7 @@ declare module '@contentauth/web-components/*';
 declare module '@contentauth/sdk/dist/*';
 
 declare module '*.svg';
+declare module '*.png';
 
 declare var __breakpoints__;
 declare var process;
