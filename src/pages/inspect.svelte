@@ -29,6 +29,7 @@
     isLoading,
     setIsLoading,
   } from '../stores';
+  import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
 
   function handleClose() {
     compareWithPath(null);
@@ -216,7 +217,7 @@
           </div>
         {:else if !isComparing && primary instanceof Ingredient}
           <div class="wrapper">
-            <ContentCredentialsError {isComparing} />
+            <AboutNoClaim {primary} />
             {#if isMobileViewer}
               <CompareLatestButton claim={null} {isComparing} />
             {/if}
