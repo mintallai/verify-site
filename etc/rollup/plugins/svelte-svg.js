@@ -55,7 +55,7 @@ function renderElement({ isMonochrome, name, svg }) {
       export let height = 16;
     </script>
 
-    <div class={$$props.class} style="width: {width}px; height: {height}px;">
+    <div class={$$props.class} style="width: {width}; height: {height};">
       ${svg}
     </div>
 

@@ -20,12 +20,17 @@
     window.location.assign('/inspect');
     evt.preventDefault();
   }
+
+  function goToLanding(evt: Event) {
+    window.location.assign('/');
+    evt.preventDefault();
+  }
 </script>
 
 <header class="flex relative">
   <div class="flex-shrink">
     <button
-      on:click={() => navigateToRoot()}
+      on:click={goToLanding}
       class="flex select-none outline-none items-center">
       <h1 class="font-black text-600 text-gray-900 leading-none">
         {$_('comp.header.productName')}

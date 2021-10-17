@@ -6,6 +6,7 @@ import Hmr from 'rollup-plugin-hot';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import commonjs from '@rollup/plugin-commonjs';
+import url from '@rollup/plugin-url';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import copy from 'rollup-plugin-copy';
@@ -164,7 +165,9 @@ function baseConfig(config, ctx) {
         extensions: ['.svelte', '.ts', '.js', '.svg'],
         dedupe: (importee) => !!importee.match(/svelte(\/|$)/),
       }),
-      svelteSvg(),
+      svelteSvg({
+        exclude: ['**/*.noparse.svg'],
+      }),
       replace({
         'process.env.NODE_ENV': JSON.stringify(
           production ? 'production' : 'development',
@@ -180,6 +183,16 @@ function baseConfig(config, ctx) {
         sourceMap: !production,
       }),
       commonjs(),
+      url({
+        publicPath: '/build/',
+        include: [
+          '**/*.noparse.svg',
+          '**/*.png',
+          '**/*.jp(e)?g',
+          '**/*.gif',
+          '**/*.webp',
+        ],
+      }),
 
       production &&
         terser({

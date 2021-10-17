@@ -6,7 +6,7 @@ import type {
   IError,
 } from '@contentauth/sdk';
 
-export type BadgeType = 'none' | 'info' | 'missing';
+export type BadgeType = 'none' | 'info' | 'missing' | 'alert';
 
 export interface IBadgeProps {
   badgeType: BadgeType;
@@ -23,4 +23,10 @@ export interface ITreeNode {
   isExpanded?: boolean;
   errors: IError[];
   children?: ITreeNode[];
+}
+
+export enum ErrorTypes {
+  ASSET_HASH = "ASSET_HASH",
+  SIGNATURE = "SIGNATURE",
+  UNKNOWN = "UNKNOWN",
 }

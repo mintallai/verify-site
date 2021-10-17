@@ -1,6 +1,6 @@
 import { HierarchyNode } from 'd3-hierarchy';
 import { Claim, Ingredient } from './sdk';
-import type { IBadgeProps, ITreeNode, ViewableItem } from './types';
+import { ErrorTypes, IBadgeProps, ITreeNode, ViewableItem } from './types';
 import debug from 'debug';
 
 const dbg = debug('claim');
@@ -25,7 +25,8 @@ export function getIsOriginal(claim: Claim) {
 }
 
 interface IBadgePropsInput {
-  claim?: Claim;
+  claim?: Claim | Ingredient;
+  errors?: any[];
 }
 
 /**
@@ -44,7 +45,36 @@ export function getPath(node: HierarchyNode<ITreeNode>) {
 /**
  * Generates the badge props (used by the `cai-thumbnail`) from the claim data
  */
-export function getBadgeProps({ claim }: IBadgePropsInput): IBadgeProps {
+export function getBadgeProps({ claim, errors }: IBadgePropsInput): IBadgeProps {
+  // Change to accomdate different types of errors + multiple errors on a single asset
+  if (errors?.length > 0) {
+    switch (errors[0].code) {
+      case ErrorTypes.ASSET_HASH:
+        return {
+          badgeType: 'missing',
+          badgeHelpText: 'comp.asset.badgeMissing.helpText',
+        };
+      case ErrorTypes.SIGNATURE: 
+        return {
+          badgeType: 'alert',
+          badgeHelpText: 'comp.asset.badgeError.helpText',
+        };
+      case ErrorTypes.UNKNOWN:
+        if (errors[0]?.description?.includes("smart object")) {
+          return;
+        }
+        return {
+          badgeType: 'alert',
+          badgeHelpText: 'comp.asset.badgeError.helpText',
+        };
+      default:
+        return {
+          badgeType: 'alert',
+          badgeHelpText: 'comp.asset.badgeError.helpText',
+        };
+    }
+    
+  }
   if (claim) {
     return {
       badgeType: 'info',

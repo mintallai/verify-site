@@ -11,3 +11,4 @@ pkg/
 .idea
 .yarnrc.yml
 .yarn/
+.npmrc
