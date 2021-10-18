@@ -109,6 +109,11 @@ export function getWebsite(claim: Claim): string | undefined {
   }
 }
 
+/**
+ * Extracts the related claim from the item. For instance, if it is a claim,
+ * it will return that claim. If it is an ingredient, it will return the claim
+ * on the ingredient, if it exists.
+ */
 export function getRelatedClaim(item: ViewableItem) {
   if (item instanceof Claim) {
     return item;
