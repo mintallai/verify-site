@@ -22,7 +22,6 @@
   "comp.about.social.helpText": "Social media accounts connected to the producer of this content",
   "comp.about.website": "Website",
   "comp.about.website.helpText": "The public location where this image was published",
-  "comp.aboutNoClaim.noData": "No content credentials for this file",
   "comp.asset.badgeError.helpText": "These content credentials are unavailable",
   "comp.asset.badgeInfo.helpText": "This file has content credentials",
   "comp.asset.badgeMissing.helpText": "This file was edited without content credentials.",
