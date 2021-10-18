@@ -10,7 +10,6 @@ const ACTION_ASSERTION_LABEL = 'c2pa.actions';
 const CREATIVEWORK_ASSERTION_LABEL = 'stds.schema-org.CreativeWork';
 const BETA_LABEL = 'adobe.beta';
 const DELIVERED_ACTION = 'adobe.delivered';
-const ingredientIdRegExp = /^(\S+)\[(\d+)\]$/;
 
 export enum ClaimError {
   InvalidActionAssertion = 'INVALID_ACTION_ASSERTION',
@@ -50,7 +49,10 @@ export function isInPath(pathArray: string[], nodePath: string[]) {
 /**
  * Generates the badge props (used by the `cai-thumbnail`) from the claim data
  */
-export function getBadgeProps({ claim, errors }: IBadgePropsInput): IBadgeProps {
+export function getBadgeProps({
+  claim,
+  errors,
+}: IBadgePropsInput): IBadgeProps {
   // Change to accomdate different types of errors + multiple errors on a single asset
   if (errors?.length > 0) {
     switch (errors[0].code) {
@@ -59,13 +61,13 @@ export function getBadgeProps({ claim, errors }: IBadgePropsInput): IBadgeProps 
           badgeType: 'missing',
           badgeHelpText: 'comp.asset.badgeMissing.helpText',
         };
-      case ErrorTypes.SIGNATURE: 
+      case ErrorTypes.SIGNATURE:
         return {
           badgeType: 'alert',
           badgeHelpText: 'comp.asset.badgeError.helpText',
         };
       case ErrorTypes.UNKNOWN:
-        if (errors[0]?.description?.includes("smart object")) {
+        if (errors[0]?.description?.includes('smart object')) {
           return;
         }
         return {
@@ -78,7 +80,6 @@ export function getBadgeProps({ claim, errors }: IBadgePropsInput): IBadgeProps 
           badgeHelpText: 'comp.asset.badgeError.helpText',
         };
     }
-    
   }
   if (claim) {
     return {
@@ -106,4 +107,15 @@ export function getWebsite(claim: Claim): string | undefined {
       return site;
     }
   }
+}
+
+export function getRelatedClaim(item: ViewableItem) {
+  console.log('item', item);
+  if (item instanceof Claim) {
+    return item;
+  }
+  if (item instanceof Ingredient) {
+    return item.claim ?? null;
+  }
+  return null;
 }

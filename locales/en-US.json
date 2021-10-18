@@ -1,7 +1,7 @@
 {
   "comp.about.assets.header": "Assets used",
   "comp.about.assets.helpText": "Any assets used or added to this content",
-  "comp.about.contentCredentials.header": "Content Credentials (Beta)",
+  "comp.about.contentCredentials.header": "Content credentials",
   "comp.about.contentCredentials.helpText": "Attribution and history data attached to this content",
   "comp.about.crypto": "Crypto address",
   "comp.about.crypto.helpText": "Cryptocurrency address connected to the producer of this content",
@@ -17,7 +17,7 @@
   "comp.about.signedBy": "Signed by",
   "comp.about.signedBy.helpText": "The entity that recorded the content credentials",
   "comp.about.signedOn": "Signed on",
-  "comp.about.signedOn.helpText": "Date this content was exported using Content Credentials (Beta)",
+  "comp.about.signedOn.helpText": "Date this content was exported with content credentials",
   "comp.about.social": "Social media",
   "comp.about.social.helpText": "Social media accounts connected to the producer of this content",
   "comp.about.website": "Website",

@@ -61,9 +61,10 @@
   }
   .node.selected {
     @apply text-blue;
+    stroke-width: 3px;
   }
   .node.ancestor {
-    @apply text-gray-700;
+    @apply text-gray-800;
   }
   .content {
     @apply grid gap-x-2 items-center w-full h-full p-2.5 bg-transparent cursor-pointer;
