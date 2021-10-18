@@ -6,6 +6,7 @@
   import {
     primaryId,
     compareMode,
+    hierarchy,
     setCompareMode,
     CompareMode,
     isMobileViewerShown,
@@ -16,6 +17,8 @@
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
+  import Thumbnail from '../Thumbnail.svelte';
+  import { getPath } from '../../lib/claim';
 
   type Page = 'overview' | 'inspect';
 
@@ -23,6 +26,7 @@
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
   export let source: Source | null = null;
+  export let primary: ViewableItem | null = null;
   const dispatch = createEventDispatcher();
 
   function handleNavChange() {
@@ -38,6 +42,7 @@
   }
 
   $: showMenu = $isMobileViewerShown;
+  // $: children = primary?.ingredients;
 </script>
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
@@ -52,7 +57,7 @@
             {$_('comp.topNavigation.back')}
           </div>
         </div>
-        <div class="flex pl-5 items-center border-l border-gray-300">
+        <!-- <div class="flex pl-5 items-center border-l border-gray-300">
           <sp-picker
             id="compare-picker"
             on:change={handleCompareChange}
@@ -65,26 +70,40 @@
             <sp-menu-item value={CompareMode.Split}>
               {$_('comp.topNavigation.split')}
             </sp-menu-item>
-          </sp-picker>
-        </div>
+          </sp-picker> -->
+        <!-- </div> -->
       </div>
     {:else if showMenu}
-      <sp-action-menu
-        class="-ml-3"
-        value={$primaryId}
-        on:change={handleMenuChange}>
-        <div slot="icon" class="py-2">
-          <BreadcrumbDropdown
-            slot="icon"
-            width="20"
-            height="16"
-            class="text-gray-800" />
+      {#if primary}
+        <div class="inline align-middle">
+          {#if primary?.ingredients?.length > 0}
+            <sp-action-menu
+              class="-ml-3 inline mt-3.5"
+              value={$primaryId}
+              on:change={handleMenuChange}>
+              <div slot="icon" class="py-2">
+                <BreadcrumbDropdown
+                  slot="icon"
+                  width="20"
+                  height="16"
+                  class="text-gray-800" />
+              </div>
+              <!-- {#each children as childNode (getPath(childNode).toString())}
+              <svelte:self node={childNode} />
+            {/each} -->
+            </sp-action-menu>
+            <div class="separator -ml-2 inline">
+              <Icon size="s" name="ChevronRight" class="text-gray-800" />
+            </div>
+          {/if}
+          <div class="breadcrumb-item" class:current={true}>
+            <div class="inline mt-3.5">
+              <Thumbnail asset={primary.asset} />
+            </div>
+            <span class="inline font-regular text-smd">{primary.title} </span>
+          </div>
         </div>
-      </sp-action-menu>
-      <div class="separator -ml-2">
-        <Icon size="s" name="ChevronRight" class="text-gray-800" />
-      </div>
-      <div class="breadcrumb-item" class:current={true} />
+      {/if}
     {:else}
       <sp-tabs
         selected={$url()}
@@ -101,6 +120,7 @@
   .container {
     --spectrum-picker-m-text-color: var(--black);
     --spectrum-picker-m-text-color-hover: var(--black);
+    --cai-thumbnail-size: 32px;
     @apply flex bg-white border-b-2 border-gray-200 px-5 max-w-full z-30 items-stretch;
     grid-area: breadcrumb;
     height: 60px;

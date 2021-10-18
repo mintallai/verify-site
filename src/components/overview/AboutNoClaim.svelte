@@ -6,6 +6,7 @@
   import { compact } from 'lodash';
 
   export let primary: Ingredient | Source;
+  export let isComparing: boolean = false;
 
   $: title =
     primary instanceof Ingredient
@@ -16,32 +17,41 @@
 
 <div class="w-full flex justify-center">
   <div class="info w-full max-w-xs">
-    <div>
-      <dl class="attributes">
-        <dt>
-          <div>{$_('comp.about.contentCredentials.header')}</div>
-          <cai-tooltip placement="left" class="theme-spectrum">
-            <div slot="content" class="text-gray-900" style="width: 200px;">
-              {$_('comp.about.contentCredentials.helpText')}
+    {#if isComparing}
+      <div>
+        <dl class="attributes">
+          <dt>
+            <div>{$_('comp.about.contentCredentials.header')}</div>
+            <cai-tooltip placement="left" class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 200px;">
+                {$_('comp.about.contentCredentials.helpText')}
+              </div>
+            </cai-tooltip>
+          </dt>
+          <dd class="flex space-x-2 items-center mt-1">
+            <div class="w-12 h-12">
+              <Thumbnail asset={primary} {...badgeProps} />
             </div>
-          </cai-tooltip>
-        </dt>
-        <dd class="flex space-x-2 items-center mt-1">
-          <div class="w-12 h-12">
-            <Thumbnail asset={primary} {...badgeProps} />
-          </div>
-          <div>
-            <h6>File name</h6>
-            <div>{title}</div>
-          </div>
-        </dd>
-      </dl>
-    </div>
-    <div>
-      {badgeProps?.badgeHelpText
-        ? $_(badgeProps.badgeHelpText)
-        : $_('comp.contentCredentialsError.noneForFile')}
-    </div>
+            <div>
+              <h6>File name</h6>
+              <div>{title}</div>
+            </div>
+          </dd>
+        </dl>
+      </div>
+      <div>
+        {badgeProps?.badgeHelpText
+          ? $_(badgeProps.badgeHelpText)
+          : $_('comp.contentCredentialsError.noneForFile')}
+      </div>
+    {:else}
+      <div>
+        <div class="compare-thumbnail">
+          <Thumbnail asset={primary} />
+        </div>
+        <div>{title}</div>
+      </div>
+    {/if}
   </div>
 </div>
 

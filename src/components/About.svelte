@@ -58,27 +58,36 @@
 
 <div class="w-full flex justify-center">
   <div class="info w-full max-w-xs">
-    <div>
-      <dl class="attributes">
-        <dt>
-          <div>{$_('comp.about.contentCredentials.header')}</div>
-          <cai-tooltip placement="left" class="theme-spectrum">
-            <div slot="content" class="text-gray-900" style="width: 200px;">
-              {$_('comp.about.contentCredentials.helpText')}
+    {#if !isComparing}
+      <div class="content-creds hidden">
+        <dl class="attributes">
+          <dt>
+            <div>{$_('comp.about.contentCredentials.header')}</div>
+            <cai-tooltip placement="left" class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 200px;">
+                {$_('comp.about.contentCredentials.helpText')}
+              </div>
+            </cai-tooltip>
+          </dt>
+          <dd class="flex space-x-2 items-center mt-1">
+            <div class="w-12 h-12">
+              <Thumbnail {asset} {...getBadgeProps({ claim })} />
             </div>
-          </cai-tooltip>
-        </dt>
-        <dd class="flex space-x-2 items-center mt-1">
-          <div class="w-12 h-12">
-            <Thumbnail {asset} {...getBadgeProps({ claim })} />
-          </div>
-          <div>
-            <h6>File name</h6>
-            <div>{title}</div>
-          </div>
-        </dd>
-      </dl>
-    </div>
+            <div>
+              <h6>File name</h6>
+              <div>{title}</div>
+            </div>
+          </dd>
+        </dl>
+      </div>
+    {:else}
+      <div>
+        <div class="compare-thumbnail">
+          <Thumbnail {asset} />
+        </div>
+        <div>{title}</div>
+      </div>
+    {/if}
     <div>
       <dl class="attributes">
         <dt>
@@ -264,6 +273,12 @@
   .info > div:last-child {
     @apply border-none;
   }
+
+  .content-creds {
+    @screen lg {
+      display: inherit;
+    }
+  }
   .assets-used {
     @apply grid gap-3;
     grid-template-columns: repeat(auto-fit, 48px);
@@ -271,6 +286,10 @@
   .social-accounts {
     @apply grid gap-x-2 gap-y-1 items-center;
     grid-template-columns: 16px auto;
+  }
+
+  .compare-thumbnail {
+    --cai-thumbnail-size: 150px;
   }
   @screen md {
     .info {
