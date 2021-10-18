@@ -16,6 +16,10 @@
   $: path = getPath(node);
   $: isSelected = equal($primaryPath, path);
   $: isAncestor = !isSelected && isInPath($primaryPath, path);
+  $: badgeProps = getBadgeProps({
+    claim: node.data.claim,
+    errors: node.data.errors,
+  });
 
   function handleClick() {
     if (!isSelected) {
@@ -39,9 +43,7 @@
   y={y - overflow[1]}>
   <div style={`padding-left: ${overflow[0]}px; padding-top: ${overflow[1]}px;`}>
     <div class="content" on:click={handleClick}>
-      <Thumbnail
-        asset={node.data.asset}
-        {...getBadgeProps({ claim: node.data.claim })} />
+      <Thumbnail asset={node.data.asset} {...badgeProps} />
       <div>
         <h6>File name</h6>
         <div class="file-name">{node.data.name}</div>
@@ -59,9 +61,10 @@
   }
   .node.selected {
     @apply text-blue;
+    stroke-width: 3px;
   }
   .node.ancestor {
-    @apply text-gray-700;
+    @apply text-gray-800;
   }
   .content {
     @apply grid gap-x-2 items-center w-full h-full p-2.5 bg-transparent cursor-pointer;

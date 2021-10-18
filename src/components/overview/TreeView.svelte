@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { primaryPath, hierarchy } from '../../stores';
+  import { primaryPath, hierarchy, overviewTransform } from '../../stores';
   import { getPath, isInPath } from '../../lib/claim';
   import TreeNode from './TreeNode.svelte';
   import TreeLink from './TreeLink.svelte';
@@ -25,7 +25,12 @@
   let boundsTransform: ZoomTransform;
   let tree: HierarchyPointNode<ITreeNode>;
   let zoom = d3Zoom().on('zoom', (evt) => {
-    boundsTransform = evt.transform;
+    if (!boundsTransform && $overviewTransform) {
+      boundsTransform = $overviewTransform;
+    } else {
+      overviewTransform.set(evt.transform);
+      boundsTransform = evt.transform;
+    }
   });
 
   function getMinScale(svgWidth: number, svgHeight: number) {

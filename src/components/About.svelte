@@ -82,7 +82,7 @@
     <div>
       <dl class="attributes">
         <dt>
-          <div class="whitespace-nowrap">{$_('comp.about.signedBy')}</div>
+          <div>{$_('comp.about.signedBy')}</div>
           <cai-tooltip placement="left" class="theme-spectrum">
             <div slot="content" class="text-gray-900" style="width: 200px;">
               {$_('comp.about.signedBy.helpText')}
@@ -95,7 +95,14 @@
           </div>
           <div>{signedBy}</div>
         </dd>
-        <dt>{$_('comp.about.signedOn')}</dt>
+        <dt>
+          <div>{$_('comp.about.signedOn')}</div>
+          <cai-tooltip placement="left" class="theme-spectrum">
+            <div slot="content" class="text-gray-900" style="width: 200px;">
+              {$_('comp.about.signedOn.helpText')}
+            </div>
+          </cai-tooltip>
+        </dt>
         <dd>
           {$date(sigDate, { format: 'short' })}{', '}
           {$time(sigDate, { format: 'short' })}
@@ -104,7 +111,14 @@
     </div>
     <div>
       <dl class="attributes">
-        <dt>{$_('comp.about.producedWith')}</dt>
+        <dt>
+          <div>{$_('comp.about.producedWith')}</div>
+          <cai-tooltip placement="left" class="theme-spectrum">
+            <div slot="content" class="text-gray-900" style="width: 200px;">
+              {$_('comp.about.producedWith.helpText')}
+            </div>
+          </cai-tooltip>
+        </dt>
         <dd class="flex">
           <div class="relative top-0.5">
             <ProviderIcon provider={recorder} class="mr-2" />

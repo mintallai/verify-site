@@ -55,6 +55,6 @@
     fill: none;
   }
   .link.ancestor {
-    @apply text-gray-700;
+    @apply text-gray-800;
   }
 </style>

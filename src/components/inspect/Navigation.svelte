@@ -18,9 +18,16 @@
 
 <div class="h-full relative">
   <div class="nav-width p-4 pb-1">
-    <h2 class="my-0 mb-2">
-      <span>{$_('comp.navigation.title')}</span>
-    </h2>
+    <div class="flex space-x-2 justify-between">
+      <h2 class="my-0 mb-2">
+        <span>{$_('comp.navigation.title')}</span>
+      </h2>
+      <cai-tooltip placement="left" class="theme-spectrum">
+        <div slot="content" class="text-gray-900" style="width: 150px;">
+          {$_('comp.navigation.helpText')}
+        </div>
+      </cai-tooltip>
+    </div>
     <div class="mb-4 leading-small text-gray-700">
       {$_('comp.navigation.subtitle')}
     </div>
