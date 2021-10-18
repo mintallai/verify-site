@@ -307,22 +307,22 @@
   resolved "https://registry.yarnpkg.com/@contentauth/detector/-/detector-0.2.8.tgz#6ab62f272542f91ed03628bf1dc88ac0027348a4"
   integrity sha512-65YcNRv2BCs5d8C5rytcwR4T3IsvhnrqxJOUXZ7nw3y7cxrjT67uzgH3+MwSXx371jWORHpfIo4S7X2nKnIJEA==
 
-"@contentauth/sdk@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@contentauth/sdk/-/sdk-0.8.1.tgz#b3e77657191dfdba35dde2b05fa39423d0fb7d59"
-  integrity sha512-ov8HqiFfTV5ydrkfdpyThp0UiJB6APksR9U8TbQ6GTsy06dmHkr16CdIHeeL5MjXGtf5cuEKvsf/gJZsDvr05Q==
+"@contentauth/sdk@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@contentauth/sdk/-/sdk-0.8.2.tgz#f6e5afc5f7a3a54fac99c3636691c80122610082"
+  integrity sha512-C4uHggXdTn5HH8OYE9ev2muX10MuOA6e0IXEpA4WpC0NUgdC4OJeuPghwrlkvV820L6/+sdgZ9pMlmNLBui0+w==
   dependencies:
     "@contentauth/detector" "^0.2.8"
-    "@contentauth/toolkit" "^0.6.8"
+    "@contentauth/toolkit" "^0.6.9"
     date-fns "^2.24.0"
     lodash "^4.17.21"
     make-error "^1.3.6"
     workerpool "^6.1.5"
 
-"@contentauth/toolkit@^0.6.8":
-  version "0.6.8"
-  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.6.8.tgz#b8f2bc5daac5d6fd7bffc9cfb3d330235e4194bc"
-  integrity sha512-HbAPxVT52mcruxXyJT6r2YoYBPwRtQhcRxI74YTbSP4oMK0VDMeE6gADCGhZqkUleaZNnMYPPIgIdm9+3uSfgA==
+"@contentauth/toolkit@^0.6.9":
+  version "0.6.9"
+  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.6.9.tgz#2492a35a2cb16adb6c5f70f9bab7a87b4a0d8b90"
+  integrity sha512-h6IkOyrzBL+vejw68v+akJ4GnedKCb/VM/kgs3leUF4ajLNTfwyVjASkR/gnc99qJ4uwfifiAS9gRJodk1kKbA==
 
 "@contentauth/web-components@^0.4.0":
   version "0.4.0"

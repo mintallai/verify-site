@@ -43,8 +43,8 @@
   $: asset = claim.asset;
   $: title = claim.title;
   $: assets = claim.ingredients?.length ? claim.ingredients : null;
-  $: signedBy = claim.signature.issuer;
-  $: sigDate = claim.signature.date;
+  $: signedBy = claim.signature?.issuer;
+  $: sigDate = claim.signature?.date;
   $: recorder = claim.formatRecorder(RecorderFormat.ProgramNameAndVersion);
   $: isBeta = getIsBeta(claim);
   $: website = getWebsite(claim);
@@ -102,7 +102,9 @@
           <div class="relative top-0.5">
             <ProviderIcon provider={signedBy} />
           </div>
-          <div>{signedBy}</div>
+          <div>
+            {signedBy ?? ''}
+          </div>
         </dd>
         <dt>
           <div>{$_('comp.about.signedOn')}</div>
@@ -113,8 +115,10 @@
           </cai-tooltip>
         </dt>
         <dd>
-          {$date(sigDate, { format: 'short' })}{', '}
-          {$time(sigDate, { format: 'short' })}
+          {#if sigDate}
+            {$date(sigDate, { format: 'short' })}{', '}
+            {$time(sigDate, { format: 'short' })}
+          {/if}
         </dd>
       </dl>
     </div>
