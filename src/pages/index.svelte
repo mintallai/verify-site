@@ -29,34 +29,36 @@
   <Header />
   <section id="section0" class="overflow-hidden">
     <div class="hero grid grid-cols-10 my-10">
-      <div
-        class="row-span-full col-start-1 col-span-5 self-center order-3 ml-16 mr-8">
-        <div class="lg:text-8xl text-7xl font-bold font-home">
+      <div class="hero-text row-span-full col-span-full self-center mx-7">
+        <div
+          class="lg:text-8xl text-7xl font-bold font-home text-center lg:text-left">
           {$_('page.hero.tagline')}
         </div>
-        <div class="lg:text-5xl text-3xl font-normal">
+        <div class="lg:text-5xl text-3xl font-normal text-center lg:text-left">
           {$_('page.hero.description')}
         </div>
       </div>
-      <div
-        class="overlap row-span-full col-span-5 col-end-11 self-center order-2 mr-16 object-contain">
+      <div class="overlap hidden">
         <img src={hero} alt="Person taking picture with smartphone" />
       </div>
-      <a href="#section1">
+
+      <div
+        class="lg:col-start-1 lg:ml-16 xl:mt-2 md:mt-6 mt-4 -mb-2 col-span-2 col-start-5">
         <DownArrow
-          class="animate-bounce col-start-1 ml-16 mt-2 -mb-2"
+          class="animate-bounce lg:self-center flex justify-center text-center"
           width="48px"
-          height="48px" />
-      </a>
+          height="48px"
+          ><a href="#section1" />
+        </DownArrow>
+      </div>
     </div>
   </section>
   <section id="section1">
-    <div class="grid grid-cols-3 gap-4 mx-16 my-10">
-      <div class="w-full col-span-3 lg:col-span-2 order-1">
+    <div class="section-grid">
+      <div class="content order-1">
         <img src={section1} alt="Icy lake at dusk" />
       </div>
-      <div
-        class="w-full col-span-3 lg:col-span-1 order-2 items-center flex px-4 sm:pb-5">
+      <div class="content-body order-2">
         <div>
           <div class="heading lg:text-5xl">
             {$_('page.sectionOne.header')}
@@ -74,12 +76,11 @@
     </div>
   </section>
   <section id="section2">
-    <div class="grid grid-cols-3 gap-4 mx-16 my-10">
-      <div class="w-full col-span-3 lg:col-span-2 lg:order-2">
+    <div class="section-grid">
+      <div class="content lg:order-2">
         <img src={section2} alt="Yellow vector art" />
       </div>
-      <div
-        class="w-full col-span-3 lg:col-span-1 lg:order-1 items-center flex lg:pl-8 pl-4 pr-4 sm:pb-5">
+      <div class="content-body lg:order-1">
         <div>
           <div class="heading lg:text-5xl">
             {$_('page.sectionTwo.header')}
@@ -97,12 +98,11 @@
     </div>
   </section>
   <section id="section3">
-    <div class="grid grid-cols-3 gap-4 mx-16 my-10">
-      <div class="w-full col-span-3 lg:col-span-2 order-1">
+    <div class="section-grid">
+      <div class="content order-1">
         <img src={section3} alt="Kaleidescope vector art" />
       </div>
-      <div
-        class="w-full col-span-3 lg:col-span-1 order-2 items-center flex px-4 sm:pb-5">
+      <div class="content-body order-2">
         <div>
           <div class="heading lg:text-5xl">
             {$_('page.sectionThree.header')}
@@ -131,9 +131,14 @@
     width: 100vw;
   }
 
+  .hero-text {
+    @apply lg:col-start-1 lg:col-span-5 lg:ml-16 lg:mr-8;
+  }
+
   .overlap {
     margin-top: 10%;
     margin-bottom: 10%;
+    @apply lg:row-span-full lg:col-span-5 lg:col-end-11 lg:self-center lg:mr-16 lg:object-contain lg:inline;
   }
   section {
     width: 100vw;
@@ -141,6 +146,17 @@
     overflow: hidden;
   }
 
+  .section-grid {
+    @apply grid grid-cols-3 gap-4 lg:mx-16 lg:my-10 mb-4;
+  }
+
+  .content {
+    @apply w-full lg:col-span-2 col-span-full;
+  }
+
+  .content-body {
+    @apply w-full lg:col-span-1 col-span-full items-center flex px-4;
+  }
   .heading {
     @apply text-black text-3xl text-left pb-4 font-home font-bold;
   }
