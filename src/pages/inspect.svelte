@@ -294,6 +294,7 @@
   }
   main.comparing section.left-col {
     @apply flex mr-0 justify-center;
+    width: 100%;
   }
 
   @screen lg {

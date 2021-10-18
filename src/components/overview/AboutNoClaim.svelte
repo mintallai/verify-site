@@ -3,7 +3,7 @@
   import Thumbnail from '../Thumbnail.svelte';
   import { getBadgeProps } from '../../lib/claim';
   import { Ingredient, Source } from '../../lib/sdk';
-  import { compact } from 'lodash';
+  import { getFaqUrl } from '../../stores';
 
   export let primary: Ingredient | Source;
   export let isComparing: boolean = false;
@@ -12,12 +12,22 @@
     primary instanceof Ingredient
       ? primary.data.title
       : primary?.metadata?.filename ?? '';
-  $: badgeProps = getBadgeProps(primary);
+  // $: badgeProps = getBadgeProps(primary);
+  $: badgeProps =
+    primary instanceof Ingredient
+      ? getBadgeProps({
+          claim: primary.claim,
+          errors: primary.errors,
+        })
+      : null;
+  $: showInfo =
+    primary instanceof Ingredient &&
+    (!primary.claim || badgeProps?.badgeHelpText);
 </script>
 
 <div class="w-full flex justify-center">
   <div class="info w-full max-w-xs">
-    {#if isComparing}
+    {#if !isComparing}
       <div>
         <dl class="attributes">
           <dt>
@@ -39,17 +49,24 @@
           </dd>
         </dl>
       </div>
-      <div>
-        {badgeProps?.badgeHelpText
-          ? $_(badgeProps.badgeHelpText)
-          : $_('comp.contentCredentialsError.noneForFile')}
-      </div>
     {:else}
       <div>
         <div class="compare-thumbnail">
           <Thumbnail asset={primary} />
         </div>
         <div>{title}</div>
+      </div>
+    {/if}
+    {#if showInfo}
+      <div>
+        {#if primary instanceof Ingredient && !primary.claim}
+          {$_('comp.contentCredentialsError.noneForFile')}
+        {:else if primary instanceof Ingredient && badgeProps?.badgeHelpText}
+          <span>{$_(badgeProps.badgeHelpText)}</span>
+          <a href={getFaqUrl()} class="link" target="_blank">
+            {$_('comp.contentCredentialsError.learnMore')}
+          </a>
+        {/if}
       </div>
     {/if}
   </div>
@@ -59,11 +76,14 @@
   .info > div {
     @apply py-4 border-b border-gray-300;
   }
-
   .info > div:first-child {
     @apply pt-0;
   }
   .info > div:last-child {
     @apply border-none;
+  }
+
+  .compare-thumbnail {
+    --cai-thumbnail-size: 150px;
   }
 </style>

@@ -19,7 +19,8 @@
   import '@contentauth/web-components/dist/components/Tooltip';
   import Thumbnail from '../Thumbnail.svelte';
   import { getPath } from '../../lib/claim';
-  import { ViewableItem } from '../../lib/types';
+  import { ITreeNode, ViewableItem } from '../../lib/types';
+  import { HierarchyNode } from 'd3-hierarchy';
 
   type Page = 'overview' | 'inspect';
 
@@ -27,7 +28,8 @@
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
   export let source: Source | null = null;
-  export let primary: ViewableItem | null = null;
+  // export let primary: ViewableItem | null = null;
+  export let primary: HierarchyNode<ITreeNode>;
   const dispatch = createEventDispatcher();
 
   function handleNavChange() {
@@ -77,6 +79,7 @@
     {:else if showMenu}
       {#if primary}
         <div class="inline align-middle">
+          {console.log('[call primary]::primary > ', primary)}
           {#if primary?.ingredients?.length > 0}
             <sp-action-menu
               class="-ml-3 inline mt-3.5"
