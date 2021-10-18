@@ -28,8 +28,8 @@
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
   export let source: Source | null = null;
-  // export let primary: ViewableItem | null = null;
-  export let primary: HierarchyNode<ITreeNode>;
+  export let primary: ViewableItem | null = null;
+  // export let primary: HierarchyNode<ITreeNode>;
   const dispatch = createEventDispatcher();
 
   function handleNavChange() {
@@ -46,6 +46,7 @@
 
   $: showMenu = $isMobileViewerShown;
   // $: children = primary?.ingredients;
+  $: node = 
 </script>
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
@@ -60,7 +61,7 @@
             {$_('comp.topNavigation.back')}
           </div>
         </div>
-        <!-- <div class="flex pl-5 items-center border-l border-gray-300">
+        <div class="flex pl-5 items-center border-l border-gray-300">
           <sp-picker
             id="compare-picker"
             on:change={handleCompareChange}
@@ -74,7 +75,7 @@
               {$_('comp.topNavigation.split')}
             </sp-menu-item>
           </sp-picker> -->
-        <!-- </div> -->
+        <!-- </div>
       </div>
     {:else if showMenu}
       {#if primary}

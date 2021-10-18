@@ -292,9 +292,9 @@
       'left right'
       'footer footer';
   }
+
   main.comparing section.left-col {
-    @apply flex mr-0 justify-center;
-    width: 100%;
+    @apply w-full h-full flex align-middle justify-center;
   }
 
   @screen lg {

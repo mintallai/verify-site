@@ -45,7 +45,7 @@
 
 <style lang="postcss">
   .viewer-wrapper {
-    @apply flex-row;
+    @apply flex flex-row;
   }
   .comparison {
     @apply w-full h-full bg-gray-75 flex flex-col items-center justify-center overflow-hidden;
