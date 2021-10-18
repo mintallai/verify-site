@@ -110,7 +110,6 @@ export function getWebsite(claim: Claim): string | undefined {
 }
 
 export function getRelatedClaim(item: ViewableItem) {
-  console.log('item', item);
   if (item instanceof Claim) {
     return item;
   }
