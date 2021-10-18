@@ -19,6 +19,7 @@
   import '@contentauth/web-components/dist/components/Tooltip';
   import Thumbnail from '../Thumbnail.svelte';
   import { getPath } from '../../lib/claim';
+  import { ViewableItem } from '../../lib/types';
 
   type Page = 'overview' | 'inspect';
 

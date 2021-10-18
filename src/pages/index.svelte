@@ -43,11 +43,8 @@
       </div>
 
       <div
-        class="lg:col-start-1 lg:ml-16 xl:mt-2 md:mt-6 mt-4 -mb-2 col-span-2 col-start-5">
-        <DownArrow
-          class="animate-bounce lg:self-center flex justify-center text-center"
-          width="48px"
-          height="48px"
+        class="lg:col-start-1 lg:ml-16 xl:mt-2 md:mt-6 mt-4 -mb-2 col-span-2 col-start-5 flex justify-center items-center">
+        <DownArrow class="animate-bounce" width="48px" height="48px"
           ><a href="#section1" />
         </DownArrow>
       </div>
