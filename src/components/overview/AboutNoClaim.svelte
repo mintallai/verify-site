@@ -49,7 +49,7 @@
     {#if showInfo}
       <div>
         {#if primary instanceof Ingredient && !primary.claim}
-          {$_('overview.about.info.noClaim')}
+          {$_('comp.aboutNoClaim.noData')}
         {:else if primary instanceof Ingredient && badgeProps?.badgeHelpText}
           <span>{$_(badgeProps.badgeHelpText)}</span>
           <a href={getFaqUrl()} class="link" target="_blank">

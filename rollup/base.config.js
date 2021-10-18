@@ -151,7 +151,7 @@ function baseConfig(config, ctx) {
             transform: transformDictionaryJson,
           },
         ],
-        copyOnce: true,
+        copyOnce: false,
         flatten: true,
         verbose: true,
       }),
