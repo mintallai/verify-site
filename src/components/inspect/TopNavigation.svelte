@@ -46,7 +46,7 @@
 
   $: showMenu = $isMobileViewerShown;
   // $: children = primary?.ingredients;
-  $: node = 
+  // $: node =
 </script>
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
@@ -74,8 +74,8 @@
             <sp-menu-item value={CompareMode.Split}>
               {$_('comp.topNavigation.split')}
             </sp-menu-item>
-          </sp-picker> -->
-        <!-- </div>
+          </sp-picker>
+        </div>
       </div>
     {:else if showMenu}
       {#if primary}

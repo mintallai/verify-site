@@ -88,7 +88,7 @@
         <div>{title}</div>
       </div>
     {/if}
-    <div>
+    <div class="lg:border-0 border-b border-gray-300">
       <dl class="attributes">
         <dt>
           <div>{$_('comp.about.signedBy')}</div>

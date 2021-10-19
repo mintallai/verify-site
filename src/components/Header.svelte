@@ -7,6 +7,7 @@
     getFaqUrl,
     navigateToRoot,
     isBurgerMenuShown,
+    navigateToPath,
   } from '../stores';
   import '@contentauth/web-components/dist/icons/color/logos/adobe';
   import 'vanilla-hamburger/fade-burger';
@@ -61,7 +62,8 @@
   </div>
   {#if $isBurgerMenuShown}
     <div transition:slide={{ duration: 300 }} class="burger-menu">
-      <a href={upload}>{$_('comp.header.uploadImage')}</a>
+      <a href="/inspect" on:click={handleBurgerClick}
+        >{$_('comp.header.uploadImage')}</a>
       <a href={getFaqUrl()} target="_blank">FAQ</a>
       <a href={$learnMoreUrl}>{$_('comp.header.learnMore')}</a>
     </div>

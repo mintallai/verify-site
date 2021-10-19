@@ -27,7 +27,7 @@
 </script>
 
 <div class="viewer-wrapper">
-  <h6 class="lg:hidden">{$_('comp.comparison.compareContentCreds')}</h6>
+  <h6 class="lg:hidden pb-4">{$_('comp.comparison.compareContentCreds')}</h6>
   <div class="comparison" bind:clientWidth={width} bind:clientHeight={height}>
     {#if !isLoading}
       {#if $compareMode === CompareMode.Slider}
@@ -45,7 +45,7 @@
 
 <style lang="postcss">
   .viewer-wrapper {
-    @apply flex flex-row;
+    @apply flex flex-col;
   }
   .comparison {
     @apply w-full h-full bg-gray-75 flex flex-col items-center justify-center overflow-hidden;

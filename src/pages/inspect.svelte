@@ -192,7 +192,7 @@
         {#if !isComparing}
           <Navigation claim={primary} />
         {:else if primary instanceof Claim}
-          <div class="col-compare lg:w-full p-4 pt-0 md:pt-4">
+          <div class="col-compare w-full p-4 pt-0 md:pt-4">
             <About claim={primary} {isComparing} {isMobileViewer} />
           </div>
         {:else if primary instanceof Ingredient}
