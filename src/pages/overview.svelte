@@ -4,6 +4,7 @@
   import { _ } from 'svelte-i18n';
   import { Claim } from '../lib/sdk';
   import About from '../components/About.svelte';
+  import Alert from '../components/Alert.svelte';
   import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
   import FileDropper from '../components/FileDropper.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
@@ -12,7 +13,7 @@
   import Footer from '../components/Footer.svelte';
   import TreeView from '../components/overview/TreeView.svelte';
   import { startTour } from '../lib/tour';
-  import { loader } from '../lib/loader';
+  import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
   import {
     urlParams,
     provenance,
@@ -24,7 +25,7 @@
   } from '../stores';
 
   let isDragging = false;
-  let error = false;
+  let error = null;
   let tour: ReturnType<typeof startTour>;
   let breakpoints = __breakpoints__;
   let mdBreakpoint = `(max-width: ${breakpoints.md})`;
@@ -39,7 +40,6 @@
   $: isComparing = !!(primary && secondary);
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
-  $: errorMessage = error && 'Unknown';
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && isMobileViewer) {
@@ -64,24 +64,26 @@
     }
   }
 
-  function handleError(err) {
-    console.log('got error', err);
-  }
-
-  function handleLoaded() {
-    const { tourFlag, forceTourFlag } = $urlParams;
-    if (isMobileViewer === false) {
-      // tour = startTour({
-      //   provenance: $provenance,
-      //   start: tourFlag,
-      //   force: forceTourFlag,
-      // });
-    }
-  }
-
-  function handleDragStateChange(newState: boolean) {
-    isDragging = newState;
-  }
+  const loaderParams: ILoaderParams = {
+    onError(_err, message) {
+      error = message;
+    },
+    onLoaded() {
+      error = null;
+      const { tourFlag, forceTourFlag } = $urlParams;
+      if (isMobileViewer === false) {
+        // tour = startTour({
+        //   provenance: $provenance,
+        //   start: tourFlag,
+        //   force: forceTourFlag,
+        // });
+      }
+    },
+    onDragStateChange(newState: boolean) {
+      isDragging = newState;
+    },
+  };
+  setLoaderContext(loaderParams);
 
   onMount(async () => {
     const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
@@ -104,13 +106,9 @@
   <title>{$_('page.title')}</title>
 </svelte:head>
 <main
-  use:loader={{
-    onError: handleError,
-    onLoaded: handleLoaded,
-    onDragStateChange: handleDragStateChange,
-  }}
+  use:loader={loaderParams}
   class="theme-light"
-  class:full-width={isUploadMode && !$provenance}>
+  class:full-width={isUploadMode && !$provenance && !error}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -120,8 +118,8 @@
   <Header />
   <TopNavigation {isComparing} {noMetadata} {source} currentPage="overview" />
   <div class="dragdrop">
-    <FileDropper {isUploadMode} {isDragging} />
-    {#if isUploadMode}
+    <FileDropper {isUploadMode} {isDragging} isError={!!error} />
+    {#if isUploadMode && !error}
       <div
         class="upload-bg"
         class:dragging={isDragging}
@@ -138,7 +136,11 @@
     {/if}
     <section class="right-col p-4 pt-0 md:pt-4" class:loading={$isLoading}>
       <div class="wrapper">
-        {#if primary instanceof Claim}
+        {#if error}
+          <div class="w-full">
+            <Alert severity="error">{$_(error)}</Alert>
+          </div>
+        {:else if primary instanceof Claim}
           <About claim={primary} {isComparing} {isMobileViewer} />
         {:else if $isLoading}
           <div class="flex items-center justify-center">

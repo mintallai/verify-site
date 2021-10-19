@@ -15,7 +15,7 @@
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
   import { startTour } from '../lib/tour';
-  import { loader } from '../lib/loader';
+  import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
   import {
     urlParams,
     provenance,
@@ -32,11 +32,32 @@
   }
 
   let isDragging = false;
-  let error = false;
+  let error = null;
   let tour: ReturnType<typeof startTour>;
   let breakpoints = __breakpoints__;
   let mdBreakpoint = `(max-width: ${breakpoints.md})`;
   let lgBreakpoint = `(max-width: ${breakpoints.lg})`;
+
+  const loaderParams: ILoaderParams = {
+    onError(_err, message) {
+      error = message;
+    },
+    onLoaded() {
+      error = null;
+      const { tourFlag, forceTourFlag } = $urlParams;
+      if (isMobileViewer === false) {
+        // tour = startTour({
+        //   provenance: $provenance,
+        //   start: tourFlag,
+        //   force: forceTourFlag,
+        // });
+      }
+    },
+    onDragStateChange(newState: boolean) {
+      isDragging = newState;
+    },
+  };
+  setLoaderContext(loaderParams);
 
   $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
@@ -46,7 +67,6 @@
   $: isComparing = !!(primary && secondary);
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
-  $: errorMessage = error && 'Unknown';
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && isMobileViewer) {
@@ -56,25 +76,6 @@
     if ($provenance !== undefined) {
       error = null;
     }
-  }
-
-  function handleError(err) {
-    console.log('got error', err);
-  }
-
-  function handleLoaded() {
-    const { tourFlag, forceTourFlag } = $urlParams;
-    if (isMobileViewer === false) {
-      // tour = startTour({
-      //   provenance: $provenance,
-      //   start: tourFlag,
-      //   force: forceTourFlag,
-      // });
-    }
-  }
-
-  function handleDragStateChange(newState: boolean) {
-    isDragging = newState;
   }
 
   /**
@@ -111,11 +112,7 @@
   <title>{$_('page.title')}</title>
 </svelte:head>
 <main
-  use:loader={{
-    onError: handleError,
-    onLoaded: handleLoaded,
-    onDragStateChange: handleDragStateChange,
-  }}
+  use:loader={loaderParams}
   class="theme-light"
   class:comparing={isComparing}>
   {#if $isBurgerMenuShown}
@@ -136,7 +133,7 @@
       <section class="left-col" class:loading={$isLoading} />
       <Viewer isError={!!error} />
       <section class="right-col p-4">
-        <Alert severity="error">{errorMessage}</Alert>
+        <Alert severity="error">{$_(error)}</Alert>
       </section>
     {:else if $isLoading}
       <section class="left-col" class:loading={$isLoading}>
@@ -202,7 +199,7 @@
     <Viewer {isDragging} />
     {#if error}
       <section class="right-col p-4">
-        <Alert severity="error">{errorMessage}</Alert>
+        <Alert severity="error">{$_(error)}</Alert>
       </section>
     {:else}
       <section />
