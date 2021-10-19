@@ -36,6 +36,7 @@
   "comp.contentCredentialsError.none": "No content credentials for this asset",
   "comp.contentCredentialsError.noneForFile": "No content credentials for this file",
   "comp.contentCredentialsError.noneText": "This asset doesn’t have a content record attached.",
+  "comp.contentCredentialsError.unknownActions": "Some edits, activity, or asset actions may be missing from this content.",
   "comp.footer.contactUs": "Contact us",
   "comp.footer.copyright": "Copyright © {year} Adobe. All rights reserved.",
   "comp.footer.privacy": "Privacy",
