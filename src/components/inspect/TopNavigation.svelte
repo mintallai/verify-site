@@ -37,10 +37,6 @@
     $goto(this.selected, $params);
   }
 
-  function handleMenuChange() {
-    // TODO: Change page
-  }
-
   function handleCompareChange() {
     setCompareMode(this.value);
   }
@@ -83,9 +79,9 @@
         <div class="flex self-center">
           {#if nodeAncestors.length > 1}
             <sp-action-menu
+              selectable
               class="-ml-3 inline mt-3.5"
-              value={$primaryId}
-              on:change={handleMenuChange}>
+              value={$primaryId}>
               <div slot="icon" class="py-2">
                 <BreadcrumbDropdown
                   slot="icon"
@@ -106,11 +102,13 @@
                   $primaryId,
                   parent.data.id == $primaryId,
                 )}
+                <!-- neither this on:click or getPath produce the correct result for Gavin's deeply nested CICA image -->
                 <sp-menu-item
-                  selected
-                  on:click={navigateToPath([parent.data?.id])}>
-                  <Thumbnail asset={parent.data?.asset} />
-                  <span>{parent.data?.name}</span>
+                  selected={parent.data?.id == $primaryId}
+                  on:click={navigateToPath([parent.data?.id])}
+                  class="align-middle">
+                  <Thumbnail slot="icon" asset={parent.data?.asset} />
+                  <span class="ml-2">{parent.data?.name}</span>
                 </sp-menu-item>
               {/each}
             </sp-action-menu>
@@ -118,11 +116,13 @@
               <Icon size="s" name="ChevronRight" class="text-gray-800" />
             </div>
           {/if}
-          <div class="breadcrumb-item flex flex-col" class:current={true}>
-            <div class="">
+          <div class="breadcrumb-item text-center" class:current={true}>
+            <div class="inline">
               <Thumbnail asset={$primaryAsset?.asset} />
             </div>
-            <span class="font-regular text-smd">{$primaryAsset?.title} </span>
+            <span class="inline font-regular text-smd ml-2 align-middle"
+              >{$primaryAsset?.title}
+            </span>
           </div>
         </div>
       {:else}
