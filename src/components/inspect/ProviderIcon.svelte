@@ -12,12 +12,12 @@
   let className: string = '';
 
   const matchers = [
+    { pattern: /photoshop/i, icon: PhotoshopLogo },
     { pattern: /adobe\sstock/i, icon: AdobeStockLogo },
     { pattern: /adobe/i, icon: AdobeLogo },
     { pattern: /behance\.net/i, icon: BehanceLogo },
     { pattern: /facebook\.com/i, icon: FacebookLogo },
     { pattern: /instagram\.com/i, icon: InstagramLogo },
-    { pattern: /photoshop/i, icon: PhotoshopLogo },
     { pattern: /truepic/i, icon: TruepicLogo },
     { pattern: /twitter\.com/i, icon: TwitterLogo },
   ];

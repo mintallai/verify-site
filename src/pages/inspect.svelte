@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import dragDrop from 'drag-drop';
-  import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
+  import { Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
@@ -15,19 +13,18 @@
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
-  import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
+  import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
+  import { breakpoints } from '../lib/breakpoints';
   import {
     urlParams,
     provenance,
-    setProvenance,
     compareWithPath,
     primaryAsset,
     secondaryAsset,
     isBurgerMenuShown,
     isMobileViewerShown,
     isLoading,
-    setIsLoading,
   } from '../stores';
 
   function handleClose() {
@@ -35,11 +32,29 @@
   }
 
   let isDragging = false;
-  let error = false;
+  let error = null;
   let tour: ReturnType<typeof startTour>;
-  let breakpoints = __breakpoints__;
-  let mdBreakpoint = `(max-width: ${breakpoints.md})`;
-  let lgBreakpoint = `(max-width: ${breakpoints.lg})`;
+
+  const loaderParams: ILoaderParams = {
+    onError(_err, message) {
+      error = message;
+    },
+    onLoaded() {
+      error = null;
+      const { tourFlag, forceTourFlag } = $urlParams;
+      if (isMobileViewer === false) {
+        // tour = startTour({
+        //   provenance: $provenance,
+        //   start: tourFlag,
+        //   force: forceTourFlag,
+        // });
+      }
+    },
+    onDragStateChange(newState: boolean) {
+      isDragging = newState;
+    },
+  };
+  setLoaderContext(loaderParams);
 
   $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
@@ -49,7 +64,6 @@
   $: isComparing = !!(primary && secondary);
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
-  $: errorMessage = error && 'Unknown';
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && isMobileViewer) {
@@ -60,95 +74,17 @@
       error = null;
     }
   }
-
-  /**
-   * Make sure we close any open hamburger menu if we increase the
-   * window size to a breakpoint where the menu is hidden
-   */
-  function handleBreakpointChange({ media, matches }) {
-    if (media === mdBreakpoint && !matches && $isBurgerMenuShown) {
-      isBurgerMenuShown.set(false);
-    }
-    if (media === lgBreakpoint) {
-      isMobileViewerShown.set(matches);
-    }
-  }
-
-  onMount(async () => {
-    const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
-    const { tourFlag, forceTourFlag } = $urlParams;
-
-    isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);
-    listenBreakpoints.forEach((bp) =>
-      matchMedia(bp).addEventListener('change', handleBreakpointChange),
-    );
-
-    if (sourceParam && !$provenance) {
-      try {
-        setIsLoading(true);
-        try {
-          const sdk = await getSdk();
-          const result = await sdk.processImage(sourceParam);
-          await window.newrelic?.setCustomAttribute('source', sourceParam);
-          setProvenance(result);
-        } catch (err) {
-          console.error('Could not process file:', err);
-          window.newrelic?.noticeError(err, {
-            source: 'url',
-          });
-        } finally {
-          setIsLoading(false);
-        }
-        if (isMobileViewer === false) {
-          // tour = startTour({
-          //   provenance: $provenance,
-          //   start: tourFlag,
-          //   force: forceTourFlag,
-          // });
-        }
-      } catch (err) {
-        error = err?.message;
-      }
-    }
-
-    // This stops the drag state from rapidly changing during drag
-    // They also use this pattern in the dragDrop library
-    let dragTimeout: ReturnType<typeof setTimeout> | undefined;
-    const cleanupDragDrop = dragDrop('main', {
-      async onDrop(files: File[]) {
-        clearTimeout(dragTimeout);
-        isDragging = false;
-        try {
-          await processFiles(files);
-        } catch (err) {
-          error = err?.message;
-        }
-      },
-      onDragOver() {
-        clearTimeout(dragTimeout);
-        isDragging = true;
-      },
-      onDragLeave() {
-        dragTimeout = setTimeout(() => {
-          isDragging = false;
-        }, 50);
-      },
-    });
-
-    return () => {
-      cleanupDragDrop();
-      listenBreakpoints.forEach((bp) =>
-        matchMedia(bp).removeEventListener('change', handleBreakpointChange),
-      );
-    };
-  });
 </script>
 
 <svelte:window />
 <svelte:head>
   <title>{$_('page.title')}</title>
 </svelte:head>
-<main class="theme-light" class:comparing={isComparing}>
+<main
+  use:loader={loaderParams}
+  use:breakpoints
+  class="theme-light"
+  class:comparing={isComparing}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -167,7 +103,7 @@
       <section class="left-col" class:loading={$isLoading} />
       <Viewer isError={!!error} />
       <section class="right-col p-4">
-        <Alert severity="error">{errorMessage}</Alert>
+        <Alert severity="error">{$_(error)}</Alert>
       </section>
     {:else if $isLoading}
       <section class="left-col" class:loading={$isLoading}>
@@ -233,7 +169,7 @@
     <Viewer {isDragging} />
     {#if error}
       <section class="right-col p-4">
-        <Alert severity="error">{errorMessage}</Alert>
+        <Alert severity="error">{$_(error)}</Alert>
       </section>
     {:else}
       <section />

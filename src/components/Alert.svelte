@@ -1,5 +1,5 @@
 <script lang="ts">
-  import '@contentauth/web-components/dist/icons/monochrome/alert-circle';
+  import AlertIcon from '../../assets/svg/monochrome/alert.svg';
   import '@contentauth/web-components/dist/icons/color/info-blue';
 
   type Severity = 'info' | 'error';
@@ -10,10 +10,9 @@
 <div
   class="alert"
   class:error={severity === 'error'}
-  class:info={severity === 'info'}
->
+  class:info={severity === 'info'}>
   {#if severity === 'error'}
-    <cai-icon-alert-circle class="icon" />
+    <AlertIcon width="17px" height="17px" class="icon mr-3" />
     <slot />
   {:else if severity === 'info'}
     <slot />
@@ -29,9 +28,6 @@
     @apply text-white flex-shrink-0;
     --cai-icon-width: 16px;
     --cai-icon-height: 16px;
-  }
-  cai-icon-alert-circle {
-    @apply text-white mr-3;
   }
   cai-icon-info-blue {
     @apply ml-3;
