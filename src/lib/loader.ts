@@ -91,7 +91,7 @@ export function loader(node, params: ILoaderParams) {
       try {
         await processFiles(files, params);
       } catch (err) {
-        onError(err);
+        onError(err, getErrorMessage(err));
       }
     },
     onDragOver() {

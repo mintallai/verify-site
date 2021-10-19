@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
   import { Claim } from '../lib/sdk';
@@ -14,6 +13,7 @@
   import TreeView from '../components/overview/TreeView.svelte';
   import { startTour } from '../lib/tour';
   import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
+  import { breakpoints } from '../lib/breakpoints';
   import {
     urlParams,
     provenance,
@@ -27,9 +27,6 @@
   let isDragging = false;
   let error = null;
   let tour: ReturnType<typeof startTour>;
-  let breakpoints = __breakpoints__;
-  let mdBreakpoint = `(max-width: ${breakpoints.md})`;
-  let lgBreakpoint = `(max-width: ${breakpoints.lg})`;
 
   $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
@@ -48,19 +45,6 @@
     // Clear errors if the store report has changed
     if ($provenance !== undefined) {
       error = null;
-    }
-  }
-
-  /**
-   * Make sure we close any open hamburger menu if we increase the
-   * window size to a breakpoint where the menu is hidden
-   */
-  function handleBreakpointChange({ media, matches }) {
-    if (media === mdBreakpoint && !matches && $isBurgerMenuShown) {
-      isBurgerMenuShown.set(false);
-    }
-    if (media === lgBreakpoint) {
-      isMobileViewerShown.set(matches);
     }
   }
 
@@ -84,21 +68,6 @@
     },
   };
   setLoaderContext(loaderParams);
-
-  onMount(async () => {
-    const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
-
-    isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);
-    listenBreakpoints.forEach((bp) =>
-      matchMedia(bp).addEventListener('change', handleBreakpointChange),
-    );
-
-    return () => {
-      listenBreakpoints.forEach((bp) =>
-        matchMedia(bp).removeEventListener('change', handleBreakpointChange),
-      );
-    };
-  });
 </script>
 
 <svelte:window />
@@ -107,6 +76,7 @@
 </svelte:head>
 <main
   use:loader={loaderParams}
+  use:breakpoints
   class="theme-light"
   class:full-width={isUploadMode && !$provenance && !error}>
   {#if $isBurgerMenuShown}
@@ -134,7 +104,7 @@
     {:else}
       <TreeView />
     {/if}
-    <section class="right-col p-4 pt-0 md:pt-4" class:loading={$isLoading}>
+    <section class="right-col p-4 md:pt-4" class:loading={$isLoading}>
       <div class="wrapper">
         {#if error}
           <div class="w-full">
@@ -157,7 +127,7 @@
 
 <style lang="postcss">
   main {
-    --viewer-height: 375px;
+    --viewer-height: calc(100vh - 400px);
     --cai-thumbnail-size: 48px;
     --cai-thumbnail-badge-icon-width: 16px;
     --cai-thumbnail-badge-icon-height: 16px;

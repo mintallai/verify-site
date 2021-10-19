@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
   import { Claim, Ingredient, Source } from '../lib/sdk';
@@ -16,6 +15,7 @@
   import Viewer from '../components/inspect/Viewer.svelte';
   import { startTour } from '../lib/tour';
   import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
+  import { breakpoints } from '../lib/breakpoints';
   import {
     urlParams,
     provenance,
@@ -34,9 +34,6 @@
   let isDragging = false;
   let error = null;
   let tour: ReturnType<typeof startTour>;
-  let breakpoints = __breakpoints__;
-  let mdBreakpoint = `(max-width: ${breakpoints.md})`;
-  let lgBreakpoint = `(max-width: ${breakpoints.lg})`;
 
   const loaderParams: ILoaderParams = {
     onError(_err, message) {
@@ -77,34 +74,6 @@
       error = null;
     }
   }
-
-  /**
-   * Make sure we close any open hamburger menu if we increase the
-   * window size to a breakpoint where the menu is hidden
-   */
-  function handleBreakpointChange({ media, matches }) {
-    if (media === mdBreakpoint && !matches && $isBurgerMenuShown) {
-      isBurgerMenuShown.set(false);
-    }
-    if (media === lgBreakpoint) {
-      isMobileViewerShown.set(matches);
-    }
-  }
-
-  onMount(async () => {
-    const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
-
-    isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);
-    listenBreakpoints.forEach((bp) =>
-      matchMedia(bp).addEventListener('change', handleBreakpointChange),
-    );
-
-    return () => {
-      listenBreakpoints.forEach((bp) =>
-        matchMedia(bp).removeEventListener('change', handleBreakpointChange),
-      );
-    };
-  });
 </script>
 
 <svelte:window />
@@ -113,6 +82,7 @@
 </svelte:head>
 <main
   use:loader={loaderParams}
+  use:breakpoints
   class="theme-light"
   class:comparing={isComparing}>
   {#if $isBurgerMenuShown}
