@@ -63,9 +63,14 @@
           <div class="body lg:text-xl">{$_('page.sectionOne.bodyA')}</div>
           <div class="body lg:text-xl">{$_('page.sectionOne.bodyB')}</div>
           <div class="inline-block align-middle">
-            <div class="cta lg:text-xl sm:text-smd">
-              {$_('page.cta.viewMore')}
-            </div>
+            <a
+              href="/overview?source=${encodeURIComponent(
+                '/assets/png/section1.jpg',
+              )}">
+              <div class="cta lg:text-xl sm:text-smd">
+                {$_('page.cta.viewMore')}
+              </div>
+            </a>
             <Arrow class="inline-block" width="14px" height="12px" />
           </div>
         </div>
@@ -85,9 +90,14 @@
           <div class="body lg:text-xl">{$_('page.sectionTwo.bodyA')}</div>
           <div class="body lg:text-xl">{$_('page.sectionTwo.bodyB')}</div>
           <div class="inline-block align-middle">
-            <div class="cta lg:text-xl sm:text-smd">
-              {$_('page.cta.viewMore')}
-            </div>
+            <a
+              href="/overview?source=${encodeURIComponent(
+                '/assets/png/section2.png',
+              )}">
+              <div class="cta lg:text-xl sm:text-smd">
+                {$_('page.cta.viewMore')}
+              </div>
+            </a>
             <Arrow class="inline-block" width="14px" height="12px" />
           </div>
         </div>
@@ -107,9 +117,14 @@
           <div class="body lg:text-xl">{$_('page.sectionThree.bodyA')}</div>
           <div class="body lg:text-xl">{$_('page.sectionThree.bodyB')}</div>
           <div class="inline-block align-middle">
-            <div class="cta lg:text-xl sm:text-smd">
-              {$_('page.cta.viewMore')}
-            </div>
+            <a
+              href="/overview?source=${encodeURIComponent(
+                '/assets/png/section3.png',
+              )}">
+              <div class="cta lg:text-xl sm:text-smd">
+                {$_('page.cta.viewMore')}
+              </div>
+            </a>
             <Arrow class="inline-block" width="14px" height="12px" />
           </div>
         </div>
