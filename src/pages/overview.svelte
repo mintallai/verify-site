@@ -2,8 +2,7 @@
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import dragDrop from 'drag-drop';
-  import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
+  import { Claim } from '../lib/sdk';
   import About from '../components/About.svelte';
   import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
   import FileDropper from '../components/FileDropper.svelte';
@@ -12,19 +11,16 @@
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
   import TreeView from '../components/overview/TreeView.svelte';
-  import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
+  import { loader } from '../lib/loader';
   import {
     urlParams,
     provenance,
-    setProvenance,
-    compareWithPath,
     primaryAsset,
     secondaryAsset,
     isBurgerMenuShown,
     isMobileViewerShown,
     isLoading,
-    setIsLoading,
   } from '../stores';
 
   let isDragging = false;
@@ -68,69 +64,34 @@
     }
   }
 
+  function handleError(err) {
+    console.log('got error', err);
+  }
+
+  function handleLoaded() {
+    const { tourFlag, forceTourFlag } = $urlParams;
+    if (isMobileViewer === false) {
+      // tour = startTour({
+      //   provenance: $provenance,
+      //   start: tourFlag,
+      //   force: forceTourFlag,
+      // });
+    }
+  }
+
+  function handleDragStateChange(newState: boolean) {
+    isDragging = newState;
+  }
+
   onMount(async () => {
     const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
-    const { tourFlag, forceTourFlag } = $urlParams;
 
     isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);
     listenBreakpoints.forEach((bp) =>
       matchMedia(bp).addEventListener('change', handleBreakpointChange),
     );
 
-    if (sourceParam && !$provenance) {
-      try {
-        setIsLoading(true);
-        try {
-          const sdk = await getSdk();
-          const result = await sdk.processImage(sourceParam);
-          await window.newrelic?.setCustomAttribute('source', sourceParam);
-          setProvenance(result);
-        } catch (err) {
-          console.error('Could not process file:', err);
-          window.newrelic?.noticeError(err, {
-            source: 'url',
-          });
-        } finally {
-          setIsLoading(false);
-        }
-        if (isMobileViewer === false) {
-          // tour = startTour({
-          //   provenance: $provenance,
-          //   start: tourFlag,
-          //   force: forceTourFlag,
-          // });
-        }
-      } catch (err) {
-        error = err?.message;
-      }
-    }
-
-    // This stops the drag state from rapidly changing during drag
-    // They also use this pattern in the dragDrop library
-    let dragTimeout: ReturnType<typeof setTimeout> | undefined;
-    const cleanupDragDrop = dragDrop('main', {
-      async onDrop(files: File[]) {
-        clearTimeout(dragTimeout);
-        isDragging = false;
-        try {
-          await processFiles(files);
-        } catch (err) {
-          error = err?.message;
-        }
-      },
-      onDragOver() {
-        clearTimeout(dragTimeout);
-        isDragging = true;
-      },
-      onDragLeave() {
-        dragTimeout = setTimeout(() => {
-          isDragging = false;
-        }, 50);
-      },
-    });
-
     return () => {
-      cleanupDragDrop();
       listenBreakpoints.forEach((bp) =>
         matchMedia(bp).removeEventListener('change', handleBreakpointChange),
       );
@@ -142,7 +103,14 @@
 <svelte:head>
   <title>{$_('page.title')}</title>
 </svelte:head>
-<main class="theme-light" class:full-width={isUploadMode && !$provenance}>
+<main
+  use:loader={{
+    onError: handleError,
+    onLoaded: handleLoaded,
+    onDragStateChange: handleDragStateChange,
+  }}
+  class="theme-light"
+  class:full-width={isUploadMode && !$provenance}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
