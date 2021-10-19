@@ -276,16 +276,13 @@ export const hierarchy = derived<
   return null;
 });
 
-export const ancestors = derived<[typeof primaryPath, typeof hierarchy], [HierarchyNode<ITreeNode>] | null>( 
+export const ancestors = derived<[typeof primaryPath, typeof hierarchy], HierarchyNode<ITreeNode>[] | null>( 
   [primaryPath, hierarchy], 
   ([$primaryPath, $hierarchy]) => {
-    let node;
     if ($primaryPath) {
-      node = $hierarchy?.find(node => {
-        return equal(getPath(node), $primaryPath);
-      });
+      return $hierarchy?.find(node => equal(getPath(node), $primaryPath))?.ancestors();
     }
-    return node?.ancestors();
+    return null;  
 });
 
 /**

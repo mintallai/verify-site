@@ -5,6 +5,7 @@
   import Icon from '../Icon.svelte';
   import {
     primaryId,
+    primaryPath,
     primaryAsset,
     ancestors,
     compareMode,
@@ -24,6 +25,7 @@
   import { ITreeNode } from '../../lib/types';
   import { HierarchyNode } from 'd3-hierarchy';
   import { getPath } from '../../lib/claim';
+  import equal from 'fast-deep-equal';
 
   type Page = 'overview' | 'inspect';
 
@@ -89,13 +91,12 @@
               {#each nodeAncestors.reverse() as parent (parent.data?.id)}
                 <!-- neither this on:click or getPath produce the correct result for Gavin's deeply nested CICA image -->
                 <sp-menu-item
-                  selected={parent.data?.id == $primaryId}
+                  selected={equal(getPath(parent), $primaryPath)}
                   on:click={navigateToPath(getPath(parent))}
                   class="flex items-center"
                   value={parent.data?.id}>
                   <Thumbnail slot="icon" asset={parent.data?.asset} />
-                  <span class="ml-2 items-center" slot="label"
-                    >{parent.data?.name}</span>
+                  <span class="ml-2 items-center">{parent.data?.name}</span>
                 </sp-menu-item>
               {/each}
             </sp-action-menu>
