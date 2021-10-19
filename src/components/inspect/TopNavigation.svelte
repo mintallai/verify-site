@@ -5,11 +5,14 @@
   import Icon from '../Icon.svelte';
   import {
     primaryId,
+    primaryAsset,
+    ancestors,
     compareMode,
     hierarchy,
     setCompareMode,
     CompareMode,
     isMobileViewerShown,
+    navigateToPath,
   } from '../../stores';
   import { Source } from '../../lib/sdk';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
@@ -18,9 +21,9 @@
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
   import Thumbnail from '../Thumbnail.svelte';
-  import { getPath } from '../../lib/claim';
-  import { ITreeNode, ViewableItem } from '../../lib/types';
+  import { ITreeNode } from '../../lib/types';
   import { HierarchyNode } from 'd3-hierarchy';
+  import { getPath } from '../../lib/claim';
 
   type Page = 'overview' | 'inspect';
 
@@ -28,8 +31,6 @@
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
   export let source: Source | null = null;
-  export let primary: ViewableItem | null = null;
-  // export let primary: HierarchyNode<ITreeNode>;
   const dispatch = createEventDispatcher();
 
   function handleNavChange() {
@@ -45,43 +46,42 @@
   }
 
   $: showMenu = $isMobileViewerShown;
-  // $: children = primary?.ingredients;
-  // $: node =
+  $: nodeAncestors = $ancestors;
 </script>
 
-<div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
-  <sp-theme color="lightest" scale="medium" class="w-full">
-    {#if isComparing}
-      <div class="flex space-x-5 py-3">
-        <div
-          class="flex items-center cursor-pointer"
-          on:click={() => dispatch('back')}>
-          <LeftArrow width="14" height="12" class="text-gray-800 mr-2" />
-          <div>
-            {$_('comp.topNavigation.back')}
+<!-- Only display Top Nav if there is an active asset -->
+{#if $primaryId}
+  <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
+    <sp-theme color="lightest" scale="medium" class="w-full">
+      {#if isComparing}
+        <div class="flex space-x-5 py-3">
+          <div
+            class="flex items-center cursor-pointer"
+            on:click={() => dispatch('back')}>
+            <LeftArrow width="14" height="12" class="text-gray-800 mr-2" />
+            <div>
+              {$_('comp.topNavigation.back')}
+            </div>
+          </div>
+          <div class="flex pl-5 items-center border-l border-gray-300">
+            <sp-picker
+              id="compare-picker"
+              on:change={handleCompareChange}
+              value={$compareMode}
+              quiet
+              size="m">
+              <sp-menu-item value={CompareMode.Slider}>
+                {$_('comp.topNavigation.slider')}
+              </sp-menu-item>
+              <sp-menu-item value={CompareMode.Split}>
+                {$_('comp.topNavigation.split')}
+              </sp-menu-item>
+            </sp-picker>
           </div>
         </div>
-        <div class="flex pl-5 items-center border-l border-gray-300">
-          <sp-picker
-            id="compare-picker"
-            on:change={handleCompareChange}
-            value={$compareMode}
-            quiet
-            size="m">
-            <sp-menu-item value={CompareMode.Slider}>
-              {$_('comp.topNavigation.slider')}
-            </sp-menu-item>
-            <sp-menu-item value={CompareMode.Split}>
-              {$_('comp.topNavigation.split')}
-            </sp-menu-item>
-          </sp-picker>
-        </div>
-      </div>
-    {:else if showMenu}
-      {#if primary}
-        <div class="inline align-middle">
-          {console.log('[call primary]::primary > ', primary)}
-          {#if primary?.ingredients?.length > 0}
+      {:else if showMenu}
+        <div class="flex self-center">
+          {#if nodeAncestors.length > 1}
             <sp-action-menu
               class="-ml-3 inline mt-3.5"
               value={$primaryId}
@@ -93,33 +93,50 @@
                   height="16"
                   class="text-gray-800" />
               </div>
-              <!-- {#each children as childNode (getPath(childNode).toString())}
-              <svelte:self node={childNode} />
-            {/each} -->
+              {#each nodeAncestors.reverse() as parent}
+                {console.log(
+                  '[call ancestors]::node.ancestors >',
+                  nodeAncestors,
+                  $primaryAsset,
+                )}
+                {console.log(
+                  '[call each]::parent > ',
+                  parent,
+                  parent.data.id,
+                  $primaryId,
+                  parent.data.id == $primaryId,
+                )}
+                <sp-menu-item
+                  selected
+                  on:click={navigateToPath([parent.data?.id])}>
+                  <Thumbnail asset={parent.data?.asset} />
+                  <span>{parent.data?.name}</span>
+                </sp-menu-item>
+              {/each}
             </sp-action-menu>
             <div class="separator -ml-2 inline">
               <Icon size="s" name="ChevronRight" class="text-gray-800" />
             </div>
           {/if}
-          <div class="breadcrumb-item" class:current={true}>
-            <div class="inline mt-3.5">
-              <Thumbnail asset={primary.asset} />
+          <div class="breadcrumb-item flex flex-col" class:current={true}>
+            <div class="">
+              <Thumbnail asset={$primaryAsset?.asset} />
             </div>
-            <span class="inline font-regular text-smd">{primary.title} </span>
+            <span class="font-regular text-smd">{$primaryAsset?.title} </span>
           </div>
         </div>
+      {:else}
+        <sp-tabs
+          selected={$url()}
+          on:change={handleNavChange}
+          class="nav-tabs mt-1 -ml-4">
+          <sp-tab label={$_('comp.topNavigation.overview')} value="/overview" />
+          <sp-tab label={$_('comp.topNavigation.inspect')} value="/inspect" />
+        </sp-tabs>
       {/if}
-    {:else}
-      <sp-tabs
-        selected={$url()}
-        on:change={handleNavChange}
-        class="nav-tabs mt-1 -ml-4">
-        <sp-tab label={$_('comp.topNavigation.overview')} value="/overview" />
-        <sp-tab label={$_('comp.topNavigation.inspect')} value="/inspect" />
-      </sp-tabs>
-    {/if}
-  </sp-theme>
-</div>
+    </sp-theme>
+  </div>
+{/if}
 
 <style lang="postcss">
   .container {
@@ -151,6 +168,10 @@
   }
   .nav-tabs sp-tab {
     --spectrum-tabs-text-size: var(--font-size-100);
+  }
+
+  sp-menu-item {
+    --cai-thumbnail-size: 32px;
   }
   @screen lgHeight {
     .container {

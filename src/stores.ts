@@ -273,6 +273,21 @@ export const hierarchy = derived<
   return null;
 });
 
+export const ancestors = derived<[typeof primaryId, typeof hierarchy], [HierarchyNode<ITreeNode>] | null>( 
+  [primaryId, hierarchy], 
+  ([$primaryId, $hierarchy]) => {
+    let node;
+    if ($primaryId && $hierarchy) {
+      node = $hierarchy?.find(element => {
+        console.log('[call ancestors]::element, $primaryId >', element, $primaryId);
+        return element.data.id == $primaryId;
+      });
+      console.log('[call ancestors]::node, $hierarchy >', node, $hierarchy);
+      console.log('[call] >', node?.ancestors());
+      return node?.ancestors();
+    }
+});
+
 /**
  * Calculates the root claim ID (the ID of the latest claim) contained in the store report.
  */

@@ -161,7 +161,6 @@
     {isComparing}
     {noMetadata}
     {source}
-    {primary}
     currentPage="inspect"
     on:back={handleClose} />
   {#if hasContent}
