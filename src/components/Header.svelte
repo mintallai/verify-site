@@ -7,7 +7,6 @@
     getFaqUrl,
     navigateToRoot,
     isBurgerMenuShown,
-    navigateToPath,
   } from '../stores';
   import '@contentauth/web-components/dist/icons/color/logos/adobe';
   import 'vanilla-hamburger/fade-burger';

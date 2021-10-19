@@ -4,7 +4,10 @@ import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
 import { ImageProvenance, Claim, Ingredient } from './lib/sdk';
 import { ViewableItem, ITreeNode, ErrorTypes } from './lib/types';
+import equal from 'fast-deep-equal';
+
 import debug from 'debug';
+import { getPath } from './lib/claim';
 
 const dbg = debug('store');
 
@@ -273,19 +276,16 @@ export const hierarchy = derived<
   return null;
 });
 
-export const ancestors = derived<[typeof primaryId, typeof hierarchy], [HierarchyNode<ITreeNode>] | null>( 
-  [primaryId, hierarchy], 
-  ([$primaryId, $hierarchy]) => {
+export const ancestors = derived<[typeof primaryPath, typeof hierarchy], [HierarchyNode<ITreeNode>] | null>( 
+  [primaryPath, hierarchy], 
+  ([$primaryPath, $hierarchy]) => {
     let node;
-    if ($primaryId && $hierarchy) {
-      node = $hierarchy?.find(element => {
-        console.log('[call ancestors]::element, $primaryId >', element, $primaryId);
-        return element.data.id == $primaryId;
+    if ($primaryPath) {
+      node = $hierarchy?.find(node => {
+        return equal(getPath(node), $primaryPath);
       });
-      console.log('[call ancestors]::node, $hierarchy >', node, $hierarchy);
-      console.log('[call] >', node?.ancestors());
-      return node?.ancestors();
     }
+    return node?.ancestors();
 });
 
 /**

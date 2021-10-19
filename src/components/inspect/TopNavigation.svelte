@@ -78,10 +78,7 @@
       {:else if showMenu}
         <div class="flex self-center">
           {#if nodeAncestors.length > 1}
-            <sp-action-menu
-              selectable
-              class="-ml-3 inline mt-3.5"
-              value={$primaryId}>
+            <sp-action-menu class="-ml-3" value={$primaryId}>
               <div slot="icon" class="py-2">
                 <BreadcrumbDropdown
                   slot="icon"
@@ -89,38 +86,26 @@
                   height="16"
                   class="text-gray-800" />
               </div>
-              {#each nodeAncestors.reverse() as parent}
-                {console.log(
-                  '[call ancestors]::node.ancestors >',
-                  nodeAncestors,
-                  $primaryAsset,
-                )}
-                {console.log(
-                  '[call each]::parent > ',
-                  parent,
-                  parent.data.id,
-                  $primaryId,
-                  parent.data.id == $primaryId,
-                )}
+              {#each nodeAncestors.reverse() as parent (parent.data?.id)}
                 <!-- neither this on:click or getPath produce the correct result for Gavin's deeply nested CICA image -->
                 <sp-menu-item
                   selected={parent.data?.id == $primaryId}
-                  on:click={navigateToPath([parent.data?.id])}
-                  class="align-middle">
+                  on:click={navigateToPath(getPath(parent))}
+                  class="flex items-center"
+                  value={parent.data?.id}>
                   <Thumbnail slot="icon" asset={parent.data?.asset} />
-                  <span class="ml-2">{parent.data?.name}</span>
+                  <span class="ml-2 items-center" slot="label"
+                    >{parent.data?.name}</span>
                 </sp-menu-item>
               {/each}
             </sp-action-menu>
-            <div class="separator -ml-2 inline">
+            <div class="mx-2 flex items-center">
               <Icon size="s" name="ChevronRight" class="text-gray-800" />
             </div>
           {/if}
-          <div class="breadcrumb-item text-center" class:current={true}>
-            <div class="inline">
-              <Thumbnail asset={$primaryAsset?.asset} />
-            </div>
-            <span class="inline font-regular text-smd ml-2 align-middle"
+          <div class="breadcrumb-item items-center" class:current={true}>
+            <Thumbnail asset={$primaryAsset?.asset} />
+            <span class="font-regular text-smd ml-2"
               >{$primaryAsset?.title}
             </span>
           </div>
@@ -151,13 +136,10 @@
     @apply flex items-stretch;
   }
   .breadcrumb-item {
-    @apply inline-block cursor-pointer;
+    @apply flex cursor-pointer;
   }
   .breadcrumb-item.current {
     @apply font-bold cursor-default;
-  }
-  .separator {
-    @apply inline-block relative px-2;
   }
   .nav-tabs {
     --spectrum-tabs-rule-color: var(--white);

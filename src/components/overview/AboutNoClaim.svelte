@@ -12,7 +12,6 @@
     primary instanceof Ingredient
       ? primary.data.title
       : primary?.metadata?.filename ?? '';
-  // $: badgeProps = getBadgeProps(primary);
   $: badgeProps =
     primary instanceof Ingredient
       ? getBadgeProps({
