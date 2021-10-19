@@ -104,7 +104,7 @@
               <Icon size="s" name="ChevronRight" class="text-gray-800" />
             </div>
           {/if}
-          <div class="breadcrumb-item items-center" class:current={true}>
+          <div class="breadcrumb-item items-center current">
             <Thumbnail asset={$primaryAsset?.asset} />
             <span class="font-regular text-smd ml-2"
               >{$primaryAsset?.title}
