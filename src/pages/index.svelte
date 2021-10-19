@@ -6,17 +6,17 @@
   import Footer from '../components/Footer.svelte';
   import '@spectrum-web-components/button/sp-button.js';
 
-  import heroBkg from '../../assets/svg/home/adjustedHero.noparse.svg';
   import Arrow from '../../assets/svg/monochrome/arrow-back.svg';
+  import DownArrow from '../../assets/svg/monochrome/down-arrow';
 
   // Section 0
-  import hero from '../../assets/png/hero@2x.png';
+  import hero from '../../assets/png/hero-img.png';
   // Section 1
-  import section1 from '../../assets/png/AdobeStock_55134478-edit.png';
+  import section1 from '../../assets/png/section1.jpg';
   // Section 2 image
-  import section2 from '../../assets/png/original-drawing2.png';
+  import section2 from '../../assets/png/section2.png';
   // Section 3 image
-  import section3 from '../../assets/png/ThePencilTape.png';
+  import section3 from '../../assets/png/section3.png';
 
   function upload(evt: Event) {
     window.newrelic?.addPageAction('uploadClick');
@@ -28,43 +28,40 @@
 <div class="theme-light overflow-show">
   <Header />
   <section id="section0" class="overflow-hidden">
-    <div class="hero grid grid-cols-10">
-      <div
-        class="row-span-full col-start-1 col-span-5 self-center order-3 ml-16">
-        <div class="text-white lg:text-8xl text-7xl font-bold font-home">
+    <div class="hero grid grid-cols-10 my-10">
+      <div class="hero-text row-span-full col-span-full self-center mx-7">
+        <div
+          class="lg:text-8xl text-7xl font-bold font-home text-center lg:text-left">
           {$_('page.hero.tagline')}
         </div>
-        <div class="text-white lg:text-5xl text-3xl font-normal">
+        <div class="lg:text-5xl text-3xl font-normal text-center lg:text-left">
           {$_('page.hero.description')}
         </div>
-        <sp-button
-          variant="primary"
-          class="font-bold text-400 mt-8 font-base sm:hidden"
-          on:click={upload}>
-          {$_('comp.header.uploadImage')}
-        </sp-button>
       </div>
-      <div
-        class="overlap row-span-full col-span-6 col-end-11 self-center order-2 mr-16 object-contain">
+      <div class="overlap hidden">
         <img src={hero} alt="Person taking picture with smartphone" />
       </div>
+
       <div
-        class="row-span-full object-fill bg-cover bg-center order-1 col-start-1 col-span-full"
-        style="min-height: 500px; background-image: url({heroBkg});" />
+        class="lg:col-start-1 lg:ml-16 xl:mt-2 md:mt-6 mt-4 -mb-2 col-span-2 col-start-5 flex lg:col-span-1 justify-center items-center">
+        <DownArrow class="animate-bounce" width="48px" height="48px"
+          ><a href="#section1" />
+        </DownArrow>
+      </div>
     </div>
   </section>
   <section id="section1">
-    <div class="grid grid-cols-3 gap-4">
-      <div class="w-full col-span-3 lg:col-span-2 order-1">
+    <div class="section-grid">
+      <div class="content order-1">
         <img src={section1} alt="Icy lake at dusk" />
       </div>
-      <div
-        class="w-full col-span-3 lg:col-span-1 order-2 items-center flex px-4 sm:pb-5">
+      <div class="content-body order-2">
         <div>
           <div class="heading lg:text-5xl">
             {$_('page.sectionOne.header')}
           </div>
-          <div class="body lg:text-xl">{$_('page.sectionOne.body')}</div>
+          <div class="body lg:text-xl">{$_('page.sectionOne.bodyA')}</div>
+          <div class="body lg:text-xl">{$_('page.sectionOne.bodyB')}</div>
           <div class="inline-block align-middle">
             <div class="cta lg:text-xl sm:text-smd">
               {$_('page.cta.viewMore')}
@@ -76,17 +73,17 @@
     </div>
   </section>
   <section id="section2">
-    <div class="grid grid-cols-3 gap-4">
-      <div class="w-full col-span-3 lg:col-span-2 lg:order-2">
+    <div class="section-grid">
+      <div class="content lg:order-2">
         <img src={section2} alt="Yellow vector art" />
       </div>
-      <div
-        class="w-full col-span-3 lg:col-span-1 lg:order-1 items-center flex lg:pl-8 pl-4 pr-4 sm:pb-5">
+      <div class="content-body lg:order-1">
         <div>
           <div class="heading lg:text-5xl">
             {$_('page.sectionTwo.header')}
           </div>
-          <div class="body lg:text-xl">{$_('page.sectionTwo.body')}</div>
+          <div class="body lg:text-xl">{$_('page.sectionTwo.bodyA')}</div>
+          <div class="body lg:text-xl">{$_('page.sectionTwo.bodyB')}</div>
           <div class="inline-block align-middle">
             <div class="cta lg:text-xl sm:text-smd">
               {$_('page.cta.viewMore')}
@@ -98,17 +95,17 @@
     </div>
   </section>
   <section id="section3">
-    <div class="grid grid-cols-3 gap-4">
-      <div class="w-full col-span-3 lg:col-span-2 order-1">
+    <div class="section-grid">
+      <div class="content order-1">
         <img src={section3} alt="Kaleidescope vector art" />
       </div>
-      <div
-        class="w-full col-span-3 lg:col-span-1 order-2 items-center flex px-4 sm:pb-5">
+      <div class="content-body order-2">
         <div>
           <div class="heading lg:text-5xl">
             {$_('page.sectionThree.header')}
           </div>
-          <div class="body lg:text-xl">{$_('page.sectionThree.body')}</div>
+          <div class="body lg:text-xl">{$_('page.sectionThree.bodyA')}</div>
+          <div class="body lg:text-xl">{$_('page.sectionThree.bodyB')}</div>
           <div class="inline-block align-middle">
             <div class="cta lg:text-xl sm:text-smd">
               {$_('page.cta.viewMore')}
@@ -131,9 +128,14 @@
     width: 100vw;
   }
 
+  .hero-text {
+    @apply lg:col-start-1 lg:col-span-5 lg:ml-16 lg:mr-8;
+  }
+
   .overlap {
     margin-top: 10%;
     margin-bottom: 10%;
+    @apply lg:row-span-full lg:col-span-5 lg:col-end-11 lg:self-center lg:mr-16 lg:object-contain lg:inline;
   }
   section {
     width: 100vw;
@@ -141,6 +143,17 @@
     overflow: hidden;
   }
 
+  .section-grid {
+    @apply grid grid-cols-3 gap-4 lg:mx-16 lg:my-10 mb-4;
+  }
+
+  .content {
+    @apply w-full lg:col-span-2 col-span-full;
+  }
+
+  .content-body {
+    @apply w-full lg:col-span-1 col-span-full items-center flex px-4;
+  }
   .heading {
     @apply text-black text-3xl text-left pb-4 font-home font-bold;
   }
@@ -151,9 +164,5 @@
 
   .cta {
     @apply inline-block text-black font-bold text-left pb-4 font-home;
-  }
-
-  sp-button {
-    @apply inline-block bg-white px-8 py-4 rounded-full transition duration-200 outline-none text-gray-900;
   }
 </style>

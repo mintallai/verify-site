@@ -5,6 +5,7 @@
   import { compareMode, CompareMode, isMobileViewerShown } from '../../stores';
   import type { IThumbnail } from '../../lib/sdk';
   import type { ViewableItem } from '../../lib/types';
+  import { _ } from 'svelte-i18n';
 
   const MIN_SIDE_PX = 256;
 
@@ -26,6 +27,7 @@
 </script>
 
 <div class="viewer-wrapper">
+  <h6 class="lg:hidden pb-4">{$_('comp.comparison.compareContentCreds')}</h6>
   <div class="comparison" bind:clientWidth={width} bind:clientHeight={height}>
     {#if !isLoading}
       {#if $compareMode === CompareMode.Slider}
@@ -42,6 +44,9 @@
 </div>
 
 <style lang="postcss">
+  .viewer-wrapper {
+    @apply flex flex-col;
+  }
   .comparison {
     @apply w-full h-full bg-gray-75 flex flex-col items-center justify-center overflow-hidden;
   }

@@ -4,7 +4,10 @@ import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
 import { ImageProvenance, Claim, Ingredient } from './lib/sdk';
 import { ViewableItem, ITreeNode, ErrorTypes } from './lib/types';
+import equal from 'fast-deep-equal';
+
 import debug from 'debug';
+import { getPath } from './lib/claim';
 
 const dbg = debug('store');
 
@@ -271,6 +274,15 @@ export const hierarchy = derived<
     }
   }
   return null;
+});
+
+export const ancestors = derived<[typeof primaryPath, typeof hierarchy], HierarchyNode<ITreeNode>[] | null>( 
+  [primaryPath, hierarchy], 
+  ([$primaryPath, $hierarchy]) => {
+    if ($primaryPath) {
+      return $hierarchy?.find(node => equal(getPath(node), $primaryPath))?.ancestors();
+    }
+    return null;  
 });
 
 /**

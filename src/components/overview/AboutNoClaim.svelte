@@ -6,6 +6,7 @@
   import { getFaqUrl } from '../../stores';
 
   export let primary: Ingredient | Source;
+  export let isComparing: boolean = false;
 
   $: title =
     primary instanceof Ingredient
@@ -25,27 +26,36 @@
 
 <div class="w-full flex justify-center">
   <div class="info w-full max-w-xs">
-    <div>
-      <dl class="attributes">
-        <dt>
-          <div>{$_('comp.about.contentCredentials.header')}</div>
-          <cai-tooltip placement="left" class="theme-spectrum">
-            <div slot="content" class="text-gray-900" style="width: 200px;">
-              {$_('comp.about.contentCredentials.helpText')}
+    {#if !isComparing}
+      <div>
+        <dl class="attributes">
+          <dt>
+            <div>{$_('comp.about.contentCredentials.header')}</div>
+            <cai-tooltip placement="left" class="theme-spectrum">
+              <div slot="content" class="text-gray-900" style="width: 200px;">
+                {$_('comp.about.contentCredentials.helpText')}
+              </div>
+            </cai-tooltip>
+          </dt>
+          <dd class="flex space-x-2 items-center mt-1">
+            <div class="w-12 h-12">
+              <Thumbnail asset={primary} {...badgeProps} />
             </div>
-          </cai-tooltip>
-        </dt>
-        <dd class="flex space-x-2 items-center mt-1">
-          <div class="w-12 h-12">
-            <Thumbnail asset={primary} {...badgeProps} />
-          </div>
-          <div>
-            <h6>File name</h6>
-            <div>{title}</div>
-          </div>
-        </dd>
-      </dl>
-    </div>
+            <div>
+              <h6>File name</h6>
+              <div>{title}</div>
+            </div>
+          </dd>
+        </dl>
+      </div>
+    {:else}
+      <div>
+        <div class="compare-thumbnail">
+          <Thumbnail asset={primary} />
+        </div>
+        <div>{title}</div>
+      </div>
+    {/if}
     {#if showInfo}
       <div>
         {#if primary instanceof Ingredient && !primary.claim}
@@ -70,5 +80,9 @@
   }
   .info > div:last-child {
     @apply border-none;
+  }
+
+  .compare-thumbnail {
+    --cai-thumbnail-size: 150px;
   }
 </style>

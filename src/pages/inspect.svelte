@@ -26,6 +26,7 @@
     isMobileViewerShown,
     isLoading,
   } from '../stores';
+  import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
 
   function handleClose() {
     compareWithPath(null);
@@ -122,16 +123,16 @@
         <ContentCredentialsError {isComparing} />
       </section>
     {:else if primary}
-      <section class="left-col">
+      <section class="left-col col-compare">
         {#if !isComparing}
           <Navigation claim={primary} />
         {:else if primary instanceof Claim}
-          <div class="w-full p-4 pt-0 md:pt-4">
+          <div class="col-compare w-full p-4 pt-0 md:pt-4">
             <About claim={primary} {isComparing} {isMobileViewer} />
           </div>
         {:else if primary instanceof Ingredient}
-          <div class="wrapper">
-            <ContentCredentialsError {isComparing} />
+          <div class="col-compare wrapper">
+            <AboutNoClaim {primary} {isComparing} />
           </div>
         {/if}
       </section>
@@ -152,7 +153,7 @@
           </div>
         {:else if !isComparing && primary instanceof Ingredient}
           <div class="wrapper">
-            <ContentCredentialsError {isComparing} />
+            <AboutNoClaim {primary} {isComparing} />
             {#if isMobileViewer}
               <CompareLatestButton claim={null} {isComparing} />
             {/if}
@@ -160,7 +161,7 @@
         {:else if secondary instanceof Claim}
           <About claim={secondary} {isComparing} {isMobileViewer} />
         {:else if secondary instanceof Ingredient}
-          <ContentCredentialsError {isComparing} />
+          <AboutNoClaim primary={secondary} {isComparing} />
         {/if}
       </section>
     {/if}
@@ -210,13 +211,14 @@
     grid-area: right;
   }
   main.comparing section.right-col > .wrapper {
-    @apply sticky top-10;
+    @apply sticky top-10 justify-center;
   }
   .menu-overlay {
     @apply fixed inset-0 z-20;
     background-color: rgba(0, 0, 0, 0.2);
   }
   main.comparing {
+    grid-template-columns: 50%;
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
     grid-template-areas:
       'header header'
@@ -225,9 +227,11 @@
       'left right'
       'footer footer';
   }
+
   main.comparing section.left-col {
-    @apply flex;
+    @apply w-full h-full flex align-middle justify-center;
   }
+
   @screen lg {
     main,
     main.comparing {
