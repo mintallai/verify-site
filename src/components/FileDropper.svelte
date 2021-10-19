@@ -1,15 +1,17 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
-  import { onMount } from 'svelte';
+  import { onMount, getContext } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { provenance } from '../stores';
-  import { loadFile } from '../lib/file';
+  import { CONTEXT_KEY } from '../lib/loader';
   import DropFile from '../../assets/svg/monochrome/drop-file.svg';
 
   export let isUploadMode: boolean = false;
   export let isDragging: boolean = false;
+  export let isError: boolean = false;
 
   let fileInput: HTMLInputElement;
+  const { loadFile } = getContext(CONTEXT_KEY);
 
   function browseFile() {
     fileInput.click();
@@ -28,10 +30,8 @@
   bind:this={fileInput}
   accept="image/jpeg,image/png"
   class="hidden" />
-{#if isUploadMode}
-  <div
-    class="absolute inset-0 flex justify-center items-center flex-col z-20"
-    in:fade>
+{#if isUploadMode || isError}
+  <div class="dropper" class:fullscreen={!isError} in:fade>
     <DropFile
       width={58}
       height={99}
@@ -48,3 +48,12 @@
     {/if}
   </div>
 {/if}
+
+<style lang="postcss">
+  .dropper {
+    @apply flex justify-center items-center flex-col;
+  }
+  .dropper.fullscreen {
+    @apply absolute inset-0 z-20;
+  }
+</style>

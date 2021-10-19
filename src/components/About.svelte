@@ -2,6 +2,7 @@
   import { _, date, time, locale } from 'svelte-i18n';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
+  import EthereumLogo from '../../assets/svg/color/logos/crypto-eth.svg';
   import Thumbnail from './Thumbnail.svelte';
   import { navigateToChild } from '../stores';
   import {
@@ -49,7 +50,7 @@
   $: isBeta = getIsBeta(claim);
   $: website = getWebsite(claim);
   $: socialAccounts = creativeWorkAssertion?.socialAccounts ?? [];
-  $: cryptoAddresses = cryptoAssertion?.data?.ethereum ?? [];
+  $: ethereumAddresses = cryptoAssertion?.data?.ethereum ?? [];
 
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
@@ -236,7 +237,7 @@
         </dl>
       </div>
     {/if}
-    {#if socialAccounts.length || cryptoAddresses.length}
+    {#if socialAccounts.length || ethereumAddresses.length}
       <div class="space-y-4">
         {#if socialAccounts.length}
           <dl class="attributes">
@@ -259,7 +260,7 @@
             </dd>
           </dl>
         {/if}
-        {#if cryptoAddresses.length}
+        {#if ethereumAddresses.length}
           <dl class="attributes">
             <dt class="flex space-x-2">
               <div class="whitespace-nowrap">{$_('comp.about.crypto')}</div>
@@ -269,11 +270,14 @@
                 </div>
               </cai-tooltip>
             </dt>
-            <dd>
-              {#each cryptoAddresses as address}
+            {#each ethereumAddresses as address}
+              <dd class="flex">
+                <div class="relative top-0.5">
+                  <EthereumLogo width="16px" height="16px" class="mr-2" />
+                </div>
                 <div class="break-all">{address.toString().toLowerCase()}</div>
-              {/each}
-            </dd>
+              </dd>
+            {/each}
           </dl>
         {/if}
       </div>

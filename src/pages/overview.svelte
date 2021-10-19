@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import dragDrop from 'drag-drop';
-  import { getSdk, Claim, Ingredient, Source } from '../lib/sdk';
+  import { Claim } from '../lib/sdk';
   import About from '../components/About.svelte';
+  import Alert from '../components/Alert.svelte';
   import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
   import FileDropper from '../components/FileDropper.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
@@ -12,27 +11,22 @@
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
   import TreeView from '../components/overview/TreeView.svelte';
-  import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
+  import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
+  import { breakpoints } from '../lib/breakpoints';
   import {
     urlParams,
     provenance,
-    setProvenance,
-    compareWithPath,
     primaryAsset,
     secondaryAsset,
     isBurgerMenuShown,
     isMobileViewerShown,
     isLoading,
-    setIsLoading,
   } from '../stores';
 
   let isDragging = false;
-  let error = false;
+  let error = null;
   let tour: ReturnType<typeof startTour>;
-  let breakpoints = __breakpoints__;
-  let mdBreakpoint = `(max-width: ${breakpoints.md})`;
-  let lgBreakpoint = `(max-width: ${breakpoints.lg})`;
 
   $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
@@ -43,7 +37,6 @@
   $: isComparing = !!(primary && secondary);
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
-  $: errorMessage = error && 'Unknown';
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && isMobileViewer) {
@@ -55,94 +48,37 @@
     }
   }
 
-  /**
-   * Make sure we close any open hamburger menu if we increase the
-   * window size to a breakpoint where the menu is hidden
-   */
-  function handleBreakpointChange({ media, matches }) {
-    if (media === mdBreakpoint && !matches && $isBurgerMenuShown) {
-      isBurgerMenuShown.set(false);
-    }
-    if (media === lgBreakpoint) {
-      isMobileViewerShown.set(matches);
-    }
-  }
-
-  onMount(async () => {
-    const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
-    const { tourFlag, forceTourFlag } = $urlParams;
-
-    isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);
-    listenBreakpoints.forEach((bp) =>
-      matchMedia(bp).addEventListener('change', handleBreakpointChange),
-    );
-
-    if (sourceParam && !$provenance) {
-      try {
-        setIsLoading(true);
-        try {
-          const sdk = await getSdk();
-          const result = await sdk.processImage(sourceParam);
-          await window.newrelic?.setCustomAttribute('source', sourceParam);
-          setProvenance(result);
-        } catch (err) {
-          console.error('Could not process file:', err);
-          window.newrelic?.noticeError(err, {
-            source: 'url',
-          });
-        } finally {
-          setIsLoading(false);
-        }
-        if (isMobileViewer === false) {
-          // tour = startTour({
-          //   provenance: $provenance,
-          //   start: tourFlag,
-          //   force: forceTourFlag,
-          // });
-        }
-      } catch (err) {
-        error = err?.message;
+  const loaderParams: ILoaderParams = {
+    onError(_err, message) {
+      error = message;
+    },
+    onLoaded() {
+      error = null;
+      const { tourFlag, forceTourFlag } = $urlParams;
+      if (isMobileViewer === false) {
+        // tour = startTour({
+        //   provenance: $provenance,
+        //   start: tourFlag,
+        //   force: forceTourFlag,
+        // });
       }
-    }
-
-    // This stops the drag state from rapidly changing during drag
-    // They also use this pattern in the dragDrop library
-    let dragTimeout: ReturnType<typeof setTimeout> | undefined;
-    const cleanupDragDrop = dragDrop('main', {
-      async onDrop(files: File[]) {
-        clearTimeout(dragTimeout);
-        isDragging = false;
-        try {
-          await processFiles(files);
-        } catch (err) {
-          error = err?.message;
-        }
-      },
-      onDragOver() {
-        clearTimeout(dragTimeout);
-        isDragging = true;
-      },
-      onDragLeave() {
-        dragTimeout = setTimeout(() => {
-          isDragging = false;
-        }, 50);
-      },
-    });
-
-    return () => {
-      cleanupDragDrop();
-      listenBreakpoints.forEach((bp) =>
-        matchMedia(bp).removeEventListener('change', handleBreakpointChange),
-      );
-    };
-  });
+    },
+    onDragStateChange(newState: boolean) {
+      isDragging = newState;
+    },
+  };
+  setLoaderContext(loaderParams);
 </script>
 
 <svelte:window />
 <svelte:head>
   <title>{$_('page.title')}</title>
 </svelte:head>
-<main class="theme-light" class:full-width={isUploadMode && !$provenance}>
+<main
+  use:loader={loaderParams}
+  use:breakpoints
+  class="theme-light"
+  class:full-width={isUploadMode && !$provenance && !error}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -152,8 +88,8 @@
   <Header />
   <TopNavigation {isComparing} {noMetadata} {source} currentPage="overview" />
   <div class="dragdrop">
-    <FileDropper {isUploadMode} {isDragging} />
-    {#if isUploadMode}
+    <FileDropper {isUploadMode} {isDragging} isError={!!error} />
+    {#if isUploadMode && !error}
       <div
         class="upload-bg"
         class:dragging={isDragging}
@@ -168,9 +104,13 @@
     {:else}
       <TreeView />
     {/if}
-    <section class="right-col p-4 pt-0 md:pt-4" class:loading={$isLoading}>
+    <section class="right-col p-4 md:pt-4" class:loading={$isLoading}>
       <div class="wrapper">
-        {#if primary instanceof Claim}
+        {#if error}
+          <div class="w-full">
+            <Alert severity="error">{$_(error)}</Alert>
+          </div>
+        {:else if primary instanceof Claim}
           <About claim={primary} {isComparing} {isMobileViewer} />
         {:else if $isLoading}
           <div class="flex items-center justify-center">
@@ -187,7 +127,7 @@
 
 <style lang="postcss">
   main {
-    --viewer-height: 375px;
+    --viewer-height: calc(100vh - 400px);
     --cai-thumbnail-size: 48px;
     --cai-thumbnail-badge-icon-width: 16px;
     --cai-thumbnail-badge-icon-height: 16px;

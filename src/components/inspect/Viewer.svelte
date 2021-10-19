@@ -46,7 +46,7 @@
     <div class="inner" use:cssVars={styles}>
       <FileDropper {isUploadMode} {isDragging} />
       {#if !isUploadMode}
-        {#if !isLoading}
+        {#if !isLoading && !isError}
           <img
             use:thumbnail={asset}
             on:thumbnail={handleImgSrc}
