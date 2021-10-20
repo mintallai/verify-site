@@ -1,6 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { primaryPath, hierarchy, overviewTransform } from '../../stores';
+  import equal from 'fast-deep-equal';
+  import partial from 'lodash/partial';
+  import {
+    primaryPath,
+    hierarchy,
+    navigateToPath,
+    overviewTransform,
+  } from '../../stores';
   import { getPath, isInPath } from '../../lib/claim';
   import TreeNode from './TreeNode.svelte';
   import TreeLink from './TreeLink.svelte';
@@ -15,13 +22,12 @@
   let height = 1;
   let margin = 0.95;
   let nodeWidth = 294;
-  let nodeHeight = 100;
+  let nodeHeight = 104;
   let hPad = 50;
   let vPad = 50;
   let svg: SVGElement;
   let svgSel: any;
   let bounds: SVGGraphicsElement;
-  let boundsSel: any;
   let boundsTransform: ZoomTransform;
   let tree: HierarchyPointNode<ITreeNode>;
   let zoom = d3Zoom().on('zoom', (evt) => {
@@ -41,6 +47,14 @@
       return Math.min(1, margin / Math.max(xRatio, yRatio));
     }
     return 1;
+  }
+
+  function handleNodeClick(node) {
+    const path = getPath(node);
+    const selected = equal($primaryPath, path);
+    if (!selected) {
+      navigateToPath(path);
+    }
   }
 
   function handleZoomIn() {
@@ -64,7 +78,6 @@
 
   onMount(() => {
     svgSel = d3Select(svg);
-    boundsSel = d3Select(bounds);
     svgSel
       .call(zoom)
       // Initially center on the root
@@ -85,9 +98,13 @@
       tree = d3Tree($hierarchy);
     }
   }
-  $: {
-    boundsSel?.attr('transform', boundsTransform);
-  }
+  $: tx = boundsTransform?.x ?? 0;
+  $: ty = boundsTransform?.y ?? 0;
+  $: scale = boundsTransform?.k ?? 1;
+  // Transformation for SVG group containing vis elements
+  $: gTransform = `translate(${tx}, ${ty}) scale(${scale})`;
+  // Same transformation for HTML div containing vis nodes (synced with SVG)
+  $: htmlTransform = `translate3d(${tx}px, ${ty}px, 0) scale3d(${scale}, ${scale}, 1)`;
   $: links = (tree?.links() ?? [])
     .map((link, idx) => {
       const { source, target } = link;
@@ -117,11 +134,11 @@
 </script>
 
 <div
-  class="relative bg-gray-75 w-full h-full overflow-hidden"
+  class="relative bg-gray-75 w-full h-full overflow-hidden z-0"
   bind:clientWidth={width}
   bind:clientHeight={height}>
   <svg bind:this={svg} {width} {height} view-box={`0 0 ${width} ${height}`}>
-    <g bind:this={bounds}>
+    <g bind:this={bounds} transform={gTransform}>
       {#each links as { link, idx, ancestor }, _i (idx)}
         <g>
           <TreeLink {link} {ancestor} {nodeHeight} />
@@ -129,30 +146,51 @@
       {/each}
       {#each descendants as node, key (key)}
         <g transform={`translate(${node.x}, ${node.y})`}>
-          <TreeNode {node} width={nodeWidth} height={nodeHeight} />
+          <rect
+            on:click={partial(handleNodeClick, node)}
+            height={nodeHeight}
+            width={nodeWidth}
+            x={-nodeWidth / 2}
+            y={-nodeHeight / 2}
+            rx={6}
+            ry={6}
+            class="fill-current text-gray-200 cursor-pointer" />
         </g>
       {/each}
     </g>
   </svg>
+  <!-- We have to layer the HTML nodes over the SVG paths and sync the transformations
+  since Safari has a bug with foreignObject elements in SVG where you cannot use relative
+  positioning. This stops us from layering the badge over the thumbnail, so we had to remove
+  the need for foreignObjects. I also tried to make this fully HTML, however there were issues
+  with measuring the bounding box of an element that had all absolutely-positioned nodes that
+  svgElement.getBBox() doesn't have. -->
+  <div class="absolute top-0 left-0 z-10 pointer-events-none">
+    <div class="absolute top-0 left-0" style={`transform: ${htmlTransform};`}>
+      {#each descendants as node, key (key)}
+        <TreeNode {node} width={nodeWidth} height={nodeHeight} />
+      {/each}
+    </div>
+  </div>
   <div class="controls">
     <div
       class="in"
       class:disabled={boundsTransform?.k === 1}
       on:click={handleZoomIn}>
-      <ZoomIn width="20" height="20" class="text-gray-700" />
+      <ZoomIn width="20px" height="20px" class="text-gray-700" />
     </div>
     <div
       class="out"
       class:disabled={boundsTransform?.k === minScale}
       on:click={handleZoomOut}>
-      <ZoomOut width="20" height="3" class="text-gray-700" />
+      <ZoomOut width="20px" height="3px" class="text-gray-700" />
     </div>
   </div>
 </div>
 
 <style lang="postcss">
   .controls {
-    @apply absolute bottom-4 right-4 flex flex-col rounded-full bg-white shadow-md;
+    @apply absolute bottom-4 right-4 flex flex-col rounded-full bg-white shadow-md z-20;
     width: 44px;
     height: 88px;
   }

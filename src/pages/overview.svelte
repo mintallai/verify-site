@@ -153,7 +153,7 @@
     grid-area: right;
   }
   .menu-overlay {
-    @apply fixed inset-0 z-20;
+    @apply fixed inset-0 z-50;
     background-color: rgba(0, 0, 0, 0.2);
   }
   .dragdrop {
