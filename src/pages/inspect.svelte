@@ -85,6 +85,7 @@
   use:loader={loaderParams}
   use:breakpoints
   class="theme-light"
+  class:no-content={!hasContent}
   class:comparing={isComparing}>
   {#if $isBurgerMenuShown}
     <div
@@ -93,13 +94,13 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  <TopNavigation
-    {isComparing}
-    {noMetadata}
-    {source}
-    currentPage="inspect"
-    on:back={handleClose} />
   {#if hasContent}
+    <TopNavigation
+      {isComparing}
+      {noMetadata}
+      {source}
+      currentPage="inspect"
+      on:back={handleClose} />
     {#if error}
       <section class="left-col" class:loading={$isLoading} />
       <Viewer isError={!!error} />
@@ -243,6 +244,9 @@
         'breadcrumb breadcrumb breadcrumb'
         'left viewer right'
         'footer footer footer';
+    }
+    main.no-content {
+      grid-template-rows: 80px 0 1fr 55px;
     }
     section {
       @apply overflow-auto;

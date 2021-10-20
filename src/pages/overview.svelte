@@ -86,7 +86,9 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  <TopNavigation {isComparing} {noMetadata} {source} currentPage="overview" />
+  {#if hasContent}
+    <TopNavigation {isComparing} {noMetadata} {source} currentPage="overview" />
+  {/if}
   <div class="dragdrop">
     <FileDropper {isUploadMode} {isDragging} isError={!!error} />
     {#if isUploadMode && !error}

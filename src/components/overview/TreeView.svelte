@@ -165,7 +165,7 @@
   the need for foreignObjects. I also tried to make this fully HTML, however there were issues
   with measuring the bounding box of an element that had all absolutely-positioned nodes that
   svgElement.getBBox() doesn't have. -->
-  <div class="absolute top-0 left-0 z-10 pointer-events-none">
+  <div class="absolute top-0 left-0 z-10 pointer-events-none select-none">
     <div class="absolute top-0 left-0" style={`transform: ${htmlTransform};`}>
       {#each descendants as node, key (key)}
         <TreeNode {node} width={nodeWidth} height={nodeHeight} />
