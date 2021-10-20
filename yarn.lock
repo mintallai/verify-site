@@ -324,10 +324,10 @@
   resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.6.9.tgz#2492a35a2cb16adb6c5f70f9bab7a87b4a0d8b90"
   integrity sha512-h6IkOyrzBL+vejw68v+akJ4GnedKCb/VM/kgs3leUF4ajLNTfwyVjASkR/gnc99qJ4uwfifiAS9gRJodk1kKbA==
 
-"@contentauth/web-components@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@contentauth/web-components/-/web-components-0.4.0.tgz#89b4cca5f6091d632dae0cb9d10ded1f42ab0d5c"
-  integrity sha512-P1nxgcmitreCUoULtqQbV1rCyBRvtSfIlBQa4MzgXRCMhEFLSylgIQohLVzRAx6UuE5kfxpkfZuC/H2BZnYh2w==
+"@contentauth/web-components@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@contentauth/web-components/-/web-components-0.4.1.tgz#89cfd94fff2a8da7ac23854fe03ec716608165fc"
+  integrity sha512-NnnisLu9DX36Ho72XfaYLUECiGURFNCZ8YBCTryUCfNchchX6TMQOJt3LSfJqt4DOq9oAXa4Rxzataq9N0Gqyg==
   dependencies:
     "@popperjs/core" "^2.9.2"
     date-fns "^2.19.0"

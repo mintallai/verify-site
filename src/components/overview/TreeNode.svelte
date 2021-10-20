@@ -1,18 +1,17 @@
 <script lang="ts">
   import equal from 'fast-deep-equal';
-  import { primaryPath, navigateToPath } from '../../stores';
+  import { primaryPath } from '../../stores';
   import Thumbnail from '../Thumbnail.svelte';
   import { getBadgeProps, getPath, isInPath } from '../../lib/claim';
   import type { ITreeNode } from '../../lib/types';
   import type { HierarchyPointNode } from 'd3-hierarchy';
-
   export let node: HierarchyPointNode<ITreeNode>;
   export let width: number;
   export let height: number;
-  let overflow = [40, 20];
 
-  $: x = -width / 2;
-  $: y = -height / 2;
+  $: tx = node.x - width / 2;
+  $: ty = node.y - height / 2;
+  $: style = `width: ${width}px; height: ${height}px; transform: translate3d(${tx}px, ${ty}px, 0)`;
   $: path = getPath(node);
   $: isSelected = equal($primaryPath, path);
   $: isAncestor = !isSelected && isInPath($primaryPath, path);
@@ -20,51 +19,32 @@
     claim: node.data.claim,
     errors: node.data.errors,
   });
-
-  function handleClick() {
-    if (!isSelected) {
-      navigateToPath(path);
-    }
-  }
 </script>
 
-<rect
-  {height}
-  {width}
-  {x}
-  {y}
+<div
   class="node"
   class:selected={isSelected}
-  class:ancestor={isAncestor} />
-<foreignObject
-  width={width + overflow[0] * 2}
-  height={height + overflow[1] * 2}
-  x={x - overflow[0]}
-  y={y - overflow[1]}>
-  <div style={`padding-left: ${overflow[0]}px; padding-top: ${overflow[1]}px;`}>
-    <div class="content" on:click={handleClick}>
-      <Thumbnail asset={node.data.asset} {...badgeProps} />
-      <div>
-        <h6>File name</h6>
-        <div class="file-name">{node.data.name}</div>
-      </div>
+  class:ancestor={isAncestor}
+  {style}>
+  <div class="content">
+    <Thumbnail asset={node.data.asset} {...badgeProps} />
+    <div>
+      <h6>File name</h6>
+      <div class="file-name">{node.data.name}</div>
     </div>
   </div>
-</foreignObject>
+</div>
 
 <style lang="postcss">
   .node {
-    @apply stroke-current stroke-2 text-gray-400 transition;
-    fill: var(--white);
-    rx: 6px;
-    ry: 6px;
+    @apply absolute top-0 left-0 bg-white border-2 border-gray-400 transition rounded-md;
   }
   .node.selected {
-    @apply text-blue;
+    @apply border-blue;
     stroke-width: 3px;
   }
   .node.ancestor {
-    @apply text-gray-800;
+    @apply border-gray-800;
   }
   .content {
     @apply grid gap-x-2 items-center w-full h-full p-2.5 bg-transparent cursor-pointer;

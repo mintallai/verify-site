@@ -2,9 +2,10 @@
   import { _, date, time, locale } from 'svelte-i18n';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
+  import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
   import EthereumLogo from '../../assets/svg/color/logos/crypto-eth.svg';
   import Thumbnail from './Thumbnail.svelte';
-  import { navigateToChild } from '../stores';
+  import { getFaqUrl, navigateToChild } from '../stores';
   import {
     getBadgeProps,
     getIsBeta,
@@ -34,6 +35,9 @@
   $: actionsAssertion = claim.findAssertion(
     AssertionLabel.Actions,
   ) as ActionsAssertion | null;
+  $: hasUnknownActions = actionsAssertion?.data?.metadata?.reviewRatings?.find(
+    (ratings) => ratings.code === 'actions.unknownActionsPerformed',
+  );
   $: creativeWorkAssertion = claim.findAssertion(
     AssertionLabel.CreativeWork,
   ) as CreativeWorkAssertion | null;
@@ -160,6 +164,19 @@
                 </div>
               </cai-tooltip>
             </dt>
+            {#if hasUnknownActions}
+              <dd class="flex mt-1">
+                <div class="relative top-0.5">
+                  <AlertOutlineIcon width="16px" height="16px" class="mr-2" />
+                </div>
+                <div class="italic text-gray-900">
+                  <span
+                    >{$_('comp.contentCredentialsError.unknownActions')}</span>
+                  <a href={getFaqUrl()} target="_blank" class="link"
+                    >{$_('comp.contentCredentialsError.learnMore')}</a>
+                </div>
+              </dd>
+            {/if}
             <dd class="mt-2">
               <cai-panel-edits-activity
                 {categories}
