@@ -24,13 +24,11 @@
     evt.preventDefault();
   }
 
-  function generateInspectImageUrl(asset: string) {
+  function generateOverviewImageUrl(asset: string) {
     const url = new URL(`${window.location.origin}/overview`);
     url.searchParams.set('source', asset);
     return url.toString();
   }
-
-  $: images = document.images;
 </script>
 
 <div class="theme-light overflow-show">
@@ -71,7 +69,7 @@
           <div class="body lg:text-xl">{$_('page.sectionOne.bodyA')}</div>
           <div class="body lg:text-xl">{$_('page.sectionOne.bodyB')}</div>
           <div class="inline-block align-middle">
-            <a href={generateInspectImageUrl(section1)}>
+            <a href={generateOverviewImageUrl(section1)}>
               <div class="cta lg:text-xl sm:text-smd">
                 {$_('page.cta.viewMore')}
               </div>
@@ -95,7 +93,7 @@
           <div class="body lg:text-xl">{$_('page.sectionTwo.bodyA')}</div>
           <div class="body lg:text-xl">{$_('page.sectionTwo.bodyB')}</div>
           <div class="inline-block align-middle">
-            <a href={generateInspectImageUrl(section2)}>
+            <a href={generateOverviewImageUrl(section2)}>
               <div class="cta lg:text-xl sm:text-smd">
                 {$_('page.cta.viewMore')}
               </div>
@@ -119,7 +117,7 @@
           <div class="body lg:text-xl">{$_('page.sectionThree.bodyA')}</div>
           <div class="body lg:text-xl">{$_('page.sectionThree.bodyB')}</div>
           <div class="inline-block align-middle">
-            <a href={generateInspectImageUrl(section3)}>
+            <a href={generateOverviewImageUrl(section3)}>
               <div class="cta lg:text-xl sm:text-smd">
                 {$_('page.cta.viewMore')}
               </div>
