@@ -47,9 +47,9 @@
   $: nodeAncestors = $ancestors;
 </script>
 
-<!-- Only display Top Nav if there is an active asset -->
-{#if $primaryId}
-  <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
+<div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
+  <!-- Only display Top Nav if there is an active asset -->
+  {#if $primaryId}
     <sp-theme color="lightest" scale="medium" class="w-full">
       {#if isComparing}
         <div class="flex space-x-5 py-3">
@@ -121,8 +121,8 @@
         </sp-tabs>
       {/if}
     </sp-theme>
-  </div>
-{/if}
+  {/if}
+</div>
 
 <style lang="postcss">
   .container {

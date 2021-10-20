@@ -86,7 +86,9 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  <TopNavigation {isComparing} {noMetadata} {source} currentPage="overview" />
+  {#if hasContent}
+    <TopNavigation {isComparing} {noMetadata} {source} currentPage="overview" />
+  {/if}
   <div class="dragdrop">
     <FileDropper {isUploadMode} {isDragging} isError={!!error} />
     {#if isUploadMode && !error}
@@ -153,7 +155,7 @@
     grid-area: right;
   }
   .menu-overlay {
-    @apply fixed inset-0 z-20;
+    @apply fixed inset-0 z-50;
     background-color: rgba(0, 0, 0, 0.2);
   }
   .dragdrop {
