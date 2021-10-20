@@ -251,7 +251,7 @@
       @apply border-r-2 flex;
     }
     section.right-col {
-      @apply border-l-2;
+      @apply border-l-2 overflow-x-hidden;
     }
     main.comparing section.right-col > .wrapper,
     section.right-col > .wrapper {

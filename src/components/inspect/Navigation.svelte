@@ -18,19 +18,21 @@
 
 <div class="h-full relative">
   <div class="nav-width p-4 pb-1">
-    <div class="flex space-x-2 justify-between">
-      <h2 class="my-0 mb-2">
-        <span>{$_('comp.navigation.title')}</span>
-      </h2>
-      <cai-tooltip placement="left" class="theme-spectrum">
-        <div slot="content" class="text-gray-900" style="width: 150px;">
-          {$_('comp.navigation.helpText')}
+    <dl class="attributes">
+      <dt>
+        <div>{$_('comp.navigation.title')}</div>
+        <cai-tooltip placement="left" class="theme-spectrum">
+          <div slot="content" class="text-gray-900" style="width: 200px;">
+            {$_('comp.navigation.helpText')}
+          </div>
+        </cai-tooltip>
+      </dt>
+      <dd>
+        <div class="mb-4 text-100 leading-small text-gray-700">
+          {$_('comp.navigation.subtitle')}
         </div>
-      </cai-tooltip>
-    </div>
-    <div class="mb-4 leading-small text-gray-700">
-      {$_('comp.navigation.subtitle')}
-    </div>
+      </dd>
+    </dl>
   </div>
   <div class="relative pl-4">
     <div bind:this={container} class="grid space-y-4 pt-2">
