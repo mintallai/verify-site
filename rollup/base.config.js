@@ -224,8 +224,8 @@ function baseConfig(config, ctx) {
     const scriptTag =
       typeof config.scriptTag != 'undefined'
         ? config.scriptTag
-        : `<script type="module" defer src="/build/main.js?v=${gitRevision}"></script>`;
-    const bundleTag = `<script defer src="/build/bundle.js?v=${gitRevision}"></script>`;
+        : `<script type="module" defer src="/build/main.js"></script>`;
+    const bundleTag = `<script defer src="/build/bundle.js"></script>`;
     return contents
       .toString()
       .replace('__NEW_RELIC__', production ? newrelic : '')
