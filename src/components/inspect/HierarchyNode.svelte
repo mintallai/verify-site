@@ -25,6 +25,7 @@
   $: isExpanded = !$collapsedBranches.has(data.id);
   $: isSelected = equal($primaryPath, path);
   $: compare = $isCompareSelectMode && !isSelected;
+  $: badgeProps = getBadgeProps(data);
 
   function handleClick() {
     if (!isSelected) {
@@ -56,7 +57,7 @@
       class="w-12 h-12"
       class:cursor-pointer={!isSelected}
       on:click={handleClick}>
-      <Thumbnail {asset} {isSelected} {...getBadgeProps(data)} />
+      <Thumbnail {asset} {isSelected} {...badgeProps} />
     </div>
     <div class="pl-3" class:cursor-pointer={!isSelected} on:click={handleClick}>
       <h6>File name</h6>

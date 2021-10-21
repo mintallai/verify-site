@@ -307,10 +307,10 @@
   resolved "https://registry.yarnpkg.com/@contentauth/detector/-/detector-0.2.8.tgz#6ab62f272542f91ed03628bf1dc88ac0027348a4"
   integrity sha512-65YcNRv2BCs5d8C5rytcwR4T3IsvhnrqxJOUXZ7nw3y7cxrjT67uzgH3+MwSXx371jWORHpfIo4S7X2nKnIJEA==
 
-"@contentauth/sdk@^0.8.3":
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/@contentauth/sdk/-/sdk-0.8.3.tgz#5849125416990bfe1c6c57983cacf805f4f31bc8"
-  integrity sha512-4C4vd+pllulDf5ahZMqtjSbDy0H5ucUzssxWprZ96hpbCv+KGTTBqG/zmf2lPTLxLXTqowIyhKrQdo2zzQUgiw==
+"@contentauth/sdk@^0.8.4":
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/@contentauth/sdk/-/sdk-0.8.4.tgz#af884ea3553e905d09df638073235a3027d64cfb"
+  integrity sha512-9prmwmPskOT6Cr/4PPwfdOdJHMtuL30yj7D6DbrJAwq+LReDTOwSyMlX0SrmFhk4jzwVVUU3Gt0kk5nd06eEbA==
   dependencies:
     "@contentauth/detector" "^0.2.8"
     "@contentauth/toolkit" "^0.6.9"

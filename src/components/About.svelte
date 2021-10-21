@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _, date, time, locale } from 'svelte-i18n';
+  import cssVars from 'svelte-css-vars';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
@@ -30,6 +31,7 @@
   export let claim: Claim;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
+  let colWidth = 0;
 
   $: isOriginal = getIsOriginal(claim);
   $: actionsAssertion = claim.findAssertion(
@@ -63,37 +65,34 @@
 
 <div class="w-full flex justify-center">
   <div class="info w-full max-w-xs">
-    {#if !isComparing}
-      <div class="content-creds hidden">
-        <dl class="attributes">
-          <dt>
-            <div>{$_('comp.about.contentCredentials.header')}</div>
-            <cai-tooltip placement="left" class="theme-spectrum">
-              <div slot="content" class="text-gray-900" style="width: 200px;">
-                {$_('comp.about.contentCredentials.helpText')}
-              </div>
-            </cai-tooltip>
-          </dt>
-          <dd class="flex space-x-2 items-center mt-1">
-            <div class="w-12 h-12">
-              <Thumbnail {asset} {...getBadgeProps({ claim })} />
+    <div class="hidden lg:block">
+      <dl class="attributes">
+        <dt>
+          <div>{$_('comp.about.contentCredentials.header')}</div>
+          <cai-tooltip placement="left" class="theme-spectrum">
+            <div slot="content" class="text-gray-900" style="width: 200px;">
+              {$_('comp.about.contentCredentials.helpText')}
             </div>
-            <div>
-              <h6>File name</h6>
-              <div>{title}</div>
-            </div>
-          </dd>
-        </dl>
+          </cai-tooltip>
+        </dt>
+        <dd class="flex space-x-2 items-center mt-1">
+          <div class="w-12 h-12">
+            <Thumbnail {asset} {...getBadgeProps({ claim })} />
+          </div>
+          <div>
+            <h6>File name</h6>
+            <div>{title}</div>
+          </div>
+        </dd>
+      </dl>
+    </div>
+    <div bind:clientWidth={colWidth} class="lg:hidden w-full overflow-x-hidden">
+      <div use:cssVars={{ 'cai-thumbnail-size': `${colWidth}px` }}>
+        <Thumbnail {asset} />
+        <div class="thumbnail-title">{title}</div>
       </div>
-    {:else}
-      <div>
-        <div class="compare-thumbnail">
-          <Thumbnail {asset} />
-        </div>
-        <div>{title}</div>
-      </div>
-    {/if}
-    <div class="lg:border-0 border-t border-gray-300">
+    </div>
+    <div>
       <dl class="attributes">
         <dt>
           <div>{$_('comp.about.signedBy')}</div>
@@ -313,11 +312,6 @@
     @apply border-none;
   }
 
-  .content-creds {
-    @screen lg {
-      display: inherit;
-    }
-  }
   .assets-used {
     @apply grid gap-3;
     grid-template-columns: repeat(auto-fit, 48px);
@@ -326,10 +320,11 @@
     @apply grid gap-x-2 gap-y-1 items-center;
     grid-template-columns: 16px auto;
   }
-
-  .compare-thumbnail {
-    --cai-thumbnail-size: 150px;
+  .thumbnail-title {
+    @apply mt-1 truncate;
+    width: var(--cai-thumbnail-size);
   }
+
   @screen md {
     .info {
       @apply min-h-0;

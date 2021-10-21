@@ -3,7 +3,8 @@
   import cssVars from 'svelte-css-vars';
   import interact from 'interactjs';
   import type { DragEvent } from '@interactjs/types';
-  import Icon from '../../Icon.svelte';
+  import ChevronLeft from '../../../../assets/svg/monochrome/chevron-left.svg';
+  import ChevronRight from '../../../../assets/svg/monochrome/chevron-right.svg';
   import { Source } from '../../../lib/sdk';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
@@ -67,8 +68,8 @@
   <div class="slider" bind:this={slider}>
     <div class="handle">
       <div>
-        <Icon size="m" name="ChevronLeft" class="text-gray-700" />
-        <Icon size="m" name="ChevronRight" class="text-gray-700" />
+        <ChevronLeft width="16px" height="16px" class="text-gray-700" />
+        <ChevronRight width="16px" height="16px" class="text-gray-700" />
       </div>
     </div>
   </div>

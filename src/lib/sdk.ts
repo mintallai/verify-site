@@ -8,9 +8,6 @@ export async function getSdk() {
       sdk = new ContentAuth({
         wasmSrc: 'sdk/toolkit_bg.wasm',
         workerSrc: 'sdk/cai-sdk.worker.min.js',
-        downloadOptions: {
-          inspectSize: 0,
-        },
         poolOptions: {
           maxWorkers: Math.min(navigator.hardwareConcurrency ?? 4, 4),
         },

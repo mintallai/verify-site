@@ -219,7 +219,7 @@
     background-color: rgba(0, 0, 0, 0.2);
   }
   main.comparing {
-    grid-template-columns: 50%;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
     grid-template-areas:
       'header header'

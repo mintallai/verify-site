@@ -48,6 +48,11 @@
     @apply flex flex-col;
   }
   .comparison {
-    @apply w-full h-full bg-gray-75 flex flex-col items-center justify-center overflow-hidden;
+    @apply w-full h-full bg-gray-200 rounded-md flex flex-col items-center justify-center overflow-hidden;
+  }
+  @screen lg {
+    .comparison {
+      @apply bg-gray-75 rounded-none;
+    }
   }
 </style>
