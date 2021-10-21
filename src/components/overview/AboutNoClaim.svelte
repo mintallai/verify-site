@@ -72,8 +72,4 @@
   .info > div:last-child {
     @apply border-none;
   }
-
-  .compare-thumbnail {
-    --cai-thumbnail-size: 150px;
-  }
 </style>
