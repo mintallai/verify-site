@@ -21,6 +21,7 @@ import svelteSvg from '../etc/rollup/plugins/svelte-svg';
 const tailwindConfig = require('./tailwind.config');
 const { transformDictionaryJson } = require('./rollup/util/dictionary');
 
+const gitRevision = git.short();
 const year = new Date().getFullYear();
 const newrelic = fs.readFileSync('etc/newrelic.html');
 const banner = `
@@ -171,7 +172,7 @@ function baseConfig(config, ctx) {
         'process.env.NODE_ENV': JSON.stringify(
           production ? 'production' : 'development',
         ),
-        'process.env.GIT_REVISION': JSON.stringify(git.short()),
+        'process.env.GIT_REVISION': JSON.stringify(gitRevision),
         'process.env.SUPPORTED_LOCALES': JSON.stringify(getSupportedLocales()),
         __delay__: production ? '0' : '0',
         __breakpoints__: JSON.stringify(tailwindConfig.theme.screens),
@@ -223,11 +224,12 @@ function baseConfig(config, ctx) {
     const scriptTag =
       typeof config.scriptTag != 'undefined'
         ? config.scriptTag
-        : '<script type="module" defer src="/build/main.js"></script>';
-    const bundleTag = '<script defer src="/build/bundle.js"></script>';
+        : `<script type="module" defer src="/build/main.js"></script>`;
+    const bundleTag = `<script defer src="/build/bundle.js"></script>`;
     return contents
       .toString()
       .replace('__NEW_RELIC__', production ? newrelic : '')
-      .replace('__SCRIPT__', dynamicImports ? scriptTag : bundleTag);
+      .replace('__SCRIPT__', dynamicImports ? scriptTag : bundleTag)
+      .replace(/__GIT_REVISION__/g, gitRevision);
   }
 }

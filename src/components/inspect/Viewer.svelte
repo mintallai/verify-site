@@ -91,9 +91,4 @@
     --cai-icon-width: 100px;
     --cai-icon-height: 100px;
   }
-  @screen lg {
-    .viewer {
-      @apply bg-gray-75;
-    }
-  }
 </style>

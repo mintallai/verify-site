@@ -4,7 +4,6 @@
   import { DEFAULT_LOCALE, setLanguage } from '../lib/i18n';
   import type { TippyProps } from '../lib/tippy';
   import { tippy } from '../lib/tippy';
-  import Icon from './Icon.svelte';
 
   const mapping = [
     ['en-US', 'English'],
@@ -71,7 +70,6 @@
             role="button">
             <div class="inline-flex items-center space-x-0.5 -mr-0.5">
               <span class="underline">{currentLangString}</span>
-              <Icon size="xs" name="ChevronUp" />
             </div>
           </button>
         {/if}

@@ -68,7 +68,7 @@ export function getBadgeProps({
         };
       case ErrorTypes.UNKNOWN:
         if (errors[0]?.description?.includes('smart object')) {
-          return;
+          break;
         }
         return {
           badgeType: 'alert',

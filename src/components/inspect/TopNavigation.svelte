@@ -2,14 +2,12 @@
   import { goto, params, url } from '@roxi/routify';
   import { createEventDispatcher } from 'svelte';
   import { _ } from 'svelte-i18n';
-  import Icon from '../Icon.svelte';
   import {
     primaryId,
     primaryPath,
     primaryAsset,
     ancestors,
     compareMode,
-    hierarchy,
     setCompareMode,
     CompareMode,
     isMobileViewerShown,
@@ -17,6 +15,7 @@
   } from '../../stores';
   import { Source } from '../../lib/sdk';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
+  import ChevronRight from '../../../assets/svg/monochrome/chevron-right.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Thumbnail';
@@ -93,15 +92,16 @@
                 <sp-menu-item
                   selected={equal(getPath(parent), $primaryPath)}
                   on:click={navigateToPath(getPath(parent))}
-                  class="flex items-center"
                   value={parent.data?.id}>
-                  <Thumbnail slot="icon" asset={parent.data?.asset} />
-                  <span class="ml-2 items-center">{parent.data?.name}</span>
+                  <div class="flex items-center">
+                    <Thumbnail slot="icon" asset={parent.data?.asset} />
+                    <span class="ml-2 items-center">{parent.data?.name}</span>
+                  </div>
                 </sp-menu-item>
               {/each}
             </sp-action-menu>
             <div class="mx-2 flex items-center">
-              <Icon size="s" name="ChevronRight" class="text-gray-800" />
+              <ChevronRight width="16px" height="16px" class="text-gray-700" />
             </div>
           {/if}
           <div class="breadcrumb-item items-center current">

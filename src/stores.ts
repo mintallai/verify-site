@@ -232,10 +232,11 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
         name: node.asset?.title ?? node.title,
         // There are currently no error cases accounted for but OTGP.
         // The `claim` value will need to be adjusted based on the type of error.
-        claim: null,
+        claim:
+          node.errors[0].code === ErrorTypes.ASSET_HASH ? null : node.claim,
         asset: node.asset ?? node,
         errors: node.asset?.errors,
-        children: node.claim ? [parseProvenance(node.claim)] : [],
+        children: node.claim?.ingredients.map(parseProvenance) ?? [],
       };
     }
     return {
@@ -276,13 +277,16 @@ export const hierarchy = derived<
   return null;
 });
 
-export const ancestors = derived<[typeof primaryPath, typeof hierarchy], HierarchyNode<ITreeNode>[] | null>( 
-  [primaryPath, hierarchy], 
-  ([$primaryPath, $hierarchy]) => {
-    if ($primaryPath) {
-      return $hierarchy?.find(node => equal(getPath(node), $primaryPath))?.ancestors();
-    }
-    return null;  
+export const ancestors = derived<
+  [typeof primaryPath, typeof hierarchy],
+  HierarchyNode<ITreeNode>[] | null
+>([primaryPath, hierarchy], ([$primaryPath, $hierarchy]) => {
+  if ($primaryPath) {
+    return $hierarchy
+      ?.find((node) => equal(getPath(node), $primaryPath))
+      ?.ancestors();
+  }
+  return null;
 });
 
 /**
