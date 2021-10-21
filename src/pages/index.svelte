@@ -7,7 +7,7 @@
   import '@spectrum-web-components/button/sp-button.js';
 
   import Arrow from '../../assets/svg/monochrome/arrow-back.svg';
-  import DownArrow from '../../assets/svg/monochrome/down-arrow';
+  import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
 
   // Section 0
   import hero from '../../assets/png/hero-img.png';
@@ -22,6 +22,12 @@
     window.newrelic?.addPageAction('uploadClick');
     window.location.assign('/inspect');
     evt.preventDefault();
+  }
+
+  function generateOverviewImageUrl(asset: string) {
+    const url = new URL(`${window.location.origin}/overview`);
+    url.searchParams.set('source', asset);
+    return url.toString();
   }
 </script>
 
@@ -39,7 +45,7 @@
         </div>
       </div>
       <div class="overlap hidden">
-        <img src={hero} alt="Person taking picture with smartphone" />
+        <img id="hero" src={hero} alt="Person taking picture with smartphone" />
       </div>
 
       <div
@@ -53,7 +59,7 @@
   <section id="section1">
     <div class="section-grid">
       <div class="content order-1">
-        <img src={section1} alt="Icy lake at dusk" />
+        <img id="section1Img" src={section1} alt="Icy lake at dusk" />
       </div>
       <div class="content-body order-2">
         <div>
@@ -63,9 +69,11 @@
           <div class="body lg:text-xl">{$_('page.sectionOne.bodyA')}</div>
           <div class="body lg:text-xl">{$_('page.sectionOne.bodyB')}</div>
           <div class="inline-block align-middle">
-            <div class="cta lg:text-xl sm:text-smd">
-              {$_('page.cta.viewMore')}
-            </div>
+            <a href={generateOverviewImageUrl(section1)}>
+              <div class="cta lg:text-xl sm:text-smd">
+                {$_('page.cta.viewMore')}
+              </div>
+            </a>
             <Arrow class="inline-block" width="14px" height="12px" />
           </div>
         </div>
@@ -75,7 +83,7 @@
   <section id="section2">
     <div class="section-grid">
       <div class="content lg:order-2">
-        <img src={section2} alt="Yellow vector art" />
+        <img id="section2Img" src={section2} alt="Yellow vector art" />
       </div>
       <div class="content-body lg:order-1">
         <div>
@@ -85,9 +93,11 @@
           <div class="body lg:text-xl">{$_('page.sectionTwo.bodyA')}</div>
           <div class="body lg:text-xl">{$_('page.sectionTwo.bodyB')}</div>
           <div class="inline-block align-middle">
-            <div class="cta lg:text-xl sm:text-smd">
-              {$_('page.cta.viewMore')}
-            </div>
+            <a href={generateOverviewImageUrl(section2)}>
+              <div class="cta lg:text-xl sm:text-smd">
+                {$_('page.cta.viewMore')}
+              </div>
+            </a>
             <Arrow class="inline-block" width="14px" height="12px" />
           </div>
         </div>
@@ -97,7 +107,7 @@
   <section id="section3">
     <div class="section-grid">
       <div class="content order-1">
-        <img src={section3} alt="Kaleidescope vector art" />
+        <img id="section3Img" src={section3} alt="Kaleidescope vector art" />
       </div>
       <div class="content-body order-2">
         <div>
@@ -107,9 +117,11 @@
           <div class="body lg:text-xl">{$_('page.sectionThree.bodyA')}</div>
           <div class="body lg:text-xl">{$_('page.sectionThree.bodyB')}</div>
           <div class="inline-block align-middle">
-            <div class="cta lg:text-xl sm:text-smd">
-              {$_('page.cta.viewMore')}
-            </div>
+            <a href={generateOverviewImageUrl(section3)}>
+              <div class="cta lg:text-xl sm:text-smd">
+                {$_('page.cta.viewMore')}
+              </div>
+            </a>
             <Arrow class="inline-block" width="14px" height="12px" />
           </div>
         </div>
