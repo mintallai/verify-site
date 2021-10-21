@@ -4,7 +4,6 @@
 
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import '@spectrum-web-components/button/sp-button.js';
 
   import Arrow from '../../assets/svg/monochrome/arrow-back.svg';
   import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
