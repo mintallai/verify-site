@@ -229,7 +229,7 @@ function baseConfig(config, ctx) {
     return contents
       .toString()
       .replace('__NEW_RELIC__', production ? newrelic : '')
-      .replace('__GIT_REVISION__', gitRevision)
-      .replace('__SCRIPT__', dynamicImports ? scriptTag : bundleTag);
+      .replace('__SCRIPT__', dynamicImports ? scriptTag : bundleTag)
+      .replace(/__GIT_REVISION__/g, gitRevision);
   }
 }
