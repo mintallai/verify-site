@@ -15,6 +15,7 @@ module.exports = {
     },
     fontFamily: {
       base: 'var(--family-base)',
+      home: 'var(--family-home)',
     },
     fontWeight: {
       thin: 'var(--weight-thin)',

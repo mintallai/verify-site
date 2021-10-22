@@ -68,7 +68,7 @@
   "error.unknown": "Something went wrong",
   "error.unsupportedType": "Chosen file type isn’t supported",
   "page.title": "Content Authenticity",
-  "page.sectionOne.header": "Introducing: content credentials",
+  "page.sectionOne.header": "Introducing content credentials",
   "page.sectionOne.bodyA": "Content credentials are the history and identity data attached to images. With Verify, you can view this data when a creator or producer has attached it to an image to understand more about what’s been done to it, where it’s been, and who’s responsible.",
   "page.sectionOne.bodyB": "Content credentials are public and tamper-evident, and can include info like edits and activity, assets used, identity info, and more.",
   "page.cta.viewMore": "Inspect image",
