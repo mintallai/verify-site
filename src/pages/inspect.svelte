@@ -146,14 +146,14 @@
             {#if primary instanceof Claim}
               <About
                 claim={primary}
-                title={primaryNode.data.name}
+                title={primaryNode?.data?.name}
                 {isComparing}
                 {isMobileViewer} />
             {:else if primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
               <div class="wrapper">
                 <About
                   claim={primary.claim}
-                  title={primaryNode.data.name}
+                  title={primaryNode?.data?.name}
                   {isComparing} />
               </div>
             {:else if primary instanceof Ingredient}
@@ -164,7 +164,7 @@
               <div class="wrapper">
                 <AboutNoClaim
                   {primary}
-                  errors={primaryNode.data.errors}
+                  errors={primaryNode?.data?.errors ?? []}
                   {isComparing} />
               </div>
             {/if}
@@ -183,7 +183,7 @@
           <div class="wrapper">
             <About
               claim={primary}
-              title={primaryNode.data.name}
+              title={primaryNode?.data?.name}
               {isComparing}
               {isMobileViewer} />
             {#if isMobileViewer}
@@ -194,7 +194,7 @@
           <div class="wrapper">
             <About
               claim={primary.claim}
-              title={primaryNode.data.name}
+              title={primaryNode?.data?.name}
               {isComparing} />
             {#if isMobileViewer}
               <CompareLatestButton claim={null} {isComparing} />
@@ -211,7 +211,7 @@
           <div class="wrapper">
             <AboutNoClaim
               {primary}
-              errors={primaryNode.data.errors}
+              errors={primaryNode?.data?.errors ?? []}
               {isComparing} />
             {#if isMobileViewer}
               <CompareLatestButton claim={null} {isComparing} />
@@ -220,20 +220,20 @@
         {:else if secondary instanceof Claim}
           <About
             claim={secondary}
-            title={secondaryNode.data.name}
+            title={secondaryNode?.data?.name}
             {isComparing}
             {isMobileViewer} />
         {:else if secondary instanceof Ingredient && getIsIngredientWithClaim(secondary)}
           <About
             claim={secondary.claim}
-            title={secondaryNode.data.name}
+            title={secondaryNode?.data?.name}
             {isComparing} />
         {:else if secondary instanceof Ingredient}
           <AboutNoClaim primary={secondary} {isComparing} />
         {:else if secondary instanceof Source}
           <AboutNoClaim
             primary={secondary}
-            errors={secondaryNode.data.errors}
+            errors={secondaryNode?.data?.errors ?? []}
             {isComparing} />
         {/if}
       </section>
