@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
+  import equal from 'fast-deep-equal';
   import { Claim, Ingredient } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
@@ -17,13 +18,14 @@
   import {
     urlParams,
     provenance,
+    hierarchy,
     primaryAsset,
-    secondaryAsset,
+    primaryPath,
     isBurgerMenuShown,
     isMobileViewerShown,
     isLoading,
   } from '../stores';
-  import { getIsIngredientWithClaim } from '../lib/claim';
+  import { getIsIngredientWithClaim, getPath } from '../lib/claim';
 
   let isDragging = false;
   let error = null;
@@ -34,8 +36,9 @@
   $: hasContent = sourceParam || $provenance || $isLoading;
   $: isUploadMode = !hasContent || isDragging;
   $: primary = $primaryAsset;
-  $: secondary = $secondaryAsset;
-  $: isComparing = !!(primary && secondary);
+  $: primaryNode = $hierarchy?.find((node) =>
+    equal(getPath(node), $primaryPath),
+  );
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
   $: {
@@ -88,7 +91,7 @@
   {/if}
   <Header />
   {#if hasContent}
-    <TopNavigation {isComparing} {noMetadata} {source} currentPage="overview" />
+    <TopNavigation {noMetadata} {source} currentPage="overview" />
   {/if}
   <div class="dragdrop">
     <FileDropper {isUploadMode} {isDragging} isError={!!error} />
@@ -114,12 +117,14 @@
             <Alert severity="error">{$_(error)}</Alert>
           </div>
         {:else if primary instanceof Claim}
-          <About claim={primary} {isComparing} {isMobileViewer} />
+          <About
+            claim={primary}
+            title={primaryNode.data.name}
+            {isMobileViewer} />
         {:else if primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
           <About
             claim={primary.claim}
-            title={primary.asset?.title ?? primary.title}
-            {isComparing}
+            title={primaryNode.data.name}
             {isMobileViewer} />
         {:else if $isLoading}
           <div class="flex items-center justify-center">
