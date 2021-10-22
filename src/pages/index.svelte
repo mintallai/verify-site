@@ -16,6 +16,7 @@
   import section2 from '../../assets/png/section2.png';
   // Section 3 image
   import section3 from '../../assets/png/section3.png';
+  import { isMobileViewerShown } from '../stores';
 
   function upload(evt: Event) {
     window.newrelic?.addPageAction('uploadClick');
@@ -24,10 +25,13 @@
   }
 
   function generateOverviewImageUrl(asset: string) {
-    const url = new URL(`${window.location.origin}/overview`);
+    const page = isMobile ? 'inspect' : 'overview';
+    const url = new URL(`${window.location.origin}/${page}`);
     url.searchParams.set('source', asset);
     return url.toString();
   }
+
+  $: isMobile = $isMobileViewerShown;
 </script>
 
 <div class="theme-light overflow-show">
@@ -36,19 +40,20 @@
     <div class="hero grid grid-cols-10 my-10">
       <div class="hero-text row-span-full col-span-full self-center mx-7">
         <div
-          class="lg:text-8xl text-7xl font-bold font-home text-center lg:text-left">
+          class="lg:text-8xl text-7xl font-bold font-home text-center lg:text-left leading-4 pb-4 max-w-prose">
           {$_('page.hero.tagline')}
         </div>
-        <div class="lg:text-5xl text-3xl font-normal text-center lg:text-left">
+        <div
+          class="lg:text-5xl text-3xl font-normal text-center lg:text-left max-w-prose">
           {$_('page.hero.description')}
         </div>
       </div>
-      <div class="overlap hidden">
+      <div class="overlap hidden max-w-3xl">
         <img id="hero" src={hero} alt="Person taking picture with smartphone" />
       </div>
 
       <div
-        class="lg:col-start-1 lg:ml-16 xl:mt-2 md:mt-6 mt-4 -mb-2 col-span-2 col-start-5 flex lg:col-span-1 justify-center items-center">
+        class="lg:col-start-1 3xl:ml-4 xl:ml-7 lg:ml-16 xl:mt-2 md:mt-6 mt-4 -mb-2 col-span-2 col-start-5 flex lg:col-span-1 justify-center items-center">
         <DownArrow class="animate-bounce" width="48px" height="48px"
           ><a href="#section1" />
         </DownArrow>
@@ -135,8 +140,14 @@
     overflow: visible;
     @apply font-base;
   }
+
+  :global(footer) {
+    @apply h-14;
+  }
+
   .hero {
     width: 100vw;
+    max-width: 1680px;
   }
 
   .hero-text {
@@ -152,6 +163,8 @@
     width: 100vw;
     position: relative;
     overflow: hidden;
+    max-width: 1680px;
+    @apply 3xl:mx-auto 3xl:justify-center;
   }
 
   .section-grid {
@@ -170,7 +183,7 @@
   }
 
   .body {
-    @apply text-black text-smd text-left pb-4;
+    @apply text-black text-smd text-left pb-4 max-w-prose;
   }
 
   .cta {
