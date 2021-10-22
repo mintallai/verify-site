@@ -15,6 +15,7 @@ module.exports = merge(spectrumConfig, {
       lg: '1000px',
       xl: '1280px',
       '2xl': '1536px',
+      '3xl': '1680px',
       lgHeight: { 'raw': '(min-height: 480px)' },
     },
     extend: {
