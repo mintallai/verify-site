@@ -16,7 +16,6 @@
   import section2 from '../../assets/png/section2.png';
   // Section 3 image
   import section3 from '../../assets/png/section3.png';
-  import { isMobileViewerShown } from '../stores';
   import { breakpoints } from '../lib/breakpoints';
 
   function upload(evt: Event) {
@@ -36,8 +35,6 @@
     url.searchParams.set('source', asset);
     return url.toString();
   }
-
-  $: isMobile = $isMobileViewerShown;
 </script>
 
 <div use:breakpoints class="theme-light overflow-show">
@@ -74,7 +71,7 @@
       </div>
       <div class="content-body order-2">
         <div>
-          <div class="heading lg:text-4xl xl:text-6xl  3xl:text-8xl leading-4">
+          <div class="heading lg:text-3xl xl:text-6xl  3xl:text-8xl leading-4">
             {$_('page.sectionOne.header')}
           </div>
           <div class="body xl:text-xl 3xl:text-2xl">
