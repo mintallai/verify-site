@@ -29,6 +29,8 @@
   const dbg = debug('about');
 
   export let claim: Claim;
+  // TODO: Fix this so that we get the proper information and don't need to pass this in
+  export let title: string | null = null;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
   let colWidth = 0;
@@ -48,7 +50,7 @@
   ) as AdobeCryptoAddressesAssertion | null;
   $: producer = creativeWorkAssertion?.producer?.name ?? '';
   $: asset = claim.asset;
-  $: title = claim.title;
+  $: filename = title ?? claim.title;
   $: assets = claim.ingredients?.length ? claim.ingredients : null;
   $: signedBy = claim.signature?.issuer;
   $: sigDate = claim.signature?.date;
@@ -81,7 +83,7 @@
           </div>
           <div>
             <h6>File name</h6>
-            <div>{title}</div>
+            <div>{filename}</div>
           </div>
         </dd>
       </dl>
@@ -89,7 +91,7 @@
     <div bind:clientWidth={colWidth} class="lg:hidden w-full overflow-x-hidden">
       <div use:cssVars={{ 'cai-thumbnail-size': `${colWidth}px` }}>
         <Thumbnail {asset} />
-        <div class="thumbnail-title">{title}</div>
+        <div class="thumbnail-title">{filename}</div>
       </div>
     </div>
     <div>
