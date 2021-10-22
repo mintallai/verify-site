@@ -138,16 +138,36 @@
         <ContentCredentialsError {isComparing} />
       </section>
     {:else if primary}
-      <section class="left-col col-compare">
+      <section class="left-col">
         {#if !isComparing}
           <Navigation claim={primary} />
-        {:else if primary instanceof Claim}
-          <div class="col-compare w-full p-4 pt-0 md:pt-4">
-            <About claim={primary} {isComparing} {isMobileViewer} />
-          </div>
-        {:else if primary instanceof Ingredient}
-          <div class="col-compare wrapper">
-            <AboutNoClaim {primary} {isComparing} />
+        {:else}
+          <div class="w-full p-4">
+            {#if primary instanceof Claim}
+              <About
+                claim={primary}
+                title={primaryNode.data.name}
+                {isComparing}
+                {isMobileViewer} />
+            {:else if primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
+              <div class="wrapper">
+                <About
+                  claim={primary.claim}
+                  title={primaryNode.data.name}
+                  {isComparing} />
+              </div>
+            {:else if primary instanceof Ingredient}
+              <div class="wrapper">
+                <AboutNoClaim {primary} {isComparing} />
+              </div>
+            {:else if primary instanceof Source}
+              <div class="wrapper">
+                <AboutNoClaim
+                  {primary}
+                  errors={primaryNode.data.errors}
+                  {isComparing} />
+              </div>
+            {/if}
           </div>
         {/if}
       </section>
@@ -187,8 +207,22 @@
               <CompareLatestButton claim={null} {isComparing} />
             {/if}
           </div>
+        {:else if !isComparing && primary instanceof Source}
+          <div class="wrapper">
+            <AboutNoClaim
+              {primary}
+              errors={primaryNode.data.errors}
+              {isComparing} />
+            {#if isMobileViewer}
+              <CompareLatestButton claim={null} {isComparing} />
+            {/if}
+          </div>
         {:else if secondary instanceof Claim}
-          <About claim={secondary} {isComparing} {isMobileViewer} />
+          <About
+            claim={secondary}
+            title={secondaryNode.data.name}
+            {isComparing}
+            {isMobileViewer} />
         {:else if secondary instanceof Ingredient && getIsIngredientWithClaim(secondary)}
           <About
             claim={secondary.claim}
@@ -196,6 +230,11 @@
             {isComparing} />
         {:else if secondary instanceof Ingredient}
           <AboutNoClaim primary={secondary} {isComparing} />
+        {:else if secondary instanceof Source}
+          <AboutNoClaim
+            primary={secondary}
+            errors={secondaryNode.data.errors}
+            {isComparing} />
         {/if}
       </section>
     {/if}
