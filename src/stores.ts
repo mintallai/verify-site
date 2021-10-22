@@ -77,6 +77,10 @@ export const isMobileViewerShown = writable<boolean>(false);
 
 export const isCompareSelectMode = writable<boolean>(false);
 
+// Holds the URL of the last source that was dragged in since we can be passing different
+// source URLs from the landing page and we need to trigger it to re-process the file
+export const lastUrlSource = writable<string>('');
+
 export enum CompareMode {
   Split = 'SPLIT',
   Slider = 'SLIDER',

@@ -2,7 +2,13 @@ import { setContext } from 'svelte';
 import { get } from 'svelte/store';
 import dragDrop from 'drag-drop';
 import { getSdk } from '../lib/sdk';
-import { urlParams, provenance, setProvenance, setIsLoading } from '../stores';
+import {
+  urlParams,
+  provenance,
+  setProvenance,
+  setIsLoading,
+  lastUrlSource,
+} from '../stores';
 
 export const CONTEXT_KEY = 'loader';
 
@@ -26,6 +32,7 @@ async function processSourceImage(sourceParam: string, params: ILoaderParams) {
     const result = await sdk.processImage(sourceParam);
     await window.newrelic?.setCustomAttribute('source', sourceParam);
     setProvenance(result);
+    lastUrlSource.set(sourceParam);
     params.onLoaded();
   } catch (err) {
     window.newrelic?.noticeError(err, {
@@ -76,8 +83,10 @@ export function setLoaderContext(params: ILoaderParams) {
 export function loader(node, params: ILoaderParams) {
   const { onDragStateChange, onError } = params;
   const sourceParam = get(urlParams).source;
+  const prov = get(provenance);
+  const sourceChanged = get(lastUrlSource) !== sourceParam;
 
-  if (sourceParam && !get(provenance)) {
+  if (sourceParam && (!prov || (prov && sourceChanged))) {
     processSourceImage(sourceParam, params);
   }
 
