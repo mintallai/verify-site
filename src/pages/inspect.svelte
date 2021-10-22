@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
+  import equal from 'fast-deep-equal';
   import { Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
@@ -19,16 +20,19 @@
   import {
     urlParams,
     provenance,
+    hierarchy,
+    primaryPath,
     compareWithPath,
     primaryAsset,
     secondaryAsset,
     isBurgerMenuShown,
     isMobileViewerShown,
     isLoading,
+    secondaryPath,
   } from '../stores';
   // TODO: Reconcile `About` and `AboutNoClaim` components
   import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
-  import { getIsIngredientWithClaim } from '../lib/claim';
+  import { getIsIngredientWithClaim, getPath } from '../lib/claim';
 
   function handleClose() {
     compareWithPath(null);
@@ -62,8 +66,16 @@
   $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
   $: hasContent = sourceParam || $provenance || $isLoading;
+  // TODO: Consolidate primary && primaryNode/secondary && secondaryNode
+  // after integration tests are set up
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
+  $: primaryNode = $hierarchy?.find((node) =>
+    equal(getPath(node), $primaryPath),
+  );
+  $: secondaryNode = $hierarchy?.find((node) =>
+    equal(getPath(node), $secondaryPath),
+  );
   $: isComparing = !!(primary && secondary);
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
@@ -149,7 +161,11 @@
       <section class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary instanceof Claim}
           <div class="wrapper">
-            <About claim={primary} {isComparing} {isMobileViewer} />
+            <About
+              claim={primary}
+              title={primaryNode.data.name}
+              {isComparing}
+              {isMobileViewer} />
             {#if isMobileViewer}
               <CompareLatestButton claim={primary} {isComparing} />
             {/if}
@@ -158,7 +174,7 @@
           <div class="wrapper">
             <About
               claim={primary.claim}
-              title={primary.asset?.title ?? primary.title}
+              title={primaryNode.data.name}
               {isComparing} />
             {#if isMobileViewer}
               <CompareLatestButton claim={null} {isComparing} />
@@ -176,7 +192,7 @@
         {:else if secondary instanceof Ingredient && getIsIngredientWithClaim(secondary)}
           <About
             claim={secondary.claim}
-            title={secondary.asset?.title ?? secondary.title}
+            title={secondaryNode.data.name}
             {isComparing} />
         {:else if secondary instanceof Ingredient}
           <AboutNoClaim primary={secondary} {isComparing} />
