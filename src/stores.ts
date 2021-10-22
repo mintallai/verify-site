@@ -7,7 +7,7 @@ import { ViewableItem, ITreeNode, ErrorTypes } from './lib/types';
 import equal from 'fast-deep-equal';
 
 import debug from 'debug';
-import { getPath } from './lib/claim';
+import { getPath, isOTGP } from './lib/claim';
 
 const dbg = debug('store');
 
@@ -76,6 +76,10 @@ export const isBurgerMenuShown = writable<boolean>(false);
 export const isMobileViewerShown = writable<boolean>(false);
 
 export const isCompareSelectMode = writable<boolean>(false);
+
+// Holds the URL of the last source that was dragged in since we can be passing different
+// source URLs from the landing page and we need to trigger it to re-process the file
+export const lastUrlSource = writable<string>('');
 
 export enum CompareMode {
   Split = 'SPLIT',
@@ -226,7 +230,7 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
     };
   }
   if (node instanceof Ingredient) {
-    if (node.errors.length > 0) {
+    if (isOTGP(node)) {
       return {
         id: node.asset?.id ?? node.id,
         name: node.asset?.title ?? node.title,
@@ -236,7 +240,7 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
           node.errors[0].code === ErrorTypes.ASSET_HASH ? null : node.claim,
         asset: node.asset ?? node,
         errors: node.asset?.errors,
-        children: node.claim?.ingredients.map(parseProvenance) ?? [],
+        children: node.claim ? [parseProvenance(node.claim)] : [],
       };
     }
     return {

@@ -26,7 +26,9 @@
     isMobileViewerShown,
     isLoading,
   } from '../stores';
+  // TODO: Reconcile `About` and `AboutNoClaim` components
   import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
+  import { getIsIngredientWithClaim } from '../lib/claim';
 
   function handleClose() {
     compareWithPath(null);
@@ -152,6 +154,16 @@
               <CompareLatestButton claim={primary} {isComparing} />
             {/if}
           </div>
+        {:else if !isComparing && primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
+          <div class="wrapper">
+            <About
+              claim={primary.claim}
+              title={primary.asset?.title ?? primary.title}
+              {isComparing} />
+            {#if isMobileViewer}
+              <CompareLatestButton claim={null} {isComparing} />
+            {/if}
+          </div>
         {:else if !isComparing && primary instanceof Ingredient}
           <div class="wrapper">
             <AboutNoClaim {primary} {isComparing} />
@@ -161,6 +173,11 @@
           </div>
         {:else if secondary instanceof Claim}
           <About claim={secondary} {isComparing} {isMobileViewer} />
+        {:else if secondary instanceof Ingredient && getIsIngredientWithClaim(secondary)}
+          <About
+            claim={secondary.claim}
+            title={secondary.asset?.title ?? secondary.title}
+            {isComparing} />
         {:else if secondary instanceof Ingredient}
           <AboutNoClaim primary={secondary} {isComparing} />
         {/if}

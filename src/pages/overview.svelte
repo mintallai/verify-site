@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import { Claim } from '../lib/sdk';
+  import { Claim, Ingredient } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
@@ -23,6 +23,7 @@
     isMobileViewerShown,
     isLoading,
   } from '../stores';
+  import { getIsIngredientWithClaim } from '../lib/claim';
 
   let isDragging = false;
   let error = null;
@@ -114,6 +115,12 @@
           </div>
         {:else if primary instanceof Claim}
           <About claim={primary} {isComparing} {isMobileViewer} />
+        {:else if primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
+          <About
+            claim={primary.claim}
+            title={primary.asset?.title ?? primary.title}
+            {isComparing}
+            {isMobileViewer} />
         {:else if $isLoading}
           <div class="flex items-center justify-center">
             <CircleLoader />
