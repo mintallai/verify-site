@@ -23,6 +23,7 @@
     isMobileViewerShown,
     isLoading,
   } from '../stores';
+  import { getIsIngredientWithClaim } from '../lib/claim';
 
   let isDragging = false;
   let error = null;
@@ -114,7 +115,7 @@
           </div>
         {:else if primary instanceof Claim}
           <About claim={primary} {isComparing} {isMobileViewer} />
-        {:else if primary instanceof Ingredient && primary.claim}
+        {:else if primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
           <About
             claim={primary.claim}
             title={primary.asset?.title ?? primary.title}

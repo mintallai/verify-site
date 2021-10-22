@@ -24,6 +24,28 @@ export function getIsOriginal(claim: Claim) {
   return noIngredients && !isDelivered;
 }
 
+/**
+ * TODO: make this implementation more robust
+ * Issues w/ implementation:
+ * Stock images look like OTGP image in terms of the data -- 
+ * this is likely to be true for any smart object that brings in a claim
+ * That means there's no data-based similarities to take advantage of to differentiate. 
+ * The quick way is to check if it's a stock image > any images in the wild w/ similar treatment will be ignored
+ * Longer way is to check if it's an OTGP image > relies on the ASSET_HASH error;
+ * > smart objects specifically return an error that indicates they may have undergone changes
+ * >> We don't currently account for this OTGP case, just ASSET_HASH
+ */
+ export function getIsIngredientWithClaim(node: Ingredient) {
+  const noIngredients = node.claim?.ingredients.length === 0;
+  // const isStock = node.claim?.data?.recorder.includes('Adobe Stock');
+  return noIngredients && !isOTGP(node);
+}
+
+export function isOTGP(node: Claim | Ingredient) {
+  return node.errors?.filter( (err) => err.code === ErrorTypes.ASSET_HASH ).length;
+}
+
+
 interface IBadgePropsInput {
   claim?: Claim | Ingredient;
   errors?: any[];
