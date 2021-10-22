@@ -21,8 +21,6 @@
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
   import Thumbnail from '../Thumbnail.svelte';
-  import { ITreeNode } from '../../lib/types';
-  import { HierarchyNode } from 'd3-hierarchy';
   import { getPath } from '../../lib/claim';
   import equal from 'fast-deep-equal';
 
@@ -55,7 +53,7 @@
           <div
             class="flex items-center cursor-pointer"
             on:click={() => dispatch('back')}>
-            <LeftArrow width="14" height="12" class="text-gray-800 mr-2" />
+            <LeftArrow width="14px" height="12px" class="text-gray-800 mr-2" />
             <div>
               {$_('comp.topNavigation.back')}
             </div>
