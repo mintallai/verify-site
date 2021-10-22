@@ -20,12 +20,17 @@
     window.location.assign('/inspect');
     evt.preventDefault();
   }
+
+  function goToLanding(evt: Event) {
+    window.location.assign('/');
+    evt.preventDefault();
+  }
 </script>
 
 <header class="flex relative">
   <div class="flex-shrink">
     <button
-      on:click={() => navigateToRoot()}
+      on:click={goToLanding}
       class="flex select-none outline-none items-center">
       <h1 class="font-black text-600 text-gray-900 leading-none">
         {$_('comp.header.productName')}
@@ -56,6 +61,8 @@
   </div>
   {#if $isBurgerMenuShown}
     <div transition:slide={{ duration: 300 }} class="burger-menu">
+      <a href="/inspect" on:click={handleBurgerClick}
+        >{$_('comp.header.uploadImage')}</a>
       <a href={getFaqUrl()} target="_blank">FAQ</a>
       <a href={$learnMoreUrl}>{$_('comp.header.learnMore')}</a>
     </div>

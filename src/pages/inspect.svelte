@@ -1,148 +1,94 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import partial from 'lodash/partial';
-  import dragDrop from 'drag-drop';
-  import { getStoreReportFromUrl, ToolkitError } from '../lib/toolkit';
+  import equal from 'fast-deep-equal';
+  import { Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
-  import Breadcrumb from '../components/inspect/Breadcrumb.svelte';
+  import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
   import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import ContentCredentials from '../components/inspect/ContentCredentials.svelte';
+  import Navigation from '../components/inspect/Navigation.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
-  import { getAssociatedClaim, getThumbnailUrlForId } from '../lib/claim';
-  import { processFiles } from '../lib/file';
   import { startTour } from '../lib/tour';
+  import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
+  import { breakpoints } from '../lib/breakpoints';
   import {
     urlParams,
-    source as sourceStore,
-    storeReport,
-    setStoreReport,
-    navigateToId,
-    secondaryId,
+    provenance,
+    hierarchy,
+    primaryPath,
+    compareWithPath,
     primaryAsset,
     secondaryAsset,
     isBurgerMenuShown,
     isMobileViewerShown,
+    isLoading,
+    secondaryPath,
   } from '../stores';
-  import type { ViewableItem } from '../lib/types';
+  // TODO: Reconcile `About` and `AboutNoClaim` components
+  import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
+  import { getIsIngredientWithClaim, getPath } from '../lib/claim';
 
-  function handleClose(navigateToAsset: ViewableItem) {
-    navigateToId(navigateToAsset.id);
-    secondaryId.set('');
+  function handleClose() {
+    compareWithPath(null);
   }
 
-  let isDraggingOver = false;
-  let error: ToolkitError;
+  let isDragging = false;
+  let error = null;
   let tour: ReturnType<typeof startTour>;
-  let breakpoints = __breakpoints__;
-  let mdBreakpoint = `(max-width: ${breakpoints.md})`;
-  let lgBreakpoint = `(max-width: ${breakpoints.lg})`;
 
-  $: source = $sourceStore;
+  const loaderParams: ILoaderParams = {
+    onError(_err, message) {
+      error = message;
+    },
+    onLoaded() {
+      error = null;
+      const { tourFlag, forceTourFlag } = $urlParams;
+      if (isMobileViewer === false) {
+        // tour = startTour({
+        //   provenance: $provenance,
+        //   start: tourFlag,
+        //   force: forceTourFlag,
+        // });
+      }
+    },
+    onDragStateChange(newState: boolean) {
+      isDragging = newState;
+    },
+  };
+  setLoaderContext(loaderParams);
+
+  $: source = $provenance?.source;
   $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $storeReport || source;
-  $: isLoading = $storeReport === null && source === null;
+  $: hasContent = sourceParam || $provenance || $isLoading;
+  // TODO: Consolidate primary && primaryNode/secondary && secondaryNode
+  // after integration tests are set up
   $: primary = $primaryAsset;
   $: secondary = $secondaryAsset;
+  $: primaryNode = $hierarchy?.find((node) =>
+    equal(getPath(node), $primaryPath),
+  );
+  $: secondaryNode = $hierarchy?.find((node) =>
+    equal(getPath(node), $secondaryPath),
+  );
   $: isComparing = !!(primary && secondary);
-  $: primaryClaim = primary && getAssociatedClaim($storeReport, primary);
-  $: secondaryClaim = secondary && getAssociatedClaim($storeReport, secondary);
   $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !!(source && !$storeReport);
-  $: hasBreadcrumbBar = hasContent && (noMetadata || primary);
-  $: errorMessage =
-    error &&
-    (error === ToolkitError.InvalidFile
-      ? 'Unsupported file type'
-      : 'Something went wrong');
+  $: noMetadata = !$provenance?.exists;
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && isMobileViewer) {
       tour.cancel();
     }
     // Clear errors if the store report has changed
-    if ($storeReport !== undefined) {
+    if ($provenance !== undefined) {
       error = null;
     }
   }
-
-  /**
-   * Make sure we close any open hamburger menu if we increase the
-   * window size to a breakpoint where the menu is hidden
-   */
-  function handleBreakpointChange({ media, matches }) {
-    if (media === mdBreakpoint && !matches && $isBurgerMenuShown) {
-      isBurgerMenuShown.set(false);
-    }
-    if (media === lgBreakpoint) {
-      isMobileViewerShown.set(matches);
-    }
-  }
-
-  onMount(async () => {
-    const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
-    const { tourFlag, forceTourFlag } = $urlParams;
-
-    isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);
-    listenBreakpoints.forEach((bp) =>
-      matchMedia(bp).addEventListener('change', handleBreakpointChange),
-    );
-
-    if (sourceParam) {
-      try {
-        const result = await getStoreReportFromUrl(sourceParam);
-        window.newrelic?.setCustomAttribute('source', sourceParam);
-        setStoreReport(result);
-        if (isMobileViewer === false) {
-          tour = startTour({
-            storeReport: $storeReport,
-            start: tourFlag,
-            force: forceTourFlag,
-          });
-        }
-      } catch (err) {
-        error = err?.message;
-      }
-    }
-
-    // This stops the drag state from rapidly changing during drag
-    // They also use this pattern in the dragDrop library
-    let dragTimeout: ReturnType<typeof setTimeout> | undefined;
-    const cleanupDragDrop = dragDrop('main', {
-      async onDrop(files: File[]) {
-        clearTimeout(dragTimeout);
-        isDraggingOver = false;
-        try {
-          await processFiles(files);
-        } catch (err) {
-          error = err?.message;
-        }
-      },
-      onDragOver() {
-        clearTimeout(dragTimeout);
-        isDraggingOver = true;
-      },
-      onDragLeave() {
-        dragTimeout = setTimeout(() => {
-          isDraggingOver = false;
-        }, 50);
-      },
-    });
-
-    return () => {
-      cleanupDragDrop();
-      listenBreakpoints.forEach((bp) =>
-        matchMedia(bp).removeEventListener('change', handleBreakpointChange),
-      );
-    };
-  });
 </script>
 
 <svelte:window />
@@ -150,9 +96,11 @@
   <title>{$_('page.title')}</title>
 </svelte:head>
 <main
+  use:loader={loaderParams}
+  use:breakpoints
   class="theme-light"
-  class:comparing={isComparing}
-  class:has-breadcrumb-bar={hasBreadcrumbBar}>
+  class:no-content={!hasContent}
+  class:comparing={isComparing}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -160,97 +108,142 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if hasBreadcrumbBar}
-    <Breadcrumb
+  {#if hasContent}
+    <TopNavigation
       {isComparing}
       {noMetadata}
       {source}
-      on:back={partial(handleClose, secondary)} />
-  {/if}
-  {#if hasContent}
+      currentPage="inspect"
+      on:back={handleClose} />
     {#if error}
-      <section class="left-col" class:loading={isLoading} />
+      <section class="left-col" class:loading={$isLoading} />
       <Viewer isError={!!error} />
       <section class="right-col p-4">
-        <Alert severity="error">{errorMessage}</Alert>
+        <Alert severity="error">{$_(error)}</Alert>
       </section>
-    {:else if isLoading}
-      <section class="left-col" class:loading={isLoading}>
+    {:else if $isLoading}
+      <section class="left-col" class:loading={$isLoading}>
         <CircleLoader />
       </section>
-      <Viewer isLoading={true} isDragging={isDraggingOver} />
-      <section class="right-col" class:loading={isLoading}>
+      <Viewer isLoading={true} {isDragging} />
+      <section class="right-col" class:loading={$isLoading}>
         <CircleLoader />
       </section>
     {:else if noMetadata}
       <section class="left-col">
-        <ContentCredentials {source} />
+        <Navigation {source} />
       </section>
-      <Viewer thumbnailUrl={source.dataUrl} isDragging={isDraggingOver} />
+      <Viewer asset={$provenance?.source} {isDragging} />
       <section class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
     {:else if primary}
       <section class="left-col">
         {#if !isComparing}
-          <ContentCredentials claim={primaryClaim} />
-        {:else if primaryClaim}
-          <div class="w-full p-4 pt-0 md:pt-4">
-            <About
-              claim={primaryClaim}
-              {isComparing}
-              {isMobileViewer}
-              on:close={partial(handleClose, secondary)} />
-          </div>
-        {:else if primary?.type === 'ingredient'}
-          <div class="wrapper">
-            <ContentCredentialsError {isComparing} />
+          <Navigation claim={primary} />
+        {:else}
+          <div class="w-full p-4">
+            {#if primary instanceof Claim}
+              <About
+                claim={primary}
+                title={primaryNode?.data?.name}
+                {isComparing}
+                {isMobileViewer} />
+            {:else if primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
+              <div class="wrapper">
+                <About
+                  claim={primary.claim}
+                  title={primaryNode?.data?.name}
+                  {isComparing} />
+              </div>
+            {:else if primary instanceof Ingredient}
+              <div class="wrapper">
+                <AboutNoClaim {primary} {isComparing} />
+              </div>
+            {:else if primary instanceof Source}
+              <div class="wrapper">
+                <AboutNoClaim
+                  {primary}
+                  errors={primaryNode?.data?.errors ?? []}
+                  {isComparing} />
+              </div>
+            {/if}
           </div>
         {/if}
       </section>
       {#if isComparing}
         <Comparison {primary} {secondary} />
+      {:else if primary instanceof Source}
+        <Viewer asset={primary} {isDragging} />
       {:else}
-        <Viewer
-          thumbnailUrl={getThumbnailUrlForId($storeReport, primary.id)}
-          isDragging={isDraggingOver} />
+        <Viewer asset={primary?.asset} {isDragging} />
       {/if}
       <section class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing && primaryClaim}
+        {#if !isComparing && primary instanceof Claim}
           <div class="wrapper">
             <About
-              claim={primaryClaim}
+              claim={primary}
+              title={primaryNode?.data?.name}
               {isComparing}
-              {isMobileViewer}
-              on:close={partial(handleClose, secondary)} />
+              {isMobileViewer} />
             {#if isMobileViewer}
-              <CompareLatestButton claim={primaryClaim} {isComparing} />
+              <CompareLatestButton claim={primary} {isComparing} />
             {/if}
           </div>
-        {:else if !isComparing && primary?.type === 'ingredient'}
+        {:else if !isComparing && primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
           <div class="wrapper">
-            <ContentCredentialsError {isComparing} />
+            <About
+              claim={primary.claim}
+              title={primaryNode?.data?.name}
+              {isComparing} />
             {#if isMobileViewer}
               <CompareLatestButton claim={null} {isComparing} />
             {/if}
           </div>
-        {:else if secondaryClaim}
+        {:else if !isComparing && primary instanceof Ingredient}
+          <div class="wrapper">
+            <AboutNoClaim {primary} {isComparing} />
+            {#if isMobileViewer}
+              <CompareLatestButton claim={null} {isComparing} />
+            {/if}
+          </div>
+        {:else if !isComparing && primary instanceof Source}
+          <div class="wrapper">
+            <AboutNoClaim
+              {primary}
+              errors={primaryNode?.data?.errors ?? []}
+              {isComparing} />
+            {#if isMobileViewer}
+              <CompareLatestButton claim={null} {isComparing} />
+            {/if}
+          </div>
+        {:else if secondary instanceof Claim}
           <About
-            claim={secondaryClaim}
+            claim={secondary}
+            title={secondaryNode?.data?.name}
             {isComparing}
-            {isMobileViewer}
-            on:close={partial(handleClose, primary)} />
-        {:else if secondary?.type === 'ingredient'}
-          <ContentCredentialsError {isComparing} />
+            {isMobileViewer} />
+        {:else if secondary instanceof Ingredient && getIsIngredientWithClaim(secondary)}
+          <About
+            claim={secondary.claim}
+            title={secondaryNode?.data?.name}
+            {isComparing} />
+        {:else if secondary instanceof Ingredient}
+          <AboutNoClaim primary={secondary} {isComparing} />
+        {:else if secondary instanceof Source}
+          <AboutNoClaim
+            primary={secondary}
+            errors={secondaryNode?.data?.errors ?? []}
+            {isComparing} />
         {/if}
       </section>
     {/if}
   {:else}
     <section />
-    <Viewer isDragging={isDraggingOver} />
+    <Viewer {isDragging} />
     {#if error}
       <section class="right-col p-4">
-        <Alert severity="error">{errorMessage}</Alert>
+        <Alert severity="error">{$_(error)}</Alert>
       </section>
     {:else}
       <section />
@@ -262,17 +255,12 @@
 <style lang="postcss">
   main {
     --viewer-height: 375px;
+    --cai-thumbnail-size: 48px;
+    --cai-thumbnail-badge-icon-width: 16px;
+    --cai-thumbnail-badge-icon-height: 16px;
 
     @apply grid w-screen min-h-screen h-full font-base;
     grid-template-columns: 100%;
-    grid-template-rows: 80px var(--viewer-height) 1fr 70px;
-    grid-template-areas:
-      'header'
-      'viewer'
-      'right'
-      'footer';
-  }
-  main.has-breadcrumb-bar {
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 70px;
     grid-template-areas:
       'header'
@@ -296,7 +284,7 @@
     grid-area: right;
   }
   main.comparing section.right-col > .wrapper {
-    @apply sticky top-10;
+    @apply sticky top-10 justify-center;
   }
   .menu-overlay {
     @apply fixed inset-0 z-20;
@@ -304,14 +292,6 @@
   }
   main.comparing {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 80px var(--viewer-height) 1fr 55px;
-    grid-template-areas:
-      'header header'
-      'viewer viewer'
-      'left right'
-      'footer footer';
-  }
-  main.comparing.has-breadcrumb-bar {
     grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
     grid-template-areas:
       'header header'
@@ -320,28 +300,25 @@
       'left right'
       'footer footer';
   }
+
   main.comparing section.left-col {
-    @apply flex;
+    @apply w-full h-full flex align-middle justify-center;
   }
+
   @screen lg {
     main,
     main.comparing {
       @apply fixed inset-0;
       grid-template-columns: 320px 1fr 320px;
-      grid-template-rows: 80px 1fr 55px;
-      grid-template-areas:
-        'header header header'
-        'left viewer right'
-        'footer footer footer';
-    }
-    main.has-breadcrumb-bar,
-    main.comparing.has-breadcrumb-bar {
       grid-template-rows: 80px 60px 1fr 55px;
       grid-template-areas:
         'header header header'
         'breadcrumb breadcrumb breadcrumb'
         'left viewer right'
         'footer footer footer';
+    }
+    main.no-content {
+      grid-template-rows: 80px 0 1fr 55px;
     }
     section {
       @apply overflow-auto;
@@ -350,7 +327,7 @@
       @apply border-r-2 flex;
     }
     section.right-col {
-      @apply border-l-2;
+      @apply border-l-2 overflow-x-hidden;
     }
     main.comparing section.right-col > .wrapper,
     section.right-col > .wrapper {

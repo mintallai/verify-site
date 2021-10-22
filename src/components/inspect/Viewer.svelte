@@ -1,25 +1,21 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
-  import {
-    urlParams,
-    storeReport,
-    source,
-    isMobileViewerShown,
-  } from '../../stores';
-  import { loadFile } from '../../lib/file';
-  import DropFile from '../../../assets/svg/monochrome/drop-file.svg';
+  import { urlParams, provenance, isMobileViewerShown } from '../../stores';
+  import FileDropper from '../FileDropper.svelte';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
+  import { thumbnail, handleImgSrc } from '../../lib/thumbnail';
+  import type { Asset, Source } from '../../lib/sdk';
+  import debug from 'debug';
 
-  export let thumbnailUrl: string = null;
+  const dbg = debug('viewer');
+
+  export let asset: Asset | Source | undefined = undefined;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
   export let isError: boolean = false;
 
-  let fileInput: HTMLInputElement;
   let width = 0;
   let height = 0;
   let side = `0px`;
@@ -36,64 +32,35 @@
     height: side,
   };
   $: urlSource = $urlParams.source;
-  $: uploadMode = (!urlSource && !$source && !$storeReport) || isDragging;
-
-  function browseFile() {
-    fileInput.click();
-  }
-
-  onMount(() => {
-    fileInput.addEventListener('change', loadFile, false);
-    return () => {
-      fileInput.removeEventListener('change', loadFile);
-    };
-  });
+  $: isUploadMode = (!urlSource && !$provenance && !isLoading) || isDragging;
 </script>
 
 <div class="viewer-wrapper">
   <div
     class="viewer"
-    class:no-source={!$source}
-    class:upload={uploadMode}
+    class:no-source={!$provenance && !isLoading}
+    class:upload={isUploadMode}
     class:dragging={isDragging}
     bind:clientWidth={width}
     bind:clientHeight={height}>
-    <input
-      type="file"
-      bind:this={fileInput}
-      accept="image/jpeg,image/png"
-      class="hidden" />
     <div class="inner" use:cssVars={styles}>
-      {#if uploadMode}
-        <div class="upload-content" in:fade>
-          <DropFile
-            width={58}
-            height={99}
-            class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}" />
-          {#if $source || $storeReport}
-            <div class="message-heading">{$_('comp.viewer.dropFile')}</div>
-          {:else}
-            <div class="message-heading">{$_('comp.viewer.dragDropFile')}</div>
-            <div class="message-text">
-              <span class="link" on:click={browseFile}>
-                {$_('comp.viewer.selectFromComputer')}
-              </span>
-            </div>
-          {/if}
-        </div>
-      {:else if !isLoading && thumbnailUrl}
-        <img
-          src={thumbnailUrl}
-          alt=""
-          class="h-full w-full object-contain object-center" />
-      {:else}
-        <div class="flex items-center justify-center">
-          {#if isError}
-            <cai-icon-broken-image />
-          {:else}
-            <CircleLoader />
-          {/if}
-        </div>
+      <FileDropper {isUploadMode} {isDragging} />
+      {#if !isUploadMode}
+        {#if !isLoading && !isError}
+          <img
+            use:thumbnail={asset}
+            on:thumbnail={handleImgSrc}
+            alt="Thumbnail"
+            class="h-full w-full object-contain object-center" />
+        {:else}
+          <div class="flex items-center justify-center">
+            {#if isError}
+              <cai-icon-broken-image />
+            {:else}
+              <CircleLoader />
+            {/if}
+          </div>
+        {/if}
       {/if}
     </div>
   </div>
@@ -117,19 +84,11 @@
   }
   .dragging .inner {
     @apply border-2 border-blue-500 border-solid text-blue-500;
-    background-color: rgba(20, 115, 230, 0.1);
-  }
-  .upload-content {
-    @apply absolute inset-0 flex justify-center items-center flex-col;
+    background-color: var(--drag-bg-color);
   }
   cai-icon-broken-image {
     @apply text-gray-600;
     --cai-icon-width: 100px;
     --cai-icon-height: 100px;
-  }
-  @screen lg {
-    .viewer {
-      @apply bg-gray-75;
-    }
   }
 </style>

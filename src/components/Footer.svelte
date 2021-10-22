@@ -4,7 +4,6 @@
   import { DEFAULT_LOCALE, setLanguage } from '../lib/i18n';
   import type { TippyProps } from '../lib/tippy';
   import { tippy } from '../lib/tippy';
-  import Icon from './Icon.svelte';
 
   const mapping = [
     ['en-US', 'English'],
@@ -14,6 +13,7 @@
   ];
 
   let languageMenu: HTMLElement;
+  let showLanguagePicker = false;
 
   const tippyOpts: Partial<TippyProps> = {
     interactive: true,
@@ -26,25 +26,27 @@
   );
   $: currentLangString = currentLocaleMapping[1];
 
-  function handleLanguageChange(evt) {
+  function handleLanguageChange(evt: any) {
     setLanguage(evt.target.value);
   }
 </script>
 
-<footer>
-  <div bind:this={languageMenu}>
-    <sp-menu value={currentLocale}>
-      {#each mapping as [code, label]}
-        <sp-menu-item
-          value={code}
-          selected={code === currentLocale}
-          on:click={handleLanguageChange}>
-          {label}
-        </sp-menu-item>
-      {/each}
-    </sp-menu>
-  </div>
-  <sp-theme color="light" scale="medium" class="w-full">
+<footer class="z-20 bg-white">
+  {#if showLanguagePicker}
+    <div bind:this={languageMenu}>
+      <sp-menu value={currentLocale}>
+        {#each mapping as [code, label]}
+          <sp-menu-item
+            value={code}
+            selected={code === currentLocale}
+            on:click={handleLanguageChange}>
+            {label}
+          </sp-menu-item>
+        {/each}
+      </sp-menu>
+    </div>
+  {/if}
+  <sp-theme color="lightest" scale="medium" class="w-full">
     <div class="flex justify-center items-center text-75">
       <span>
         {$_('comp.footer.copyright', { values: { year: '__year__' } })}
@@ -59,7 +61,7 @@
             $locale,
           )}
           target="_blank">{$_('comp.footer.termsOfUse')}</a>
-        {#if languageMenu}
+        {#if showLanguagePicker}
           <button
             use:tippy={{ content: languageMenu, ...tippyOpts }}
             slot="trigger"
@@ -68,7 +70,6 @@
             role="button">
             <div class="inline-flex items-center space-x-0.5 -mr-0.5">
               <span class="underline">{currentLangString}</span>
-              <Icon size="xs" name="ChevronUp" />
             </div>
           </button>
         {/if}

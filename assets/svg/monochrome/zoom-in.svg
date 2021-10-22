@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+	<rect id="Rectangle" width="20" height="3" transform="translate(0 8.5)" fill="#6e6e6e" />
+	<rect id="Rectangle-2" data-name="Rectangle" width="20" height="3" transform="translate(11.5) rotate(90)"
+		fill="#6e6e6e" />
+</svg>
