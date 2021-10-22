@@ -83,7 +83,7 @@
           <div class="body xl:text-xl 3xl:text-2xl">
             {$_('page.sectionOne.bodyB')}
           </div>
-          <div class="inline-block align-middle">
+          <div class="align-middle pb-4">
             <a
               class="hidden lg:inline-block"
               href={generateOverviewImageUrl(section1)}>
@@ -98,7 +98,7 @@
                 {$_('page.cta.viewMore')}
               </div>
             </a>
-            <Arrow class="inline-block" width="16px" height="16px" />
+            <Arrow class="inline-block w-3.5 h-3 lg:w-4 lg:h-4" />
           </div>
         </div>
       </div>
@@ -120,7 +120,7 @@
           <div class="body xl:text-xl 3xl:text-2xl">
             {$_('page.sectionTwo.bodyB')}
           </div>
-          <div class="inline-block align-middle">
+          <div class="align-middle pb-4">
             <a
               class="hidden lg:inline-block"
               href={generateOverviewImageUrl(section2)}>
@@ -135,7 +135,7 @@
                 {$_('page.cta.viewMore')}
               </div>
             </a>
-            <Arrow class="inline-block" width="16px" height="16px" />
+            <Arrow class="inline-block w-3.5 h-3 lg:w-4 lg:h-4" />
           </div>
         </div>
       </div>
@@ -157,7 +157,7 @@
           <div class="body xl:text-xl 3xl:text-2xl">
             {$_('page.sectionThree.bodyB')}
           </div>
-          <div class="inline-block align-middle">
+          <div class="align-middle pb-4">
             <a
               class="hidden lg:inline-block"
               href={generateOverviewImageUrl(section3)}>
@@ -172,7 +172,7 @@
                 {$_('page.cta.viewMore')}
               </div>
             </a>
-            <Arrow class="inline-block" width="16px" height="16px" />
+            <Arrow class="inline-block w-3.5 h-3 lg:w-4 lg:h-4" />
           </div>
         </div>
       </div>
@@ -238,7 +238,7 @@
   }
 
   .cta {
-    @apply inline-block text-black font-bold text-left pb-4;
+    @apply inline-block text-black font-bold text-left;
     font-family: 'acumin-pro-wide';
   }
 </style>
