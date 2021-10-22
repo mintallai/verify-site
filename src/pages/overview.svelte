@@ -119,19 +119,19 @@
         {:else if primary instanceof Claim}
           <About
             claim={primary}
-            title={primaryNode.data.name}
+            title={primaryNode?.data?.name}
             {isMobileViewer} />
         {:else if primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
           <About
             claim={primary.claim}
-            title={primaryNode.data.name}
+            title={primaryNode?.data?.name}
             {isMobileViewer} />
         {:else if $isLoading}
           <div class="flex items-center justify-center">
             <CircleLoader />
           </div>
         {:else}
-          <AboutNoClaim {primary} />
+          <AboutNoClaim {primary} errors={primaryNode?.data?.errors ?? []} />
         {/if}
       </div>
     </section>

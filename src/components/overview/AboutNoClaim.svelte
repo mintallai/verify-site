@@ -2,11 +2,12 @@
   import { _ } from 'svelte-i18n';
   import Thumbnail from '../Thumbnail.svelte';
   import { getBadgeProps } from '../../lib/claim';
-  import { Ingredient, Source } from '../../lib/sdk';
+  import { Ingredient, Source, IError } from '../../lib/sdk';
   import { getFaqUrl } from '../../stores';
 
   export let primary: Ingredient | Source;
   export let isComparing: boolean = false;
+  export let errors: IError[] = [];
 
   $: title =
     primary instanceof Ingredient
@@ -16,12 +17,15 @@
     primary instanceof Ingredient
       ? getBadgeProps({
           claim: primary.claim,
-          errors: primary.errors,
+          errors: errors.length ? errors : primary.errors,
         })
-      : null;
+      : getBadgeProps({
+          errors,
+        });
   $: showInfo =
-    primary instanceof Ingredient &&
-    (!primary.claim || badgeProps?.badgeHelpText);
+    primary instanceof Source ||
+    (primary instanceof Ingredient &&
+      (!primary.claim || badgeProps?.badgeHelpText));
 </script>
 
 <div class="w-full flex justify-center">
@@ -51,11 +55,8 @@
       <div>
         {#if primary instanceof Ingredient && !primary.claim}
           {$_('comp.contentCredentialsError.noneForFile')}
-        {:else if primary instanceof Ingredient && badgeProps?.badgeHelpText}
+        {:else if badgeProps?.badgeHelpText}
           <span>{$_(badgeProps.badgeHelpText)}</span>
-          <a href={getFaqUrl()} class="link" target="_blank">
-            {$_('comp.contentCredentialsError.learnMore')}
-          </a>
         {/if}
       </div>
     {/if}
