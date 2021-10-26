@@ -85,7 +85,7 @@
                   slot="icon"
                   width="20"
                   height="16"
-                  class="text-gray-800" />
+                  class="breadcrumb-nav text-gray-800" />
               </div>
               {#each nodeAncestors.reverse() as parent (parent.data?.id)}
                 <!-- neither this on:click or getPath produce the correct result for Gavin's deeply nested CICA image -->
@@ -142,6 +142,10 @@
   .breadcrumb-item.current {
     @apply font-bold cursor-default;
   }
+
+  .breadcrumb-nav {
+    --cai-thumbnail-size: 20px;
+  }
   .nav-tabs {
     --spectrum-tabs-rule-color: var(--white);
     --spectrum-tabs-m-text-color: var(--gray-700);
@@ -156,6 +160,7 @@
   sp-menu-item {
     --cai-thumbnail-size: 32px;
   }
+
   @screen lgHeight {
     .container {
       @apply sticky;
