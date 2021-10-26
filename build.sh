@@ -52,14 +52,6 @@ yarn install
 yarn build
 yarn run test
 
-# Build third-party integration for squarespace, etc.
-pushd sdk/third-party
-yarn install
-yarn build
-popd
-mkdir -p dist/sdk
-cp -r sdk/third-party/dist/. dist/sdk/
-
 # Report dependencies to TESSA
 if [ -n "$TESSA2_API_KEY" ]; then
     echo "TESSA2_API_KEY found. Reporting dependencies to TESSA"

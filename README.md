@@ -2,8 +2,6 @@
 
 This project generates the CAI verify site front end.
 
-**Note:** This is the `next` branch of the verify site, which provides support for the updated CAI claim structure (as of July 2021). This will be merged into `master` once we have a backwards-compatible version of the site available for legacy images to use.
-
 ## Get Started
 
 To run, check out this project and run:

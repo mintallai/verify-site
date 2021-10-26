@@ -20,19 +20,24 @@
     window.location.assign('/inspect');
     evt.preventDefault();
   }
+
+  function goToLanding(evt: Event) {
+    window.location.assign('/');
+    evt.preventDefault();
+  }
 </script>
 
 <header class="flex relative">
   <div class="flex-shrink">
     <button
-      on:click={() => navigateToRoot()}
+      on:click={goToLanding}
       class="flex select-none outline-none items-center">
       <h1
         data-test-id="app.name"
         class="font-black text-600 text-gray-900 leading-none">
         {$_('comp.header.productName')}
       </h1>
-      <div class="beta">{$_('comp.header.c2paBeta')}</div>
+      <div class="beta">{$_('comp.header.beta')}</div>
     </button>
   </div>
   <div class="links full-menu">
@@ -58,6 +63,8 @@
   </div>
   {#if $isBurgerMenuShown}
     <div transition:slide={{ duration: 300 }} class="burger-menu">
+      <a href="/inspect" on:click={handleBurgerClick}
+        >{$_('comp.header.uploadImage')}</a>
       <a href={getFaqUrl()} target="_blank">FAQ</a>
       <a href={$learnMoreUrl}>{$_('comp.header.learnMore')}</a>
     </div>
@@ -75,7 +82,7 @@
     @apply hidden;
   }
   .beta {
-    @apply inline-block bg-blue-400 text-white font-semi-bold text-xxs rounded px-2 py-0 ml-3;
+    @apply inline-block bg-gray-200 text-gray-700 font-semi-bold text-xxs rounded px-2 py-0 ml-3;
     line-height: 1.4375rem;
   }
   .links {

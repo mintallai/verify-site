@@ -10,5 +10,6 @@ pkg/
 .vscode
 .idea
 test-results
-.yarn
+.yarn/
 .yarnrc.yml
+.npmrc

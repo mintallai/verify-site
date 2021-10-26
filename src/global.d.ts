@@ -7,10 +7,23 @@ declare module 'html-parse-stringify' {
 
 declare module 'svelte-css-vars';
 
+declare module '@intl/adobe-locales';
+
+declare module '@contentauth/web-components/*';
+declare module '@contentauth/sdk/dist/*';
+
 declare module '*.svg';
+declare module '*.png';
+declare module '*.jpg';
 
 declare var __breakpoints__;
 declare var process;
+
+declare namespace svelte.JSX {
+  interface HTMLAttributes<T> {
+    onthumbnail?: (event: any) => any;
+  }
+}
 
 declare interface IUrlParams {
   source: string;
@@ -20,9 +33,4 @@ declare interface IUrlParams {
 
 declare interface IErrorIdentifierMap {
   [claimID: string]: IErrorSummary[];
-}
-
-declare interface ISourceInfo {
-  name: string;
-  dataUrl: string;
 }

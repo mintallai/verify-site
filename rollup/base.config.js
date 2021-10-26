@@ -6,6 +6,7 @@ import Hmr from 'rollup-plugin-hot';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import commonjs from '@rollup/plugin-commonjs';
+import url from '@rollup/plugin-url';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import copy from 'rollup-plugin-copy';
@@ -20,6 +21,7 @@ import svelteSvg from '../etc/rollup/plugins/svelte-svg';
 const tailwindConfig = require('./tailwind.config');
 const { transformDictionaryJson } = require('./rollup/util/dictionary');
 
+const gitRevision = git.short();
 const year = new Date().getFullYear();
 const newrelic = fs.readFileSync('etc/newrelic.html');
 const banner = `
@@ -42,7 +44,7 @@ const isNollup = !!process.env.NOLLUP;
 function typeCheck() {
   return {
     writeBundle() {
-      childProcess.spawn('svelte-check', ['--ignore sdk,static'], {
+      childProcess.spawn('svelte-check', ['--ignore static'], {
         stdio: ['ignore', 'inherit', 'inherit'],
         shell: true,
       });
@@ -130,14 +132,18 @@ function baseConfig(config, ctx) {
       copy({
         targets: [
           {
-            src: [`node_modules/@contentauth/toolkit/pkg/web/**/*`],
-            dest: `${distDir}/toolkit`,
+            src: [
+              `node_modules/@contentauth/sdk/dist/assets/wasm/toolkit_bg.wasm`,
+              `node_modules/@contentauth/sdk/dist/cai-sdk.worker.min.js`,
+            ],
+            dest: `${distDir}/sdk`,
           },
         ],
         copyOnce: true,
         flatten: true,
         verbose: true,
       }),
+
       copy({
         targets: [
           {
@@ -159,16 +165,16 @@ function baseConfig(config, ctx) {
         extensions: ['.svelte', '.ts', '.js', '.svg'],
         dedupe: (importee) => !!importee.match(/svelte(\/|$)/),
       }),
-      svelteSvg(),
+      svelteSvg({
+        exclude: ['**/*.noparse.svg'],
+      }),
       replace({
         'process.env.NODE_ENV': JSON.stringify(
           production ? 'production' : 'development',
         ),
-        'process.env.GIT_REVISION': JSON.stringify(git.short()),
+        'process.env.GIT_REVISION': JSON.stringify(gitRevision),
         'process.env.SUPPORTED_LOCALES': JSON.stringify(getSupportedLocales()),
-        __toolkit_wasm_src__:
-          process.env.TOOLKIT_WASM_SRC || '/toolkit/toolkit_bg.wasm',
-        __delay__: production ? '100' : '100',
+        __delay__: production ? '0' : '0',
         __breakpoints__: JSON.stringify(tailwindConfig.theme.screens),
         __year__: JSON.stringify(new Date().getFullYear()),
       }),
@@ -177,6 +183,16 @@ function baseConfig(config, ctx) {
         sourceMap: !production,
       }),
       commonjs(),
+      url({
+        publicPath: '/build/',
+        include: [
+          '**/*.noparse.svg',
+          '**/*.png',
+          '**/*.jp(e)?g',
+          '**/*.gif',
+          '**/*.webp',
+        ],
+      }),
 
       production &&
         terser({
@@ -208,11 +224,12 @@ function baseConfig(config, ctx) {
     const scriptTag =
       typeof config.scriptTag != 'undefined'
         ? config.scriptTag
-        : '<script type="module" defer src="/build/main.js"></script>';
-    const bundleTag = '<script defer src="/build/bundle.js"></script>';
+        : `<script type="module" defer src="/build/main.js"></script>`;
+    const bundleTag = `<script defer src="/build/bundle.js"></script>`;
     return contents
       .toString()
       .replace('__NEW_RELIC__', production ? newrelic : '')
-      .replace('__SCRIPT__', dynamicImports ? scriptTag : bundleTag);
+      .replace('__SCRIPT__', dynamicImports ? scriptTag : bundleTag)
+      .replace(/__GIT_REVISION__/g, gitRevision);
   }
 }
