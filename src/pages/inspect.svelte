@@ -178,7 +178,9 @@
       {:else}
         <Viewer asset={primary?.asset} {isDragging} />
       {/if}
-      <section class="right-col p-4 pt-0 md:pt-4">
+      <section
+        data-test-id="inspect.right-col"
+        class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing && primary instanceof Claim}
           <div class="wrapper">
             <About

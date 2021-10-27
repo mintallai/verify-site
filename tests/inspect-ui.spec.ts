@@ -13,12 +13,16 @@ for (const testImage of imageIndex) {
       const { page } = inspectPage;
       await inspectPage.uploadImage(testImage);
       const elementHandle = await inspectPage.getThumbnailElement();
-      const section = page.locator('data-test-id=navigation.hierarchy');
+      const hierarchy = page.locator('data-test-id=navigation.hierarchy');
+      const rightCol = page.locator('data-test-id=inspect.right-col');
       await expect(await elementHandle.screenshot()).toMatchSnapshot(
         `${filename}-viewer-thumbnail.png`,
       );
-      await expect(await section.screenshot()).toMatchSnapshot(
+      await expect(await hierarchy.screenshot()).toMatchSnapshot(
         `${filename}-hierarchy.png`,
+      );
+      await expect(await rightCol.screenshot()).toMatchSnapshot(
+        `${filename}-right-col.png`,
       );
     });
   });
