@@ -34,7 +34,7 @@
       </dd>
     </dl>
   </div>
-  <div class="relative pl-4">
+  <div data-test-id="navigation.hierarchy" class="relative pl-4">
     <div bind:this={container} class="grid space-y-4 pt-2">
       {#if $hierarchy}
         <HierarchyNode node={$hierarchy} />

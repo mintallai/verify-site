@@ -8,16 +8,18 @@ test.describe('Inspect page - accessibility check', () => {
     axeOptions: {},
   };
 
-  test('the upload screen passes accessibility checks', async ({ page }) => {
+  test.skip('the upload screen passes accessibility checks', async ({
+    page,
+  }) => {
     await page.goto('/inspect');
     await injectAxe(page);
     await checkA11y(page, null, config);
   });
 
-  test('accessibility checks still pass after you upload an image', async ({
+  test.skip('accessibility checks still pass after you upload an image', async ({
     inspectPage,
   }) => {
-    await inspectPage.uploadImage('CAICAI.jpg');
+    await inspectPage.uploadImage();
     await injectAxe(inspectPage.page);
     await checkA11y(inspectPage.page, null, config);
   });

@@ -1,6 +1,9 @@
 import type { Page } from '@playwright/test';
 import { resolve } from 'path';
 
+const imageBase = resolve(__dirname, '../assets/data');
+const defaultImage = 'tests/CAICAI.jpg';
+
 export class InspectPage {
   readonly page: Page;
 
@@ -18,19 +21,19 @@ export class InspectPage {
     return this.page.waitForSelector(InspectPage.THUMBNAIL_SELECTOR);
   }
 
-  assetLocator(index = -1) {
-    const locator = this.page.locator('data-test-id=asset.container');
-    if (index >= 0) {
-      return locator.nth(index);
+  nodeLocator(index?: string) {
+    if (index) {
+      return this.page.locator(`div[data-node-idx="${index}"]`);
     }
-    return locator;
+    return this.page.locator('div[data-node-idx]');
   }
 
-  async uploadImage(imageFilename: string) {
+  async uploadImage(imageRelPath: string = defaultImage) {
     await this.goto();
     await this.page.setInputFiles(
       'data-test-id=viewer.fileInput',
-      resolve(__dirname, '../images', imageFilename),
+      resolve(imageBase, imageRelPath),
     );
+    await this.getThumbnailElement();
   }
 }
