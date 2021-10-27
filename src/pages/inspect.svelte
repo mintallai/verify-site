@@ -118,7 +118,7 @@
     {#if error}
       <section class="left-col" class:loading={$isLoading} />
       <Viewer isError={!!error} />
-      <section class="right-col p-4">
+      <section data-test-id="inspect.right-col" class="right-col p-4">
         <Alert severity="error">{$_(error)}</Alert>
       </section>
     {:else if $isLoading}
@@ -126,7 +126,10 @@
         <CircleLoader />
       </section>
       <Viewer isLoading={true} {isDragging} />
-      <section class="right-col" class:loading={$isLoading}>
+      <section
+        data-test-id="inspect.right-col"
+        class="right-col"
+        class:loading={$isLoading}>
         <CircleLoader />
       </section>
     {:else if noMetadata}
@@ -134,7 +137,7 @@
         <Navigation {source} />
       </section>
       <Viewer asset={$provenance?.source} {isDragging} />
-      <section class="right-col p-4">
+      <section data-test-id="inspect.right-col" class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
     {:else if primary}
