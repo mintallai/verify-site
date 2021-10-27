@@ -5,7 +5,7 @@ const app = express();
 const port = process.env.PORT || 8081;
 
 const distPath = path.resolve(__dirname, '../../dist');
-const assetDataPath = path.resolve(__dirname, '../tests/assets/data');
+const assetDataPath = path.resolve(__dirname, '../assets/data');
 const index = fs.readFileSync(path.resolve(distPath, '__app.html')).toString();
 
 app.use(express.static(distPath));

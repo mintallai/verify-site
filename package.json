@@ -14,9 +14,11 @@
     "routify": "routify",
     "test:unit": "jest",
     "test": "playwright test",
+    "test:init:assets": "node tests/scripts/init.js",
+    "test:init": "run-p build test:init:assets",
     "test:server": "node tests/scripts/server.js",
-    "test:watch": "cross-env BASE_URL=http://localhost:5000 nodemon -w tests -e 'ts' -x 'yarn test'",
-    "test:only": "nodemon -w tests -e 'ts' -x 'yarn test --grep @only'"
+    "test:watch": "nodemon -w tests -e 'ts' -x 'yarn test'",
+    "test:watch:local": "cross-env BASE_URL=http://localhost:5000 nodemon -w tests -e 'ts' -x 'yarn test'"
   },
   "devDependencies": {
     "@awaitjs/express": "^0.9.0",

@@ -7,25 +7,6 @@ test.describe('Inspect page - base functionality', () => {
     await expect(locator).toContainText('Drag and drop your file');
   });
 
-  test('image thumbnail loads correctly', async ({ inspectPage }) => {
-    await inspectPage.uploadImage();
-    const elementHandle = await inspectPage.getThumbnailElement();
-    expect(await elementHandle.screenshot()).toMatchSnapshot(
-      'CAICAI-viewer-thumbnail.png',
-    );
-  });
-
-  test('content credentials section is shown properly after upload', async ({
-    inspectPage,
-  }) => {
-    const { page } = inspectPage;
-    const section = page.locator('data-test-id=navigation.hierarchy');
-    await inspectPage.uploadImage();
-    await expect(await section.screenshot()).toMatchSnapshot(
-      'CAICAI-content-credentials-hierarchy.png',
-    );
-  });
-
   test('content credentials section shows the correct assets', async ({
     inspectPage,
   }) => {
