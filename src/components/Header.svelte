@@ -7,6 +7,7 @@
     getFaqUrl,
     navigateToRoot,
     isBurgerMenuShown,
+    setProvenance,
   } from '../stores';
   import '@contentauth/web-components/dist/icons/color/logos/adobe';
   import 'vanilla-hamburger/fade-burger';
@@ -24,6 +25,11 @@
   function goToLanding(evt: Event) {
     window.location.assign('/');
     evt.preventDefault();
+  }
+
+  function chooseImage() {
+    isBurgerMenuShown.update((shown) => !shown);
+    setProvenance(null);
   }
 </script>
 
@@ -61,7 +67,7 @@
   </div>
   {#if $isBurgerMenuShown}
     <div transition:slide={{ duration: 300 }} class="burger-menu">
-      <a href="/inspect" on:click={handleBurgerClick}
+      <a href="/inspect" on:click={chooseImage}
         >{$_('comp.header.uploadImage')}</a>
       <a href={getFaqUrl()} target="_blank">FAQ</a>
       <a href={$learnMoreUrl}>{$_('comp.header.learnMore')}</a>
