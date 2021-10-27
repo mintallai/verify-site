@@ -2,12 +2,7 @@
   import { _ } from 'svelte-i18n';
   import { slide } from 'svelte/transition';
   import Button from './Button.svelte';
-  import {
-    learnMoreUrl,
-    getFaqUrl,
-    navigateToRoot,
-    isBurgerMenuShown,
-  } from '../stores';
+  import { learnMoreUrl, getFaqUrl, isBurgerMenuShown } from '../stores';
   import '@contentauth/web-components/dist/icons/color/logos/adobe';
   import 'vanilla-hamburger/fade-burger';
 

@@ -48,6 +48,7 @@
       {#if !isUploadMode}
         {#if !isLoading && !isError}
           <img
+            data-test-id="viewer.thumbnail"
             use:thumbnail={asset}
             on:thumbnail={handleImgSrc}
             alt="Thumbnail"

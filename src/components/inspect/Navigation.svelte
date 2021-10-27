@@ -16,7 +16,7 @@
   onDestroy(() => isCompareSelectMode.set(false));
 </script>
 
-<div class="h-full relative">
+<div data-test-id="navigation.section" class="h-full relative">
   <div class="nav-width p-4 pb-1">
     <dl class="attributes">
       <dt>

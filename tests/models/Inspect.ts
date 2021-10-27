@@ -32,10 +32,5 @@ export class InspectPage {
       'data-test-id=viewer.fileInput',
       resolve(__dirname, '../images', imageFilename),
     );
-    // Ingredients/badges seem to be displayed on the next render cycle after
-    // the initial thumbnail element
-    await this.page.waitForSelector(
-      'data-test-id=contentCredentials.ingredients',
-    );
   }
 }

@@ -19,7 +19,7 @@ test.describe('Inspect page - base functionality', () => {
     inspectPage,
   }) => {
     const { page } = inspectPage;
-    const section = page.locator('data-test-id=contentCredentials.section');
+    const section = page.locator('data-test-id=navigation.section');
     await inspectPage.uploadImage('CAICAI.jpg');
     await expect(await section.screenshot()).toMatchSnapshot(
       'CAICAI-content-credentials-section.png',

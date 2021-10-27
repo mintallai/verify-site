@@ -26,12 +26,17 @@
 </script>
 
 <input
+  data-test-id="viewer.fileInput"
   type="file"
   bind:this={fileInput}
   accept="image/jpeg,image/png"
   class="hidden" />
 {#if isUploadMode || isError}
-  <div class="dropper" class:fullscreen={!isError} in:fade>
+  <div
+    data-test-id="viewer.upload"
+    class="dropper"
+    class:fullscreen={!isError}
+    in:fade>
     <DropFile
       width={58}
       height={99}
