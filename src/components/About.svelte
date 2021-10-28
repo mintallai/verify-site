@@ -54,6 +54,9 @@
   $: assets = claim.ingredients?.length ? claim.ingredients : null;
   $: signedBy = claim.signature?.issuer;
   $: sigDate = claim.signature?.date;
+  $: {
+    console.log('sigDate', sigDate, sigDate.toString());
+  }
   $: recorder = claim.formatRecorder(RecorderFormat.ProgramNameAndVersion);
   $: isBeta = getIsBeta(claim);
   $: website = getWebsite(claim);
@@ -121,9 +124,11 @@
           </cai-tooltip>
         </dt>
         <dd>
-          {#if sigDate}
+          {#if sigDate && sigDate.toString() !== 'Invalid Date'}
             {$date(sigDate, { format: 'short' })}{', '}
             {$time(sigDate, { format: 'short' })}
+          {:else}
+            {$_('comp.about.signedOn.notAvailable')}
           {/if}
         </dd>
       </dl>
