@@ -54,9 +54,6 @@
   $: assets = claim.ingredients?.length ? claim.ingredients : null;
   $: signedBy = claim.signature?.issuer;
   $: sigDate = claim.signature?.date;
-  $: {
-    console.log('sigDate', sigDate, sigDate.toString());
-  }
   $: recorder = claim.formatRecorder(RecorderFormat.ProgramNameAndVersion);
   $: isBeta = getIsBeta(claim);
   $: website = getWebsite(claim);
