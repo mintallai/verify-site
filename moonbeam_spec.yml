@@ -33,6 +33,14 @@ services:
         secret_data:
           field: public_github_package_token
           path: dme_cai/caivrfy
+    ci_projects:
+      - title: make-ci
+        build_type: lambda
+        lambda: ethos-codebuild-make-ci
+        build_parameters:
+          - name: target
+            type: string
+            default_value: ci
     environments:
       - name: Build
         tier: 4

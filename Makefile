@@ -2,6 +2,7 @@ SERVICE_NAME=verify-site
 
 # $sha is provided by jenkins
 BUILDER_TAG?=$(or $(sha),$(SERVICE_NAME)-builder)
+CI_TAG?=$(or $(sha),$(SERVICE_NAME)-ci)
 IMAGE_TAG=$(SERVICE_NAME)-img
 IMAGE_TAG_S3_SHA=$(sha)-img
 
@@ -11,29 +12,21 @@ login:
 	@echo docker login -u ARTIFACTORY_USER -p ARTIFACTORY_API_TOKEN docker-asr-release.dr.corp.adobe.com
 	@docker login -u $(ARTIFACTORY_USER) -p $(ARTIFACTORY_API_TOKEN) docker-asr-release.dr.corp.adobe.com
 
+clean:
+	rm -rf dist node_modules
+
 # This target is called by the Jenkins "ci" job. It builds and runs the builder image,
 # which should build the project and run unit tests, and optionally, code coverage.
-#
-# Ethos and Document Cloud build infrastructure requires that images be tagged in a standard way (see IMAGE_TAG above)
-# so that the infrastructure can find them after building. Unlike Ethos, however, Document Cloud currently executes
-# our ci jobs on the same Jenkins servers as our build jobs. In order to avoid accidentally publishing the wrong image
-# (i.e. when a ci job and a build job run at the same time) we override the image tag for ci jobs by adding a git sha
-# provided by Jenkins.
-ci: IMAGE_TAG := $(if $(sha),$(IMAGE_TAG)-ci-$(sha),$(IMAGE_TAG))
-ci: build
-ifeq ($(RUN_COVERAGE),true)
+ci:
+	docker build -t $(CI_TAG) -f Dockerfile.ci.mt .
 	docker run \
-	-e COVERALLS_SERVICE_NAME \
-	-e COVERALLS_REPO_TOKEN \
-	-e COVERALLS_ENDPOINT \
-	-e CI_PULL_REQUEST=$(ghprbPullId) \
-	-e ARTIFACTORY_API_TOKEN \
-	-e ARTIFACTORY_USER \
-	-e PUBLIC_GITHUB_PACKAGE_TOKEN \
-	$(BUILDER_TAG) /build/run-coverage.sh
-else
-	echo "No test coverage to run"
-endif
+		-e PATH_PREFIX \
+		-e PUSH_ARTIFACTS \
+		-e ARTIFACTORY_API_TOKEN \
+		-e ARTIFACTORY_USER \
+		-e CI_PULL_REQUEST=$(ghprbPullId) \
+		-e TESSA2_API_KEY \
+		$(CI_TAG)
 
 # This target is called by the Jenkins "build" job.
 build: login
@@ -55,62 +48,3 @@ build: login
 	# Package the built content it into a deployer image.
 	# This deployer image knows how to push the artifacts to S3 when run.
 	docker build --pull -t $(IMAGE_TAG) .
-
-# This target is called by the Jenkins "ui-test" job.
-# Runs the uitest image to launch the UI test.
-run-uitest: login
-	docker build --pull -t $(BUILDER_TAG) -f Dockerfile.build.mt .
-	docker run \
-	-v `pwd`:/build:z \
-	-e PATH_PREFIX \
-	-e ARTIFACTORY_API_TOKEN \
-	-e ARTIFACTORY_USER \
-	-e PUBLIC_GITHUB_PACKAGE_TOKEN \
-	$(BUILDER_TAG) /build/run-uitest.sh
-
-# This target is called by the Jenkins "cdn-postmerge" job.
-# Runs the build image to launch the post-merge script.
-run-postmerge-hook: login
-	docker build --pull -t $(BUILDER_TAG) -f Dockerfile.build.mt .
-	docker run \
-	-e PATH_PREFIX \
-	-e ARTIFACTORY_API_TOKEN \
-	-e ARTIFACTORY_USER \
-	-e GITHUB_TOKEN \
-	$(BUILDER_TAG) /build/run-postmerge-hook.sh
-
-### Targets below this line are used for development and debugging purposes only ###
-
-run-build-image-interactively:
-	docker run \
-	-e PATH_PREFIX \
-	-e PUSH_ARTIFACTS \
-	-e ARTIFACTORY_API_TOKEN \
-	-e ARTIFACTORY_USER \
-	-e PUBLIC_GITHUB_PACKAGE_TOKEN \
-	-e TESSA2_API_KEY \
-	-i -t $(BUILDER_TAG) /bin/bash
-
-run-deployer-image-interactively:
-	docker run \
-	-e AWS_ACCESS_KEY_ID \
-	-e AWS_SECRET_ACCESS_KEY \
-	-e AWS_SESSION_TOKEN \
-	-e AWS_ROLE \
-	-e S3_BUCKETS \
-	-e LOCK_PHRASE \
-	-e DEPLOY_TEST_FOLDERS \
-	-e rollback \
-	-i -t $(IMAGE_TAG) /bin/bash
-
-run-deployer-image:
-	docker run \
-	-e AWS_ACCESS_KEY_ID \
-	-e AWS_SECRET_ACCESS_KEY \
-	-e AWS_SESSION_TOKEN \
-	-e AWS_ROLE \
-	-e S3_BUCKETS \
-	-e LOCK_PHRASE \
-	-e DEPLOY_TEST_FOLDERS \
-	-e rollback \
-	$(IMAGE_TAG)
