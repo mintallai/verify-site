@@ -65,7 +65,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@contentauth/sdk": "0.8.8-alpha.1",
+    "@contentauth/sdk": "0.8.8-alpha.2",
     "@contentauth/web-components": "^0.4.1",
     "@intl/adobe-locales": "^2.17.7",
     "@roxi/routify": "^2.18.3",
