@@ -24,6 +24,43 @@ localStorage.debug = 'toolkit,store';
 localStorage.debug = false;
 ```
 
+## Testing
+
+Our main integration tests are run via [Playwright](https://playwright.dev/). The first time you run the tests, you need to run the following after the main `yarn install` for the project:
+
+```shell
+# Install supported browsers so Playwright can use them
+npx playwright install
+```
+
+Then, to run the tests, you can run:
+
+```shell
+# Build the site from the current code and download test assets from Artifactory
+yarn run test:init
+# Run the test suite
+yarn run test
+```
+
+**Note:** Please make sure you are on VPN and have your `ARTIFACTORY_USER` and `ARTIFACTORY_API_TOKEN` environment variables set in your terminal so that the test images download correctly.
+
+### Running tests for development
+
+If you don't need to make any code changes to the site and just want to add or modify tests, you can run:
+
+```shell
+yarn run test:watch
+```
+
+If you want to edit tests _and_ edit the site, you can run:
+
+```shell
+# in terminal window #1
+yarn dev
+# in terminal window #2
+yarn test:watch:local
+```
+
 ## Branching and Tagging Policy
 
 _(This policy should be applied to all future **hosted services** from the CAI team. This policy does not apply to library and application projects. A separate policy is being drafted as of this writing.)_

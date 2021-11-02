@@ -8,25 +8,25 @@
 
 {#if href}
   <a
+    data-test-id="button"
     class="button"
     class:full
     class:secondary
     class:outline
     class:lg={size === 'lg'}
-    {href}
-  >
+    {href}>
     <div class="inner">
       <slot />
     </div>
   </a>
 {:else}
   <button
+    data-test-id="button"
     class="button"
     class:full
     class:secondary
     class:lg={size === 'lg'}
-    on:click|stopPropagation
-  >
+    on:click|stopPropagation>
     <div class="inner">
       <slot />
     </div>
