@@ -3,5 +3,9 @@
 </script>
 
 <sp-theme color="lightest" scale="large">
-  <sp-progress-circle indeterminate="true" size="large" class="loader" />
+  <sp-progress-circle
+    label="Loading asset data"
+    indeterminate="true"
+    size="large"
+    class="loader" />
 </sp-theme>

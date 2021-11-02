@@ -16,7 +16,7 @@
   onDestroy(() => isCompareSelectMode.set(false));
 </script>
 
-<div class="h-full relative">
+<div data-test-id="navigation.section" class="h-full relative">
   <div class="nav-width p-4 pb-1">
     <dl class="attributes">
       <dt>
@@ -34,7 +34,7 @@
       </dd>
     </dl>
   </div>
-  <div class="relative pl-4">
+  <div data-test-id="navigation.hierarchy" class="relative pl-4">
     <div bind:this={container} class="grid space-y-4 pt-2">
       {#if $hierarchy}
         <HierarchyNode node={$hierarchy} />

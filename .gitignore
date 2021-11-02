@@ -9,6 +9,8 @@ pkg/
 *.log
 .vscode
 .idea
-.yarnrc.yml
+test-results
 .yarn/
+.yarnrc.yml
 .npmrc
+tests/assets/
