@@ -6,11 +6,11 @@ module "s3_browserstack" {
   use_cors  = true
 
   cors_rule = [{
-    allowed_headers = ["*"]
-    allowed_methods = ["PUT", "POST"]
-    allowed_origins = ["https://s3-website-test.hashicorp.com"]
+    allowed_headers = ["Range"]
+    allowed_methods = ["GET", "HEAD"]
+    allowed_origins = ["*"]
     expose_headers  = ["ETag"]
-    max_age_seconds = ["3000"]
+    max_age_seconds = ["300"]
   }]
 }
 
