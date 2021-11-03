@@ -46,10 +46,11 @@
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
   $: thumbnailAsset =
-    $hierarchy?.data?.id === '__source__'
-      ? $hierarchy?.data?.asset
-      : $primaryAsset?.asset;
-  $: thumbnailTitle = $primaryAsset?.title || $primaryAsset?.filename;
+    $primaryAsset instanceof Source ? $primaryAsset : $primaryAsset?.asset;
+  $: thumbnailTitle =
+    $primaryAsset instanceof Source
+      ? $primaryAsset.filename
+      : $primaryAsset?.title;
 </script>
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
@@ -112,7 +113,7 @@
           {/if}
           <div class="breadcrumb-item items-center current">
             <Thumbnail asset={thumbnailAsset} />
-            <span class="font-regular text-smd ml-2">{thumbnailTitle} </span>
+            <span class="font-regular text-smd ml-2">{thumbnailTitle}</span>
           </div>
         </div>
       {:else}
