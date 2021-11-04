@@ -121,9 +121,11 @@
           </cai-tooltip>
         </dt>
         <dd>
-          {#if sigDate}
+          {#if sigDate && sigDate.toString() !== 'Invalid Date'}
             {$date(sigDate, { format: 'short' })}{', '}
             {$time(sigDate, { format: 'short' })}
+          {:else}
+            {$_('comp.about.signedOn.notAvailable')}
           {/if}
         </dd>
       </dl>

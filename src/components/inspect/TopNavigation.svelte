@@ -12,6 +12,7 @@
     CompareMode,
     isMobileViewerShown,
     navigateToPath,
+    hierarchy,
   } from '../../stores';
   import { Source } from '../../lib/sdk';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
@@ -42,6 +43,12 @@
 
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
+  $: thumbnailAsset =
+    $primaryAsset instanceof Source ? $primaryAsset : $primaryAsset?.asset;
+  $: thumbnailTitle =
+    $primaryAsset instanceof Source
+      ? $primaryAsset.filename
+      : $primaryAsset?.title;
 </script>
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
@@ -76,7 +83,7 @@
         </div>
       {:else if showMenu}
         <div class="flex self-center">
-          {#if nodeAncestors.length > 1}
+          {#if nodeAncestors?.length > 1}
             <sp-action-menu class="-ml-3" value={$primaryId}>
               <div slot="icon" class="py-2">
                 <BreadcrumbDropdown
@@ -103,10 +110,8 @@
             </div>
           {/if}
           <div class="breadcrumb-item items-center current">
-            <Thumbnail asset={$primaryAsset?.asset} />
-            <span class="font-regular text-smd ml-2"
-              >{$primaryAsset?.title}
-            </span>
+            <Thumbnail asset={thumbnailAsset} />
+            <span class="font-regular text-smd ml-2">{thumbnailTitle}</span>
           </div>
         </div>
       {:else}
