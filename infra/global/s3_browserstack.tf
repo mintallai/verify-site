@@ -1,8 +1,9 @@
 module "s3_browserstack" {
-  source = "git@git.corp.adobe.com:cai/shared-infra.git//modules/s3-bucket?ref=cors-s3"
+  source = "git@git.corp.adobe.com:cai/shared-infra.git//modules/s3-bucket"
 
   shortname = "browserstack"
   service   = "verify-site"
+  is_public = true
   use_cors  = true
 
   cors_rule = [{
