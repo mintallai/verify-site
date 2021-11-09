@@ -57,18 +57,24 @@ function download(dest) {
     })
       .then((res) => {
         const contentLength = res.headers['content-length'];
+        const rewrite = typeof process.stdout.clearLine === 'function';
         let downloaded = 0;
         res.data.pipe(fs.createWriteStream(dest));
         res.data.on('data', (chunk) => {
           downloaded += chunk.length;
           const pct = Math.round((downloaded / contentLength) * 100);
-          process.stdout.clearLine();
-          process.stdout.cursorTo(0);
-          process.stdout.write(
-            `Downloaded ${pct}% of archive (${downloaded}/${contentLength} bytes)`,
-          );
+          if (rewrite) {
+            process.stdout.clearLine();
+            process.stdout.cursorTo(0);
+            process.stdout.write(
+              `Downloaded ${pct}% of archive (${downloaded}/${contentLength} bytes)`,
+            );
+          }
         });
-        res.data.on('close', () => resolve(dest));
+        res.data.on('close', () => {
+          console.log(`Finished downloading archive.`);
+          resolve(dest);
+        });
       })
       .catch((err) => {
         reject(err);

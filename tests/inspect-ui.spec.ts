@@ -3,8 +3,9 @@ import filenamify from 'filenamify';
 import { test } from './test';
 import imageIndex from './assets/data/index.json';
 
+/*
 for (const testImage of imageIndex) {
-  test.describe(`User interface - test image › ${testImage}`, async () => {
+  test(`User interface - test image › ${testImage}`, async () => {
     const filename = filenamify(testImage);
 
     test('image thumbnail and navigation render correctly', async ({
@@ -27,3 +28,4 @@ for (const testImage of imageIndex) {
     });
   });
 }
+*/

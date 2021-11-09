@@ -33,24 +33,10 @@ fi
 # It is assumed that the build result being deployed to S3/CDN will be stored
 # in the "dist" folder, and if you want to publish an NPM package to the
 # Artifactory, it will be stored in the "dist-pub" folder.
-rm -rf dist dist-pub
-# This should match the path below
-export TOOLKIT_WASM_SRC="/toolkit/toolkit_bg.wasm"
-
-# Set up authentication
-if [ -n "$PUBLIC_GITHUB_PACKAGE_TOKEN" ]; then
-cat > .npmrc << EOF
-//npm.pkg.github.com/:_authToken=$PUBLIC_GITHUB_PACKAGE_TOKEN
-@contentauth:registry=https://npm.pkg.github.com
-EOF
-else
-    echo "Github package token not found. Publishing cannot continue."
-    exit 1
-fi
+rm -rf dist dist-pub node_modules
 
 yarn install
 yarn build
-yarn run test
 
 # Report dependencies to TESSA
 if [ -n "$TESSA2_API_KEY" ]; then

@@ -13,7 +13,7 @@
     "rollup": "rollup -c rollup.config.js -w",
     "routify": "routify",
     "test:unit": "jest",
-    "test": "exit 0",
+    "test": "playwright test",
     "test:init:assets": "node tests/scripts/init.js",
     "test:init": "run-p build test:init:assets",
     "test:server": "node tests/scripts/server.js",
@@ -23,7 +23,7 @@
   "devDependencies": {
     "@awaitjs/express": "^0.9.0",
     "@fullhuman/postcss-purgecss": "^4.0.3",
-    "@playwright/test": "^1.16.1",
+    "@playwright/test": "1.16.1",
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-node-resolve": "^8.1.0",
     "@rollup/plugin-replace": "^2.3.3",
