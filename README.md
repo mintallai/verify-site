@@ -61,6 +61,16 @@ yarn dev
 yarn test:watch:local
 ```
 
+### Testing in Docker/CI
+
+You can run the tests in docker by running the following command:
+
+```shell
+make ci
+```
+
+This is what will get run when a commit is pushed in order to validate.
+
 ## Branching and Tagging Policy
 
 _(This policy should be applied to all future **hosted services** from the CAI team. This policy does not apply to library and application projects. A separate policy is being drafted as of this writing.)_
