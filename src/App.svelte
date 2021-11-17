@@ -2,11 +2,14 @@
   import { onMount } from 'svelte';
   import { isLoading, locale } from 'svelte-i18n';
   import { lang } from '@intl/adobe-locales';
+  import { afterPageLoad } from '@roxi/routify';
   import Router from '@roxi/routify/runtime/Router.svelte';
+  import { postEvent } from './lib/analytics';
   import { routes } from '../.routify/routes';
+  import { SITE_VERSION } from './lib/config';
   import debug from 'debug';
 
-  console.debug(`Verify site running revision ${process.env.GIT_REVISION}`);
+  console.debug(`Verify site running revision ${SITE_VERSION}`);
 
   onMount(() => {
     const unsubscribe = locale.subscribe((loc) => {
@@ -18,6 +21,13 @@
     });
 
     return unsubscribe;
+  });
+
+  $afterPageLoad(() => {
+    postEvent({
+      'event.type': 'render',
+      'event.subtype': 'page',
+    });
   });
 </script>
 

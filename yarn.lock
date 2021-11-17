@@ -457,6 +457,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@ccx-public/ingest@^4.3.0":
+  version "4.3.0"
+  resolved "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adobe-release/@ccx-public/ingest/-/@ccx-public/ingest-4.3.0.tgz#baab1d88b1cb154dc09b10f5104d2599c4aeaddb"
+  integrity sha1-uqsdiLHLFU3AmxD1EE0lmcSurds=
+
 "@contentauth/detector@^0.2.8":
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/@contentauth/detector/-/detector-0.2.8.tgz#6ab62f272542f91ed03628bf1dc88ac0027348a4"
@@ -5249,7 +5254,7 @@ p-defer@^1.0.0:
   resolved "https://registry.yarnpkg.com/p-defer/-/p-defer-1.0.0.tgz#9f6eb182f6c9aa8cd743004a7d4f96b196b0fb0c"
   integrity sha1-n26xgvbJqozXQwBKfU+WsZaw+ww=
 
-p-limit@^2.2.0:
+p-limit@^2.2.0, p-limit@^2.2.2:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.3.0.tgz#3dd33c647a214fdfffd835933eb086da0dc21db1"
   integrity sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==
@@ -5271,12 +5276,26 @@ p-map@^4.0.0:
     aggregate-error "^3.0.0"
 
 p-memoize@^4.0.1:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/p-memoize/-/p-memoize-4.0.2.tgz#d9c84056a2efbdf4055f83547435e9af49aebb6a"
-  integrity sha512-REJQ6EIeFmvT9O/u0H/ZVWjRII/1/0GhckleQX0yn+Uk9EdXTtmfnrfa3FwF8ZUrfUEe8NInvlRa0ZBKlMxxTA==
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/p-memoize/-/p-memoize-4.0.4.tgz#90a4c4668866737fc5c8364c56b06f6ca44afb15"
+  integrity sha512-ijdh0DP4Mk6J4FXlOM6vPPoCjPytcEseW8p/k5SDTSSfGV3E9bpt9Yzfifvzp6iohIieoLTkXRb32OWV0fB2Lw==
   dependencies:
     map-age-cleaner "^0.1.3"
     mimic-fn "^3.0.0"
+    p-settle "^4.1.1"
+
+p-reflect@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/p-reflect/-/p-reflect-2.1.0.tgz#5d67c7b3c577c4e780b9451fc9129675bd99fe67"
+  integrity sha512-paHV8NUz8zDHu5lhr/ngGWQiW067DK/+IbJ+RfZ4k+s8y4EKyYCz8pGYWjxCg35eHztpJAt+NUgvN4L+GCbPlg==
+
+p-settle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/p-settle/-/p-settle-4.1.1.tgz#37fbceb2b02c9efc28658fc8d36949922266035f"
+  integrity sha512-6THGh13mt3gypcNMm0ADqVNCcYa3BK6DWsuJWFCuEKP1rpY+OKGp7gaZwVmLspmic01+fsg/fN57MfvDzZ/PuQ==
+  dependencies:
+    p-limit "^2.2.2"
+    p-reflect "^2.1.0"
 
 p-try@^2.0.0:
   version "2.2.0"
@@ -5761,10 +5780,10 @@ prepend-http@^2.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
-prettier-plugin-svelte@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-svelte/-/prettier-plugin-svelte-2.5.1.tgz#6c2f5e7fbe2aa208b340b75edc4fdfda33fb254c"
-  integrity sha512-IhZUcqr7Bg4LY15d87t9lDr7EyC0IPehkzH5ya5igG8zYwf3UYaYDFnVW2mckREaZyLREcH9YOouesmt4f5Ozg==
+prettier-plugin-svelte@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-svelte/-/prettier-plugin-svelte-2.6.0.tgz#0e845b560b55cd1d951d6c50431b4949f8591746"
+  integrity sha512-NPSRf6Y5rufRlBleok/pqg4+1FyGsL0zYhkYP6hnueeL1J/uCm3OfOZPsLX4zqD9VAdcXfyEL2PYqGv8ZoOSfA==
 
 prettier@^2.5.1:
   version "2.5.1"
@@ -7128,6 +7147,11 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
+
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 v8-to-istanbul@^8.1.0:
   version "8.1.0"

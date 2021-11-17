@@ -10,6 +10,7 @@
 {#if href}
   <a
     data-test-id={testId}
+    on:click
     class="button"
     class:full
     class:secondary
