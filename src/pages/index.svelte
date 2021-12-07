@@ -1,20 +1,13 @@
 <!-- routify:options reset=true -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-
   import Arrow from '../../assets/svg/monochrome/arrow-back.svg';
   import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
-
-  // Section 0
   import hero from '../../assets/png/hero-img.png';
-  // Section 1
   import section1 from '../../assets/png/section1.jpg';
-  // Section 2 image
   import section2 from '../../assets/png/section2.png';
-  // Section 3 image
   import section3 from '../../assets/png/section3.png';
   import { breakpoints } from '../lib/breakpoints';
 
@@ -52,9 +45,8 @@
         </div>
       </div>
       <div class="overlap hidden max-w-3xl">
-        <img id="hero" src={hero} alt="Person taking picture with smartphone" />
+        <img id="hero" src={hero} alt="Diagram" />
       </div>
-
       <div
         class="lg:col-start-1 3xl:ml-4 xl:ml-7 lg:ml-16 xl:mt-2 md:mt-6 mt-4 -mb-2 col-span-2 col-start-5 flex lg:col-span-1 justify-center items-center">
         <a href="#section1">
@@ -193,10 +185,6 @@
     max-width: 1680px;
   }
 
-  .hero-text {
-    @apply lg:col-start-1 lg:col-span-5 lg:ml-16 lg:mr-8;
-  }
-
   .hero-header {
     font-family: 'acumin-pro-wide';
   }
@@ -204,38 +192,78 @@
   .overlap {
     margin-top: 10%;
     margin-bottom: 10%;
-    @apply lg:row-span-full lg:col-span-5 lg:col-end-11 lg:self-center lg:mr-16 lg:object-contain lg:inline;
   }
+
   section {
-    width: 100vw;
     position: relative;
     overflow: hidden;
     max-width: 1680px;
-    @apply 3xl:mx-auto 3xl:justify-center;
   }
 
   .section-grid {
-    @apply grid grid-cols-3 gap-4 lg:mx-16 lg:my-10 mb-4;
+    @apply grid grid-cols-3 gap-4 mb-4;
   }
 
   .content {
-    @apply w-full lg:col-span-2 col-span-full;
+    @apply w-full col-span-full;
   }
 
   .content-body {
-    @apply w-full lg:col-span-1 col-span-full items-center flex px-4;
+    @apply w-full col-span-full items-center flex px-4;
   }
+
   .heading {
-    @apply text-black text-3xl text-left pb-4 font-bold xl:pb-6;
+    @apply text-black text-3xl text-left pb-4 font-bold;
     font-family: 'acumin-pro-wide';
   }
 
   .body {
-    @apply text-black text-smd text-left pb-4 lg:max-w-prose  xl:pb-6;
+    @apply text-black text-smd text-left pb-4;
   }
 
   .cta {
     @apply inline-block text-black font-bold text-left;
     font-family: 'acumin-pro-wide';
+  }
+
+  @screen lg {
+    .hero-text {
+      @apply col-start-1 col-span-5 ml-16 mr-8;
+    }
+
+    .overlap {
+      @apply row-span-full col-span-5 col-end-11 self-center mr-16 object-contain inline;
+    }
+
+    .section-grid {
+      @apply mx-16 my-10;
+    }
+
+    .content {
+      @apply col-span-2;
+    }
+
+    .content-body {
+      @apply col-span-1;
+    }
+
+    .body {
+      @apply max-w-prose;
+    }
+  }
+
+  @screen xl {
+    .heading {
+      @apply pb-6;
+    }
+    .body {
+      @apply pb-6;
+    }
+  }
+
+  @screen 3xl {
+    section {
+      @apply mx-auto justify-center;
+    }
   }
 </style>
