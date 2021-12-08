@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
 import filenamify from 'filenamify';
 import { test } from './test';
-import imageIndex from './assets/data/index.json';
 
 /*
 for (const testImage of imageIndex) {

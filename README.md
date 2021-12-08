@@ -36,13 +36,11 @@ npx playwright install
 Then, to run the tests, you can run:
 
 ```shell
-# Build the site from the current code and download test assets from Artifactory
-yarn run test:init
+# Build the site from the current code
+yarn build
 # Run the test suite
-yarn run test
+yarn test
 ```
-
-**Note:** Please make sure you are on VPN and have your `ARTIFACTORY_USER` and `ARTIFACTORY_API_TOKEN` environment variables set in your terminal so that the test images download correctly.
 
 ### Running tests for development
 

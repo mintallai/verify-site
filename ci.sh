@@ -5,6 +5,6 @@ yarn routify -b
 echo "Running svelte-check"
 yarn svelte-check --threshold error
 echo "Building project, initializing test suite"
-yarn run test:init
+yarn build
 echo "Running Playwright tests"
-yarn playwright test
+yarn test

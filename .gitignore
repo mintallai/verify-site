@@ -13,5 +13,4 @@ test-results
 .yarn/
 .yarnrc.yml
 .npmrc
-tests/assets/
 *.terraform*

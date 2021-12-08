@@ -1,8 +1,8 @@
 import type { Page } from '@playwright/test';
 import { resolve } from 'path';
 
-const imageBase = resolve(__dirname, '../assets/data');
-const defaultImage = 'tests/CAICAI.jpg';
+const imageBase = resolve(__dirname, '../assets/images');
+const defaultImage = 'CAICAI.jpg';
 
 export class InspectPage {
   readonly page: Page;
