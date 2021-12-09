@@ -1,6 +1,6 @@
 import { PlaywrightTestConfig } from '@playwright/test';
 const baseURL = process.env.BASE_URL;
-const port = 8080;
+const port = 8081;
 
 const config: PlaywrightTestConfig = {
   testDir: 'tests',
