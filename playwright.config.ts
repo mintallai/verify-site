@@ -16,7 +16,7 @@ const config: PlaywrightTestConfig = {
         command: 'npm run test:server',
         port,
         timeout: 120 * 1000,
-        reuseExistingServer: !process.env.CI,
+        reuseExistingServer: true,
         env: {
           PORT: port.toString(),
         },
