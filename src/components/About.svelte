@@ -42,6 +42,11 @@
   $: hasUnknownActions = actionsAssertion?.data?.metadata?.reviewRatings?.find(
     (ratings) => ratings.code === 'actions.unknownActionsPerformed',
   );
+  $: wasPossiblyModified = claim.ingredients?.find((ingredient) =>
+    ingredient.data.reviews?.find(
+      (review) => review.code === 'ingredient.possiblyModified',
+    ),
+  );
   $: creativeWorkAssertion = claim.findAssertion(
     AssertionLabel.CreativeWork,
   ) as CreativeWorkAssertion | null;
@@ -167,8 +172,8 @@
                 </div>
               </cai-tooltip>
             </dt>
-            {#if hasUnknownActions}
-              <dd class="flex mt-1">
+            {#if hasUnknownActions || wasPossiblyModified}
+              <dd data-test-id="about.unknownActionsAlert" class="flex mt-1">
                 <div class="relative top-0.5">
                   <AlertOutlineIcon width="16px" height="16px" class="mr-2" />
                 </div>
