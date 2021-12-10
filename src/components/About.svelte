@@ -42,6 +42,11 @@
   $: hasUnknownActions = actionsAssertion?.data?.metadata?.reviewRatings?.find(
     (ratings) => ratings.code === 'actions.unknownActionsPerformed',
   );
+  $: wasPossiblyModified = claim.ingredients?.find((ingredient) =>
+    ingredient.data.reviews?.find(
+      (review) => review.code === 'ingredient.possiblyModified',
+    ),
+  );
   $: creativeWorkAssertion = claim.findAssertion(
     AssertionLabel.CreativeWork,
   ) as CreativeWorkAssertion | null;
@@ -65,12 +70,14 @@
   });
 </script>
 
-<div class="w-full flex justify-center">
+<div data-test-id="about" class="w-full flex justify-center">
   <div class="info w-full max-w-xs">
     <div class="hidden lg:block">
       <dl class="attributes">
         <dt>
-          <div>{$_('comp.about.contentCredentials.header')}</div>
+          <div>
+            {$_('comp.about.contentCredentials.header')}
+          </div>
           <cai-tooltip placement="left" class="theme-spectrum">
             <div slot="content" class="text-gray-900" style="width: 200px;">
               {$_('comp.about.contentCredentials.helpText')}
@@ -167,8 +174,8 @@
                 </div>
               </cai-tooltip>
             </dt>
-            {#if hasUnknownActions}
-              <dd class="flex mt-1">
+            {#if hasUnknownActions || wasPossiblyModified}
+              <dd data-test-id="about.unknownActionsAlert" class="flex mt-1">
                 <div class="relative top-0.5">
                   <AlertOutlineIcon width="16px" height="16px" class="mr-2" />
                 </div>

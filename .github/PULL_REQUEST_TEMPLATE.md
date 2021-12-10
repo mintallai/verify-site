@@ -2,10 +2,8 @@
 
 _Please add as much context as possible of the goal of this pull request and what behaviors are expected to change._
 
-## Issues link
+## Issues link(s)
 
-https://app.clubhouse.io/cai/story/XXXX/YYYYY
+https://jira.corp.adobe.com/browse/CAI-###
 
-## Functional Test Plan
-
-_Please add detailed steps to test the changes included in the PR, so that reviewers with less background on the changes will have the context as well._
+**Note:** Please make sure a functional test plan is in the story/stories above

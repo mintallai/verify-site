@@ -28,7 +28,7 @@
       (!primary.claim || badgeProps?.badgeHelpText));
 </script>
 
-<div class="w-full flex justify-center">
+<div data-test-id="about" class="w-full flex justify-center">
   <div class="info w-full max-w-xs">
     <div>
       <dl class="attributes">
