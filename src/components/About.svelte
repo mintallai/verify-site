@@ -70,12 +70,14 @@
   });
 </script>
 
-<div class="w-full flex justify-center">
+<div data-test-id="about" class="w-full flex justify-center">
   <div class="info w-full max-w-xs">
     <div class="hidden lg:block">
       <dl class="attributes">
         <dt>
-          <div>{$_('comp.about.contentCredentials.header')}</div>
+          <div>
+            {$_('comp.about.contentCredentials.header')}
+          </div>
           <cai-tooltip placement="left" class="theme-spectrum">
             <div slot="content" class="text-gray-900" style="width: 200px;">
               {$_('comp.about.contentCredentials.helpText')}

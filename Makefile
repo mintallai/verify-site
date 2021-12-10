@@ -26,6 +26,7 @@ ci:
 		-e ARTIFACTORY_USER \
 		-e CI_PULL_REQUEST=$(ghprbPullId) \
 		-e TESSA2_API_KEY \
+		--ipc=host \
 		$(CI_TAG)
 
 # This target is called by the Jenkins "build" job.

@@ -7,7 +7,8 @@ const defaultImage = 'CAICAI.jpg';
 export class InspectPage {
   readonly page: Page;
 
-  static THUMBNAIL_SELECTOR = '[data-test-id="viewer.thumbnail"][src^="blob:"]';
+  static ABOUT_SEL = '[data-test-id="about"]';
+  static THUMBNAIL_SEL = '[data-test-id="viewer.thumbnail"][src^="blob:"]';
 
   constructor(page: Page) {
     this.page = page;
@@ -17,8 +18,12 @@ export class InspectPage {
     await this.page.goto('/inspect');
   }
 
+  async getAboutComponent() {
+    return this.page.waitForSelector(InspectPage.ABOUT_SEL);
+  }
+
   async getThumbnailElement() {
-    return this.page.waitForSelector(InspectPage.THUMBNAIL_SELECTOR);
+    return this.page.waitForSelector(InspectPage.THUMBNAIL_SEL);
   }
 
   nodeLocator(index?: string) {
@@ -34,6 +39,6 @@ export class InspectPage {
       'data-test-id=viewer.fileInput',
       resolve(imageBase, imageRelPath),
     );
-    await this.getThumbnailElement();
+    await this.getAboutComponent();
   }
 }
