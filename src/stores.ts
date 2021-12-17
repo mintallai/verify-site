@@ -34,7 +34,7 @@ export const urlParams = readable<IUrlParams>(null, (set) => {
 /**
  * An accessor to the "learn more" URL
  */
-export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
+export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => { });
 
 /**
  * Stores the list of universal IDs (claim/parent/ingredient) that represents
@@ -159,7 +159,7 @@ export function compareWithPath(path: string[] | null, logEvent = true): void {
  * Contains the ImageProvenance of the loaded asset.
  */
 export const provenance = writable<ImageProvenance | null>(null, (set) => {
-  return () => {};
+  return () => { };
 });
 
 /**
@@ -218,21 +218,23 @@ export const secondaryAsset = derived<
   return $provenance?.resolveId($secondaryId);
 });
 
-function parseProvenance(node: Claim | Ingredient): ITreeNode {
+function parseProvenance(node: Claim | Ingredient, locatorString = '0'): ITreeNode {
   if (node instanceof Claim) {
     return {
       id: node.id,
+      locatorString,
       name: node.title,
       claim: node,
       asset: node.asset ?? undefined,
       errors: node.errors,
-      children: node.ingredients?.map(parseProvenance),
+      children: node.ingredients?.map((ingredient, idx) => parseProvenance(ingredient, `${locatorString}.${idx}`)),
     };
   }
   if (node instanceof Ingredient) {
     if (isOTGP(node)) {
       return {
         id: node.asset?.id ?? node.id,
+        locatorString,
         name: node.asset?.title ?? node.title,
         // There are currently no error cases accounted for but OTGP.
         // The `claim` value will need to be adjusted based on the type of error.
@@ -240,16 +242,18 @@ function parseProvenance(node: Claim | Ingredient): ITreeNode {
           node.errors[0].code === ErrorTypes.ASSET_HASH ? null : node.claim,
         asset: node.asset ?? node,
         errors: node.asset?.errors,
-        children: node.claim ? [parseProvenance(node.claim)] : [],
+        children: node.claim ? [parseProvenance(node.claim, `${locatorString}.0`)] : [],
       };
     }
+
     return {
       id: node.claim?.id ?? node.id,
+      locatorString,
       name: node.title,
       claim: node.claim,
       asset: node.claim?.asset ?? node,
       errors: node.errors,
-      children: node.claim?.ingredients.map(parseProvenance) ?? [],
+      children: node.claim?.ingredients.map((ingredient, idx) => parseProvenance(ingredient, `${locatorString}.${idx}`)) ?? [],
     };
   }
   return;
@@ -270,11 +274,12 @@ export const hierarchy = derived<
     if (source && (errors.length || !activeClaim)) {
       return d3Hierarchy({
         id: SOURCE_ID,
+        locatorString: '0',
         name: source.filename,
         claim: null,
         asset: source,
         errors,
-        children: activeClaim ? [parseProvenance(activeClaim)] : [],
+        children: activeClaim ? [parseProvenance(activeClaim, '0.0')] : [],
       });
     }
   }

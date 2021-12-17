@@ -9,6 +9,7 @@
   export let width: number;
   export let height: number;
 
+  $: data = node.data;
   $: tx = node.x - width / 2;
   $: ty = node.y - height / 2;
   $: style = `width: ${width}px; height: ${height}px; transform: translate3d(${tx}px, ${ty}px, 0)`;
@@ -25,6 +26,7 @@
   class="node"
   class:selected={isSelected}
   class:ancestor={isAncestor}
+  data-node-idx={data.locatorString}
   {style}>
   <div class="content">
     <Thumbnail asset={node.data.asset} {...badgeProps} />
