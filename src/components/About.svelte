@@ -84,7 +84,9 @@
             </div>
           </cai-tooltip>
         </dt>
-        <dd class="flex space-x-2 items-center mt-1">
+        <dd
+          class="flex space-x-2 items-center mt-1"
+          data-test-id="about.file-name">
           <div class="w-12 h-12">
             <Thumbnail {asset} {...getBadgeProps({ claim })} />
           </div>
@@ -111,7 +113,7 @@
             </div>
           </cai-tooltip>
         </dt>
-        <dd class="flex space-x-2">
+        <dd class="flex space-x-2" data-test-id="about.signed-by">
           <div class="relative top-0.5">
             <ProviderIcon provider={signedBy} />
           </div>
@@ -127,7 +129,7 @@
             </div>
           </cai-tooltip>
         </dt>
-        <dd>
+        <dd data-test-id="about.signed-on">
           {#if sigDate && sigDate.toString() !== 'Invalid Date'}
             {$date(sigDate, { format: 'short' })}{', '}
             {$time(sigDate, { format: 'short' })}
@@ -138,7 +140,7 @@
       </dl>
     </div>
     <div>
-      <dl class="attributes">
+      <dl class="attributes" data-test-id="about.produced-with">
         <dt>
           <div>{$_('comp.about.producedWith')}</div>
           <cai-tooltip placement="left" class="theme-spectrum">
@@ -187,7 +189,7 @@
                 </div>
               </dd>
             {/if}
-            <dd class="mt-2">
+            <dd class="mt-2" data-test-id="about.edits-and-activity">
               <cai-panel-edits-activity
                 {categories}
                 stringmap={editsActivityStrings}
@@ -202,7 +204,7 @@
       {#if isOriginal}
         <OriginalCreation type="original" {claim} />
       {:else}
-        <dl class="attributes">
+        <dl class="attributes" data-test-id="about.assets">
           <dt>
             <div class="whitespace-nowrap">
               {$_('comp.about.assets.header')}
@@ -234,7 +236,7 @@
     </div>
     {#if producer}
       <div>
-        <dl class="attributes">
+        <dl class="attributes" data-test-id="about.produced-by">
           <dt class="flex space-x-2">
             <div class="whitespace-nowrap">{$_('comp.about.producedBy')}</div>
             <cai-tooltip placement="left" class="theme-spectrum">
@@ -281,8 +283,11 @@
                 <div class="relative top-0.5">
                   <ProviderIcon provider={account['@id']} class="mr-2" />
                 </div>
-                <a href={account['@id']} target="_blank" class="link"
-                  >@{account.name}</a>
+                <a
+                  href={account['@id']}
+                  target="_blank"
+                  class="link"
+                  data-test-id="about.social-accounts.link">@{account.name}</a>
               {/each}
             </dd>
           </dl>
@@ -298,7 +303,7 @@
               </cai-tooltip>
             </dt>
             {#each ethereumAddresses as address}
-              <dd class="flex">
+              <dd class="flex" data-test-id="about.crypto-address">
                 <div class="relative top-0.5">
                   <EthereumLogo width="16px" height="16px" class="mr-2" />
                 </div>

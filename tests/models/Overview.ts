@@ -1,33 +1,23 @@
-import { Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { resolve } from 'path';
 import { testID } from '../utils/selectors';
 
 const imageBase = resolve(__dirname, '../assets/images');
+const defaultImage = 'CAICAI.jpg';
 
-export class InspectPage {
+export class OverviewPage {
   readonly page: Page;
-
-  static ABOUT_SEL = '[data-test-id="about"]';
-  static THUMBNAIL_SEL = '[data-test-id="viewer.thumbnail"][src^="blob:"]';
 
   constructor(page: Page) {
     this.page = page;
   }
 
   async goto(query?: string) {
-    await this.page.goto(`/inspect?${query}`);
-  }
-
-  getAboutComponent() {
-    return this.page.waitForSelector(InspectPage.ABOUT_SEL);
-  }
-
-  getThumbnailElement() {
-    return this.page.waitForSelector(InspectPage.THUMBNAIL_SEL);
+    await this.page.goto(`/overview?${query}`);
   }
 
   rightColumn() {
-    return this.page.locator(testID('inspect.right-col'));
+    return this.page.locator(testID('overview.right-col'));
   }
 
   nodeLocator(index?: string) {
@@ -37,12 +27,12 @@ export class InspectPage {
     return this.page.locator('div[data-node-idx]');
   }
 
-  async uploadImage(imageRelPath: string) {
+  async uploadImage(imageRelPath: string = defaultImage) {
     await this.goto();
     await this.page.setInputFiles(
       'data-test-id=viewer.fileInput',
       resolve(imageBase, imageRelPath),
     );
-    await this.getThumbnailElement();
+    await this.page.waitForSelector(testID('tree-view'));
   }
 }

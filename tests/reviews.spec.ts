@@ -4,7 +4,8 @@ import translations from '../locales/en-US.json';
 
 const REVIEW_ALERT_SEL = 'data-test-id=about.unknownActionsAlert';
 
-test.describe.parallel('Image reviews', () => {
+// @TODO: re-enable or move these
+test.skip('Image reviews', () => {
   test(`a file with no reviews doesn't show an alert`, async ({
     inspectPage,
   }) => {

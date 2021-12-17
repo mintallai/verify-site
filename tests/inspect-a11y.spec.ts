@@ -19,7 +19,7 @@ test.describe('Inspect page - accessibility check', () => {
   test.skip('accessibility checks still pass after you upload an image', async ({
     inspectPage,
   }) => {
-    await inspectPage.uploadImage();
+    await inspectPage.uploadImage('CAICAI.jpg');
     await injectAxe(inspectPage.page);
     await checkA11y(inspectPage.page, null, config);
   });

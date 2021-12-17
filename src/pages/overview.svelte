@@ -110,7 +110,10 @@
     {:else}
       <TreeView />
     {/if}
-    <section class="right-col p-4 md:pt-4" class:loading={$isLoading}>
+    <section
+      data-test-id="overview.right-col"
+      class="right-col p-4 md:pt-4"
+      class:loading={$isLoading}>
       <div class="wrapper">
         {#if error}
           <div class="w-full">
