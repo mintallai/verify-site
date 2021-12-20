@@ -2,8 +2,7 @@
   "bracketSpacing": true,
   "semi": true,
   "singleQuote": true,
-  "svelteBracketNewLine": false,
-  "jsxBracketSameLine": true,
+  "bracketSameLine": true,
   "tabWidth": 2,
   "trailingComma": "all",
   "overrides": [
@@ -13,5 +12,6 @@
         "quoteProps": "preserve"
       }
     }
-  ]
+  ],
+  "plugins": ["prettier-plugin-svelte"]
 }

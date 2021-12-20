@@ -3,6 +3,10 @@
   export let ratio: number = 1;
 </script>
 
+<div class="aspect-box" use:cssVars={{ ratio }}>
+  <slot />
+</div>
+
 <style lang="postcss">
   .aspect-box {
     @apply flex items-stretch;
@@ -21,7 +25,3 @@
     clear: both;
   }
 </style>
-
-<div class="aspect-box" use:cssVars={{ ratio }}>
-  <slot />
-</div>

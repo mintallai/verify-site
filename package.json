@@ -16,7 +16,8 @@
     "test": "playwright test",
     "test:server": "node tests/scripts/server.js",
     "test:watch": "nodemon -w tests -e 'ts' -x 'yarn test'",
-    "test:watch:local": "cross-env BASE_URL=http://localhost:5000 nodemon -w tests -e 'ts' -x 'yarn test'"
+    "test:watch:local": "cross-env BASE_URL=http://localhost:5000 nodemon -w tests -e 'ts' -x 'yarn test'",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@awaitjs/express": "^0.9.0",
@@ -52,7 +53,9 @@
     "fast-glob": "^3.2.7",
     "gh-pages": "^3.1.0",
     "git-rev-sync": "^3.0.1",
+    "husky": ">=6",
     "jest": "^27.0.6",
+    "lint-staged": ">=10",
     "mkdirp": "^1.0.4",
     "nodemon": "^2.0.14",
     "nollup": "^0.12.0",
@@ -61,7 +64,8 @@
     "postcss-import": "^13.0.0",
     "postcss-load-config": "^2.1.0",
     "postcss-nested": "^5.0.1",
-    "prettier": "^2.1.0",
+    "prettier": "^2.5.1",
+    "prettier-plugin-svelte": "^2.5.1",
     "rollup": "^2.58.0",
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-hot": "^0.0.31",
@@ -123,5 +127,9 @@
     "extensions": "svelte,html,svx,md",
     "dynamicImports": true,
     "routifyDir": ".routify"
+  },
+  "lint-staged": {
+    "*.{js,ts,css,md,svelte}": "prettier --write",
+    "*.svelte": "svelte-check --threshold error"
   }
 }
