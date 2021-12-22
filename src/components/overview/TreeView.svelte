@@ -123,9 +123,8 @@
       }
       return 0;
     });
-  $: descendants = (tree?.descendants() ?? []).map(
-    (node) => node as HierarchyPointNode<ITreeNode>,
-  );
+  $: descendants = tree?.descendants() ?? [];
+
   $: minScale = getMinScale(width, height);
   $: {
     // Set the proper scaleExtent whenever the width/height changes
@@ -134,6 +133,7 @@
 </script>
 
 <div
+  data-test-id="tree-view"
   class="relative bg-gray-75 w-full h-full overflow-hidden z-0"
   bind:clientWidth={width}
   bind:clientHeight={height}>

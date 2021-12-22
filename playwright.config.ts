@@ -1,4 +1,6 @@
-import { PlaywrightTestConfig } from '@playwright/test';
+import { PlaywrightTestConfig, expect } from '@playwright/test';
+import { toHaveCAIBadge } from './tests/matchers/toHaveCAIBadge';
+
 const baseURL = process.env.BASE_URL;
 const port = 8081;
 
@@ -8,6 +10,8 @@ const config: PlaywrightTestConfig = {
     baseURL,
     headless: true,
     viewport: { width: 1280, height: 2000 },
+    locale: 'en-US',
+    timezoneId: 'America/New_York',
     ignoreHTTPSErrors: true,
   },
   webServer: baseURL
@@ -22,4 +26,9 @@ const config: PlaywrightTestConfig = {
         },
       },
 };
+
+expect.extend({
+  toHaveCAIBadge,
+});
+
 export default config;

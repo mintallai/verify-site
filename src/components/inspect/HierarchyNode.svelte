@@ -15,7 +15,6 @@
   import type { ITreeNode } from '../../lib/types';
 
   export let node: HierarchyNode<ITreeNode>;
-  export let index = 0;
 
   $: data = node.data;
   $: asset = data.asset;
@@ -43,7 +42,7 @@
   <div
     class="item"
     class:single={isSingle}
-    data-node-idx={index}
+    data-node-idx={data.locatorString}
     data-item-id={data.id.toString()}>
     {#if !isSingle}
       <div class="callout" class:compare />
@@ -70,8 +69,8 @@
     </div>
   </div>
   <div class="pl-6 space-y-5" class:hidden={!isExpanded}>
-    {#each children as childNode, childIndex (getPath(childNode).toString())}
-      <svelte:self node={childNode} index={[index, childIndex].join('.')} />
+    {#each children as childNode}
+      <svelte:self node={childNode} />
     {/each}
   </div>
 </div>

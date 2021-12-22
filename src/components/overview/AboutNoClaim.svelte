@@ -40,7 +40,9 @@
             </div>
           </cai-tooltip>
         </dt>
-        <dd class="flex space-x-2 items-center mt-1">
+        <dd
+          class="flex space-x-2 items-center mt-1"
+          data-test-id="about.file-name">
           <div class="w-12 h-12">
             <Thumbnail asset={primary} {...badgeProps} />
           </div>
