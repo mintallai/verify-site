@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import equal from 'fast-deep-equal';
   import { primaryPath } from '../../stores';
   import Thumbnail from '../Thumbnail.svelte';
@@ -31,7 +32,7 @@
   <div class="content">
     <Thumbnail asset={node.data.asset} {...badgeProps} />
     <div>
-      <h6>File name</h6>
+      <h6>{$_('comp.asset.fileName')}</h6>
       <div class="file-name">{node.data.name}</div>
     </div>
   </div>

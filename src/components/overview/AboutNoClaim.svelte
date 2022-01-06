@@ -47,7 +47,7 @@
             <Thumbnail asset={primary} {...badgeProps} />
           </div>
           <div>
-            <h6>File name</h6>
+            <h6>{$_('comp.about.fileName')}</h6>
             <div>{title}</div>
           </div>
         </dd>
