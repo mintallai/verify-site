@@ -2,6 +2,7 @@
   import { _, locale } from 'svelte-i18n';
   import { getLocalizedURL } from '@intl/adobe-locales';
   import { DEFAULT_LOCALE, setLanguage } from '../lib/i18n';
+  import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
   import type { TippyProps } from '../lib/tippy';
   import { tippy } from '../lib/tippy';
 
@@ -12,12 +13,20 @@
     ['ja-JP', '日本語'],
   ];
 
+  let languageTrigger: HTMLElement;
   let languageMenu: HTMLElement;
-  let showLanguagePicker = false;
+  let menuShown = false;
 
   const tippyOpts: Partial<TippyProps> = {
     interactive: true,
     trigger: 'click',
+    appendTo: document.body,
+    onShow() {
+      menuShown = true;
+    },
+    onHide() {
+      menuShown = false;
+    },
   };
 
   $: currentLocale = $locale || DEFAULT_LOCALE;
@@ -28,12 +37,14 @@
 
   function handleLanguageChange(evt: any) {
     setLanguage(evt.target.value);
+    // @ts-ignore
+    languageTrigger._tippy?.hide();
   }
 </script>
 
 <footer class="z-20 bg-white">
-  {#if showLanguagePicker}
-    <div bind:this={languageMenu}>
+  <div bind:this={languageMenu}>
+    <sp-theme color="lightest" scale="medium" class="w-full">
       <sp-menu value={currentLocale}>
         {#each mapping as [code, label]}
           <sp-menu-item
@@ -44,8 +55,8 @@
           </sp-menu-item>
         {/each}
       </sp-menu>
-    </div>
-  {/if}
+    </sp-theme>
+  </div>
   <sp-theme color="lightest" scale="medium" class="w-full">
     <div class="flex justify-center items-center text-75">
       <span>
@@ -61,8 +72,9 @@
             $locale,
           )}
           target="_blank">{$_('comp.footer.termsOfUse')}</a>
-        {#if showLanguagePicker}
+        {#if languageMenu}
           <button
+            bind:this={languageTrigger}
             use:tippy={{ content: languageMenu, ...tippyOpts }}
             slot="trigger"
             aria-haspopup="true"
@@ -70,6 +82,10 @@
             role="button">
             <div class="inline-flex items-center space-x-0.5 -mr-0.5">
               <span class="underline">{currentLangString}</span>
+              <DownArrow
+                class="h-2 w-2 transform {menuShown
+                  ? 'rotate-0'
+                  : 'rotate-180'}" />
             </div>
           </button>
         {/if}
