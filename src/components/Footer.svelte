@@ -45,9 +45,10 @@
 <footer class="z-20 bg-white">
   <div bind:this={languageMenu}>
     <sp-theme color="lightest" scale="medium" class="w-full">
-      <sp-menu value={currentLocale}>
+      <sp-menu data-test-id="footer.language-menu" value={currentLocale}>
         {#each mapping as [code, label]}
           <sp-menu-item
+            data-test-id={`footer.language-option-${code}`}
             value={code}
             selected={code === currentLocale}
             on:click={handleLanguageChange}>
@@ -76,6 +77,7 @@
           <button
             bind:this={languageTrigger}
             use:tippy={{ content: languageMenu, ...tippyOpts }}
+            data-test-id="footer.language-picker"
             slot="trigger"
             aria-haspopup="true"
             aria-controls="popover"

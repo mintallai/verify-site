@@ -4,11 +4,12 @@
   export let size: string = 'md';
   export let full: boolean = false;
   export let outline: boolean = false;
+  export let testId: string = 'button';
 </script>
 
 {#if href}
   <a
-    data-test-id="button"
+    data-test-id={testId}
     class="button"
     class:full
     class:secondary
@@ -21,7 +22,7 @@
   </a>
 {:else}
   <button
-    data-test-id="button"
+    data-test-id={testId}
     class="button"
     class:full
     class:secondary

@@ -30,6 +30,18 @@ export class InspectPage {
     return this.page.locator(testID('inspect.right-col'));
   }
 
+  languagePicker() {
+    return this.page.locator(testID('footer.language-picker'));
+  }
+
+  async changeLanguageViaPicker(lang: string) {
+    const picker = this.languagePicker();
+    const option = this.page.locator(testID(`footer.language-option-${lang}`));
+    await picker.click();
+    await option.waitFor({ state: 'visible' });
+    await option.click();
+  }
+
   nodeLocator(index?: string) {
     if (index) {
       return this.page.locator(`div[data-node-idx="${index}"]`);
