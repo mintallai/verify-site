@@ -3,7 +3,7 @@
   import { getLocalizedURL } from '@intl/adobe-locales';
   import { DEFAULT_LOCALE, setLanguage } from '../lib/i18n';
   import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
-  import type { TippyProps } from '../lib/tippy';
+  import type { TippyProps, ReferenceElement } from '../lib/tippy';
   import { tippy } from '../lib/tippy';
 
   const mapping = [
@@ -13,7 +13,7 @@
     ['ja-JP', '日本語'],
   ];
 
-  let languageTrigger: HTMLElement;
+  let languageTrigger: HTMLButtonElement & ReferenceElement;
   let languageMenu: HTMLElement;
   let menuShown = false;
 
@@ -37,7 +37,6 @@
 
   function handleLanguageChange(evt: any) {
     setLanguage(evt.target.value);
-    // @ts-ignore
     languageTrigger._tippy?.hide();
   }
 </script>
