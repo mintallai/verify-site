@@ -15,7 +15,7 @@ export class InspectPage {
   }
 
   async goto(query?: string) {
-    await this.page.goto(`/inspect?${query}`);
+    await this.page.goto(query ? `/inspect?${query}` : '/inspect');
   }
 
   getAboutComponent() {

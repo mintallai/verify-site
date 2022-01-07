@@ -55,4 +55,12 @@ test.describe.parallel('i18n - translations', () => {
     await page.goto('/inspect?lang=en');
     await expect(title).toHaveText('Learn more');
   });
+
+  test(`setting the language from the browser works`, async ({ browser }) => {
+    const context = await browser.newContext({ locale: 'fr-FR' });
+    const page = await context.newPage();
+    await page.goto('/inspect');
+    const title = page.locator('data-test-id=header.learn-more');
+    await expect(title).toHaveText('En savoir plus');
+  });
 });
