@@ -13,7 +13,7 @@ export class OverviewPage {
   }
 
   async goto(query?: string) {
-    await this.page.goto(`/overview?${query}`);
+    await this.page.goto(query ? `/overview?${query}` : '/overview');
   }
 
   rightColumn() {

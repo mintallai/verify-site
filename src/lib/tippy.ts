@@ -1,4 +1,4 @@
-import type { Props as TippyProps, Tippy } from 'tippy.js';
+import type { Props as TippyProps } from 'tippy.js';
 import tippyjs, { followCursor } from 'tippy.js';
 
 const defaultProps: Partial<TippyProps> = {
@@ -34,4 +34,4 @@ export function tippy(
   });
 }
 
-export type { Props as TippyProps } from 'tippy.js';
+export type { Props as TippyProps, ReferenceElement } from 'tippy.js';

@@ -1,14 +1,6 @@
 import { Locator, expect } from '@playwright/test';
 import { BadgeType } from '../../src/lib/types';
 
-declare global {
-  namespace PlaywrightTest {
-    interface Matchers<R> {
-      toHaveCAIBadge(badgeType: BadgeType): Promise<R>;
-    }
-  }
-}
-
 const BADGE_TYPE_TO_SELECTOR_MAP: Partial<Record<BadgeType, string>> = {
   alert: 'cai-icon-alert',
   info: 'cai-icon-info',
