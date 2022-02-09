@@ -1,10 +1,11 @@
 import { test as base } from '@playwright/test';
 import { OverviewPage } from './models/Overview';
 import { InspectPage } from './models/Inspect';
+
 interface TestFixtures {
   inspectPage: InspectPage;
   overviewPage: OverviewPage;
-};
+}
 
 export const test = base.extend<TestFixtures>({
   inspectPage: async ({ page }, use) => {

@@ -39,7 +39,7 @@
       on:click={goToLanding}
       class="flex select-none outline-none items-center">
       <h1
-        data-test-id="app.name"
+        data-test-id="header.app-name"
         class="font-black text-600 text-gray-900 leading-none">
         {$_('comp.header.productName')}
       </h1>
@@ -47,7 +47,10 @@
     </button>
   </div>
   <div class="links full-menu">
-    <button on:click={upload} class="font-bold text-sm tracking-tight">
+    <button
+      data-test-id="header.choose-image"
+      on:click={upload}
+      class="font-bold text-sm tracking-tight">
       {$_('comp.header.uploadImage')}
     </button>
     <a
@@ -56,7 +59,7 @@
       class="font-bold text-sm tracking-tight">{$_('comp.header.faq')}</a>
   </div>
   <div class="ml-5 full-menu">
-    <Button href={$learnMoreUrl} outline={true}
+    <Button testId="header.learn-more" href={$learnMoreUrl} outline={true}
       >{$_('comp.header.learnMore')}</Button>
   </div>
   <div class="block md:hidden -mr-3">
@@ -69,10 +72,13 @@
   </div>
   {#if $isBurgerMenuShown}
     <div transition:slide={{ duration: 300 }} class="burger-menu">
-      <a href="/inspect" on:click={chooseImage}
-        >{$_('comp.header.uploadImage')}</a>
+      <a
+        data-test-id="header.choose-image-mobile"
+        href="/inspect"
+        on:click={chooseImage}>{$_('comp.header.uploadImage')}</a>
       <a href={getFaqUrl()} target="_blank">FAQ</a>
-      <a href={$learnMoreUrl}>{$_('comp.header.learnMore')}</a>
+      <a data-test-id="header.learn-more-mobile" href={$learnMoreUrl}
+        >{$_('comp.header.learnMore')}</a>
     </div>
   {/if}
 </header>

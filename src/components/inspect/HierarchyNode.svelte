@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import equal from 'fast-deep-equal';
   import Thumbnail from '../Thumbnail.svelte';
   import ExpandHierarchy from '../../../assets/svg/monochrome/expand-hierarchy.svg';
@@ -64,7 +65,7 @@
       <Thumbnail {asset} {isSelected} {...badgeProps} />
     </div>
     <div class="pl-3" class:cursor-pointer={!isSelected} on:click={handleClick}>
-      <h6>File name</h6>
+      <h6>{$_('comp.asset.fileName')}</h6>
       <div>{data.name}</div>
     </div>
   </div>
