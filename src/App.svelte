@@ -24,9 +24,15 @@
   });
 
   $afterPageLoad(() => {
+    let duration;
+    if ('getEntriesByType' in window.performance) {
+      const navPerf = window.performance?.getEntriesByType('navigation')?.[0];
+      duration = navPerf?.duration;
+    }
     postEvent({
       'event.type': 'render',
       'event.subtype': 'page',
+      'event.value': duration,
     });
   });
 </script>

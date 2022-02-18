@@ -1,6 +1,8 @@
 import pMemoize from 'p-memoize';
 import merge from 'lodash/merge';
 import difference from 'lodash/difference';
+import { get } from 'svelte/store';
+import { primaryId } from '../stores';
 import Ingest from '@ccx-public/ingest';
 import { v4 as uuidv4 } from 'uuid';
 import { getConfig, SITE_VERSION } from './config';
@@ -38,29 +40,36 @@ const getIngest = pMemoize(async () => {
 });
 
 export interface IngestPayload {
-  'event.guid': string;
-  'event.dts_end': Date;
-  'event.workflow': string;
+  'env.svc.name': string;
+  'env.svc.version': string;
   'event.category': string;
-  'event.subcategory': string;
-  'event.type': 'render' | 'success' | 'error' | 'click';
-  'event.subtype': 'page' | 'verify' | 'learn' | 'faq';
-  'event.offline': boolean;
-  'event.language': string;
-  'event.value': number | string;
-  'event.url': string;
-  'event.referrer': string;
+  'event.context_guid': string;
+  'event.dts_end': Date;
   'event.error_code': string;
-  'event.error_type': string;
   'event.error_desc': string;
+  'event.error_type': string;
+  'event.guid': string;
+  'event.language': string;
+  'event.offline': boolean;
+  'event.referrer': string;
+  'event.subcategory': string;
+  'event.subtype': 'page' | 'verify' | 'learn' | 'faq';
+  'event.type': 'render' | 'success' | 'error' | 'click';
+  'event.user_agent': string;
+  'event.url': string;
+  'event.value': number | string;
+  'event.workflow': string;
   'source.name': string;
   'ui.view_type': 'link' | 'upload';
 }
 
 const eventDefaults: Partial<IngestPayload> = {
-  'event.workflow': 'Home',
+  'env.svc.name': 'verify',
+  'env.svc.version': SITE_VERSION,
   'event.category': 'DESKTOP',
   'event.subcategory': 'Verify',
+  'event.user_agent': navigator.userAgent,
+  'event.workflow': 'Home',
   'source.name': 'CAI',
 };
 
@@ -69,12 +78,13 @@ const requiredEvents = ['event.type'];
 export async function postEvent(data: Partial<IngestPayload>) {
   const ingest = await getIngest();
   const common = {
-    'event.guid': uuidv4(),
+    'event.context_guid': get(primaryId),
     'event.dts_end': new Date(),
-    'event.offline': !navigator.onLine,
+    'event.guid': uuidv4(),
     'event.language': navigator.language,
-    'event.url': location.href,
+    'event.offline': !navigator.onLine,
     'event.referrer': document.referrer,
+    'event.url': location.href,
   } as Partial<IngestPayload>;
   const payload = merge(common, eventDefaults, data) as IngestPayload;
 
