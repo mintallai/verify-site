@@ -3,8 +3,8 @@
   "comp.about.assets.helpText": "Any assets used or added to this content",
   "comp.about.contentCredentials.header": "Content credentials",
   "comp.about.contentCredentials.helpText": "Attribution and history data attached to this content",
-  "comp.about.crypto": "Crypto address",
-  "comp.about.crypto.helpText": "Cryptocurrency address connected to the producer of this content",
+  "comp.about.web3": "Web3",
+  "comp.about.web3.helpText": "Web3 address connected to the producer of this content",
   "comp.about.editsActivity.header": "Edits and activity",
   "comp.about.editsActivity.helpText": "Changes and actions taken to produce this content",
   "comp.about.editsActivity.none": "None",
@@ -86,5 +86,6 @@
   "tour.getTamperEvidentData.content": "No matter where the content shows up on the internet, the info icon tells you that its record was confirmed.",
   "tour.getTamperEvidentData.title": "Get tamper-evident image data",
   "tour.trackChanges.content": "Select an image to view its own content record. Or compare it to another entry in the content record in a slider or split-screen view.",
-  "tour.trackChanges.title": "Track changes over time"
+  "tour.trackChanges.title": "Track changes over time",
+  "web3Address.copiedPopover": "Copied!"
 }

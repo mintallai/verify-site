@@ -38,7 +38,7 @@ export function tippy(
   const opts = { ...defaultOpts, ...options };
   const contentHTML =
     opts.hasPadding && !(content instanceof HTMLElement)
-      ? `<div class="p-3 pt-2">${content}</div>`
+      ? `<div class="p-3">${content}</div>`
       : content;
   return tippyjs(node, {
     ...defaultProps,
