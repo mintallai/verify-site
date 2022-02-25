@@ -12,6 +12,7 @@
 // from Adobe.
 
 import { initI18n } from './lib/i18n';
+import { getConfig } from './lib/config';
 import HMR from '@roxi/routify/hmr';
 import App from './App.svelte';
 import '@spectrum-web-components/action-menu/sp-action-menu.js';
@@ -35,6 +36,10 @@ declare global {
     newrelic: any;
   }
 }
+
+getConfig().then((config) => {
+  window.newrelic?.setCustomAttribute('env', config.env);
+});
 
 initI18n();
 

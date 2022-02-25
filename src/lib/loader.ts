@@ -14,6 +14,7 @@
 import { setContext } from 'svelte';
 import { get } from 'svelte/store';
 import dragDrop from 'drag-drop';
+import { postEvent, IngestPayload } from '../lib/analytics';
 import { getSdk } from '../lib/sdk';
 import {
   urlParams,
@@ -38,6 +39,25 @@ function getErrorMessage(err: Error) {
   return 'error.unknown';
 }
 
+function logSuccess(result, type: IngestPayload['ui.view_type']) {
+  postEvent({
+    'event.type': 'success',
+    'event.subtype': 'verify',
+    'event.value': result?.exists ? 'full' : 'none',
+    'ui.view_type': type,
+  });
+}
+
+function logError(err, type: IngestPayload['ui.view_type']) {
+  postEvent({
+    'event.type': 'error',
+    'event.subtype': 'verify',
+    'event.error_type': err.name,
+    'event.error_desc': err.message,
+    'ui.view_type': type,
+  });
+}
+
 async function processSourceImage(sourceParam: string, params: ILoaderParams) {
   setIsLoading(true);
   try {
@@ -46,8 +66,10 @@ async function processSourceImage(sourceParam: string, params: ILoaderParams) {
     await window.newrelic?.setCustomAttribute('source', sourceParam);
     setProvenance(result);
     lastUrlSource.set(sourceParam);
+    logSuccess(result, 'link');
     params.onLoaded();
   } catch (err) {
+    logError(err, 'link');
     window.newrelic?.noticeError(err, {
       source: 'url',
     });
@@ -72,8 +94,10 @@ export async function processFiles(
     });
     try {
       const result = await sdk.processImage(file);
+      logSuccess(result, 'upload');
       setProvenance(result);
     } catch (err) {
+      logError(err, 'upload');
       window.newrelic?.noticeError(err, {
         source: 'file',
         type: file.type,

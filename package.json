@@ -65,7 +65,7 @@
     "postcss-load-config": "^2.1.0",
     "postcss-nested": "^5.0.1",
     "prettier": "^2.5.1",
-    "prettier-plugin-svelte": "^2.5.1",
+    "prettier-plugin-svelte": "^2.6.0",
     "rollup": "^2.58.0",
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-hot": "^0.0.31",
@@ -83,6 +83,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
+    "@ccx-public/ingest": "^4.3.0",
     "@contentauth/sdk": "0.8.12",
     "@contentauth/web-components": "^0.4.1",
     "@intl/adobe-locales": "^2.17.7",
@@ -120,6 +121,7 @@
     "svelte-i18n": "^3.3.9",
     "tippy.js": "^6.2.6",
     "toposort": "^2.0.2",
+    "uuid": "^8.3.2",
     "vanilla-hamburger": "^0.2.3",
     "yarn": "^1.22.10"
   },

@@ -16,6 +16,7 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import { slide } from 'svelte/transition';
+  import { postEvent, IngestPayload } from '../lib/analytics';
   import Button from './Button.svelte';
   import {
     learnMoreUrl,
@@ -40,6 +41,17 @@
   function goToLanding(evt: Event) {
     window.location.assign('/');
     evt.preventDefault();
+  }
+
+  function handleUrl(url: string, evtSubtype: IngestPayload['event.subtype']) {
+    return (evt) => {
+      window.location.assign(url);
+      postEvent({
+        'event.type': 'click',
+        'event.subtype': evtSubtype,
+      });
+      evt.preventDefault();
+    };
   }
 
   function chooseImage() {
@@ -70,12 +82,16 @@
     </button>
     <a
       href={getFaqUrl()}
+      on:click={handleUrl(getFaqUrl(), 'faq')}
       target="_blank"
       class="font-bold text-sm tracking-tight">{$_('comp.header.faq')}</a>
   </div>
   <div class="ml-5 full-menu">
-    <Button testId="header.learn-more" href={$learnMoreUrl} outline={true}
-      >{$_('comp.header.learnMore')}</Button>
+    <Button
+      href={$learnMoreUrl}
+      on:click={handleUrl($learnMoreUrl, 'learn')}
+      testId="header.learn-more"
+      outline={true}>{$_('comp.header.learnMore')}</Button>
   </div>
   <div class="block md:hidden -mr-3">
     <fade-burger
