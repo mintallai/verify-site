@@ -12,15 +12,14 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _, date, time, locale } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
-  import EthereumLogo from '../../assets/svg/color/logos/crypto-eth.svg';
   import Thumbnail from './Thumbnail.svelte';
+  import Web3Address from './Web3Address.svelte';
   import { getFaqUrl, navigateToChild } from '../stores';
   import {
     getBadgeProps,
@@ -78,7 +77,11 @@
   $: isBeta = getIsBeta(claim);
   $: website = getWebsite(claim);
   $: socialAccounts = creativeWorkAssertion?.socialAccounts ?? [];
-  $: ethereumAddresses = cryptoAssertion?.data?.ethereum ?? [];
+  $: web3Addresses = (
+    Object.entries(cryptoAssertion?.data ?? {}) as [string, string[]][]
+  ).filter(
+    ([type, [address]]) => address && ['solana', 'ethereum'].includes(type),
+  );
 
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
@@ -281,7 +284,7 @@
         </dl>
       </div>
     {/if}
-    {#if socialAccounts.length || ethereumAddresses.length}
+    {#if socialAccounts.length || web3Addresses.length}
       <div class="space-y-4">
         {#if socialAccounts.length}
           <dl class="attributes">
@@ -307,23 +310,18 @@
             </dd>
           </dl>
         {/if}
-        {#if ethereumAddresses.length}
+        {#if web3Addresses.length}
           <dl class="attributes">
             <dt class="flex space-x-2">
-              <div class="whitespace-nowrap">{$_('comp.about.crypto')}</div>
+              <div class="whitespace-nowrap">{$_('comp.about.web3')}</div>
               <cai-tooltip placement="left" class="theme-spectrum">
                 <div slot="content" class="text-gray-900" style="width: 150px;">
-                  {$_('comp.about.crypto.helpText')}
+                  {$_('comp.about.web3.helpText')}
                 </div>
               </cai-tooltip>
             </dt>
-            {#each ethereumAddresses as address}
-              <dd class="flex" data-test-id="about.crypto-address">
-                <div class="relative top-0.5">
-                  <EthereumLogo width="16px" height="16px" class="mr-2" />
-                </div>
-                <div class="break-all">{address.toString().toLowerCase()}</div>
-              </dd>
+            {#each web3Addresses as [type, [address]]}
+              <Web3Address {type} {address} />
             {/each}
           </dl>
         {/if}

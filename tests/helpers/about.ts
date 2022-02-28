@@ -24,20 +24,7 @@ const ABOUT_SELECTOR = testID('about');
 export function aboutHelper(root: Locator | Page) {
   const panelLocator = root.locator(ABOUT_SELECTOR);
 
-  const panel = {// ADOBE CONFIDENTIAL
-// Copyright 2021 Adobe
-// All Rights Reserved.
-//
-// NOTICE: All information contained herein is, and remains
-// the property of Adobe and its suppliers, if any. The intellectual
-// and technical concepts contained herein are proprietary to Adobe
-// and its suppliers and are protected by all applicable intellectual
-// property laws, including trade secret and copyright laws.
-// Dissemination of this information or reproduction of this material
-// is strictly forbidden unless prior written permission is obtained
-// from Adobe.
-
-
+  const panel = {
     fileName: panelLocator.locator(testID('about.file-name')),
     signedBy: panelLocator.locator(testID('about.signed-by')),
     signedOn: panelLocator.locator(testID('about.signed-on')),
@@ -182,10 +169,14 @@ export function aboutHelper(root: Locator | Page) {
         );
 
         let cryptoAddressIdx = 0;
-        for (const cryptoAddress of data.cryptoAddress) {
-          const address = panel.cryptoAddresses.nth(cryptoAddressIdx);
+        for (const { address } of data.cryptoAddress) {
+          const addressItem = panel.cryptoAddresses.nth(cryptoAddressIdx);
 
-          await expect(address).toContainText(cryptoAddress.address);
+          const truncatedAddress = `${address.slice(0, 6)}...${address.slice(
+            -5,
+          )}`;
+
+          await expect(addressItem).toContainText(truncatedAddress);
 
           cryptoAddressIdx;
         }
