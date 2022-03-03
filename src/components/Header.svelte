@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import { slide } from 'svelte/transition';
@@ -21,7 +20,6 @@
   import {
     learnMoreUrl,
     getFaqUrl,
-    navigateToRoot,
     isBurgerMenuShown,
     setProvenance,
   } from '../stores';
@@ -45,11 +43,11 @@
 
   function handleUrl(url: string, evtSubtype: IngestPayload['event.subtype']) {
     return (evt) => {
-      window.location.assign(url);
       postEvent({
         'event.type': 'click',
         'event.subtype': evtSubtype,
       });
+      window.location.assign(url);
       evt.preventDefault();
     };
   }
@@ -107,8 +105,14 @@
         data-test-id="header.choose-image-mobile"
         href="/inspect"
         on:click={chooseImage}>{$_('comp.header.uploadImage')}</a>
-      <a href={getFaqUrl()} target="_blank">FAQ</a>
-      <a data-test-id="header.learn-more-mobile" href={$learnMoreUrl}
+      <a
+        href={getFaqUrl()}
+        on:click={handleUrl(getFaqUrl(), 'faq')}
+        target="_blank">FAQ</a>
+      <a
+        data-test-id="header.learn-more-mobile"
+        href={$learnMoreUrl}
+        on:click={handleUrl($learnMoreUrl, 'learn')}
         >{$_('comp.header.learnMore')}</a>
     </div>
   {/if}
