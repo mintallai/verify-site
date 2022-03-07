@@ -47,7 +47,7 @@
         'event.type': 'click',
         'event.subtype': evtSubtype,
       });
-      window.location.assign(url);
+      window.open(url);
       evt.preventDefault();
     };
   }
