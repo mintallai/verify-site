@@ -120,7 +120,7 @@
 
 <style lang="postcss">
   header {
-    @apply border-gray-200 bg-white border-b-2 px-5 flex items-center justify-between z-40;
+    @apply border-gray-200 bg-white border-b-2 px-5 flex items-center justify-between z-50;
     grid-area: header;
     max-width: 100vw;
     height: 80px;
