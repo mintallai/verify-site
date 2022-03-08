@@ -23,8 +23,8 @@ const getIngest = pMemoize(async () => {
   const options = {
     ENVIRONMENT: config.env, // 'prod', 'stage', or 'dev' (default is 'prod')
     ALLOW_NO_TOKEN: true, // Optional - set to allow events to be sent without a token
-    ANALYTICS_API_KEY: 'cai-verify-service', // Required
-    ANALYTICS_PROJECT: 'cai-verify-service', // Required
+    ANALYTICS_API_KEY: 'cai-web-service', // Required
+    ANALYTICS_PROJECT: 'cai-web-service', // Required
     ANALYTICS_X_PRODUCT: `cai-verify-site/${SITE_VERSION}`, // Required
     ANALYTICS_USER_AGENT: navigator.userAgent,
     ANALYTICS_MAX_QUEUED_EVENTS: 50, // Optional - default is max queue of 50 events
