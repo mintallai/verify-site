@@ -17,11 +17,14 @@
   import { onMount } from 'svelte';
   import { isLoading, locale } from 'svelte-i18n';
   import { lang } from '@intl/adobe-locales';
+  import { afterPageLoad } from '@roxi/routify';
   import Router from '@roxi/routify/runtime/Router.svelte';
+  import { postEvent } from './lib/analytics';
   import { routes } from '../.routify/routes';
+  import { SITE_VERSION } from './lib/config';
   import debug from 'debug';
 
-  console.debug(`Verify site running revision ${process.env.GIT_REVISION}`);
+  console.debug(`Verify site running revision ${SITE_VERSION}`);
 
   onMount(() => {
     const unsubscribe = locale.subscribe((loc) => {
@@ -33,6 +36,19 @@
     });
 
     return unsubscribe;
+  });
+
+  $afterPageLoad(() => {
+    let duration;
+    if ('getEntriesByType' in window.performance) {
+      const navPerf = window.performance?.getEntriesByType('navigation')?.[0];
+      duration = navPerf?.duration;
+    }
+    postEvent({
+      'event.type': 'render',
+      'event.subtype': 'page',
+      'event.value': duration,
+    });
   });
 </script>
 

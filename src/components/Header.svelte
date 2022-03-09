@@ -12,15 +12,14 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import { slide } from 'svelte/transition';
+  import { postEvent, IngestPayload } from '../lib/analytics';
   import Button from './Button.svelte';
   import {
     learnMoreUrl,
     getFaqUrl,
-    navigateToRoot,
     isBurgerMenuShown,
     setProvenance,
   } from '../stores';
@@ -40,6 +39,17 @@
   function goToLanding(evt: Event) {
     window.location.assign('/');
     evt.preventDefault();
+  }
+
+  function handleUrl(url: string, evtSubtype: IngestPayload['event.subtype']) {
+    return (evt) => {
+      postEvent({
+        'event.type': 'click',
+        'event.subtype': evtSubtype,
+      });
+      window.open(url);
+      evt.preventDefault();
+    };
   }
 
   function chooseImage() {
@@ -70,12 +80,16 @@
     </button>
     <a
       href={getFaqUrl()}
+      on:click={handleUrl(getFaqUrl(), 'faq')}
       target="_blank"
       class="font-bold text-sm tracking-tight">{$_('comp.header.faq')}</a>
   </div>
   <div class="ml-5 full-menu">
-    <Button testId="header.learn-more" href={$learnMoreUrl} outline={true}
-      >{$_('comp.header.learnMore')}</Button>
+    <Button
+      href={$learnMoreUrl}
+      on:click={handleUrl($learnMoreUrl, 'learn')}
+      testId="header.learn-more"
+      outline={true}>{$_('comp.header.learnMore')}</Button>
   </div>
   <div class="block md:hidden -mr-3">
     <fade-burger
@@ -91,8 +105,14 @@
         data-test-id="header.choose-image-mobile"
         href="/inspect"
         on:click={chooseImage}>{$_('comp.header.uploadImage')}</a>
-      <a href={getFaqUrl()} target="_blank">FAQ</a>
-      <a data-test-id="header.learn-more-mobile" href={$learnMoreUrl}
+      <a
+        href={getFaqUrl()}
+        on:click={handleUrl(getFaqUrl(), 'faq')}
+        target="_blank">FAQ</a>
+      <a
+        data-test-id="header.learn-more-mobile"
+        href={$learnMoreUrl}
+        on:click={handleUrl($learnMoreUrl, 'learn')}
         >{$_('comp.header.learnMore')}</a>
     </div>
   {/if}
@@ -100,7 +120,7 @@
 
 <style lang="postcss">
   header {
-    @apply border-gray-200 bg-white border-b-2 px-5 flex items-center justify-between z-40;
+    @apply border-gray-200 bg-white border-b-2 px-5 flex items-center justify-between z-50;
     grid-area: header;
     max-width: 100vw;
     height: 80px;

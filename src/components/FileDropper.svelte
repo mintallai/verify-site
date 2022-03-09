@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { onMount, getContext } from 'svelte';
@@ -74,6 +73,6 @@
     @apply flex justify-center items-center flex-col;
   }
   .dropper.fullscreen {
-    @apply absolute inset-0 z-50;
+    @apply absolute inset-0 z-40;
   }
 </style>
