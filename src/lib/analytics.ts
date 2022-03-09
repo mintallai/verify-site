@@ -1,8 +1,6 @@
 import pMemoize from 'p-memoize';
 import merge from 'lodash/merge';
 import difference from 'lodash/difference';
-import { get } from 'svelte/store';
-import { primaryId } from '../stores';
 import Ingest from '@ccx-public/ingest';
 import { customAlphabet } from 'nanoid';
 import { getConfig, SITE_VERSION } from './config';
@@ -99,7 +97,6 @@ function getMcidGuid() {
 export async function postEvent(data: Partial<IngestPayload>) {
   const ingest = await getIngest();
   const common = {
-    'event.context_guid': get(primaryId),
     'event.dts_end': new Date(),
     'event.guid': nanoid(),
     'event.mcid_guid': getMcidGuid(),
