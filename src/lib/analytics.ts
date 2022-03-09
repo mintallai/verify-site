@@ -1,14 +1,18 @@
 import pMemoize from 'p-memoize';
 import merge from 'lodash/merge';
 import difference from 'lodash/difference';
-import { get } from 'svelte/store';
-import { primaryId } from '../stores';
 import Ingest from '@ccx-public/ingest';
-import { v4 as uuidv4 } from 'uuid';
+import { customAlphabet } from 'nanoid';
 import { getConfig, SITE_VERSION } from './config';
 import debug from 'debug';
 
 const dbg = debug('ingest');
+
+const MCID_GUID_LOCALSTORAGE_KEY = 'mcid_guid';
+const NANOID_LENGTH = 21;
+const NANOID_ALPHABET =
+  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const nanoid = customAlphabet(NANOID_ALPHABET, NANOID_LENGTH);
 
 const getIngest = pMemoize(async () => {
   const config = await getConfig();
@@ -50,6 +54,7 @@ export interface IngestPayload {
   'event.error_type': string;
   'event.guid': string;
   'event.language': string;
+  'event.mcid_guid': string;
   'event.offline': boolean;
   'event.referrer': string;
   'event.subcategory': string;
@@ -66,7 +71,7 @@ export interface IngestPayload {
 const eventDefaults: Partial<IngestPayload> = {
   'env.svc.name': 'verify',
   'env.svc.version': SITE_VERSION,
-  'event.category': 'DESKTOP',
+  'event.category': 'WEB',
   'event.subcategory': 'Verify',
   'event.user_agent': navigator.userAgent,
   'event.workflow': 'Home',
@@ -75,12 +80,26 @@ const eventDefaults: Partial<IngestPayload> = {
 
 const requiredEvents = ['event.type'];
 
+/**
+ * Create visitor ID (mcid_guid) so we can identify unknown users
+ * @returns alphanumeric unique ID
+ */
+function getMcidGuid() {
+  if (localStorage.getItem(MCID_GUID_LOCALSTORAGE_KEY)) {
+    dbg('Using existing mcid_guid');
+  } else {
+    dbg('Could not find mcid_guid, generating');
+    localStorage.setItem(MCID_GUID_LOCALSTORAGE_KEY, nanoid());
+  }
+  return localStorage.getItem(MCID_GUID_LOCALSTORAGE_KEY);
+}
+
 export async function postEvent(data: Partial<IngestPayload>) {
   const ingest = await getIngest();
   const common = {
-    'event.context_guid': get(primaryId),
     'event.dts_end': new Date(),
-    'event.guid': uuidv4(),
+    'event.guid': nanoid(),
+    'event.mcid_guid': getMcidGuid(),
     'event.language': navigator.language,
     'event.offline': !navigator.onLine,
     'event.referrer': document.referrer,
