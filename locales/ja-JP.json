@@ -3,8 +3,8 @@
   "comp.about.assets.helpText": "このコンテンツで使用または追加されたアセット",
   "comp.about.contentCredentials.header": "コンテンツクレデンシャル",
   "comp.about.contentCredentials.helpText": "このコンテンツに添付されているアトリビューションと履歴データ",
-  "comp.about.crypto": "暗号アドレス",
-  "comp.about.crypto.helpText": "このコンテンツの制作者につながる暗号通貨アドレス",
+  "comp.about.web3": "Web3",
+  "comp.about.web3.helpText": "Web3 address connected to the producer of this content",
   "comp.about.editsActivity.header": "編集とアクティビティ",
   "comp.about.editsActivity.helpText": "このコンテンツを作成するために行われた変更とアクション",
   "comp.about.editsActivity.none": "なし",
@@ -86,5 +86,6 @@
   "tour.getTamperEvidentData.content": "そのコンテンツがインターネット上のどこに表示されていても、情報アイコンはその記録が確認済みであることを示します。",
   "tour.getTamperEvidentData.title": "開封明示機構のある画像データを取得",
   "tour.trackChanges.content": "画像を選択して、独自のコンテンツレコードを表示します。または、スライダーまたは分割画面ビューで、コンテンツレコードの別のエントリと比較します。",
-  "tour.trackChanges.title": "経時的変化を追跡"
+  "tour.trackChanges.title": "経時的変化を追跡",
+  "web3Address.copiedPopover": "コピーしました"
 }
