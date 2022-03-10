@@ -3,8 +3,8 @@
   "comp.about.assets.helpText": "[D] _üAny assets used or added to this content",
   "comp.about.contentCredentials.header": "[5] _üContent credentials",
   "comp.about.contentCredentials.helpText": "[6] _üAttribution and history data attached to this content",
-  "comp.about.crypto": "[7] _üCrypto address",
-  "comp.about.crypto.helpText": "[8] _üCryptocurrency address connected to the producer of this content",
+  "comp.about.web3": "[Bk] _üWeb3",
+  "comp.about.web3.helpText": "[Bi] _üWeb3 address connected to the producer of this content",
   "comp.about.editsActivity.header": "[E] _üEdits and activity",
   "comp.about.editsActivity.helpText": "[F] _üChanges and actions taken to produce this content",
   "comp.about.editsActivity.none": "[G] _üNone",
@@ -86,5 +86,6 @@
   "tour.getTamperEvidentData.content": "[0] _üNo matter where the content shows up on the internet, the info icon tells you that its record was confirmed.",
   "tour.getTamperEvidentData.title": "[1] _üGet tamper-evident image data",
   "tour.trackChanges.content": "[2] _üSelect an image to view its own content record. Or compare it to another entry in the content record in a slider or split-screen view.",
-  "tour.trackChanges.title": "[3] _üTrack changes over time"
+  "tour.trackChanges.title": "[3] _üTrack changes over time",
+  "web3Address.copiedPopover": "[Bj] _üCopied!"
 }

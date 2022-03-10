@@ -3,8 +3,8 @@
   "comp.about.assets.helpText": "Tout actif utilisé ou ajouté à ce contenu",
   "comp.about.contentCredentials.header": "Identifiants de contenu",
   "comp.about.contentCredentials.helpText": "Données d’attribution et d’historique associées à ce contenu",
-  "comp.about.crypto": "Adresse de crypto-monnaie",
-  "comp.about.crypto.helpText": "Adresse de crypto-monnaie associée au producteur de ce contenu",
+  "comp.about.web3": "Web3",
+  "comp.about.web3.helpText": "Web3 address connected to the producer of this content",
   "comp.about.editsActivity.header": "Modifications et activité",
   "comp.about.editsActivity.helpText": "Modifications et actions entreprises pour produire ce contenu",
   "comp.about.editsActivity.none": "Aucun(e)",
@@ -86,5 +86,6 @@
   "tour.getTamperEvidentData.content": "Peu importe où le contenu apparaît sur Internet, l’icône d’information vous indique que son enregistrement a été confirmé.",
   "tour.getTamperEvidentData.title": "Obtenez des données d’image inviolables",
   "tour.trackChanges.content": "Sélectionnez une image pour afficher son propre enregistrement de contenu. Ou comparez-le à une autre entrée de l’enregistrement de contenu dans un curseur ou un écran partagé.",
-  "tour.trackChanges.title": "Suivez les changements au fil du temps"
+  "tour.trackChanges.title": "Suivez les changements au fil du temps",
+  "web3Address.copiedPopover": "Copie effectuée !"
 }

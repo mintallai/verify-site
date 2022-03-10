@@ -3,8 +3,8 @@
   "comp.about.assets.helpText": "In diesem Inhalt verwendete oder diesem hinzugefügt Assets",
   "comp.about.contentCredentials.header": "Inhaltsurhebernachweis",
   "comp.about.contentCredentials.helpText": "Mit diesem Inhalt verknüpfte Namensnennungs- und Verlaufsdaten",
-  "comp.about.crypto": "Kryptoadresse",
-  "comp.about.crypto.helpText": "Mit dem Ersteller dieses Inhalts verknüpfte Kryptowährungsadresse",
+  "comp.about.web3": "Web3",
+  "comp.about.web3.helpText": "Web3 address connected to the producer of this content",
   "comp.about.editsActivity.header": "Änderungen und Aktivitäten",
   "comp.about.editsActivity.helpText": "Zum Erstellen dieses Inhalts vorgenommene Änderungen oder ausgeführte Aktionen",
   "comp.about.editsActivity.none": "Keine",
@@ -86,5 +86,6 @@
   "tour.getTamperEvidentData.content": "Überall wo der Content im Internet auftaucht, sagt Ihnen das Info-Symbol, dass sein Datensatz bestätigt wurde.",
   "tour.getTamperEvidentData.title": "Fälschungssichere Bilddaten holen",
   "tour.trackChanges.content": "Wählen Sie ein Bild aus, um dessen Inhaltsdatensatz anzuzeigen. Sie können die Daten auch in einem Register oder einer geteilten Bildschirmansicht mit einem anderen Eintrag im Inhaltsdatensatz vergleichen.",
-  "tour.trackChanges.title": "Änderungen chronologisch nachverfolgen"
+  "tour.trackChanges.title": "Änderungen chronologisch nachverfolgen",
+  "web3Address.copiedPopover": "Kopiert"
 }
