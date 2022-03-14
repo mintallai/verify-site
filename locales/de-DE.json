@@ -4,7 +4,7 @@
   "comp.about.contentCredentials.header": "Inhaltsurhebernachweis",
   "comp.about.contentCredentials.helpText": "Mit diesem Inhalt verknüpfte Namensnennungs- und Verlaufsdaten",
   "comp.about.web3": "Web3",
-  "comp.about.web3.helpText": "Web3 address connected to the producer of this content",
+  "comp.about.web3.helpText": "Mit dem Ersteller dieses Inhalts verknüpfte Web3-Adresse",
   "comp.about.editsActivity.header": "Änderungen und Aktivitäten",
   "comp.about.editsActivity.helpText": "Zum Erstellen dieses Inhalts vorgenommene Änderungen oder ausgeführte Aktionen",
   "comp.about.editsActivity.none": "Keine",
