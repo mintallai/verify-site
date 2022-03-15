@@ -4,7 +4,7 @@
   "comp.about.contentCredentials.header": "コンテンツクレデンシャル",
   "comp.about.contentCredentials.helpText": "このコンテンツに添付されているアトリビューションと履歴データ",
   "comp.about.web3": "Web3",
-  "comp.about.web3.helpText": "Web3 address connected to the producer of this content",
+  "comp.about.web3.helpText": "このコンテンツの制作者に関連する Web3 アドレス",
   "comp.about.editsActivity.header": "編集とアクティビティ",
   "comp.about.editsActivity.helpText": "このコンテンツを作成するために行われた変更とアクション",
   "comp.about.editsActivity.none": "なし",

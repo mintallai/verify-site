@@ -4,7 +4,7 @@
   "comp.about.contentCredentials.header": "Identifiants de contenu",
   "comp.about.contentCredentials.helpText": "Données d’attribution et d’historique associées à ce contenu",
   "comp.about.web3": "Web3",
-  "comp.about.web3.helpText": "Web3 address connected to the producer of this content",
+  "comp.about.web3.helpText": "Adresse Web3 associée au producteur de ce contenu",
   "comp.about.editsActivity.header": "Modifications et activité",
   "comp.about.editsActivity.helpText": "Modifications et actions entreprises pour produire ce contenu",
   "comp.about.editsActivity.none": "Aucun(e)",
