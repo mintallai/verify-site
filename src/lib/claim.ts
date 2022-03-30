@@ -13,7 +13,7 @@
 
 import equal from 'fast-deep-equal';
 import { HierarchyNode } from 'd3-hierarchy';
-import { Claim, Ingredient } from './sdk';
+// import { Claim, Ingredient } from './sdk';
 import { ErrorTypes, IBadgeProps, ITreeNode, ViewableItem } from './types';
 import debug from 'debug';
 
@@ -51,7 +51,7 @@ export function getIsOriginal(claim: Claim) {
  * > Note: Smart objects specifically return an error that indicates they may have undergone changes
  * >> We don't currently account for this OTGP case, just ASSET_HASH
  */
-export function getIsIngredientWithClaim(node: Ingredient) {
+ export function getIsIngredientWithClaim(node: Ingredient) {
   const noIngredients = node.claim?.ingredients.length === 0;
   return noIngredients && !isOTGP(node);
 }

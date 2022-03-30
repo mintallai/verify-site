@@ -17,7 +17,7 @@
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
   import equal from 'fast-deep-equal';
-  import { Claim, Ingredient, Source } from '../lib/sdk';
+  // import { Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
@@ -76,6 +76,7 @@
       isDragging = newState;
     },
   };
+
   setLoaderContext(loaderParams);
 
   $: source = $provenance?.source;
@@ -124,12 +125,12 @@
   {/if}
   <Header />
   {#if hasContent}
-    <TopNavigation
+    <!-- <TopNavigation
       {isComparing}
       {noMetadata}
       {source}
       currentPage="inspect"
-      on:back={handleClose} />
+      on:back={handleClose} /> -->
     {#if error}
       <section class="left-col" class:loading={$isLoading} />
       <Viewer isError={!!error} />
@@ -161,7 +162,7 @@
           <Navigation claim={primary} />
         {:else}
           <div class="w-full p-4">
-            {#if primary instanceof Claim}
+            <!-- {#if primary instanceof Claim}
               <About
                 claim={primary}
                 title={primaryNode?.data?.name}
@@ -185,21 +186,21 @@
                   errors={primaryNode?.data?.errors ?? []}
                   {isComparing} />
               </div>
-            {/if}
+            {/if} -->
           </div>
         {/if}
       </section>
-      {#if isComparing}
+      <!-- {#if isComparing}
         <Comparison {primary} {secondary} />
       {:else if primary instanceof Source}
         <Viewer asset={primary} {isDragging} />
       {:else}
         <Viewer asset={primary?.asset} {isDragging} />
-      {/if}
+      {/if} -->
       <section
         data-test-id="inspect.right-col"
         class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing && primary instanceof Claim}
+        <!-- {#if !isComparing && primary instanceof Claim}
           <div class="wrapper">
             <About
               claim={primary}
@@ -255,7 +256,7 @@
             primary={secondary}
             errors={secondaryNode?.data?.errors ?? []}
             {isComparing} />
-        {/if}
+        {/if} -->
       </section>
     {/if}
   {:else}

@@ -21,7 +21,7 @@
   import HierarchyNode from './HierarchyNode.svelte';
   import { hierarchy, isCompareSelectMode } from '../../stores';
   import type { ViewableItem } from '../../lib/types';
-  import { Claim, Source } from '../../lib/sdk';
+  // import { Claim, Source } from '../../lib/sdk';
 
   export let claim: ViewableItem | null = null;
   export let source: Source | null = null;

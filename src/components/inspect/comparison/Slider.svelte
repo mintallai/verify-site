@@ -20,7 +20,7 @@
   import type { DragEvent } from '@interactjs/types';
   import ChevronLeft from '../../../../assets/svg/monochrome/chevron-left.svg';
   import ChevronRight from '../../../../assets/svg/monochrome/chevron-right.svg';
-  import { Source } from '../../../lib/sdk';
+  // import { Source } from '../../../lib/sdk';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
   import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';

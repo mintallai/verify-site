@@ -16,7 +16,7 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import Alert from '../Alert.svelte';
-  import { Claim, RecorderFormat } from '../../lib/sdk';
+  // import { Claim, RecorderFormat } from '../../lib/sdk';
 
   export let type: 'original' | 'secureCapture' = 'original';
   export let claim: Claim;

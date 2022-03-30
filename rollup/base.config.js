@@ -146,8 +146,8 @@ function baseConfig(config, ctx) {
         targets: [
           {
             src: [
-              `node_modules/@contentauth/sdk/dist/assets/wasm/toolkit_bg.wasm`,
-              `node_modules/@contentauth/sdk/dist/cai-sdk.worker.min.js`,
+              `node_modules/c2pa/dist/assets/wasm/toolkit_bg.wasm`,
+              `node_modules/c2pa/dist/cai-sdk.worker.min.js`,
             ],
             dest: `${distDir}/sdk`,
           },

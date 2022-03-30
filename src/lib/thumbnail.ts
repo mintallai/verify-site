@@ -11,14 +11,14 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { Asset, Source, IThumbnail } from './sdk';
+// import { Asset, Source, IThumbnail } from './sdk';
 
 export interface IThumbnailEvent {
   target: Node;
   url: string;
 }
 
-async function generateThumbnail(node, asset: Asset | Source) {
+async function generateThumbnail(node, asset: Source) {
   let result;
   if (asset instanceof Asset) {
     result = await asset.generateThumbnailUrl();

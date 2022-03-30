@@ -29,7 +29,7 @@
     navigateToPath,
     hierarchy,
   } from '../../stores';
-  import { Source } from '../../lib/sdk';
+  // import { Source } from '../../lib/sdk';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import ChevronRight from '../../../assets/svg/monochrome/chevron-right.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';

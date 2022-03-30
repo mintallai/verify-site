@@ -17,7 +17,7 @@
   import { _ } from 'svelte-i18n';
   import Thumbnail from '../Thumbnail.svelte';
   import { getBadgeProps } from '../../lib/claim';
-  import { Ingredient, Source, IError } from '../../lib/sdk';
+  // import { Ingredient, Source, IError } from '../../lib/sdk';
   import { getFaqUrl } from '../../stores';
 
   export let primary: Ingredient | Source;

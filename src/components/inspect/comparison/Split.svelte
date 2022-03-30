@@ -18,7 +18,7 @@
   import partial from 'lodash/partial';
   import { isMobileViewerShown } from '../../../stores';
   import type { TippyProps } from '../../../lib/tippy';
-  import { Source } from '../../../lib/sdk';
+  // import { Source } from '../../../lib/sdk';
   import { tippy } from '../../../lib/tippy';
   import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
   import type { ViewableItem } from '../../../lib/types';
