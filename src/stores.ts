@@ -15,9 +15,9 @@ import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
-import { ImageProvenance, Claim, Ingredient } from './lib/sdk';
 import { ViewableItem, ITreeNode, ErrorTypes } from './lib/types';
 import equal from 'fast-deep-equal';
+import type { SdkResult } from './lib/sdk';
 
 import debug from 'debug';
 import { getPath, isOTGP } from './lib/claim';
@@ -47,7 +47,7 @@ export const urlParams = readable<IUrlParams>(null, (set) => {
 /**
  * An accessor to the "learn more" URL
  */
-export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => { });
+export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
 
 /**
  * Stores the list of universal IDs (claim/parent/ingredient) that represents
@@ -169,16 +169,16 @@ export function compareWithPath(path: string[] | null, logEvent = true): void {
 }
 
 /**
- * Contains the ImageProvenance of the loaded asset.
+ * Contains the SdkResult of the loaded asset.
  */
-export const provenance = writable<ImageProvenance | null>(null, (set) => {
-  return () => { };
+export const provenance = writable<SdkResult | null>(null, (set) => {
+  return () => {};
 });
 
 /**
- * Sets the ImageProvenance of the loaded asset.
+ * Sets the SdkResult of the loaded asset.
  */
-export async function setProvenance(result: ImageProvenance | null) {
+export async function setProvenance(result: SdkResult | null) {
   dbg('Calling setProvenance');
 
   if (result) {
@@ -217,7 +217,8 @@ export const primaryAsset = derived<
   ViewableItem | undefined
 >([provenance, primaryId], ([$provenance, $primaryId]) => {
   return $primaryId === SOURCE_ID
-    ? $provenance?.source
+    ? // TODO: Handle source
+      $provenance?.source
     : $provenance?.resolveId($primaryId);
 });
 
@@ -231,7 +232,8 @@ export const secondaryAsset = derived<
   return $provenance?.resolveId($secondaryId);
 });
 
-function parseProvenance(node: Claim | Ingredient, locatorString = '0'): ITreeNode {
+function parseProvenance(node: any, locatorString = '0'): ITreeNode {
+  console.log('node', node);
   if (node instanceof Claim) {
     return {
       id: node.id,
@@ -240,7 +242,9 @@ function parseProvenance(node: Claim | Ingredient, locatorString = '0'): ITreeNo
       claim: node,
       asset: node.asset ?? undefined,
       errors: node.errors,
-      children: node.ingredients?.map((ingredient, idx) => parseProvenance(ingredient, `${locatorString}.${idx}`)),
+      children: node.ingredients?.map((ingredient, idx) =>
+        parseProvenance(ingredient, `${locatorString}.${idx}`),
+      ),
     };
   }
   if (node instanceof Ingredient) {
@@ -255,7 +259,9 @@ function parseProvenance(node: Claim | Ingredient, locatorString = '0'): ITreeNo
           node.errors[0].code === ErrorTypes.ASSET_HASH ? null : node.claim,
         asset: node.asset ?? node,
         errors: node.asset?.errors,
-        children: node.claim ? [parseProvenance(node.claim, `${locatorString}.0`)] : [],
+        children: node.claim
+          ? [parseProvenance(node.claim, `${locatorString}.0`)]
+          : [],
       };
     }
 
@@ -266,25 +272,42 @@ function parseProvenance(node: Claim | Ingredient, locatorString = '0'): ITreeNo
       claim: node.claim,
       asset: node.claim?.asset ?? node,
       errors: node.errors,
-      children: node.claim?.ingredients.map((ingredient, idx) => parseProvenance(ingredient, `${locatorString}.${idx}`)) ?? [],
+      children:
+        node.claim?.ingredients.map((ingredient, idx) =>
+          parseProvenance(ingredient, `${locatorString}.${idx}`),
+        ) ?? [],
     };
   }
   return;
 }
 
+export const validationErrors = derived<[typeof provenance], any[]>(
+  [provenance],
+  ([$provenance]) => {
+    return (
+      $provenance?.manifestStore?.validationEntries?.filter(
+        (entry) => entry.isError,
+      ) ?? []
+    );
+  },
+);
+
 export const hierarchy = derived<
-  [typeof provenance],
+  [typeof provenance, typeof validationErrors],
   HierarchyNode<ITreeNode> | null
->([provenance], ([$provenance]) => {
+>([provenance, validationErrors], ([$provenance, $validationErrors]) => {
+  console.log('$provenance', $provenance);
   if ($provenance) {
-    const { source, activeClaim, errors } = $provenance;
+    const { source, manifestStore } = $provenance;
+    const activeManifest = manifestStore?.activeManifest;
+    const hasErrors = !!$validationErrors.length;
     // We have a normal claim structure and no top-level errors
-    if (activeClaim && !errors.length) {
-      return d3Hierarchy(parseProvenance(activeClaim));
+    if (activeManifest && !hasErrors) {
+      return d3Hierarchy(parseProvenance(activeManifest));
     }
     // We have top-level errors or no metadata on this image
     // Show the source
-    if (source && (errors.length || !activeClaim)) {
+    if (source && (hasErrors || !activeManifest)) {
       return d3Hierarchy({
         id: SOURCE_ID,
         locatorString: '0',

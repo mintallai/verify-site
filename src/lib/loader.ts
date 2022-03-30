@@ -62,7 +62,7 @@ async function processSourceImage(sourceParam: string, params: ILoaderParams) {
   setIsLoading(true);
   try {
     const sdk = await getSdk();
-    const result = await sdk.processImage(sourceParam);
+    const result = await sdk.read(sourceParam);
     await window.newrelic?.setCustomAttribute('source', sourceParam);
     setProvenance(result);
     lastUrlSource.set(sourceParam);
@@ -93,7 +93,7 @@ export async function processFiles(
       type: file.type,
     });
     try {
-      const result = await sdk.processImage(file);
+      const result = await sdk.read(file);
       logSuccess(result, 'upload');
       setProvenance(result);
     } catch (err) {

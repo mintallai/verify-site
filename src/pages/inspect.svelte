@@ -12,12 +12,10 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
   import equal from 'fast-deep-equal';
-  // import { Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
