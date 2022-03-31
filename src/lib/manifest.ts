@@ -11,7 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import equal from 'fast-deep-equal';
+import startsWith from 'lodash/startsWith';
 import { Manifest, Ingredient } from './sdk';
 import { ErrorTypes, IBadgeProps } from './types';
 import type { HierarchyTreeNode } from '../stores';
@@ -65,8 +65,8 @@ export function getPath(node: HierarchyTreeNode) {
   return path;
 }
 
-export function isInPath(pathArray: string[], nodePath: string[]) {
-  return equal(nodePath, pathArray.slice(0, nodePath.length));
+export function isAncestorOf(path: string, loc: string) {
+  return startsWith(`${path}.`, `${loc}.`);
 }
 
 /**
@@ -109,19 +109,4 @@ export function getBadgeProps(node: HierarchyTreeNode): IBadgeProps {
       badgeHelpText: 'comp.asset.badgeInfo.helpText',
     };
   }
-}
-
-/**
- * Extracts the related claim from the item. For instance, if it is a claim,
- * it will return that claim. If it is an ingredient, it will return the claim
- * on the ingredient, if it exists.
- */
-export function getRelatedClaim(item: TreeNode) {
-  if (item instanceof Claim) {
-    return item;
-  }
-  if (item instanceof Ingredient) {
-    return item.claim ?? null;
-  }
-  return null;
 }

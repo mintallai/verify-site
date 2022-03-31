@@ -14,40 +14,37 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import equal from 'fast-deep-equal';
   import { primaryLoc } from '../../stores';
   import Thumbnail from '../Thumbnail.svelte';
-  import { getBadgeProps, getPath, isInPath } from '../../lib/manifest';
+  import { getBadgeProps, isAncestorOf } from '../../lib/manifest';
   import type { HierarchyPointNode } from 'd3-hierarchy';
-  import type { HierarchyTreeNode } from '../../stores';
+  import type { TreeNode } from '../../stores';
+
   export let node: HierarchyPointNode<TreeNode>;
   export let width: number;
   export let height: number;
 
   $: data = node.data;
+  $: loc = node.data.loc;
   $: tx = node.x - width / 2;
   $: ty = node.y - height / 2;
   $: style = `width: ${width}px; height: ${height}px; transform: translate3d(${tx}px, ${ty}px, 0)`;
-  $: path = getPath(node);
-  $: isSelected = equal($primaryLoc, path);
-  $: isAncestor = !isSelected && isInPath($primaryLoc, path);
-  $: badgeProps = getBadgeProps({
-    manifest: node.data,
-    errors: node.data.errors,
-  });
+  $: isSelected = $primaryLoc === loc;
+  $: isAncestor = !isSelected && isAncestorOf($primaryLoc, loc);
+  $: badgeProps = getBadgeProps(node);
 </script>
 
 <div
   class="node"
   class:selected={isSelected}
   class:ancestor={isAncestor}
-  data-node-idx={data.locatorString}
+  data-node-idx={data.loc}
   {style}>
   <div class="content">
-    <Thumbnail node={node.data.asset} {...badgeProps} />
+    <Thumbnail {node} {...badgeProps} />
     <div>
       <h6>{$_('comp.asset.fileName')}</h6>
-      <div class="file-name">{node.data.name}</div>
+      <div class="file-name">{node.data.title}</div>
     </div>
   </div>
 </div>

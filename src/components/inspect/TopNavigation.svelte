@@ -98,7 +98,7 @@
                   height="16"
                   class="breadcrumb-nav text-gray-800" />
               </div>
-              {#each nodeAncestors.reverse() as parent (parent.data?.id)}
+              {#each nodeAncestors.reverse() as parent (parent.data?.loc)}
                 <!-- neither this on:click or getPath produce the correct result for Gavin's deeply nested CICA image -->
                 <sp-menu-item
                   selected={equal(getPath(parent), null)}

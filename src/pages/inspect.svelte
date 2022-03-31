@@ -15,7 +15,6 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import equal from 'fast-deep-equal';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
@@ -31,17 +30,18 @@
   import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
   import { breakpoints } from '../lib/breakpoints';
   import {
-    urlParams,
-    provenance,
-    hierarchy,
-    primaryLoc,
     compareWith,
-    primary,
-    secondary,
+    hasContent,
+    hierarchy,
     isBurgerMenuShown,
-    isMobileViewerShown,
+    isComparing,
     isLoading,
-    secondaryLoc,
+    isMobileViewerShown,
+    noMetadata,
+    primary,
+    provenance,
+    secondary,
+    urlParams,
   } from '../stores';
 
   function handleClose() {
@@ -59,7 +59,7 @@
     onLoaded() {
       error = null;
       const { tourFlag, forceTourFlag } = $urlParams;
-      if (isMobileViewer === false) {
+      if ($isMobileViewerShown === false) {
         // tour = startTour({
         //   provenance: $provenance,
         //   start: tourFlag,
@@ -74,17 +74,9 @@
 
   setLoaderContext(loaderParams);
 
-  $: source = $provenance?.source;
-  $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $provenance || $isLoading;
-  // TODO: Consolidate primary && primaryNode/secondary && secondaryNode
-  // after integration tests are set up
-  $: isComparing = !!($primary && $secondary);
-  $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !$provenance?.manifestStore?.activeManifest;
   $: {
     // Cancel the tour if the overlay is showing
-    if (tour && tour.isActive() && isMobileViewer) {
+    if (tour && tour.isActive() && $isMobileViewerShown) {
       tour.cancel();
     }
     // Clear errors if the store report has changed
@@ -102,8 +94,8 @@
   use:loader={loaderParams}
   use:breakpoints
   class="theme-light"
-  class:no-content={!hasContent}
-  class:comparing={isComparing}>
+  class:no-content={!$hasContent}
+  class:comparing={$isComparing}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -111,10 +103,10 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if hasContent}
+  {#if $hasContent}
     <TopNavigation
-      {isComparing}
-      {noMetadata}
+      isComparing={$isComparing}
+      noMetadata={$noMetadata}
       node={$primary}
       currentPage="inspect"
       on:back={handleClose} />
@@ -137,7 +129,7 @@
       </section>
     {:else if $primary}
       <section class="left-col">
-        {#if !isComparing}
+        {#if !$isComparing}
           <Navigation node={$primary} />
         {/if}
       </section>
@@ -145,11 +137,14 @@
       <section
         data-test-id="inspect.right-col"
         class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing}
+        {#if !$isComparing}
           <div class="wrapper">
-            <About node={$primary} {isComparing} {isMobileViewer} />
-            {#if isMobileViewer}
-              <CompareLatestButton node={$primary} {isComparing} />
+            <About
+              node={$primary}
+              isComparing={$isComparing}
+              isMobileViewer={$isMobileViewerShown} />
+            {#if $isMobileViewerShown}
+              <CompareLatestButton node={$primary} isComparing={$isComparing} />
             {/if}
           </div>
         {/if}

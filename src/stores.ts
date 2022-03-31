@@ -15,7 +15,6 @@ import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
-import equal from 'fast-deep-equal';
 import type {
   SdkResult,
   Manifest,
@@ -25,7 +24,7 @@ import type {
 } from './lib/sdk';
 
 import debug from 'debug';
-import { getPath, isOTGP } from './lib/manifest';
+import { isOTGP } from './lib/manifest';
 
 const dbg = debug('store');
 
@@ -220,7 +219,7 @@ interface SourceTreeNode extends BaseTreeNode {
   node: Source;
 }
 
-type TreeNode = ManifestTreeNode | IngredientTreeNode | SourceTreeNode;
+export type TreeNode = ManifestTreeNode | IngredientTreeNode | SourceTreeNode;
 
 export type HierarchyTreeNode = HierarchyNode<TreeNode>;
 
@@ -312,11 +311,32 @@ export const ancestors = derived<
 >([primaryLoc, hierarchy], ([$primaryLoc, $hierarchy]) => {
   if ($primaryLoc) {
     return $hierarchy
-      ?.find((node) => equal(getPath(node), $primaryLoc))
+      ?.find((node) => node.data.loc === $primaryLoc)
       ?.ancestors();
   }
   return null;
 });
+
+export const hasContent = derived<
+  [typeof provenance, typeof isLoading],
+  boolean
+>([provenance, isLoading], ([$provenance, $isLoading]) => {
+  return !!($provenance || $isLoading);
+});
+
+export const isComparing = derived<[typeof primary, typeof secondary], boolean>(
+  [primary, secondary],
+  ([$primary, $secondary]) => {
+    return !!($primary && $secondary);
+  },
+);
+
+export const noMetadata = derived<[typeof provenance], boolean>(
+  [provenance],
+  ([$provenance]) => {
+    return !$provenance?.manifestStore?.activeManifest;
+  },
+);
 
 /**
  * Convenience function to navigate to the root claim

@@ -15,11 +15,8 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import equal from 'fast-deep-equal';
-  // import { Claim, Ingredient } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
-  import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
   import FileDropper from '../components/FileDropper.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
@@ -30,29 +27,26 @@
   import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
   import { breakpoints } from '../lib/breakpoints';
   import {
-    urlParams,
-    provenance,
+    hasContent,
     hierarchy,
+    isBurgerMenuShown,
+    isLoading,
+    isMobileViewerShown,
+    noMetadata,
     primary,
     primaryLoc,
-    isBurgerMenuShown,
-    isMobileViewerShown,
-    isLoading,
+    provenance,
+    urlParams,
   } from '../stores';
 
   let isDragging = false;
   let error = null;
   let tour: ReturnType<typeof startTour>;
 
-  $: source = $provenance?.source;
-  $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $provenance || $isLoading;
-  $: isUploadMode = !hasContent || isDragging;
-  $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !$provenance?.exists;
+  $: isUploadMode = !$hasContent || isDragging;
   $: {
     // Cancel the tour if the overlay is showing
-    if (tour && tour.isActive() && isMobileViewer) {
+    if (tour && tour.isActive() && $isMobileViewerShown) {
       tour.cancel();
     }
     // Clear errors if the store report has changed
@@ -68,7 +62,7 @@
     onLoaded() {
       error = null;
       const { tourFlag, forceTourFlag } = $urlParams;
-      if (isMobileViewer === false) {
+      if ($isMobileViewerShown === false) {
         // tour = startTour({
         //   provenance: $provenance,
         //   start: tourFlag,
@@ -99,8 +93,11 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if hasContent}
-    <TopNavigation {noMetadata} {source} currentPage="overview" />
+  {#if $hasContent}
+    <TopNavigation
+      node={$primary}
+      noMetadata={$noMetadata}
+      currentPage="overview" />
   {/if}
   <div class="dragdrop">
     <FileDropper {isUploadMode} {isDragging} isError={!!error} />
@@ -111,7 +108,7 @@
         in:fade={{ duration: 150 }} />
     {/if}
   </div>
-  {#if hasContent}
+  {#if $hasContent}
     {#if $isLoading}
       <div class="w-full h-full bg-gray-75 flex items-center justify-center">
         <CircleLoader />
@@ -129,7 +126,7 @@
             <Alert severity="error">{$_(error)}</Alert>
           </div>
         {:else if $primary}
-          <About claim={$primary} {isMobileViewer} />
+          <About node={$primary} isMobileViewer={$isMobileViewerShown} />
         {:else if $isLoading}
           <div class="flex items-center justify-center">
             <CircleLoader />
