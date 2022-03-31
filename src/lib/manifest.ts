@@ -52,19 +52,6 @@ export function isOTGP(node: HierarchyTreeNode) {
     .length;
 }
 
-/**
- * Gets the path of IDs from the current node to the root node (active claim)
- */
-export function getPath(node: HierarchyTreeNode) {
-  const path = [];
-  let curr = node;
-  while (curr) {
-    path.unshift(curr.data.loc);
-    curr = curr.parent;
-  }
-  return path;
-}
-
 export function isAncestorOf(path: string, loc: string) {
   return startsWith(`${path}.`, `${loc}.`);
 }

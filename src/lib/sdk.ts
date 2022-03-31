@@ -24,7 +24,10 @@ let sdk: Sdk;
 
 declare module 'c2pa' {
   interface ManifestAssertions {
-    'adobe.crypto': boolean;
+    'adobe.crypto.assertions': {
+      etherium?: string[];
+      solana?: string[];
+    };
   }
 }
 
@@ -43,7 +46,7 @@ function websiteResolver(manifest) {
 }
 
 function web3Resolver(manifest) {
-  const cryptoEntries = manifest.assertions.get('adobe.crypto') ?? {};
+  const cryptoEntries = manifest.assertions.get('adobe.crypto.addresses') ?? {};
   return (Object.entries(cryptoEntries) as [string, string[]][]).filter(
     ([type, [address]]) => address && ['solana', 'ethereum'].includes(type),
   );

@@ -38,6 +38,7 @@
 
   $: manifest = getManifest(node);
   $: isOriginal = getIsOriginal(manifest);
+  $: title = manifest.title;
   $: claimGenerator = manifest.claimGenerator;
   $: producer = manifest.producer;
   $: isBeta = manifest.isBeta;
@@ -65,6 +66,21 @@
   });
 </script>
 
+{#if title}
+  <div>
+    <dl class="attributes" data-test-id="about.title">
+      <dt class="flex space-x-2">
+        <div class="whitespace-nowrap">{$_('comp.about.title')}</div>
+        <cai-tooltip placement="left" class="theme-spectrum">
+          <div slot="content" class="text-gray-900" style="width: 150px;">
+            {$_('comp.about.title.helpText')}
+          </div>
+        </cai-tooltip>
+      </dt>
+      <dd>{title}</dd>
+    </dl>
+  </div>
+{/if}
 <div>
   <dl class="attributes" data-test-id="about.produced-with">
     <dt>

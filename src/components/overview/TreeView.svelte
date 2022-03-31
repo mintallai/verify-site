@@ -21,7 +21,7 @@
     navigateTo,
     overviewTransform,
   } from '../../stores';
-  import { getPath, isAncestorOf } from '../../lib/manifest';
+  import { isAncestorOf } from '../../lib/manifest';
   import TreeNode from './TreeNode.svelte';
   import TreeLink from './TreeLink.svelte';
   import { select as d3Select } from 'd3-selection';

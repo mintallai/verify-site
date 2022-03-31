@@ -34,7 +34,6 @@
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
   import Thumbnail from '../Thumbnail.svelte';
-  import { getPath } from '../../lib/manifest';
   import equal from 'fast-deep-equal';
 
   type Page = 'overview' | 'inspect';
@@ -99,9 +98,9 @@
                   class="breadcrumb-nav text-gray-800" />
               </div>
               {#each nodeAncestors.reverse() as parent (parent.data?.loc)}
-                <!-- neither this on:click or getPath produce the correct result for Gavin's deeply nested CICA image -->
+                <!-- FIXME: fix selected -->
                 <sp-menu-item
-                  selected={equal(getPath(parent), null)}
+                  selected={false}
                   on:click={navigateTo(parent.data.loc)}
                   value={parent.data?.loc}>
                   <div class="flex items-center">
