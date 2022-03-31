@@ -43,9 +43,6 @@
     isLoading,
     secondaryLoc,
   } from '../stores';
-  // TODO: Reconcile `About` and `AboutNoClaim` components
-  import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
-  import { getIsIngredientWithClaim, getPath } from '../lib/manifest';
 
   function handleClose() {
     compareWith(null);

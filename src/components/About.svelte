@@ -13,9 +13,9 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _, date, time, locale } from 'svelte-i18n';
+  import { _, date, time } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
-  // import ManifestDetails from './ManifestDetails.svelte';
+  import ManifestDetails from './ManifestDetails.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Thumbnail from './Thumbnail.svelte';
   import { getManifest, getBadgeProps, getIsOriginal } from '../lib/manifest';
@@ -37,10 +37,11 @@
   $: filename = data.node.title;
   $: issuer = manifest?.signature?.issuer;
   $: sigDate = manifest?.signature?.date;
+  $: badgeProps = getBadgeProps(node);
 </script>
 
 <div data-test-id="about" class="w-full flex justify-center">
-  <div class="info w-full max-w-xs">
+  <div class="about-info w-full max-w-xs">
     <div class="hidden lg:block">
       <dl class="attributes">
         <dt>
@@ -57,7 +58,7 @@
           class="flex space-x-2 items-center mt-1"
           data-test-id="about.file-name">
           <div class="w-12 h-12">
-            <Thumbnail {node} {...getBadgeProps(node)} />
+            <Thumbnail {node} {...badgeProps} />
           </div>
           {#if manifest}
             <div>
@@ -94,29 +95,25 @@
       </div>
     </div>
     {#if manifest}
-      <!-- <ManifestDetails {node} /> -->
+      <ManifestDetails {node} />
+    {:else}
+      <!-- @TODO: Show badge info -->
+      <div class="py-4">
+        {$_('comp.contentCredentialsError.noneForFile')}
+      </div>
     {/if}
   </div>
 </div>
 
 <style lang="postcss">
-  .info > div {
+  :global(.about-info > div) {
     @apply py-4 border-b border-gray-300;
   }
-  .info > div:first-child {
+  :global(.about-info > div:first-child) {
     @apply pt-0;
   }
-  .info > div:last-child {
+  :global(.about-info > div:last-child) {
     @apply border-none;
-  }
-
-  .assets-used {
-    @apply grid gap-3;
-    grid-template-columns: repeat(auto-fit, 48px);
-  }
-  .social-accounts {
-    @apply grid gap-x-2 gap-y-1 items-center;
-    grid-template-columns: 16px auto;
   }
   .thumbnail-title {
     @apply mt-1 truncate;
@@ -124,7 +121,7 @@
   }
 
   @screen md {
-    .info {
+    :global(.about-info) {
       @apply min-h-0;
     }
   }

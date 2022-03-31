@@ -29,7 +29,7 @@ export enum ClaimError {
   InvalidIdentityAssertion = 'INVALID_IDENTITY_ASSERTION',
 }
 
-export function getManifest(node: HierarchyTreeNode) {
+export function getManifest(node: HierarchyTreeNode): Manifest | null {
   return node.data.type === 'manifest'
     ? node.data.node
     : node.data.type === 'ingredient'
@@ -47,34 +47,9 @@ export function getIsOriginal(manifest: Manifest) {
   return false;
 }
 
-/**
- * TODO: make this implementation more robust
- * Issues w/ implementation:
- * Stock images look like OTGP image in terms of the data --
- * this is likely to be true for any smart object that brings in a claim
- * That means there's no data-based similarities to take advantage of to differentiate.
- * The quick way is to check if it's a stock image > any images in the wild w/ similar treatment will be ignored
- * Longer way is to check if it's an OTGP image > relies on the ASSET_HASH error;
- * > The reason to check if the image is OTGP:
- * >> OTGP images contain different sets of data in their asset and claim fields
- * >>> For the XCA.jpg image, `asset` contains info about XCA.jpg; `claim` contains info about `CA.jpg`
- * > Note: Smart objects specifically return an error that indicates they may have undergone changes
- * >> We don't currently account for this OTGP case, just ASSET_HASH
- */
-export function getIsIngredientWithClaim(node: Ingredient) {
-  const noIngredients = node.claim?.ingredients.length === 0;
-  return noIngredients && !isOTGP(node);
-}
-
-export function isOTGP(node: Manifest | Ingredient) {
+export function isOTGP(node: HierarchyTreeNode) {
   return node.errors?.filter((err) => err.code === ErrorTypes.ASSET_HASH)
     .length;
-}
-
-interface IBadgePropsInput {
-  manifest: Manifest;
-  ingredient: Ingredient | undefined;
-  errors?: any[];
 }
 
 /**
@@ -140,14 +115,14 @@ export function getBadgeProps(node: HierarchyTreeNode): IBadgeProps {
  * Returns `true` if has a beta assertion
  */
 export function getIsBeta(manifest: Manifest): boolean {
-  return !!manifest.assertions('adobe.beta')?.version;
+  return !!manifest.assertions.get('adobe.beta')?.version;
 }
 
 /**
  * Returns the CreativeWork website if one exists
  */
 export function getWebsite(manifest: Manifest): string | undefined {
-  const site = claim.findAssertion(CREATIVEWORK_ASSERTION_LABEL)?.data?.url;
+  const site = manifest.assertions.get('stds.schema-org.CreativeWork')?.url;
   if (site) {
     const url = new URL(site);
     if (url.protocol === 'https:' && url.hostname === 'stock.adobe.com') {

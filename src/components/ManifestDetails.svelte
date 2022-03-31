@@ -48,6 +48,9 @@
   $: producer = manifest.producer;
   $: isBeta = getIsBeta(manifest);
   $: website = getWebsite(manifest);
+  $: socialAccounts = manifest.socialAccounts;
+  // FIXME(@mensch): Line this in
+  $: web3Addresses = [];
 
   // FIXME: Make this work
   $: hasUnknownActions = false;
@@ -62,26 +65,6 @@
   //   ingredient.data.reviews?.find(
   //     (review) => review.code === 'ingredient.possiblyModified',
   //   ),
-  // );
-
-  // $: creativeWorkAssertion = claim.findAssertion(
-  //   AssertionLabel.CreativeWork,
-  // ) as CreativeWorkAssertion | null;
-  // $: cryptoAssertion = claim.findAssertion(
-  //   AssertionLabel.AdobeCryptoAddresses,
-  // ) as AdobeCryptoAddressesAssertion | null;
-  // $: producer = creativeWorkAssertion?.producer?.name ?? '';
-  // $: asset = claim.asset;
-  // $: filename = title ?? claim.title;
-  // $: assets = claim.ingredients?.length ? claim.ingredients : null;
-  // $: signedBy = claim.signature?.issuer;
-  // $: sigDate = claim.signature?.date;
-  // $: recorder = claim.formatRecorder(RecorderFormat.ProgramNameAndVersion);
-  // $: socialAccounts = creativeWorkAssertion?.socialAccounts ?? [];
-  // $: web3Addresses = (
-  //   Object.entries(cryptoAssertion?.data ?? {}) as [string, string[]][]
-  // ).filter(
-  //   ([type, [address]]) => address && ['solana', 'ethereum'].includes(type),
   // );
 
   $: editsActivityStrings = JSON.stringify({
@@ -193,7 +176,7 @@
           </div>
         </cai-tooltip>
       </dt>
-      <dd>{producer}</dd>
+      <dd>{producer.name}</dd>
     </dl>
   </div>
 {/if}
@@ -259,16 +242,6 @@
 {/if}
 
 <style lang="postcss">
-  .info > div {
-    @apply py-4 border-b border-gray-300;
-  }
-  .info > div:first-child {
-    @apply pt-0;
-  }
-  .info > div:last-child {
-    @apply border-none;
-  }
-
   .assets-used {
     @apply grid gap-3;
     grid-template-columns: repeat(auto-fit, 48px);
@@ -276,20 +249,5 @@
   .social-accounts {
     @apply grid gap-x-2 gap-y-1 items-center;
     grid-template-columns: 16px auto;
-  }
-  .thumbnail-title {
-    @apply mt-1 truncate;
-    width: var(--cai-thumbnail-size);
-  }
-
-  @screen md {
-    .info {
-      @apply min-h-0;
-    }
-  }
-  @screen lg {
-    .file-name .value {
-      @apply max-w-full;
-    }
   }
 </style>
