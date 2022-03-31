@@ -32,24 +32,31 @@ async function generateThumbnail(node, asset) {
   return result;
 }
 
-export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
-  let currThumbnail;
+function getAsset(treeNode: HierarchyTreeNode) {
   // FIXME: Needs to work for source
-  const asset = treeNode?.data.node.thumbnail;
+  return treeNode?.data.node.thumbnail;
+}
+
+export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
+  let currTreeNode = treeNode;
+  // TODO(@mensch): Add type of thumbnail object from SDK
+  let currThumbnail;
+  const asset = getAsset(treeNode);
   if (asset) {
     generateThumbnail(node, asset).then((result) => (currThumbnail = result));
   }
 
   return {
-    async update(asset?: any) {
-      if (asset) {
-        // const prevHash = await currAsset?.computeHash();
-        // const currHash = await asset.computeHash();
+    async update(treeNode?: any) {
+      if (treeNode) {
+        // FIXME: Add back once hash functions are available to stop the flashes
+        // const prevHash = await currTreeNode?.computeHash();
+        // const currHash = await treeNode.computeHash();
         // if (prevHash !== currHash) {
-        //   const result = await generateThumbnail(node, asset);
-        //   currThumbnail?.dispose?.();
-        //   currThumbnail = result;
-        //   currAsset = asset;
+        const result = await generateThumbnail(node, getAsset(treeNode));
+        currThumbnail?.dispose?.();
+        currThumbnail = result;
+        currTreeNode = asset;
         // }
       }
     },

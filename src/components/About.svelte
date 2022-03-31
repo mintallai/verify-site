@@ -30,18 +30,17 @@
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
+  import type { HierarchyTreeNode } from '../stores';
   import debug from 'debug';
 
   const dbg = debug('about');
 
-  export let claim: Claim;
-  // TODO: Fix this so that we get the proper information and don't need to pass this in
-  export let title: string | null = null;
+  export let node: HierarchyTreeNode;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
   let colWidth = 0;
 
-  $: isOriginal = getIsOriginal(claim);
+  $: isOriginal = getIsOriginal(node);
   $: actionsAssertion = claim.findAssertion(
     AssertionLabel.Actions,
   ) as ActionsAssertion | null;

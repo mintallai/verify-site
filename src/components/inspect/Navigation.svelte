@@ -19,9 +19,9 @@
   import OriginalCreation from './OriginalCreation.svelte';
   import HierarchyNode from './HierarchyNode.svelte';
   import { hierarchy, isCompareSelectMode } from '../../stores';
-  import type { TreeNode } from '../../lib/types';
+  import type { HierarchyTreeNode } from '../../stores';
 
-  export let node: TreeNode | null = null;
+  export let node: HierarchyTreeNode;
   let container: any;
   let secureCapture: false;
 

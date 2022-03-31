@@ -31,21 +31,21 @@
   export let node: HierarchyTreeNode;
 
   $: data = node.data;
+  $: loc = data.loc;
   $: children = node.children ?? [];
   $: hasChildren = children.length > 0;
   $: isSingle = node.depth === 0 && !hasChildren;
-  $: path = getPath(node);
-  $: isExpanded = !$collapsedBranches.has(data.loc);
-  $: isSelected = equal($primaryLoc, path);
+  $: isExpanded = !$collapsedBranches.has(loc);
+  $: isSelected = $primaryLoc === loc;
   $: compare = $isCompareSelectMode && !isSelected;
   $: badgeProps = getBadgeProps(data);
 
   function handleClick() {
     if (!isSelected) {
       if (compare) {
-        compareWith(path);
+        compareWith(loc);
       } else {
-        navigateTo(path);
+        navigateTo(loc);
       }
     }
   }

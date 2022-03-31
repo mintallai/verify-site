@@ -20,12 +20,12 @@
   import FileDropper from '../FileDropper.svelte';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
   import { thumbnail, handleImgSrc } from '../../lib/thumbnail';
-  import { TreeNode } from '../../lib/types';
+  import type { HierarchyTreeNode } from '../../stores';
   import debug from 'debug';
 
   const dbg = debug('viewer');
 
-  export let node: TreeNode | null = null;
+  export let node: HierarchyTreeNode | null = null;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
   export let isError: boolean = false;
