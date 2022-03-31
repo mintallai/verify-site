@@ -17,9 +17,9 @@ import delay from 'delay';
 import store from 'store2';
 import TourStep from '../components/inspect/TourStep.svelte';
 import {
-  navigateToPath,
+  navigateTo,
   compareWithPath,
-  secondaryPath,
+  secondaryId,
   navigateToRoot,
 } from '../stores';
 
@@ -61,7 +61,7 @@ async function gotoRootClaim(storeReport: any) {
 async function gotoParentClaim(storeReport: any) {
   const parentRef = getParentRef(storeReport);
   if (parentRef) {
-    secondaryPath.set([]);
+    secondaryId.set([]);
     // navigateToId(parentRef.id, false, false);
     await delay(DELAY_MS);
   }

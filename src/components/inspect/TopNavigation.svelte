@@ -12,21 +12,19 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { goto, params, url } from '@roxi/routify';
   import { createEventDispatcher } from 'svelte';
   import { _ } from 'svelte-i18n';
   import {
     primaryId,
-    primaryPath,
-    primaryAsset,
+    primary,
     ancestors,
     compareMode,
     setCompareMode,
     CompareMode,
     isMobileViewerShown,
-    navigateToPath,
+    navigateTo,
     hierarchy,
   } from '../../stores';
   // import { Source } from '../../lib/sdk';
@@ -58,12 +56,9 @@
 
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
-  $: thumbnailAsset =
-    $primaryAsset instanceof Source ? $primaryAsset : $primaryAsset?.asset;
+  $: thumbnailAsset = $primary instanceof Source ? $primary : $primary?.asset;
   $: thumbnailTitle =
-    $primaryAsset instanceof Source
-      ? $primaryAsset.filename
-      : $primaryAsset?.title;
+    $primary instanceof Source ? $primary.filename : $primary?.title;
 </script>
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
@@ -110,8 +105,8 @@
               {#each nodeAncestors.reverse() as parent (parent.data?.id)}
                 <!-- neither this on:click or getPath produce the correct result for Gavin's deeply nested CICA image -->
                 <sp-menu-item
-                  selected={equal(getPath(parent), $primaryPath)}
-                  on:click={navigateToPath(getPath(parent))}
+                  selected={equal(getPath(parent), null)}
+                  on:click={navigateTo(getPath(parent))}
                   value={parent.data?.id}>
                   <div class="flex items-center">
                     <Thumbnail slot="icon" asset={parent.data?.asset} />

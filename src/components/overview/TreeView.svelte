@@ -12,15 +12,14 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { onMount } from 'svelte';
   import equal from 'fast-deep-equal';
   import partial from 'lodash/partial';
   import {
-    primaryPath,
+    primaryId,
     hierarchy,
-    navigateToPath,
+    navigateTo,
     overviewTransform,
   } from '../../stores';
   import { getPath, isInPath } from '../../lib/claim';
@@ -66,9 +65,9 @@
 
   function handleNodeClick(node) {
     const path = getPath(node);
-    const selected = equal($primaryPath, path);
+    const selected = equal($primaryId, path);
     if (!selected) {
-      navigateToPath(path);
+      navigateTo(path);
     }
   }
 
@@ -124,8 +123,8 @@
     .map((link, idx) => {
       const { source, target } = link;
       const ancestor =
-        isInPath($primaryPath, getPath(source)) &&
-        isInPath($primaryPath, getPath(target));
+        isInPath($primaryId, getPath(source)) &&
+        isInPath($primaryId, getPath(target));
       return { link, idx, ancestor };
     })
     // Make sure the highlighted (ancestor) paths appear on top

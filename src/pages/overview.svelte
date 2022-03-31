@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
@@ -34,8 +33,8 @@
     urlParams,
     provenance,
     hierarchy,
-    primaryAsset,
-    primaryPath,
+    primary,
+    primaryId,
     isBurgerMenuShown,
     isMobileViewerShown,
     isLoading,
@@ -50,10 +49,6 @@
   $: sourceParam = $urlParams.source;
   $: hasContent = sourceParam || $provenance || $isLoading;
   $: isUploadMode = !hasContent || isDragging;
-  $: primary = $primaryAsset;
-  $: primaryNode = $hierarchy?.find((node) =>
-    equal(getPath(node), $primaryPath),
-  );
   $: isMobileViewer = $isMobileViewerShown;
   $: noMetadata = !$provenance?.exists;
   $: {
@@ -134,22 +129,14 @@
           <div class="w-full">
             <Alert severity="error">{$_(error)}</Alert>
           </div>
-        {:else if primary instanceof Claim}
-          <About
-            claim={primary}
-            title={primaryNode?.data?.name}
-            {isMobileViewer} />
-        {:else if primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
-          <About
-            claim={primary.claim}
-            title={primaryNode?.data?.name}
-            {isMobileViewer} />
+        {:else if $primary}
+          <About claim={$primary} {isMobileViewer} />
         {:else if $isLoading}
           <div class="flex items-center justify-center">
             <CircleLoader />
           </div>
         {:else}
-          <AboutNoClaim {primary} errors={primaryNode?.data?.errors ?? []} />
+          <!-- <AboutNoClaim {primary} errors={primary?.data?.errors ?? []} /> -->
         {/if}
       </div>
     </section>

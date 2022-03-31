@@ -34,14 +34,14 @@
     urlParams,
     provenance,
     hierarchy,
-    primaryPath,
+    primaryId,
     compareWithPath,
-    primaryAsset,
-    secondaryAsset,
+    primary,
+    secondary,
     isBurgerMenuShown,
     isMobileViewerShown,
     isLoading,
-    secondaryPath,
+    secondaryId,
   } from '../stores';
   // TODO: Reconcile `About` and `AboutNoClaim` components
   import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
@@ -82,17 +82,9 @@
   $: hasContent = sourceParam || $provenance || $isLoading;
   // TODO: Consolidate primary && primaryNode/secondary && secondaryNode
   // after integration tests are set up
-  $: primary = $primaryAsset;
-  $: secondary = $secondaryAsset;
-  $: primaryNode = $hierarchy?.find((node) =>
-    equal(getPath(node), $primaryPath),
-  );
-  $: secondaryNode = $hierarchy?.find((node) =>
-    equal(getPath(node), $secondaryPath),
-  );
-  $: isComparing = !!(primary && secondary);
+  $: isComparing = !!($primary && $secondary);
   $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !$provenance?.exists;
+  $: noMetadata = !$provenance?.activeManifest;
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && isMobileViewer) {
@@ -154,10 +146,10 @@
       <section data-test-id="inspect.right-col" class="right-col p-4">
         <ContentCredentialsError {isComparing} />
       </section>
-    {:else if primary}
+    {:else if $primary}
       <section class="left-col">
         {#if !isComparing}
-          <Navigation claim={primary} />
+          <!-- <Navigation claim={primary} /> -->
         {:else}
           <div class="w-full p-4">
             <!-- {#if primary instanceof Claim}

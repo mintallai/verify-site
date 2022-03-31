@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import equal from 'fast-deep-equal';
@@ -21,9 +20,9 @@
   import {
     collapsedBranches,
     toggleBranch,
-    primaryPath,
+    primaryId,
     compareWithPath,
-    navigateToPath,
+    navigateTo,
     isCompareSelectMode,
   } from '../../stores';
   import { getBadgeProps, getPath } from '../../lib/claim';
@@ -39,7 +38,7 @@
   $: isSingle = node.depth === 0 && !hasChildren;
   $: path = getPath(node);
   $: isExpanded = !$collapsedBranches.has(data.id);
-  $: isSelected = equal($primaryPath, path);
+  $: isSelected = equal($primaryId, path);
   $: compare = $isCompareSelectMode && !isSelected;
   $: badgeProps = getBadgeProps(data);
 
@@ -48,7 +47,7 @@
       if (compare) {
         compareWithPath(path);
       } else {
-        navigateToPath(path);
+        navigateTo(path);
       }
     }
   }

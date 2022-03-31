@@ -11,13 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import type {
-  Claim,
-  Ingredient,
-  Asset,
-  Source,
-  IError,
-} from '@contentauth/sdk';
+import type { Manifest, Ingredient, Source } from './sdk';
 
 export type BadgeType = 'none' | 'info' | 'missing' | 'alert';
 
@@ -26,21 +20,18 @@ export interface IBadgeProps {
   badgeHelpText: string | null;
 }
 
-export type ViewableItem = Claim | Ingredient | Source;
+export type ViewableItem = Manifest | Ingredient | Source;
 
+// TODO: @emensch probably has a better way of doing this with generics;
+// just trying to get this working - @dkozma
 export interface ITreeNode {
   id: string;
-  locatorString: string;
-  name: string;
-  claim?: Claim;
-  asset?: Asset | Source;
-  isExpanded?: boolean;
-  errors: IError[];
+  node: Manifest | Ingredient;
   children?: ITreeNode[];
 }
 
 export enum ErrorTypes {
-  ASSET_HASH = "ASSET_HASH",
-  SIGNATURE = "SIGNATURE",
-  UNKNOWN = "UNKNOWN",
+  ASSET_HASH = 'ASSET_HASH',
+  SIGNATURE = 'SIGNATURE',
+  UNKNOWN = 'UNKNOWN',
 }

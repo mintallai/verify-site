@@ -12,11 +12,10 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import equal from 'fast-deep-equal';
-  import { primaryPath } from '../../stores';
+  import { primaryId } from '../../stores';
   import Thumbnail from '../Thumbnail.svelte';
   import { getBadgeProps, getPath, isInPath } from '../../lib/claim';
   import type { ITreeNode } from '../../lib/types';
@@ -30,8 +29,8 @@
   $: ty = node.y - height / 2;
   $: style = `width: ${width}px; height: ${height}px; transform: translate3d(${tx}px, ${ty}px, 0)`;
   $: path = getPath(node);
-  $: isSelected = equal($primaryPath, path);
-  $: isAncestor = !isSelected && isInPath($primaryPath, path);
+  $: isSelected = equal($primaryId, path);
+  $: isAncestor = !isSelected && isInPath($primaryId, path);
   $: badgeProps = getBadgeProps({
     claim: node.data.claim,
     errors: node.data.errors,

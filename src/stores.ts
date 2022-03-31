@@ -74,13 +74,13 @@ export const overviewTransform = writable<ZoomTransform | null>(null);
  * The primary universal ID (claim/parent/ingredient) that is being shown in the
  * viewer. If a `secondaryId` is _also_ set, a comparison view shows up.
  */
-export const primaryPath = writable<string[]>([]);
+export const primaryId = writable<string>('');
 
 /**
  * The secondary universal ID (claim/parent/ingredient) that is used as the thumbnail
  * to compare with.
  */
-export const secondaryPath = writable<string[]>([]);
+export const secondaryId = writable<string>('');
 
 export const isLoading = writable<boolean>(false);
 
@@ -135,19 +135,19 @@ export function setIsLoading(loading) {
  * @param path The path to navigate to
  * @param logEvent `true` to log this event in New Relic
  */
-export function navigateToPath(path: string[], logEvent = true): void {
-  dbg('Navigating to path', path);
+export function navigateTo(id: string, logEvent = true): void {
+  dbg('Navigating to', id);
 
-  primaryPath.set(path);
+  primaryId.set(id);
   scrollTo(0, 0);
   if (logEvent) {
-    window.newrelic?.addPageAction('navigateToPath', { path });
+    window.newrelic?.addPageAction('navigateTo', { id });
   }
 }
 
 export function navigateToChild(id: string, logEvent = true): void {
-  const currPath = get(primaryPath);
-  navigateToPath([...currPath, id], logEvent);
+  const currPath = get(primaryId);
+  // navigateTo([...currPath, id], logEvent);
 }
 
 /**
@@ -158,7 +158,7 @@ export function navigateToChild(id: string, logEvent = true): void {
  */
 export function compareWithPath(path: string[] | null, logEvent = true): void {
   dbg('Comparing with', path);
-  secondaryPath.set(path ?? []);
+  secondaryId.set(path ?? []);
   scrollTo(0, 0);
   if (logEvent) {
     window.newrelic?.addPageAction('compareWithPath', {
@@ -191,94 +191,18 @@ export async function setProvenance(result: SdkResult | null) {
   }
 }
 
-/**
- * The primary universal ID (claim/parent/ingredient) that is being shown in the
- * viewer. If a `secondaryId` is _also_ set, a comparison view shows up.
- */
-export const primaryId = derived<[typeof primaryPath], string>(
-  [primaryPath],
-  ([$primaryPath]) => {
-    return $primaryPath.slice(-1)[0];
-  },
-);
-
-export const secondaryId = derived<[typeof secondaryPath], string>(
-  [secondaryPath],
-  ([$secondaryPath]) => {
-    return $secondaryPath.slice(-1)[0];
-  },
-);
-
-/**
- * Convenience accessor for the claim/ingredient data that's linked to the `primaryId`.
- */
-export const primaryAsset = derived<
-  [typeof provenance, typeof primaryId],
-  ViewableItem | undefined
->([provenance, primaryId], ([$provenance, $primaryId]) => {
-  return $primaryId === SOURCE_ID
-    ? // TODO: Handle source
-      $provenance?.source
-    : $provenance?.resolveId($primaryId);
-});
-
-/**
- * Convenience accessor for the claim/ingredient data that's linked to the `secondaryId`.
- */
-export const secondaryAsset = derived<
-  [typeof provenance, typeof secondaryId],
-  ViewableItem | undefined
->([provenance, secondaryId], ([$provenance, $secondaryId]) => {
-  return $provenance?.resolveId($secondaryId);
-});
-
-function parseProvenance(node: any, locatorString = '0'): ITreeNode {
-  console.log('node', node);
-  if (node instanceof Claim) {
-    return {
-      id: node.id,
-      locatorString,
-      name: node.title,
-      claim: node,
-      asset: node.asset ?? undefined,
-      errors: node.errors,
-      children: node.ingredients?.map((ingredient, idx) =>
-        parseProvenance(ingredient, `${locatorString}.${idx}`),
-      ),
-    };
-  }
-  if (node instanceof Ingredient) {
-    if (isOTGP(node)) {
-      return {
-        id: node.asset?.id ?? node.id,
-        locatorString,
-        name: node.asset?.title ?? node.title,
-        // There are currently no error cases accounted for but OTGP.
-        // The `claim` value will need to be adjusted based on the type of error.
-        claim:
-          node.errors[0].code === ErrorTypes.ASSET_HASH ? null : node.claim,
-        asset: node.asset ?? node,
-        errors: node.asset?.errors,
-        children: node.claim
-          ? [parseProvenance(node.claim, `${locatorString}.0`)]
-          : [],
-      };
-    }
-
-    return {
-      id: node.claim?.id ?? node.id,
-      locatorString,
-      name: node.title,
-      claim: node.claim,
-      asset: node.claim?.asset ?? node,
-      errors: node.errors,
-      children:
-        node.claim?.ingredients.map((ingredient, idx) =>
-          parseProvenance(ingredient, `${locatorString}.${idx}`),
-        ) ?? [],
-    };
-  }
-  return;
+function parseProvenance(node: any, id = '0'): ITreeNode {
+  const ingredients = node.manifest?.ingredients ?? node.ingredients;
+  return {
+    // ID for root node (active manifest) should be `0`
+    // unless there is a top-level error, where it is `0.0` (since `source` is `0`)
+    id,
+    node,
+    // This should be the only item with a direct `ingredients` key
+    children: ingredients?.map((ingredient, idx) =>
+      parseProvenance(ingredient, `${id}.${idx}`),
+    ),
+  };
 }
 
 export const validationErrors = derived<[typeof provenance], any[]>(
@@ -296,39 +220,63 @@ export const hierarchy = derived<
   [typeof provenance, typeof validationErrors],
   HierarchyNode<ITreeNode> | null
 >([provenance, validationErrors], ([$provenance, $validationErrors]) => {
-  console.log('$provenance', $provenance);
   if ($provenance) {
     const { source, manifestStore } = $provenance;
     const activeManifest = manifestStore?.activeManifest;
     const hasErrors = !!$validationErrors.length;
-    // We have a normal claim structure and no top-level errors
+    // We have a normal manifest structure and no top-level errors
     if (activeManifest && !hasErrors) {
       return d3Hierarchy(parseProvenance(activeManifest));
     }
     // We have top-level errors or no metadata on this image
-    // Show the source
+    // Show the source as the root node and manifests underneath
     if (source && (hasErrors || !activeManifest)) {
       return d3Hierarchy({
-        id: SOURCE_ID,
-        locatorString: '0',
-        name: source.filename,
-        claim: null,
-        asset: source,
-        errors,
-        children: activeClaim ? [parseProvenance(activeClaim, '0.0')] : [],
+        id: 0,
+        source,
+        errors: $validationErrors,
+        children: activeManifest
+          ? [parseProvenance(activeManifest, '0.0')]
+          : [],
       });
     }
   }
   return null;
 });
 
+/**
+ * Convenience accessor for the claim/ingredient data that's linked to the `primaryId`.
+ */
+export const primary = derived<[typeof hierarchy, typeof primaryId], any>(
+  [hierarchy, primaryId],
+  ([$hierarchy, $primaryId]) => {
+    console.log('$hierarchy', $hierarchy);
+    return null;
+    // return $primaryId === SOURCE_ID
+    //   ? // TODO: Handle source
+    //     $provenance?.source
+    //   : $provenance?.resolveId($primaryId);
+  },
+);
+
+/**
+ * Convenience accessor for the claim/ingredient data that's linked to the `secondaryId`.
+ */
+export const secondary = derived<
+  [typeof hierarchy, typeof secondaryId],
+  ViewableItem | undefined
+>([hierarchy, secondaryId], ([$hierarchy, $secondaryId]) => {
+  console.log('$hierarchy', $hierarchy);
+  return null;
+});
+
 export const ancestors = derived<
-  [typeof primaryPath, typeof hierarchy],
+  [typeof primaryId, typeof hierarchy],
   HierarchyNode<ITreeNode>[] | null
->([primaryPath, hierarchy], ([$primaryPath, $hierarchy]) => {
-  if ($primaryPath) {
+>([primaryId, hierarchy], ([$primaryId, $hierarchy]) => {
+  if ($primaryId) {
     return $hierarchy
-      ?.find((node) => equal(getPath(node), $primaryPath))
+      ?.find((node) => equal(getPath(node), $primaryId))
       ?.ancestors();
   }
   return null;
@@ -339,7 +287,10 @@ export const ancestors = derived<
  */
 export const rootId = derived<[typeof hierarchy], string | undefined>(
   [hierarchy],
-  ([$hierarchy]) => $hierarchy?.data?.id,
+  ([$hierarchy]) => {
+    // @TODO: Can this just be a const?
+    return '0';
+  },
 );
 
 /**
@@ -350,7 +301,7 @@ export const rootId = derived<[typeof hierarchy], string | undefined>(
 export function navigateToRoot(logEvent = true): void {
   const id = get(rootId);
   if (id) {
-    secondaryPath.set([]);
-    navigateToPath([id], logEvent);
+    secondaryId.set('');
+    navigateTo(id, logEvent);
   }
 }

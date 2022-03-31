@@ -18,21 +18,21 @@ export interface IThumbnailEvent {
   url: string;
 }
 
-async function generateThumbnail(node, asset: Source) {
+async function generateThumbnail(node, asset) {
   let result;
-  if (asset instanceof Asset) {
-    result = await asset.generateThumbnailUrl();
-  } else if (asset instanceof Source) {
-    result = await asset.generateUrl();
-  }
-  if (result) {
-    node.dispatchEvent(
-      new CustomEvent<IThumbnailEvent>('thumbnail', {
-        detail: { target: node, url: result.url },
-      }),
-    );
-  }
-  return result;
+  // if (asset instanceof Asset) {
+  //   result = await asset.generateThumbnailUrl();
+  // } else if (asset instanceof Source) {
+  //   result = await asset.generateUrl();
+  // }
+  // if (result) {
+  //   node.dispatchEvent(
+  //     new CustomEvent<IThumbnailEvent>('thumbnail', {
+  //       detail: { target: node, url: result.url },
+  //     }),
+  //   );
+  // }
+  // return result;
 }
 
 export function thumbnail(node: Node, asset?: Asset | Source) {

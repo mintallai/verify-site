@@ -14,20 +14,22 @@
 // import { ContentAuth } from '@contentauth/sdk';
 import { createC2pa } from 'c2pa';
 
-
 export type Sdk = Awaited<ReturnType<typeof createC2pa>>;
 export type SdkResult = Awaited<ReturnType<Sdk['read']>>;
+// TODO: Ping @mensch about the best way to do this
+export type Manifest = SdkResult['manifestStore']['activeManifest'];
+export type Ingredient = Manifest['ingredients'][number];
+export type Source = SdkResult['source'];
 
 let sdk: Sdk;
-
 
 export async function getSdk() {
   if (!sdk) {
     try {
       sdk = await createC2pa({
         wasmSrc: 'sdk/toolkit_bg.wasm',
-        workerSrc: 'sdk/cai-sdk.worker.min.js'
-      })
+        workerSrc: 'sdk/cai-sdk.worker.min.js',
+      });
       console.log('we got sdk', sdk);
       // sdk = new ContentAuth({
       //   wasmSrc: 'sdk/toolkit_bg.wasm',

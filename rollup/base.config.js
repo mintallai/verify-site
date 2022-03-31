@@ -224,7 +224,7 @@ function baseConfig(config, ctx) {
       !production && !isNollup && livereload(distDir), // refresh entire window when code is updated
     ],
     watch: {
-      clearScreen: false,
+      clearScreen: true,
       buildDelay: 100,
     },
   };
