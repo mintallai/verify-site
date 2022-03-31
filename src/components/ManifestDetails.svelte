@@ -21,13 +21,7 @@
   import Thumbnail from './Thumbnail.svelte';
   import Web3Address from './Web3Address.svelte';
   import { getFaqUrl, navigateToChild } from '../stores';
-  import {
-    getManifest,
-    getBadgeProps,
-    getIsBeta,
-    getIsOriginal,
-    getWebsite,
-  } from '../lib/manifest';
+  import { getManifest, getBadgeProps, getIsOriginal } from '../lib/manifest';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
@@ -46,11 +40,10 @@
   $: isOriginal = getIsOriginal(manifest);
   $: claimGenerator = manifest.claimGenerator;
   $: producer = manifest.producer;
-  $: isBeta = getIsBeta(manifest);
-  $: website = getWebsite(manifest);
+  $: isBeta = manifest.isBeta;
+  $: website = manifest.website;
   $: socialAccounts = manifest.socialAccounts;
-  // FIXME(@mensch): Line this in
-  $: web3Addresses = [];
+  $: web3Addresses = manifest.web3;
 
   // FIXME: Make this work
   $: hasUnknownActions = false;

@@ -34,7 +34,7 @@
 
   $: data = node.data;
   $: manifest = getManifest(node);
-  $: filename = data.node.title;
+  $: filename = data.title ?? '';
   $: issuer = manifest?.signature?.issuer;
   $: sigDate = manifest?.signature?.date;
   $: badgeProps = getBadgeProps(node);

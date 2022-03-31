@@ -16,7 +16,13 @@ import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
 import equal from 'fast-deep-equal';
-import type { SdkResult, Manifest, Ingredient, Source } from './lib/sdk';
+import type {
+  SdkResult,
+  Manifest,
+  Ingredient,
+  Source,
+  Thumbnail,
+} from './lib/sdk';
 
 import debug from 'debug';
 import { getPath, isOTGP } from './lib/manifest';
@@ -190,27 +196,45 @@ export async function setProvenance(result: SdkResult | null) {
   }
 }
 
-// TODO: @emensch probably has a better way of doing this with generics;
-// just trying to get this working - @dkozma
-interface TreeNode {
+interface BaseTreeNode {
   loc: string;
-  type: 'manifest' | 'ingredient' | 'source';
-  node: Manifest | Ingredient | Source;
-  errors?: any[];
+  title?: string;
+  format: string;
+  // TODO: Remove undefined once Thumbnail supports
+  thumbnail: Thumbnail | undefined;
   children?: TreeNode[];
 }
+
+interface ManifestTreeNode extends BaseTreeNode {
+  type: 'manifest';
+  node: Manifest;
+}
+
+interface IngredientTreeNode extends BaseTreeNode {
+  type: 'ingredient';
+  node: Ingredient;
+}
+
+interface SourceTreeNode extends BaseTreeNode {
+  type: 'source';
+  node: Source;
+}
+
+type TreeNode = ManifestTreeNode | IngredientTreeNode | SourceTreeNode;
 
 export type HierarchyTreeNode = HierarchyNode<TreeNode>;
 
 function parseProvenance(node: any, loc = ROOT_LOC): TreeNode {
   const isIngredient = node.hasOwnProperty('manifest');
   const ingredients = node.manifest?.ingredients ?? node.ingredients;
+  // ID for root node (active manifest) should be `0`
+  // unless there is a top-level error, where it is `0.0` (since `source` is `0`)
   return {
-    // ID for root node (active manifest) should be `0`
-    // unless there is a top-level error, where it is `0.0` (since `source` is `0`)
     loc,
-    // We might be able to remove this
     type: isIngredient ? 'ingredient' : 'manifest',
+    title: node.title,
+    format: isIngredient ? node.thumbnail.format : node.format,
+    thumbnail: node.thumbnail,
     node,
     // This should be the only item with a direct `ingredients` key
     children: ingredients?.map((ingredient, idx) =>
@@ -251,11 +275,12 @@ export const hierarchy = derived<
         loc: ROOT_LOC,
         type: 'source',
         node: source,
-        errors: $validationErrors,
+        title: source.metadata.filename,
+        format: source.type,
         children: activeManifest
           ? [parseProvenance(activeManifest, `${ROOT_LOC}.0`)]
           : [],
-      });
+      } as TreeNode);
     }
   }
   return null;

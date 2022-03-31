@@ -77,7 +77,7 @@
     </div>
     <div class="pl-3" class:cursor-pointer={!isSelected} on:click={handleClick}>
       <h6>{$_('comp.asset.fileName')}</h6>
-      <div>{data.node.title}</div>
+      <div>{data.title}</div>
     </div>
   </div>
   <div class="pl-6 space-y-5" class:hidden={!isExpanded}>

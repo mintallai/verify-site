@@ -112,26 +112,6 @@ export function getBadgeProps(node: HierarchyTreeNode): IBadgeProps {
 }
 
 /**
- * Returns `true` if has a beta assertion
- */
-export function getIsBeta(manifest: Manifest): boolean {
-  return !!manifest.assertions.get('adobe.beta')?.version;
-}
-
-/**
- * Returns the CreativeWork website if one exists
- */
-export function getWebsite(manifest: Manifest): string | undefined {
-  const site = manifest.assertions.get('stds.schema-org.CreativeWork')?.url;
-  if (site) {
-    const url = new URL(site);
-    if (url.protocol === 'https:' && url.hostname === 'stock.adobe.com') {
-      return site;
-    }
-  }
-}
-
-/**
  * Extracts the related claim from the item. For instance, if it is a claim,
  * it will return that claim. If it is an ingredient, it will return the claim
  * on the ingredient, if it exists.

@@ -22,13 +22,45 @@ export type Source = SdkResult['source'];
 
 let sdk: Sdk;
 
+declare module 'c2pa' {
+  interface ManifestAssertions {
+    'adobe.crypto': boolean;
+  }
+}
+
+function isBetaResolver(manifest) {
+  return !!manifest.assertions.get('adobe.beta')?.version;
+}
+
+function websiteResolver(manifest) {
+  const site = manifest.assertions.get('stds.schema-org.CreativeWork')?.url;
+  if (site) {
+    const url = new URL(site);
+    if (url.protocol === 'https:' && url.hostname === 'stock.adobe.com') {
+      return site;
+    }
+  }
+}
+
+function web3Resolver(manifest) {
+  const cryptoEntries = manifest.assertions.get('adobe.crypto') ?? {};
+  return (Object.entries(cryptoEntries) as [string, string[]][]).filter(
+    ([type, [address]]) => address && ['solana', 'ethereum'].includes(type),
+  );
+}
+
 export async function getSdk() {
   if (!sdk) {
     try {
       sdk = await createC2pa({
         wasmSrc: 'sdk/toolkit_bg.wasm',
         workerSrc: 'sdk/cai-sdk.worker.min.js',
-        manifestResolvers: resolvers.editsAndActivityResolver,
+        manifestResolvers: {
+          ...resolvers.editsAndActivityResolver,
+          isBeta: isBetaResolver,
+          website: websiteResolver,
+          web3: web3Resolver,
+        },
       });
     } catch (err) {
       console.error('Could not load SDK:', err);
