@@ -34,7 +34,7 @@
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
   import Thumbnail from '../Thumbnail.svelte';
-  import { getPath } from '../../lib/claim';
+  import { getPath } from '../../lib/manifest';
   import equal from 'fast-deep-equal';
 
   type Page = 'overview' | 'inspect';
@@ -102,11 +102,12 @@
                 <!-- neither this on:click or getPath produce the correct result for Gavin's deeply nested CICA image -->
                 <sp-menu-item
                   selected={equal(getPath(parent), null)}
-                  on:click={navigateTo(getPath(parent))}
+                  on:click={navigateTo(parent.data.loc)}
                   value={parent.data?.loc}>
                   <div class="flex items-center">
-                    <Thumbnail slot="icon" asset={parent.data?.asset} />
-                    <span class="ml-2 items-center">{parent.data?.name}</span>
+                    <Thumbnail slot="icon" node={parent} />
+                    <span class="ml-2 items-center"
+                      >{parent.data.node.title}</span>
                   </div>
                 </sp-menu-item>
               {/each}

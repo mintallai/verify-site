@@ -22,10 +22,9 @@
     navigateTo,
     overviewTransform,
   } from '../../stores';
-  import { getPath, isInPath } from '../../lib/claim';
+  import { getPath, isInPath } from '../../lib/manifest';
   import TreeNode from './TreeNode.svelte';
   import TreeLink from './TreeLink.svelte';
-  import type { TreeNode } from '../../lib/types';
   import { select as d3Select } from 'd3-selection';
   import { zoom as d3Zoom, zoomIdentity, ZoomTransform } from 'd3-zoom';
   import { tree as D3Tree, HierarchyPointNode } from 'd3-hierarchy';

@@ -14,7 +14,6 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import equal from 'fast-deep-equal';
   import Thumbnail from '../Thumbnail.svelte';
   import ExpandHierarchy from '../../../assets/svg/monochrome/expand-hierarchy.svg';
   import {
@@ -26,7 +25,7 @@
     isCompareSelectMode,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
-  import { getBadgeProps, getPath } from '../../lib/claim';
+  import { getBadgeProps } from '../../lib/manifest';
 
   export let node: HierarchyTreeNode;
 
@@ -38,7 +37,7 @@
   $: isExpanded = !$collapsedBranches.has(loc);
   $: isSelected = $primaryLoc === loc;
   $: compare = $isCompareSelectMode && !isSelected;
-  $: badgeProps = getBadgeProps(data);
+  $: badgeProps = getBadgeProps(node);
 
   function handleClick() {
     if (!isSelected) {

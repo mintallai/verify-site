@@ -17,9 +17,9 @@
   import equal from 'fast-deep-equal';
   import { primaryLoc } from '../../stores';
   import Thumbnail from '../Thumbnail.svelte';
-  import { getBadgeProps, getPath, isInPath } from '../../lib/claim';
-  import type { TreeNode } from '../../lib/types';
+  import { getBadgeProps, getPath, isInPath } from '../../lib/manifest';
   import type { HierarchyPointNode } from 'd3-hierarchy';
+  import type { HierarchyTreeNode } from '../../stores';
   export let node: HierarchyPointNode<TreeNode>;
   export let width: number;
   export let height: number;
@@ -32,7 +32,7 @@
   $: isSelected = equal($primaryLoc, path);
   $: isAncestor = !isSelected && isInPath($primaryLoc, path);
   $: badgeProps = getBadgeProps({
-    claim: node.data.claim,
+    manifest: node.data,
     errors: node.data.errors,
   });
 </script>
@@ -44,7 +44,7 @@
   data-node-idx={data.locatorString}
   {style}>
   <div class="content">
-    <Thumbnail asset={node.data.asset} {...badgeProps} />
+    <Thumbnail node={node.data.asset} {...badgeProps} />
     <div>
       <h6>{$_('comp.asset.fileName')}</h6>
       <div class="file-name">{node.data.name}</div>

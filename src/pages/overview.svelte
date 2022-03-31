@@ -39,7 +39,7 @@
     isMobileViewerShown,
     isLoading,
   } from '../stores';
-  import { getIsIngredientWithClaim, getPath } from '../lib/claim';
+  import { getIsIngredientWithClaim, getPath } from '../lib/manifest';
 
   let isDragging = false;
   let error = null;

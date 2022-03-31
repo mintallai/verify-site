@@ -11,7 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { createC2pa } from 'c2pa';
+import { createC2pa, resolvers } from 'c2pa';
 
 export type Sdk = Awaited<ReturnType<typeof createC2pa>>;
 export type SdkResult = Awaited<ReturnType<Sdk['read']>>;
@@ -28,6 +28,7 @@ export async function getSdk() {
       sdk = await createC2pa({
         wasmSrc: 'sdk/toolkit_bg.wasm',
         workerSrc: 'sdk/cai-sdk.worker.min.js',
+        manifestResolvers: resolvers.editsAndActivityResolver,
       });
     } catch (err) {
       console.error('Could not load SDK:', err);

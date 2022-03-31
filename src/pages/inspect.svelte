@@ -45,7 +45,7 @@
   } from '../stores';
   // TODO: Reconcile `About` and `AboutNoClaim` components
   import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
-  import { getIsIngredientWithClaim, getPath } from '../lib/claim';
+  import { getIsIngredientWithClaim, getPath } from '../lib/manifest';
 
   function handleClose() {
     compareWith(null);
@@ -138,7 +138,7 @@
         class:loading={$isLoading}>
         <CircleLoader />
       </section>
-    {:else}
+    {:else if $primary}
       <section class="left-col">
         {#if !isComparing}
           <Navigation node={$primary} />
@@ -150,9 +150,9 @@
         class="right-col p-4 pt-0 md:pt-4">
         {#if !isComparing}
           <div class="wrapper">
-            <!-- <About claim={primary} {isComparing} {isMobileViewer} /> -->
+            <About node={$primary} {isComparing} {isMobileViewer} />
             {#if isMobileViewer}
-              <CompareLatestButton claim={primary} {isComparing} />
+              <CompareLatestButton node={$primary} {isComparing} />
             {/if}
           </div>
         {/if}

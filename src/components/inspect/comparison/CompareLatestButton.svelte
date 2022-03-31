@@ -16,12 +16,13 @@
   import { _ } from 'svelte-i18n';
   import Button from '../../Button.svelte';
   import { ROOT_LOC, compareWith } from '../../../stores';
+  import type { HierarchyTreeNode } from '../../../stores';
 
-  export let claim;
+  export let node: HierarchyTreeNode;
   export let isComparing: boolean = false;
 </script>
 
-{#if !isComparing && claim?.loc !== ROOT_LOC}
+{#if !isComparing && node.data?.loc !== ROOT_LOC}
   <div class="w-full py-5 mt-4 border-t border-gray-300">
     <Button full on:click={() => compareWith(ROOT_LOC)}
       >{$_('comp.comparison.compareToLatestVersion')}</Button>

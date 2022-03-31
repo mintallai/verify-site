@@ -19,7 +19,7 @@ import equal from 'fast-deep-equal';
 import type { SdkResult, Manifest, Ingredient, Source } from './lib/sdk';
 
 import debug from 'debug';
-import { getPath, isOTGP } from './lib/claim';
+import { getPath, isOTGP } from './lib/manifest';
 
 const dbg = debug('store');
 

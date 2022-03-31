@@ -12,9 +12,9 @@
 // from Adobe.
 
 import equal from 'fast-deep-equal';
-import { HierarchyNode } from 'd3-hierarchy';
-// import { Claim, Ingredient } from './sdk';
-import { ErrorTypes, IBadgeProps, TreeNode, TreeNode } from './types';
+import { Manifest, Ingredient } from './sdk';
+import { ErrorTypes, IBadgeProps } from './types';
+import type { HierarchyTreeNode } from '../stores';
 import debug from 'debug';
 
 const dbg = debug('claim');
@@ -29,12 +29,22 @@ export enum ClaimError {
   InvalidIdentityAssertion = 'INVALID_IDENTITY_ASSERTION',
 }
 
-export function getIsOriginal(claim: Claim) {
-  const noIngredients = claim.ingredients.length === 0;
-  const actionAssertion = claim.findAssertion(ACTION_ASSERTION_LABEL);
-  const actions = actionAssertion?.data?.actions;
-  const isDelivered = actions?.find((x) => x.action === DELIVERED_ACTION);
-  return noIngredients && !isDelivered;
+export function getManifest(node: HierarchyTreeNode) {
+  return node.data.type === 'manifest'
+    ? node.data.node
+    : node.data.type === 'ingredient'
+    ? node.data.node.manifest
+    : null;
+}
+
+export function getIsOriginal(manifest: Manifest) {
+  // FIXME: This should support original creations in Photoshop
+  // const noIngredients = claim.ingredients.length === 0;
+  // const actionAssertion = claim.findAssertion(ACTION_ASSERTION_LABEL);
+  // const actions = actionAssertion?.data?.actions;
+  // const isDelivered = actions?.find((x) => x.action === DELIVERED_ACTION);
+  // return noIngredients && !isDelivered;
+  return false;
 }
 
 /**
@@ -56,24 +66,25 @@ export function getIsIngredientWithClaim(node: Ingredient) {
   return noIngredients && !isOTGP(node);
 }
 
-export function isOTGP(node: Claim | Ingredient) {
+export function isOTGP(node: Manifest | Ingredient) {
   return node.errors?.filter((err) => err.code === ErrorTypes.ASSET_HASH)
     .length;
 }
 
 interface IBadgePropsInput {
-  claim?: Claim | Ingredient;
+  manifest: Manifest;
+  ingredient: Ingredient | undefined;
   errors?: any[];
 }
 
 /**
  * Gets the path of IDs from the current node to the root node (active claim)
  */
-export function getPath(node: HierarchyNode<TreeNode>) {
+export function getPath(node: HierarchyTreeNode) {
   const path = [];
   let curr = node;
   while (curr) {
-    path.unshift(curr.data.id);
+    path.unshift(curr.data.loc);
     curr = curr.parent;
   }
   return path;
@@ -86,10 +97,9 @@ export function isInPath(pathArray: string[], nodePath: string[]) {
 /**
  * Generates the badge props (used by the `cai-thumbnail`) from the claim data
  */
-export function getBadgeProps({
-  claim,
-  errors,
-}: IBadgePropsInput): IBadgeProps {
+export function getBadgeProps(node: HierarchyTreeNode): IBadgeProps {
+  // FIXME: Update errors to come from validation errors
+  const errors = [];
   // Change to accomdate different types of errors + multiple errors on a single asset
   if (errors?.length > 0) {
     switch (errors[0].code) {
@@ -118,7 +128,7 @@ export function getBadgeProps({
         };
     }
   }
-  if (claim) {
+  if (getManifest(node)) {
     return {
       badgeType: 'info',
       badgeHelpText: 'comp.asset.badgeInfo.helpText',
@@ -129,14 +139,14 @@ export function getBadgeProps({
 /**
  * Returns `true` if has a beta assertion
  */
-export function getIsBeta(claim: Claim): boolean {
-  return !!claim.findAssertion(BETA_LABEL)?.data?.version;
+export function getIsBeta(manifest: Manifest): boolean {
+  return !!manifest.assertions('adobe.beta')?.version;
 }
 
 /**
  * Returns the CreativeWork website if one exists
  */
-export function getWebsite(claim: Claim): string | undefined {
+export function getWebsite(manifest: Manifest): string | undefined {
   const site = claim.findAssertion(CREATIVEWORK_ASSERTION_LABEL)?.data?.url;
   if (site) {
     const url = new URL(site);
