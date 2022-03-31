@@ -12,14 +12,13 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { Asset, Source } from '../lib/sdk';
   import { IBadgeProps } from '../lib/types';
   import { thumbnail, handleImgSrc, IThumbnailEvent } from '../lib/thumbnail';
+  import type { HierarchyTreeNode } from '../stores';
 
-  export let asset: Asset | Source;
+  export let node: HierarchyTreeNode;
   export let isSelected = false;
   export let badgeType: IBadgeProps['badgeType'] = 'none';
   export let badgeHelpText: IBadgeProps['badgeHelpText'] = null;
@@ -31,7 +30,7 @@
 </script>
 
 <cai-thumbnail
-  use:thumbnail={asset}
+  use:thumbnail={node}
   on:thumbnail={handleThumbnail}
   {src}
   selected={isSelected}

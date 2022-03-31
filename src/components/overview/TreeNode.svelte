@@ -15,12 +15,12 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import equal from 'fast-deep-equal';
-  import { primaryId } from '../../stores';
+  import { primaryLoc } from '../../stores';
   import Thumbnail from '../Thumbnail.svelte';
   import { getBadgeProps, getPath, isInPath } from '../../lib/claim';
-  import type { ITreeNode } from '../../lib/types';
+  import type { TreeNode } from '../../lib/types';
   import type { HierarchyPointNode } from 'd3-hierarchy';
-  export let node: HierarchyPointNode<ITreeNode>;
+  export let node: HierarchyPointNode<TreeNode>;
   export let width: number;
   export let height: number;
 
@@ -29,8 +29,8 @@
   $: ty = node.y - height / 2;
   $: style = `width: ${width}px; height: ${height}px; transform: translate3d(${tx}px, ${ty}px, 0)`;
   $: path = getPath(node);
-  $: isSelected = equal($primaryId, path);
-  $: isAncestor = !isSelected && isInPath($primaryId, path);
+  $: isSelected = equal($primaryLoc, path);
+  $: isAncestor = !isSelected && isInPath($primaryLoc, path);
   $: badgeProps = getBadgeProps({
     claim: node.data.claim,
     errors: node.data.errors,

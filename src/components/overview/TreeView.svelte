@@ -17,7 +17,7 @@
   import equal from 'fast-deep-equal';
   import partial from 'lodash/partial';
   import {
-    primaryId,
+    primaryLoc,
     hierarchy,
     navigateTo,
     overviewTransform,
@@ -25,7 +25,7 @@
   import { getPath, isInPath } from '../../lib/claim';
   import TreeNode from './TreeNode.svelte';
   import TreeLink from './TreeLink.svelte';
-  import type { ITreeNode } from '../../lib/types';
+  import type { TreeNode } from '../../lib/types';
   import { select as d3Select } from 'd3-selection';
   import { zoom as d3Zoom, zoomIdentity, ZoomTransform } from 'd3-zoom';
   import { tree as D3Tree, HierarchyPointNode } from 'd3-hierarchy';
@@ -43,7 +43,7 @@
   let svgSel: any;
   let bounds: SVGGraphicsElement;
   let boundsTransform: ZoomTransform;
-  let tree: HierarchyPointNode<ITreeNode>;
+  let tree: HierarchyPointNode<TreeNode>;
   let zoom = d3Zoom().on('zoom', (evt) => {
     if (!boundsTransform && $overviewTransform) {
       boundsTransform = $overviewTransform;
@@ -65,7 +65,7 @@
 
   function handleNodeClick(node) {
     const path = getPath(node);
-    const selected = equal($primaryId, path);
+    const selected = equal($primaryLoc, path);
     if (!selected) {
       navigateTo(path);
     }
@@ -105,7 +105,7 @@
   $: {
     // Once the hierarchy is ready, create the tree
     if ($hierarchy) {
-      const d3Tree = D3Tree<ITreeNode>();
+      const d3Tree = D3Tree<TreeNode>();
       d3Tree.size([width, height]);
       d3Tree.nodeSize([nodeWidth + vPad, nodeHeight + hPad]);
       d3Tree.separation((a, b) => (a.parent == b.parent ? 1 : 1));
@@ -123,8 +123,8 @@
     .map((link, idx) => {
       const { source, target } = link;
       const ancestor =
-        isInPath($primaryId, getPath(source)) &&
-        isInPath($primaryId, getPath(target));
+        isInPath($primaryLoc, getPath(source)) &&
+        isInPath($primaryLoc, getPath(target));
       return { link, idx, ancestor };
     })
     // Make sure the highlighted (ancestor) paths appear on top

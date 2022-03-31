@@ -15,9 +15,8 @@ import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
-import { ViewableItem, ITreeNode, ErrorTypes } from './lib/types';
 import equal from 'fast-deep-equal';
-import type { SdkResult } from './lib/sdk';
+import type { SdkResult, Manifest, Ingredient, Source } from './lib/sdk';
 
 import debug from 'debug';
 import { getPath, isOTGP } from './lib/claim';
@@ -28,7 +27,7 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
-const SOURCE_ID = '__source__';
+export const ROOT_LOC = '0';
 
 /**
  * Syncs the URL params to the state
@@ -72,15 +71,15 @@ export const overviewTransform = writable<ZoomTransform | null>(null);
 
 /**
  * The primary universal ID (claim/parent/ingredient) that is being shown in the
- * viewer. If a `secondaryId` is _also_ set, a comparison view shows up.
+ * viewer. If a `secondaryLoc` is _also_ set, a comparison view shows up.
  */
-export const primaryId = writable<string>('');
+export const primaryLoc = writable<string>('');
 
 /**
  * The secondary universal ID (claim/parent/ingredient) that is used as the thumbnail
  * to compare with.
  */
-export const secondaryId = writable<string>('');
+export const secondaryLoc = writable<string>('');
 
 export const isLoading = writable<boolean>(false);
 
@@ -138,7 +137,7 @@ export function setIsLoading(loading) {
 export function navigateTo(id: string, logEvent = true): void {
   dbg('Navigating to', id);
 
-  primaryId.set(id);
+  primaryLoc.set(id);
   scrollTo(0, 0);
   if (logEvent) {
     window.newrelic?.addPageAction('navigateTo', { id });
@@ -146,24 +145,24 @@ export function navigateTo(id: string, logEvent = true): void {
 }
 
 export function navigateToChild(id: string, logEvent = true): void {
-  const currPath = get(primaryId);
+  const currPath = get(primaryLoc);
   // navigateTo([...currPath, id], logEvent);
 }
 
 /**
- * Launches the comparison view between the exsiting `primaryId` and the passed in `id`.
+ * Launches the comparison view between the exsiting `primaryLoc` and the passed in `id`.
  *
  * @param id The claim ID of the claim to compare with
  * @param logEvent `true` to log this event in New Relic
  */
-export function compareWithPath(path: string[] | null, logEvent = true): void {
-  dbg('Comparing with', path);
-  secondaryId.set(path ?? []);
+export function compareWith(loc: string | null, logEvent = true): void {
+  dbg('Comparing with', loc);
+  secondaryLoc.set(loc);
   scrollTo(0, 0);
   if (logEvent) {
-    window.newrelic?.addPageAction('compareWithPath', {
-      id: get(primaryId),
-      comparingWith: path,
+    window.newrelic?.addPageAction('compareWith', {
+      id: get(primaryLoc),
+      comparingWith: loc,
     });
   }
 }
@@ -191,16 +190,31 @@ export async function setProvenance(result: SdkResult | null) {
   }
 }
 
-function parseProvenance(node: any, id = '0'): ITreeNode {
+// TODO: @emensch probably has a better way of doing this with generics;
+// just trying to get this working - @dkozma
+interface TreeNode {
+  loc: string;
+  type: 'manifest' | 'ingredient' | 'source';
+  node: Manifest | Ingredient | Source;
+  errors?: any[];
+  children?: TreeNode[];
+}
+
+export type HierarchyTreeNode = HierarchyNode<TreeNode>;
+
+function parseProvenance(node: any, loc = ROOT_LOC): TreeNode {
+  const isIngredient = node.hasOwnProperty('manifest');
   const ingredients = node.manifest?.ingredients ?? node.ingredients;
   return {
     // ID for root node (active manifest) should be `0`
     // unless there is a top-level error, where it is `0.0` (since `source` is `0`)
-    id,
+    loc,
+    // We might be able to remove this
+    type: isIngredient ? 'ingredient' : 'manifest',
     node,
     // This should be the only item with a direct `ingredients` key
     children: ingredients?.map((ingredient, idx) =>
-      parseProvenance(ingredient, `${id}.${idx}`),
+      parseProvenance(ingredient, `${loc}.${idx}`),
     ),
   };
 }
@@ -218,9 +232,10 @@ export const validationErrors = derived<[typeof provenance], any[]>(
 
 export const hierarchy = derived<
   [typeof provenance, typeof validationErrors],
-  HierarchyNode<ITreeNode> | null
+  HierarchyTreeNode | null
 >([provenance, validationErrors], ([$provenance, $validationErrors]) => {
   if ($provenance) {
+    console.log('$provenance', $provenance);
     const { source, manifestStore } = $provenance;
     const activeManifest = manifestStore?.activeManifest;
     const hasErrors = !!$validationErrors.length;
@@ -231,12 +246,14 @@ export const hierarchy = derived<
     // We have top-level errors or no metadata on this image
     // Show the source as the root node and manifests underneath
     if (source && (hasErrors || !activeManifest)) {
+      // TODO: Can we update the source to have a similar API to manifest/ingredients?
       return d3Hierarchy({
-        id: 0,
-        source,
+        loc: ROOT_LOC,
+        type: 'source',
+        node: source,
         errors: $validationErrors,
         children: activeManifest
-          ? [parseProvenance(activeManifest, '0.0')]
+          ? [parseProvenance(activeManifest, `${ROOT_LOC}.0`)]
           : [],
       });
     }
@@ -245,53 +262,36 @@ export const hierarchy = derived<
 });
 
 /**
- * Convenience accessor for the claim/ingredient data that's linked to the `primaryId`.
+ * Convenience accessor for the claim/ingredient data that's linked to the `primaryLoc`.
  */
-export const primary = derived<[typeof hierarchy, typeof primaryId], any>(
-  [hierarchy, primaryId],
-  ([$hierarchy, $primaryId]) => {
-    console.log('$hierarchy', $hierarchy);
-    return null;
-    // return $primaryId === SOURCE_ID
-    //   ? // TODO: Handle source
-    //     $provenance?.source
-    //   : $provenance?.resolveId($primaryId);
-  },
-);
+export const primary = derived<
+  [typeof hierarchy, typeof primaryLoc],
+  HierarchyTreeNode
+>([hierarchy, primaryLoc], ([$hierarchy, $primaryLoc]) => {
+  return $hierarchy?.find((node) => node.data.loc === $primaryLoc);
+});
 
 /**
- * Convenience accessor for the claim/ingredient data that's linked to the `secondaryId`.
+ * Convenience accessor for the claim/ingredient data that's linked to the `secondaryLoc`.
  */
 export const secondary = derived<
-  [typeof hierarchy, typeof secondaryId],
-  ViewableItem | undefined
->([hierarchy, secondaryId], ([$hierarchy, $secondaryId]) => {
-  console.log('$hierarchy', $hierarchy);
-  return null;
+  [typeof hierarchy, typeof secondaryLoc],
+  HierarchyTreeNode | undefined
+>([hierarchy, secondaryLoc], ([$hierarchy, $secondaryLoc]) => {
+  return $hierarchy?.find((node) => node.data.loc === $secondaryLoc);
 });
 
 export const ancestors = derived<
-  [typeof primaryId, typeof hierarchy],
-  HierarchyNode<ITreeNode>[] | null
->([primaryId, hierarchy], ([$primaryId, $hierarchy]) => {
-  if ($primaryId) {
+  [typeof primaryLoc, typeof hierarchy],
+  HierarchyTreeNode[] | null
+>([primaryLoc, hierarchy], ([$primaryLoc, $hierarchy]) => {
+  if ($primaryLoc) {
     return $hierarchy
-      ?.find((node) => equal(getPath(node), $primaryId))
+      ?.find((node) => equal(getPath(node), $primaryLoc))
       ?.ancestors();
   }
   return null;
 });
-
-/**
- * Calculates the root claim ID (the ID of the latest claim) contained in the store report.
- */
-export const rootId = derived<[typeof hierarchy], string | undefined>(
-  [hierarchy],
-  ([$hierarchy]) => {
-    // @TODO: Can this just be a const?
-    return '0';
-  },
-);
 
 /**
  * Convenience function to navigate to the root claim
@@ -299,9 +299,6 @@ export const rootId = derived<[typeof hierarchy], string | undefined>(
  * @param logEvent `true` to log this event in New Relic
  */
 export function navigateToRoot(logEvent = true): void {
-  const id = get(rootId);
-  if (id) {
-    secondaryId.set('');
-    navigateTo(id, logEvent);
-  }
+  secondaryLoc.set('');
+  navigateTo(ROOT_LOC, logEvent);
 }

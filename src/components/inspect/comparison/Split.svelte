@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import cssVars from 'svelte-css-vars';
   import partial from 'lodash/partial';
@@ -21,7 +20,7 @@
   // import { Source } from '../../../lib/sdk';
   import { tippy } from '../../../lib/tippy';
   import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
-  import type { ViewableItem } from '../../../lib/types';
+  import type { TreeNode } from '../../../lib/types';
 
   enum Layout {
     Stacked = 'stacked',
@@ -29,8 +28,8 @@
   }
 
   export let side = 0;
-  export let primary: ViewableItem;
-  export let secondary: ViewableItem;
+  export let primary: TreeNode;
+  export let secondary: TreeNode;
   let layout: Layout | undefined;
   let aspectRatios = {
     primary: null,

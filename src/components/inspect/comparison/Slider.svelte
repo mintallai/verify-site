@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { onMount } from 'svelte';
   import cssVars from 'svelte-css-vars';
@@ -24,7 +23,7 @@
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
   import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
-  import type { ViewableItem } from '../../../lib/types';
+  import type { TreeNode } from '../../../lib/types';
 
   export let side = 0;
   let slider: HTMLDivElement;
@@ -37,8 +36,8 @@
     rightWidth: `${100 - sliderX * 100}%`,
   };
 
-  export let primary: ViewableItem;
-  export let secondary: ViewableItem;
+  export let primary: TreeNode;
+  export let secondary: TreeNode;
 
   let tippyOpts: Partial<TippyProps> = {
     placement: 'top',

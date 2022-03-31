@@ -34,7 +34,7 @@
     provenance,
     hierarchy,
     primary,
-    primaryId,
+    primaryLoc,
     isBurgerMenuShown,
     isMobileViewerShown,
     isLoading,
@@ -135,8 +135,6 @@
           <div class="flex items-center justify-center">
             <CircleLoader />
           </div>
-        {:else}
-          <!-- <AboutNoClaim {primary} errors={primary?.data?.errors ?? []} /> -->
         {/if}
       </div>
     </section>

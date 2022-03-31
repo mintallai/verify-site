@@ -20,32 +20,30 @@
   import {
     collapsedBranches,
     toggleBranch,
-    primaryId,
-    compareWithPath,
+    primaryLoc,
+    compareWith,
     navigateTo,
     isCompareSelectMode,
   } from '../../stores';
+  import type { HierarchyTreeNode } from '../../stores';
   import { getBadgeProps, getPath } from '../../lib/claim';
-  import type { HierarchyNode } from 'd3-hierarchy';
-  import type { ITreeNode } from '../../lib/types';
 
-  export let node: HierarchyNode<ITreeNode>;
+  export let node: HierarchyTreeNode;
 
   $: data = node.data;
-  $: asset = data.asset;
   $: children = node.children ?? [];
   $: hasChildren = children.length > 0;
   $: isSingle = node.depth === 0 && !hasChildren;
   $: path = getPath(node);
-  $: isExpanded = !$collapsedBranches.has(data.id);
-  $: isSelected = equal($primaryId, path);
+  $: isExpanded = !$collapsedBranches.has(data.loc);
+  $: isSelected = equal($primaryLoc, path);
   $: compare = $isCompareSelectMode && !isSelected;
   $: badgeProps = getBadgeProps(data);
 
   function handleClick() {
     if (!isSelected) {
       if (compare) {
-        compareWithPath(path);
+        compareWith(path);
       } else {
         navigateTo(path);
       }
@@ -57,14 +55,14 @@
   <div
     class="item"
     class:single={isSingle}
-    data-node-idx={data.locatorString}
-    data-item-id={data.id.toString()}>
+    data-node-idx={data.loc}
+    data-item-id={data.loc}>
     {#if !isSingle}
       <div class="callout" class:compare />
       <div
         class="flex items-center justify-center h-full"
         class:cursor-pointer={hasChildren}
-        on:click={() => hasChildren && toggleBranch(data.id)}>
+        on:click={() => hasChildren && toggleBranch(data.loc)}>
         {#if hasChildren}
           <div class="arrow" class:expanded={isExpanded}>
             <ExpandHierarchy width="11" height="6" class="text-black" />
@@ -76,11 +74,11 @@
       class="w-12 h-12"
       class:cursor-pointer={!isSelected}
       on:click={handleClick}>
-      <Thumbnail {asset} {isSelected} {...badgeProps} />
+      <Thumbnail {node} {isSelected} {...badgeProps} />
     </div>
     <div class="pl-3" class:cursor-pointer={!isSelected} on:click={handleClick}>
       <h6>{$_('comp.asset.fileName')}</h6>
-      <div>{data.name}</div>
+      <div>{data.node.title}</div>
     </div>
   </div>
   <div class="pl-6 space-y-5" class:hidden={!isExpanded}>

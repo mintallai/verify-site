@@ -11,7 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-// import { Asset, Source, IThumbnail } from './sdk';
+import type { HierarchyTreeNode } from '../stores';
 
 export interface IThumbnailEvent {
   target: Node;
@@ -19,40 +19,38 @@ export interface IThumbnailEvent {
 }
 
 async function generateThumbnail(node, asset) {
-  let result;
-  // if (asset instanceof Asset) {
-  //   result = await asset.generateThumbnailUrl();
-  // } else if (asset instanceof Source) {
-  //   result = await asset.generateUrl();
-  // }
-  // if (result) {
-  //   node.dispatchEvent(
-  //     new CustomEvent<IThumbnailEvent>('thumbnail', {
-  //       detail: { target: node, url: result.url },
-  //     }),
-  //   );
-  // }
-  // return result;
+  const result = await asset.getUrl();
+
+  if (result) {
+    node.dispatchEvent(
+      new CustomEvent<IThumbnailEvent>('thumbnail', {
+        detail: { target: node, url: result.data.url },
+      }),
+    );
+  }
+
+  return result;
 }
 
-export function thumbnail(node: Node, asset?: Asset | Source) {
-  let currAsset = asset;
-  let currThumbnail: IThumbnail;
+export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
+  let currThumbnail;
+  // FIXME: Needs to work for source
+  const asset = treeNode?.data.node.thumbnail;
   if (asset) {
     generateThumbnail(node, asset).then((result) => (currThumbnail = result));
   }
 
   return {
-    async update(asset?: Asset | Source) {
+    async update(asset?: any) {
       if (asset) {
-        const prevHash = await currAsset?.computeHash();
-        const currHash = await asset.computeHash();
-        if (prevHash !== currHash) {
-          const result = await generateThumbnail(node, asset);
-          currThumbnail?.dispose?.();
-          currThumbnail = result;
-          currAsset = asset;
-        }
+        // const prevHash = await currAsset?.computeHash();
+        // const currHash = await asset.computeHash();
+        // if (prevHash !== currHash) {
+        //   const result = await generateThumbnail(node, asset);
+        //   currThumbnail?.dispose?.();
+        //   currThumbnail = result;
+        //   currAsset = asset;
+        // }
       }
     },
 

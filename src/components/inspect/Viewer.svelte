@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
@@ -21,12 +20,12 @@
   import FileDropper from '../FileDropper.svelte';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
   import { thumbnail, handleImgSrc } from '../../lib/thumbnail';
-  import type { Asset, Source } from '../../lib/sdk';
+  import { TreeNode } from '../../lib/types';
   import debug from 'debug';
 
   const dbg = debug('viewer');
 
-  export let asset: Asset | Source | undefined = undefined;
+  export let node: TreeNode | null = null;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
   export let isError: boolean = false;
@@ -64,7 +63,7 @@
         {#if !isLoading && !isError}
           <img
             data-test-id="viewer.thumbnail"
-            use:thumbnail={asset}
+            use:thumbnail={node}
             on:thumbnail={handleImgSrc}
             alt="Thumbnail"
             class="h-full w-full object-contain object-center" />

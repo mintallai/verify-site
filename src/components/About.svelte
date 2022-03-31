@@ -30,14 +30,6 @@
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
-  // import {
-  //   Claim,
-  //   AssertionLabel,
-  //   ActionsAssertion,
-  //   CreativeWorkAssertion,
-  //   RecorderFormat,
-  //   AdobeCryptoAddressesAssertion,
-  // } from '../lib/sdk';
   import debug from 'debug';
 
   const dbg = debug('about');

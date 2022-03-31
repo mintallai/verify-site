@@ -14,7 +14,7 @@
 import equal from 'fast-deep-equal';
 import { HierarchyNode } from 'd3-hierarchy';
 // import { Claim, Ingredient } from './sdk';
-import { ErrorTypes, IBadgeProps, ITreeNode, ViewableItem } from './types';
+import { ErrorTypes, IBadgeProps, TreeNode, TreeNode } from './types';
 import debug from 'debug';
 
 const dbg = debug('claim');
@@ -51,7 +51,7 @@ export function getIsOriginal(claim: Claim) {
  * > Note: Smart objects specifically return an error that indicates they may have undergone changes
  * >> We don't currently account for this OTGP case, just ASSET_HASH
  */
- export function getIsIngredientWithClaim(node: Ingredient) {
+export function getIsIngredientWithClaim(node: Ingredient) {
   const noIngredients = node.claim?.ingredients.length === 0;
   return noIngredients && !isOTGP(node);
 }
@@ -69,7 +69,7 @@ interface IBadgePropsInput {
 /**
  * Gets the path of IDs from the current node to the root node (active claim)
  */
-export function getPath(node: HierarchyNode<ITreeNode>) {
+export function getPath(node: HierarchyNode<TreeNode>) {
   const path = [];
   let curr = node;
   while (curr) {
@@ -151,7 +151,7 @@ export function getWebsite(claim: Claim): string | undefined {
  * it will return that claim. If it is an ingredient, it will return the claim
  * on the ingredient, if it exists.
  */
-export function getRelatedClaim(item: ViewableItem) {
+export function getRelatedClaim(item: TreeNode) {
   if (item instanceof Claim) {
     return item;
   }

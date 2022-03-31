@@ -12,14 +12,13 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import Split from './comparison/Split.svelte';
   import Slider from './comparison/Slider.svelte';
   import CircleLoader from '../CircleLoader.svelte';
   import { compareMode, CompareMode, isMobileViewerShown } from '../../stores';
   import type { IThumbnail } from '../../lib/sdk';
-  import type { ViewableItem } from '../../lib/types';
+  import type { TreeNode } from '../../lib/types';
   import { _ } from 'svelte-i18n';
 
   const MIN_SIDE_PX = 256;
@@ -28,8 +27,8 @@
   let height = 0;
   let side = 0;
   let selectorHeight = 0;
-  export let primary: ViewableItem;
-  export let secondary: ViewableItem;
+  export let primary: TreeNode;
+  export let secondary: TreeNode;
   export let isLoading: boolean = false;
 
   $: {

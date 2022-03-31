@@ -11,7 +11,6 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-// import { ContentAuth } from '@contentauth/sdk';
 import { createC2pa } from 'c2pa';
 
 export type Sdk = Awaited<ReturnType<typeof createC2pa>>;
@@ -30,14 +29,6 @@ export async function getSdk() {
         wasmSrc: 'sdk/toolkit_bg.wasm',
         workerSrc: 'sdk/cai-sdk.worker.min.js',
       });
-      console.log('we got sdk', sdk);
-      // sdk = new ContentAuth({
-      //   wasmSrc: 'sdk/toolkit_bg.wasm',
-      //   workerSrc: 'sdk/cai-sdk.worker.min.js',
-      //   poolOptions: {
-      //     maxWorkers: Math.min(navigator.hardwareConcurrency ?? 4, 4),
-      //   },
-      // });
     } catch (err) {
       console.error('Could not load SDK:', err);
       window.newrelic?.noticeError(err);

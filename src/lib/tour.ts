@@ -18,8 +18,8 @@ import store from 'store2';
 import TourStep from '../components/inspect/TourStep.svelte';
 import {
   navigateTo,
-  compareWithPath,
-  secondaryId,
+  compareWith,
+  secondaryLoc,
   navigateToRoot,
 } from '../stores';
 
@@ -61,7 +61,7 @@ async function gotoRootClaim(storeReport: any) {
 async function gotoParentClaim(storeReport: any) {
   const parentRef = getParentRef(storeReport);
   if (parentRef) {
-    secondaryId.set([]);
+    secondaryLoc.set([]);
     // navigateToId(parentRef.id, false, false);
     await delay(DELAY_MS);
   }
@@ -71,7 +71,7 @@ async function gotoCompare(storeReport: any) {
   const parentRef = getParentRef(storeReport);
   if (parentRef) {
     // navigateToId(parentRef.id, false, false);
-    compareWithPath([storeReport.head], false);
+    compareWith([storeReport.head], false);
     await delay(DELAY_MS);
   }
 }
