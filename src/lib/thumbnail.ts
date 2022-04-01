@@ -47,17 +47,16 @@ export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
   }
 
   return {
-    async update(treeNode?: any) {
-      if (treeNode) {
-        // FIXME: Add back once hash functions are available to stop the flashes
-        // const prevHash = await currTreeNode?.computeHash();
-        // const currHash = await treeNode.computeHash();
-        // if (prevHash !== currHash) {
-        const result = await generateThumbnail(node, getAsset(treeNode));
-        currThumbnail?.dispose?.();
-        currThumbnail = result;
-        currTreeNode = asset;
-        // }
+    async update(newTreeNode?: HierarchyTreeNode) {
+      if (newTreeNode) {
+        const prevHash = await getAsset(currTreeNode).hash();
+        const currHash = await getAsset(newTreeNode).hash();
+        if (prevHash !== currHash) {
+          const result = await generateThumbnail(node, getAsset(newTreeNode));
+          currThumbnail?.dispose?.();
+          currThumbnail = result;
+          currTreeNode = newTreeNode;
+        }
       }
     },
 
