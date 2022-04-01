@@ -16,7 +16,6 @@
   import { _, date, time } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import ManifestDetails from './ManifestDetails.svelte';
-  import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Thumbnail from './Thumbnail.svelte';
   import { getManifest, getBadgeProps, getIsOriginal } from '../lib/manifest';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
@@ -35,8 +34,6 @@
   $: data = node.data;
   $: manifest = getManifest(node);
   $: filename = data.title ?? '';
-  $: issuer = manifest?.signature?.issuer;
-  $: sigDate = manifest?.signature?.date;
   $: badgeProps = getBadgeProps(node);
 </script>
 
@@ -60,31 +57,10 @@
           <div class="w-12 h-12">
             <Thumbnail {node} {...badgeProps} />
           </div>
-          {#if manifest}
-            <div>
-              <div class="flex space-x-2" data-test-id="about.signed-by">
-                <div class="relative top-0.5">
-                  <ProviderIcon provider={issuer} />
-                </div>
-                <div>
-                  {issuer ?? ''}
-                </div>
-              </div>
-              <div>
-                {#if sigDate && sigDate.toString() !== 'Invalid Date'}
-                  {$date(sigDate, { format: 'short' })}{', '}
-                  {$time(sigDate, { format: 'short' })}
-                {:else}
-                  {$_('comp.about.signedOn.notAvailable')}
-                {/if}
-              </div>
-            </div>
-          {:else}
-            <div>
-              <h6>{$_('comp.about.fileName')}</h6>
-              <div>{filename}</div>
-            </div>
-          {/if}
+          <div>
+            <h6>{$_('comp.about.fileName')}</h6>
+            <div>{filename}</div>
+          </div>
         </dd>
       </dl>
     </div>

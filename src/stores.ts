@@ -189,6 +189,8 @@ export async function setProvenance(result: SdkResult | null) {
     provenance.set(result);
     overviewTransform.set(null);
     navigateToRoot();
+    // For testing only
+    // compareWith('0.0');
   } else {
     dbg('No provenance found');
     provenance.set(null);

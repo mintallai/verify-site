@@ -38,8 +38,9 @@
 
   $: manifest = getManifest(node);
   $: isOriginal = getIsOriginal(manifest);
-  $: title = manifest.title;
-  $: claimGenerator = manifest.claimGenerator;
+  $: generator = manifest.claimGenerator.product;
+  $: issuer = manifest?.signature?.issuer;
+  $: sigDate = manifest?.signature?.date;
   $: producer = manifest.producer;
   $: isBeta = manifest.isBeta;
   $: website = manifest.website;
@@ -66,21 +67,42 @@
   });
 </script>
 
-{#if title}
-  <div>
-    <dl class="attributes" data-test-id="about.title">
-      <dt class="flex space-x-2">
-        <div class="whitespace-nowrap">{$_('comp.about.title')}</div>
-        <cai-tooltip placement="left" class="theme-spectrum">
-          <div slot="content" class="text-gray-900" style="width: 150px;">
-            {$_('comp.about.title.helpText')}
-          </div>
-        </cai-tooltip>
-      </dt>
-      <dd>{title}</dd>
-    </dl>
-  </div>
-{/if}
+<div>
+  <dl class="attributes">
+    <dt>
+      <div>{$_('comp.about.signedBy')}</div>
+      <cai-tooltip placement="left" class="theme-spectrum">
+        <div slot="content" class="text-gray-900" style="width: 200px;">
+          {$_('comp.about.signedBy.helpText')}
+        </div>
+      </cai-tooltip>
+    </dt>
+    <dd class="flex space-x-2" data-test-id="about.signed-by">
+      <div class="relative top-0.5">
+        <ProviderIcon provider={issuer} />
+      </div>
+      <div>
+        {issuer ?? ''}
+      </div>
+    </dd>
+    <dt>
+      <div>{$_('comp.about.signedOn')}</div>
+      <cai-tooltip placement="left" class="theme-spectrum">
+        <div slot="content" class="text-gray-900" style="width: 200px;">
+          {$_('comp.about.signedOn.helpText')}
+        </div>
+      </cai-tooltip>
+    </dt>
+    <dd data-test-id="about.signed-on">
+      {#if sigDate && sigDate.toString() !== 'Invalid Date'}
+        {$date(sigDate, { format: 'short' })}{', '}
+        {$time(sigDate, { format: 'short' })}
+      {:else}
+        {$_('comp.about.signedOn.notAvailable')}
+      {/if}
+    </dd>
+  </dl>
+</div>
 <div>
   <dl class="attributes" data-test-id="about.produced-with">
     <dt>
@@ -93,10 +115,10 @@
     </dt>
     <dd class="flex">
       <div class="relative top-0.5">
-        <ProviderIcon provider={claimGenerator} class="mr-2" />
+        <ProviderIcon provider={generator} class="mr-2" />
       </div>
       <div class="break-word">
-        <div>{claimGenerator}</div>
+        <div>{generator}</div>
         {#if isBeta}
           <div class="text-gray-700">Content Credentials (Beta)</div>
         {/if}
