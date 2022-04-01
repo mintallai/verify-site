@@ -39,9 +39,9 @@
   // for some reason
   let colWidth: number;
 
-  $: manifest = getManifest(node);
   $: filename = getFilename(node);
   $: badgeProps = getBadgeProps(node);
+  $: showDetails = badgeProps?.badgeType === 'info';
 </script>
 
 <div data-test-id="about" class="w-full flex justify-center">
@@ -77,12 +77,15 @@
         <div class="thumbnail-title">{filename}</div>
       </div>
     </div>
-    {#if manifest}
+    {#if showDetails}
       <ManifestDetails {node} />
     {:else}
-      <!-- @TODO: Show badge info -->
       <div class="py-4">
-        {$_('comp.contentCredentialsError.noneForFile')}
+        {#if badgeProps?.badgeHelpText}
+          {$_(badgeProps.badgeHelpText)}
+        {:else}
+          {$_('comp.contentCredentialsError.noneForFile')}
+        {/if}
       </div>
     {/if}
   </div>

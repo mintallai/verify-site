@@ -15,7 +15,6 @@ import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
-import { getFilename, getManifest, isOTGP } from './lib/node';
 import type {
   SdkResult,
   Manifest,
@@ -199,19 +198,21 @@ interface BaseTreeNode {
   loc: string;
   title?: string;
   format: string;
-  // TODO: Remove undefined once Thumbnail supports
-  thumbnail: Thumbnail | undefined;
+  thumbnail: Thumbnail;
   children?: TreeNode[];
 }
 
 interface ManifestTreeNode extends BaseTreeNode {
   type: 'manifest';
   node: Manifest;
+  errors: any[];
 }
 
 interface IngredientTreeNode extends BaseTreeNode {
   type: 'ingredient';
   node: Ingredient;
+  isOtgp: boolean;
+  statuses: any[];
 }
 
 interface SourceTreeNode extends BaseTreeNode {
@@ -223,23 +224,50 @@ export type TreeNode = ManifestTreeNode | IngredientTreeNode | SourceTreeNode;
 
 export type HierarchyTreeNode = HierarchyNode<TreeNode>;
 
-function parseProvenance(node: any, loc = ROOT_LOC): TreeNode {
-  const isIngredient = node.hasOwnProperty('manifest');
-  const ingredients = node.manifest?.ingredients ?? node.ingredients;
-  // ID for root node (active manifest) should be `0`
-  // unless there is a top-level error, where it is `0.0` (since `source` is `0`)
-  return {
-    loc,
-    type: isIngredient ? 'ingredient' : 'manifest',
-    title: node.title,
-    format: isIngredient ? node.thumbnail.format : node.format,
-    thumbnail: node.thumbnail,
-    node,
-    // This should be the only item with a direct `ingredients` key
-    children: ingredients?.map((ingredient, idx) =>
-      parseProvenance(ingredient, `${loc}.${idx}`),
-    ),
-  };
+function hasOtgpStatus(validationStatus: any[]) {
+  return !!validationStatus.filter((err) => err.code === 'assertion.dataHash.mismatch')
+    .length;
+}
+
+function parseProvenance(toolkitNode: any, validationErrors: any[], loc = ROOT_LOC): TreeNode {
+  const isIngredient = toolkitNode.hasOwnProperty('manifest');
+  const ingredients = toolkitNode.manifest?.ingredients ?? toolkitNode.ingredients;
+  let children = ingredients?.map((ingredient, idx) =>
+    parseProvenance(ingredient, validationErrors, `${loc}.${idx}`)
+  );
+  if (isIngredient) {
+    const manifest = toolkitNode.manifest;
+    const statuses = toolkitNode.data.ingredient.validationStatus ?? [];
+    const isOtgp = hasOtgpStatus(statuses);
+    if (isOtgp) {
+      children = manifest ? [parseProvenance(manifest, validationErrors, `${loc}.0`)] : []
+    }
+    return {
+      loc,
+      type: 'ingredient',
+      title: toolkitNode.title,
+      format: toolkitNode.thumbnail.format,
+      thumbnail: toolkitNode.thumbnail,
+      node: toolkitNode,
+      statuses,
+      isOtgp,
+      children,
+    };
+  } else {
+    // ID for root node (active manifest) should be `0`
+    // unless there is a top-level error, where it is `0.0` (since `source` is `0`)
+    return {
+      loc,
+      type: 'manifest',
+      title: toolkitNode.title,
+      format: toolkitNode.format,
+      thumbnail: toolkitNode.thumbnail,
+      node: toolkitNode,
+      errors: validationErrors.filter(error => error.url.includes(toolkitNode.label)),
+      children,
+    };
+  }
+
 }
 
 export const validationErrors = derived<[typeof provenance], any[]>(
@@ -248,7 +276,7 @@ export const validationErrors = derived<[typeof provenance], any[]>(
     return (
       $provenance?.manifestStore?.validationEntries?.filter(
         (entry) => entry.isError,
-      ) ?? []
+      ).map((entry) => entry.status) ?? []
     );
   },
 );
@@ -263,20 +291,20 @@ export const hierarchy = derived<
     const hasErrors = !!$validationErrors.length;
     // We have a normal manifest structure and no top-level errors
     if (activeManifest && !hasErrors) {
-      return d3Hierarchy(parseProvenance(activeManifest));
+      return d3Hierarchy(parseProvenance(activeManifest, $validationErrors));
     }
     // We have top-level errors or no metadata on this image
     // Show the source as the root node and manifests underneath
     if (source && (hasErrors || !activeManifest)) {
-      // TODO: Can we update the source to have a similar API to manifest/ingredients?
       return d3Hierarchy({
         loc: ROOT_LOC,
         type: 'source',
         node: source,
         title: source.metadata.filename,
+        thumbnail: source.thumbnail,
         format: source.type,
         children: activeManifest
-          ? [parseProvenance(activeManifest, `${ROOT_LOC}.0`)]
+          ? [parseProvenance(activeManifest, $validationErrors, `${ROOT_LOC}.0`)]
           : [],
       } as TreeNode);
     }
