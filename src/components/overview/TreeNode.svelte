@@ -16,7 +16,7 @@
   import { _ } from 'svelte-i18n';
   import { primaryLoc } from '../../stores';
   import Thumbnail from '../Thumbnail.svelte';
-  import { getBadgeProps, isAncestorOf } from '../../lib/manifest';
+  import { getBadgeProps, getFilename, isAncestorOf } from '../../lib/manifest';
   import type { HierarchyPointNode } from 'd3-hierarchy';
   import type { TreeNode } from '../../stores';
 
@@ -24,6 +24,7 @@
   export let width: number;
   export let height: number;
 
+  $: filename = getFilename(node);
   $: data = node.data;
   $: loc = node.data.loc;
   $: tx = node.x - width / 2;
@@ -44,7 +45,7 @@
     <Thumbnail {node} {...badgeProps} />
     <div>
       <h6>{$_('comp.asset.fileName')}</h6>
-      <div class="file-name">{node.data.title}</div>
+      <div class="file-name">{filename}</div>
     </div>
   </div>
 </div>

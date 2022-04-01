@@ -13,7 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _, date, time, locale } from 'svelte-i18n';
+  import { _, date, time } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
@@ -25,16 +25,11 @@
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
-  import type { Manifest } from '../lib/sdk';
   import type { HierarchyTreeNode } from '../stores';
-  import debug from 'debug';
-
-  const dbg = debug('about');
 
   export let node: HierarchyTreeNode;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
-  let colWidth = 0;
 
   $: manifest = getManifest(node);
   $: isOriginal = getIsOriginal(manifest);

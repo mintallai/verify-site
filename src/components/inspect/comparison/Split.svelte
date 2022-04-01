@@ -17,10 +17,10 @@
   import partial from 'lodash/partial';
   import { isMobileViewerShown } from '../../../stores';
   import type { TippyProps } from '../../../lib/tippy';
-  // import { Source } from '../../../lib/sdk';
   import { tippy } from '../../../lib/tippy';
   import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
-  import type { TreeNode } from '../../../lib/types';
+  import { getFilename } from '../../../lib/manifest';
+  import type { HierarchyTreeNode } from '../../../stores';
 
   enum Layout {
     Stacked = 'stacked',
@@ -28,8 +28,8 @@
   }
 
   export let side = 0;
-  export let primary: TreeNode;
-  export let secondary: TreeNode;
+  export let primary: HierarchyTreeNode;
+  export let secondary: HierarchyTreeNode;
   let layout: Layout | undefined;
   let aspectRatios = {
     primary: null,
@@ -72,39 +72,21 @@
   class:layout-side={layout === Layout.SideBySide}
   use:cssVars={styles}>
   <div class="primary thumbnail" class:invisible={!layout}>
-    {#if primary instanceof Source}
-      <img
-        use:tippy={{ content: primary.filename, ...tippyOpts }}
-        use:thumbnail={primary}
-        on:thumbnail={handleImgSrc}
-        alt=""
-        on:load={partial(processImage, 'primary')} />
-    {:else}
-      <img
-        use:tippy={{ content: primary.title, ...tippyOpts }}
-        use:thumbnail={primary.asset}
-        on:thumbnail={handleImgSrc}
-        alt=""
-        on:load={partial(processImage, 'primary')} />
-    {/if}
+    <img
+      use:tippy={{ content: getFilename(primary), ...tippyOpts }}
+      use:thumbnail={primary}
+      on:thumbnail={handleImgSrc}
+      alt=""
+      on:load={partial(processImage, 'primary')} />
   </div>
   <div class="divider" />
   <div class="secondary thumbnail" class:invisible={!layout}>
-    {#if secondary instanceof Source}
-      <img
-        use:tippy={{ content: secondary.filename, ...tippyOpts }}
-        use:thumbnail={secondary}
-        on:thumbnail={handleImgSrc}
-        alt=""
-        on:load={partial(processImage, 'secondary')} />
-    {:else}
-      <img
-        use:tippy={{ content: secondary.title, ...tippyOpts }}
-        use:thumbnail={secondary.asset}
-        on:thumbnail={handleImgSrc}
-        alt=""
-        on:load={partial(processImage, 'secondary')} />
-    {/if}
+    <img
+      use:tippy={{ content: getFilename(secondary), ...tippyOpts }}
+      use:thumbnail={secondary}
+      on:thumbnail={handleImgSrc}
+      alt=""
+      on:load={partial(processImage, 'secondary')} />
   </div>
 </div>
 

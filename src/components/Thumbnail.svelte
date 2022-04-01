@@ -15,7 +15,7 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import { IBadgeProps } from '../lib/types';
-  import { thumbnail, handleImgSrc, IThumbnailEvent } from '../lib/thumbnail';
+  import { thumbnail, ThumbnailEvent } from '../lib/thumbnail';
   import type { HierarchyTreeNode } from '../stores';
 
   export let node: HierarchyTreeNode;
@@ -24,7 +24,7 @@
   export let badgeHelpText: IBadgeProps['badgeHelpText'] = null;
   let src = '';
 
-  function handleThumbnail(evt: CustomEvent<IThumbnailEvent>) {
+  function handleThumbnail(evt: CustomEvent<ThumbnailEvent>) {
     src = evt.detail.url;
   }
 </script>

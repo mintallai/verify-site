@@ -183,14 +183,12 @@ export const provenance = writable<SdkResult | null>(null, (set) => {
  * Sets the SdkResult of the loaded asset.
  */
 export async function setProvenance(result: SdkResult | null) {
-  dbg('Calling setProvenance');
+  dbg('Calling setProvenance with', result);
 
   if (result) {
     provenance.set(result);
     overviewTransform.set(null);
     navigateToRoot();
-    // For testing only
-    // compareWith('0.0');
   } else {
     dbg('No provenance found');
     provenance.set(null);
@@ -260,7 +258,6 @@ export const hierarchy = derived<
   HierarchyTreeNode | null
 >([provenance, validationErrors], ([$provenance, $validationErrors]) => {
   if ($provenance) {
-    console.log('$provenance', $provenance);
     const { source, manifestStore } = $provenance;
     const activeManifest = manifestStore?.activeManifest;
     const hasErrors = !!$validationErrors.length;

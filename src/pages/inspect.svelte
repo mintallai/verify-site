@@ -111,12 +111,14 @@
       currentPage="inspect"
       on:back={handleClose} />
     {#if error}
+      <!-- An error occurred after loading the provenance -->
       <section class="left-col" class:loading={$isLoading} />
       <Viewer isError={!!error} />
       <section data-test-id="inspect.right-col" class="right-col p-4">
         <Alert severity="error">{$_(error)}</Alert>
       </section>
     {:else if $isLoading}
+      <!-- Asset/provenance data is loading -->
       <section class="left-col" class:loading={$isLoading}>
         <CircleLoader />
       </section>
@@ -128,16 +130,36 @@
         <CircleLoader />
       </section>
     {:else if $primary}
+      <!-- Asset has loaded, show manifest info -->
+      <!-- Left column -->
       <section class="left-col">
-        {#if !$isComparing}
+        {#if $isComparing}
+          <div class="w-full p-4">
+            <About
+              node={$primary}
+              isComparing={$isComparing}
+              isMobileViewer={$isMobileViewerShown} />
+          </div>
+        {:else}
           <Navigation node={$primary} />
         {/if}
       </section>
-      <Viewer node={$primary} {isDragging} />
+      <!-- Main area (viewer) -->
+      {#if $isComparing}
+        <Comparison primary={$primary} secondary={$secondary} />
+      {:else}
+        <Viewer node={$primary} {isDragging} />
+      {/if}
+      <!-- Right column -->
       <section
         data-test-id="inspect.right-col"
         class="right-col p-4 pt-0 md:pt-4">
-        {#if !$isComparing}
+        {#if $isComparing}
+          <About
+            node={$secondary}
+            isComparing={$isComparing}
+            isMobileViewer={$isMobileViewerShown} />
+        {:else}
           <div class="wrapper">
             <About
               node={$primary}
@@ -151,6 +173,7 @@
       </section>
     {/if}
   {:else}
+    <!-- An unrecoverable error occurred (e.g. cannot load asset) -->
     <section />
     <Viewer {isDragging} />
     {#if error}

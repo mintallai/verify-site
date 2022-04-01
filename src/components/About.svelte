@@ -17,7 +17,12 @@
   import cssVars from 'svelte-css-vars';
   import ManifestDetails from './ManifestDetails.svelte';
   import Thumbnail from './Thumbnail.svelte';
-  import { getManifest, getBadgeProps, getIsOriginal } from '../lib/manifest';
+  import {
+    getManifest,
+    getBadgeProps,
+    getFilename,
+    getIsOriginal,
+  } from '../lib/manifest';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
@@ -33,7 +38,7 @@
 
   $: data = node.data;
   $: manifest = getManifest(node);
-  $: filename = data.title ?? '';
+  $: filename = getFilename(node);
   $: badgeProps = getBadgeProps(node);
 </script>
 

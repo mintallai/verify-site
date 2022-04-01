@@ -18,7 +18,6 @@
   import { _ } from 'svelte-i18n';
   import {
     primaryLoc,
-    primary,
     ancestors,
     compareMode,
     setCompareMode,
@@ -34,7 +33,7 @@
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
   import Thumbnail from '../Thumbnail.svelte';
-  import equal from 'fast-deep-equal';
+  import { getFilename } from '../../lib/manifest';
 
   type Page = 'overview' | 'inspect';
 
@@ -105,8 +104,7 @@
                   value={parent.data?.loc}>
                   <div class="flex items-center">
                     <Thumbnail slot="icon" node={parent} />
-                    <span class="ml-2 items-center"
-                      >{parent.data.node.title}</span>
+                    <span class="ml-2 items-center">{getFilename(parent)}</span>
                   </div>
                 </sp-menu-item>
               {/each}
@@ -117,8 +115,7 @@
           {/if}
           <div class="breadcrumb-item items-center current">
             <Thumbnail {node} />
-            <span class="font-regular text-smd ml-2"
-              >{node.data.node.title}</span>
+            <span class="font-regular text-smd ml-2">{getFilename(node)}</span>
           </div>
         </div>
       {:else}

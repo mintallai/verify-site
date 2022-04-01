@@ -21,9 +21,6 @@
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
   import { thumbnail, handleImgSrc } from '../../lib/thumbnail';
   import type { HierarchyTreeNode } from '../../stores';
-  import debug from 'debug';
-
-  const dbg = debug('viewer');
 
   export let node: HierarchyTreeNode | null = null;
   export let isDragging: boolean = false;

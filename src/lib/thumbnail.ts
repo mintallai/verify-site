@@ -11,19 +11,20 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+import type { Thumbnail } from '../lib/sdk';
 import type { HierarchyTreeNode } from '../stores';
 
-export interface IThumbnailEvent {
+export interface ThumbnailEvent {
   target: Node;
   url: string;
 }
 
-async function generateThumbnail(node, asset) {
+async function generateThumbnail(node: Node, asset: Thumbnail) {
   const result = await asset.getUrl();
 
   if (result) {
     node.dispatchEvent(
-      new CustomEvent<IThumbnailEvent>('thumbnail', {
+      new CustomEvent<ThumbnailEvent>('thumbnail', {
         detail: { target: node, url: result.data.url },
       }),
     );
@@ -39,8 +40,7 @@ function getAsset(treeNode: HierarchyTreeNode) {
 
 export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
   let currTreeNode = treeNode;
-  // TODO(@mensch): Add type of thumbnail object from SDK
-  let currThumbnail;
+  let currThumbnail: ReturnType<Thumbnail['getUrl']>;
   const asset = getAsset(treeNode);
   if (asset) {
     generateThumbnail(node, asset).then((result) => (currThumbnail = result));
@@ -48,9 +48,11 @@ export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
 
   return {
     async update(newTreeNode?: HierarchyTreeNode) {
+      console.log('currTreeNode, newTreeNode', currTreeNode, newTreeNode);
       if (newTreeNode) {
         const prevHash = await getAsset(currTreeNode).hash();
         const currHash = await getAsset(newTreeNode).hash();
+        console.log('prevHash, currHash', prevHash, currHash);
         if (prevHash !== currHash) {
           const result = await generateThumbnail(node, getAsset(newTreeNode));
           currThumbnail?.dispose?.();
@@ -66,7 +68,7 @@ export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
   };
 }
 
-export function handleImgSrc(evt: CustomEvent<IThumbnailEvent>) {
+export function handleImgSrc(evt: CustomEvent<ThumbnailEvent>) {
   const { target, url } = evt.detail;
   (target as HTMLImageElement).src = url;
 }

@@ -25,7 +25,7 @@
     isCompareSelectMode,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
-  import { getBadgeProps } from '../../lib/manifest';
+  import { getBadgeProps, getFilename } from '../../lib/manifest';
 
   export let node: HierarchyTreeNode;
 
@@ -77,7 +77,7 @@
     </div>
     <div class="pl-3" class:cursor-pointer={!isSelected} on:click={handleClick}>
       <h6>{$_('comp.asset.fileName')}</h6>
-      <div>{data.title}</div>
+      <div>{getFilename(node)}</div>
     </div>
   </div>
   <div class="pl-6 space-y-5" class:hidden={!isExpanded}>

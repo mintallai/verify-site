@@ -30,11 +30,16 @@ export enum ClaimError {
 }
 
 export function getManifest(node: HierarchyTreeNode): Manifest | null {
-  return node.data.type === 'manifest'
+  return node?.data?.type === 'manifest'
     ? node.data.node
-    : node.data.type === 'ingredient'
+    : node?.data?.type === 'ingredient'
     ? node.data.node.manifest
     : null;
+}
+
+export function getFilename(node: HierarchyTreeNode): string {
+  const manifest = getManifest(node);
+  return manifest?.title ?? node?.data?.title ?? '';
 }
 
 export function getIsOriginal(manifest: Manifest) {

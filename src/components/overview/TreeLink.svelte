@@ -14,7 +14,7 @@
 -->
 <script lang="ts">
   import { path as d3Path, Path } from 'd3-path';
-  import type { TreeNode } from '../../lib/types';
+  import type { TreeNode } from '../../stores';
   import type { HierarchyPointLink } from 'd3-hierarchy';
 
   export let link: HierarchyPointLink<TreeNode>;

@@ -54,7 +54,7 @@
   "comp.navigation.subtitle": "Select a file to inspect its content credentials. You can also compare the content credentials of two files.",
   "comp.navigation.title": "Content ingredients",
   "comp.originalCreation.learnMore": "Learn more",
-  "comp.originalCreation.recorder": "This photo was first produced in {application}.",
+  "comp.originalCreation.generator": "This photo was first produced in {product}.",
   "comp.originalCreation.secureCapture": "This photo was captured by a secure device.",
   "comp.originalCreation.title": "Original creation",
   "comp.topNavigation.back": "Back",
