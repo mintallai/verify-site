@@ -16,7 +16,7 @@
   import { _ } from 'svelte-i18n';
   import Alert from '../Alert.svelte';
   import type { HierarchyTreeNode } from '../../stores';
-  import { getManifest } from '../../lib/manifest';
+  import { getManifest } from '../../lib/node';
 
   export let type: 'original' | 'secureCapture' = 'original';
   export let node: HierarchyTreeNode;

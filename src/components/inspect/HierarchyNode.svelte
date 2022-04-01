@@ -25,7 +25,7 @@
     isCompareSelectMode,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
-  import { getBadgeProps, getFilename } from '../../lib/manifest';
+  import { getBadgeProps, getFilename } from '../../lib/node';
 
   export let node: HierarchyTreeNode;
 

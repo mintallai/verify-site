@@ -21,7 +21,7 @@
   import Thumbnail from './Thumbnail.svelte';
   import Web3Address from './Web3Address.svelte';
   import { getFaqUrl, navigateToChild } from '../stores';
-  import { getManifest, getBadgeProps, getIsOriginal } from '../lib/manifest';
+  import { getManifest, getBadgeProps, getIsOriginal } from '../lib/node';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';

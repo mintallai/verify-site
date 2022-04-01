@@ -14,14 +14,14 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { IBadgeProps } from '../lib/types';
   import { thumbnail, ThumbnailEvent } from '../lib/thumbnail';
+  import type { BadgeProps } from '../lib/node';
   import type { HierarchyTreeNode } from '../stores';
 
   export let node: HierarchyTreeNode;
   export let isSelected = false;
-  export let badgeType: IBadgeProps['badgeType'] = 'none';
-  export let badgeHelpText: IBadgeProps['badgeHelpText'] = null;
+  export let badgeType: BadgeProps['badgeType'] = 'none';
+  export let badgeHelpText: BadgeProps['badgeHelpText'] = null;
   let src = '';
 
   function handleThumbnail(evt: CustomEvent<ThumbnailEvent>) {

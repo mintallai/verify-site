@@ -13,7 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _, date, time } from 'svelte-i18n';
+  import { _ } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import ManifestDetails from './ManifestDetails.svelte';
   import Thumbnail from './Thumbnail.svelte';
@@ -22,7 +22,7 @@
     getBadgeProps,
     getFilename,
     getIsOriginal,
-  } from '../lib/manifest';
+  } from '../lib/node';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
@@ -32,11 +32,13 @@
   const dbg = debug('about');
 
   export let node: HierarchyTreeNode;
-  export let isComparing: boolean = false;
-  export let isMobileViewer: boolean = false;
-  let colWidth = 0;
+  export let isComparing = false;
+  export let isMobileViewer = false;
 
-  $: data = node.data;
+  // This is triggering the "end must be greater than start" error above
+  // for some reason
+  let colWidth: number;
+
   $: manifest = getManifest(node);
   $: filename = getFilename(node);
   $: badgeProps = getBadgeProps(node);

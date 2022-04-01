@@ -13,16 +13,21 @@
 
 import startsWith from 'lodash/startsWith';
 import { Manifest, Ingredient } from './sdk';
-import { ErrorTypes, IBadgeProps } from './types';
 import type { HierarchyTreeNode } from '../stores';
 import debug from 'debug';
 
 const dbg = debug('claim');
 
-const ACTION_ASSERTION_LABEL = 'c2pa.actions';
-const CREATIVEWORK_ASSERTION_LABEL = 'stds.schema-org.CreativeWork';
-const BETA_LABEL = 'adobe.beta';
-const DELIVERED_ACTION = 'adobe.delivered';
+export type BadgeType = 'none' | 'info' | 'missing' | 'alert';
+
+export interface BadgeProps {
+  badgeType: BadgeType;
+  badgeHelpText: string | null;
+}
+
+export enum ErrorTypes {
+  ASSET_HASH = 'assertion.dataHash.mismatch',
+}
 
 export enum ClaimError {
   InvalidActionAssertion = 'INVALID_ACTION_ASSERTION',
@@ -38,8 +43,12 @@ export function getManifest(node: HierarchyTreeNode): Manifest | null {
 }
 
 export function getFilename(node: HierarchyTreeNode): string {
-  const manifest = getManifest(node);
-  return manifest?.title ?? node?.data?.title ?? '';
+  return node?.data?.title ?? '';
+}
+
+export function getThumbnail(node: HierarchyTreeNode) {
+  // FIXME: Needs to work for source
+  return node?.data.node.thumbnail;
 }
 
 export function getIsOriginal(manifest: Manifest) {
@@ -52,8 +61,15 @@ export function getIsOriginal(manifest: Manifest) {
   return false;
 }
 
+export function getIngredientErrors(node: HierarchyTreeNode) {
+  if (node.data.type === 'ingredient') {
+    return node.data.node.data.ingredient.validationStatus ?? [];
+  }
+  return [];
+}
+
 export function isOTGP(node: HierarchyTreeNode) {
-  return node.errors?.filter((err) => err.code === ErrorTypes.ASSET_HASH)
+  return !!getIngredientErrors(node).filter((err) => err.code === ErrorTypes.ASSET_HASH)
     .length;
 }
 
@@ -64,9 +80,11 @@ export function isAncestorOf(path: string, loc: string) {
 /**
  * Generates the badge props (used by the `cai-thumbnail`) from the claim data
  */
-export function getBadgeProps(node: HierarchyTreeNode): IBadgeProps {
+export function getBadgeProps(node: HierarchyTreeNode): BadgeProps {
   // FIXME: Update errors to come from validation errors
-  const errors = [];
+  const errors = [
+    ...getIngredientErrors(node)
+  ];
   // Change to accomdate different types of errors + multiple errors on a single asset
   if (errors?.length > 0) {
     switch (errors[0].code) {
@@ -75,19 +93,19 @@ export function getBadgeProps(node: HierarchyTreeNode): IBadgeProps {
           badgeType: 'missing',
           badgeHelpText: 'comp.asset.badgeMissing.helpText',
         };
-      case ErrorTypes.SIGNATURE:
-        return {
-          badgeType: 'alert',
-          badgeHelpText: 'comp.asset.badgeError.helpText',
-        };
-      case ErrorTypes.UNKNOWN:
-        if (errors[0]?.description?.includes('smart object')) {
-          break;
-        }
-        return {
-          badgeType: 'alert',
-          badgeHelpText: 'comp.asset.badgeError.helpText',
-        };
+      // case ErrorTypes.SIGNATURE:
+      //   return {
+      //     badgeType: 'alert',
+      //     badgeHelpText: 'comp.asset.badgeError.helpText',
+      //   };
+      // case ErrorTypes.UNKNOWN:
+      //   if (errors[0]?.description?.includes('smart object')) {
+      //     break;
+      //   }
+      //   return {
+      //     badgeType: 'alert',
+      //     badgeHelpText: 'comp.asset.badgeError.helpText',
+      //   };
       default:
         return {
           badgeType: 'alert',

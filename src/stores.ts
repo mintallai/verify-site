@@ -15,6 +15,7 @@ import { readable, writable, derived, get } from 'svelte/store';
 import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
+import { getFilename, getManifest, isOTGP } from './lib/node';
 import type {
   SdkResult,
   Manifest,
@@ -24,7 +25,6 @@ import type {
 } from './lib/sdk';
 
 import debug from 'debug';
-import { isOTGP } from './lib/manifest';
 
 const dbg = debug('store');
 

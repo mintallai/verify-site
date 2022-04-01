@@ -19,7 +19,7 @@
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
   import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
-  import { getFilename } from '../../../lib/manifest';
+  import { getFilename } from '../../../lib/node';
   import type { HierarchyTreeNode } from '../../../stores';
 
   enum Layout {

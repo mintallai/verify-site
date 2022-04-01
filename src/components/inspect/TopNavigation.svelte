@@ -29,11 +29,11 @@
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import ChevronRight from '../../../assets/svg/monochrome/chevron-right.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
+  import Thumbnail from '../Thumbnail.svelte';
+  import { getFilename } from '../../lib/node';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
-  import Thumbnail from '../Thumbnail.svelte';
-  import { getFilename } from '../../lib/manifest';
 
   type Page = 'overview' | 'inspect';
 
