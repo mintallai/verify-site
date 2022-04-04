@@ -21,8 +21,7 @@
   export let type: 'original' | 'secureCapture' = 'original';
   export let node: HierarchyTreeNode;
 
-  // @ts-ignore
-  $: generator = getManifest(node)?.data?.claimGenerator?.product ?? '';
+  $: generator = getManifest(node)?.claimGenerator?.product ?? '';
 </script>
 
 <Alert severity="info">

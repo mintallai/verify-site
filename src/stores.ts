@@ -149,8 +149,7 @@ export function navigateTo(id: string, logEvent = true): void {
 }
 
 export function navigateToChild(id: string, logEvent = true): void {
-  const currPath = get(primaryLoc);
-  // navigateTo([...currPath, id], logEvent);
+  navigateTo(id, logEvent);
 }
 
 /**
