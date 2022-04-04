@@ -268,4 +268,9 @@
     @apply grid gap-x-2 gap-y-1 items-center;
     grid-template-columns: 16px auto;
   }
+  @screen md {
+    .about-info {
+      @apply min-h-0;
+    }
+  }
 </style>

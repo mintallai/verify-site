@@ -30,8 +30,6 @@
   export let isComparing = false;
   export let isMobileViewer = false;
 
-  // This is triggering the "end must be greater than start" error above
-  // for some reason
   let colWidth: number;
 
   $: filename = getFilename(node);
@@ -73,7 +71,7 @@
       </div>
     </div>
     {#if showDetails}
-      <ManifestDetails {node} />
+      <ManifestDetails {node} {isComparing} {isMobileViewer} />
     {:else}
       <div class="py-4">
         {#if badgeProps?.badgeHelpText}
@@ -102,7 +100,7 @@
   }
 
   @screen md {
-    :global(.about-info) {
+    .about-info {
       @apply min-h-0;
     }
   }
