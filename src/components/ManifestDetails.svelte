@@ -45,10 +45,7 @@
   $: website = manifest.website;
   $: socialAccounts = manifest.socialAccounts;
   $: web3Addresses = manifest.web3;
-
-  // FIXME: Make this work
   $: ratings = getReviewRatings(node);
-
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
   });
