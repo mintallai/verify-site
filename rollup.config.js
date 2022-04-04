@@ -28,7 +28,6 @@ export const config = {
       autoPreprocess({
         postcss: true,
         typescript: true,
-        defaults: { style: 'postcss', script: 'typescript' },
       }),
     ];
   },

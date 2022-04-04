@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { onMount } from 'svelte';
   import { isLoading, locale } from 'svelte-i18n';
@@ -49,6 +48,7 @@
       'event.subtype': 'page',
       'event.value': duration,
     });
+    return true;
   });
 </script>
 

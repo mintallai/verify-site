@@ -22,7 +22,7 @@ export interface BadgeProps {
   badgeHelpText: string | null;
 }
 
-export function getManifest(node: HierarchyTreeNode): Manifest | null {
+export function getManifest(node: HierarchyTreeNode) {
   return node?.data?.type === 'manifest'
     ? node.data.node
     : node?.data?.type === 'ingredient'
@@ -48,8 +48,6 @@ export function getIsOriginal(manifest: Manifest) {
   return false;
 }
 
-
-
 export function isAncestorOf(path: string, loc: string) {
   return startsWith(`${path}.`, `${loc}.`);
 }
@@ -58,11 +56,16 @@ export function isAncestorOf(path: string, loc: string) {
  * Generates the badge props (used by the `cai-thumbnail`) from the claim data
  */
 export function getBadgeProps(node: HierarchyTreeNode): BadgeProps {
-  if (node.data.type === 'ingredient' && node.data.isOtgp) {
+  if (node.data.hasError) {
+    return {
+      badgeType: 'alert',
+      badgeHelpText: 'comp.asset.badgeError.helpText',
+    };
+  } else if (node.data.isOtgp) {
     return {
       badgeType: 'missing',
       badgeHelpText: 'comp.asset.badgeMissing.helpText',
-    }
+    };
   } else if (getManifest(node)) {
     return {
       badgeType: 'info',

@@ -15,7 +15,6 @@ import { createC2pa, resolvers } from 'c2pa';
 
 export type Sdk = Awaited<ReturnType<typeof createC2pa>>;
 export type SdkResult = Awaited<ReturnType<Sdk['read']>>;
-// TODO: Ping @mensch about the best way to do this
 export type Manifest = SdkResult['manifestStore']['activeManifest'];
 export type Ingredient = Manifest['ingredients'][number];
 export type Source = SdkResult['source'];
