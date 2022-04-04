@@ -97,9 +97,8 @@
                   class="breadcrumb-nav text-gray-800" />
               </div>
               {#each nodeAncestors.reverse() as parent (parent.data?.loc)}
-                <!-- FIXME: fix selected -->
                 <sp-menu-item
-                  selected={false}
+                  selected={$primaryLoc === parent.data.loc}
                   on:click={navigateTo(parent.data.loc)}
                   value={parent.data?.loc}>
                   <div class="flex items-center">

@@ -21,7 +21,7 @@
   export let type: 'original' | 'secureCapture' = 'original';
   export let node: HierarchyTreeNode;
 
-  $: generator = getManifest(node)?.claimGenerator?.product ?? '';
+  $: product = getManifest(node)?.claimGenerator?.product ?? '';
 </script>
 
 <Alert severity="info">
@@ -33,7 +33,7 @@
       {#if type === 'original'}
         {$_('comp.originalCreation.generator', {
           values: {
-            product: generator,
+            product,
           },
         })}
       {:else if type === 'secureCapture'}

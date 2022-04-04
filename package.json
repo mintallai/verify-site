@@ -85,6 +85,7 @@
   "dependencies": {
     "@ccx-public/ingest": "^4.3.0",
     "@contentauth/sdk": "0.8.12",
+    "@contentauth/toolkit": "0.7.0-alpha.12",
     "@contentauth/web-components": "^0.4.1",
     "@intl/adobe-locales": "^2.17.7",
     "@roxi/routify": "^2.18.3",
@@ -98,6 +99,7 @@
     "@spectrum-web-components/progress-circle": "^0.2.8",
     "@spectrum-web-components/tabs": "^0.6.9",
     "@spectrum-web-components/theme": "^0.8.14",
+    "c2pa": "0.9.0-alpha.256",
     "d3-hierarchy": "^2.0.0",
     "d3-path": "^2.0.0",
     "d3-selection": "^2.0.0",
