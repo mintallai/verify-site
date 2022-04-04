@@ -32,7 +32,6 @@
   import {
     compareWith,
     hasContent,
-    hierarchy,
     isBurgerMenuShown,
     isComparing,
     isLoading,
@@ -110,14 +109,7 @@
       node={$primary}
       currentPage="inspect"
       on:back={handleClose} />
-    {#if error}
-      <!-- An error occurred after loading the provenance -->
-      <section class="left-col" class:loading={$isLoading} />
-      <Viewer isError={!!error} />
-      <section data-test-id="inspect.right-col" class="right-col p-4">
-        <Alert severity="error">{$_(error)}</Alert>
-      </section>
-    {:else if $isLoading}
+    {#if $isLoading}
       <!-- Asset/provenance data is loading -->
       <section class="left-col" class:loading={$isLoading}>
         <CircleLoader />
@@ -183,7 +175,7 @@
   {:else}
     <!-- An unrecoverable error occurred (e.g. cannot load asset) -->
     <section />
-    <Viewer {isDragging} />
+    <Viewer {isDragging} isError={!!error} />
     {#if error}
       <section class="right-col p-4">
         <Alert severity="error">{$_(error)}</Alert>

@@ -29,13 +29,11 @@
   import { breakpoints } from '../lib/breakpoints';
   import {
     hasContent,
-    hierarchy,
     isBurgerMenuShown,
     isLoading,
     isMobileViewerShown,
     noMetadata,
     primary,
-    primaryLoc,
     provenance,
     urlParams,
   } from '../stores';
@@ -94,7 +92,7 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if $hasContent}
+  {#if $hasContent || error}
     <TopNavigation
       node={$primary}
       noMetadata={$noMetadata}
@@ -109,7 +107,7 @@
         in:fade={{ duration: 150 }} />
     {/if}
   </div>
-  {#if $hasContent}
+  {#if $hasContent || error}
     {#if $isLoading}
       <div class="w-full h-full bg-gray-75 flex items-center justify-center">
         <CircleLoader />

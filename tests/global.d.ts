@@ -12,7 +12,7 @@
 // from Adobe.
 
 declare namespace PlaywrightTest {
-  type BadgeType = import('../src/lib/types').BadgeType;
+  type BadgeType = import('../src/lib/node').BadgeType;
 
   interface Matchers<R> {
     toHaveCAIBadge(badgeType: BadgeType): Promise<R>;
