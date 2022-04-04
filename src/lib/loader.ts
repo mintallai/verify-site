@@ -27,7 +27,7 @@ import {
 } from '../stores';
 
 export const CONTEXT_KEY = 'loader';
-export const LEGACY_VERIFY_URL = 'https://verify.contentauthenticity.org';
+export const LEGACY_VERIFY_URL = 'https://verify-beta.contentauthenticity.org';
 
 export interface ILoaderParams {
   onError: (error: Error, message: string) => void;
