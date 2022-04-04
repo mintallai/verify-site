@@ -24,7 +24,7 @@ let sdk: Sdk;
 declare module 'c2pa' {
   interface ManifestAssertions {
     'adobe.crypto.assertions': {
-      etherium?: string[];
+      ethereum?: string[];
       solana?: string[];
     };
   }

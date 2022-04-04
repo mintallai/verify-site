@@ -93,6 +93,19 @@ export const isMobileViewerShown = writable<boolean>(false);
 
 export const isCompareSelectMode = writable<boolean>(false);
 
+// TODO: See if we can import the Dialog component props instead of repeating this
+export interface Dialog {
+  headlineKey: string;
+  contentKey: string;
+  onCancel: () => void;
+  onConfirm: () => void;
+  cancelLabel?: string;
+  confirmLabel?: string;
+  open?: boolean;
+}
+
+export const dialog = writable<Dialog | null>(null);
+
 // Holds the URL of the last source that was dragged in since we can be passing different
 // source URLs from the landing page and we need to trigger it to re-process the file
 export const lastUrlSource = writable<string>('');

@@ -14,6 +14,7 @@
 import { setContext } from 'svelte';
 import { get } from 'svelte/store';
 import dragDrop from 'drag-drop';
+import { page } from '@roxi/routify';
 import { postEvent, IngestPayload } from '../lib/analytics';
 import { getSdk } from '../lib/sdk';
 import {
@@ -22,9 +23,11 @@ import {
   setProvenance,
   setIsLoading,
   lastUrlSource,
+  dialog,
 } from '../stores';
 
 export const CONTEXT_KEY = 'loader';
+export const LEGACY_VERIFY_URL = 'https://verify.contentauthenticity.org';
 
 export interface ILoaderParams {
   onError: (error: Error, message: string) => void;
@@ -37,6 +40,22 @@ function getErrorMessage(err: Error) {
     return 'error.unsupportedType';
   }
   return 'error.unknown';
+}
+
+function logLegacyContentCredentials(type: IngestPayload['ui.view_type']) {
+  postEvent({
+    'event.type': 'legacy_cc',
+    'event.subtype': 'verify',
+    'ui.view_type': type,
+  });
+}
+
+function logLegacyRedirect(type: IngestPayload['ui.view_type']) {
+  postEvent({
+    'event.type': 'click',
+    'event.subtype': 'legacy_verify',
+    'ui.view_type': type,
+  });
 }
 
 function logSuccess(result, type: IngestPayload['ui.view_type']) {
@@ -58,15 +77,69 @@ function logError(err, type: IngestPayload['ui.view_type']) {
   });
 }
 
+function showLegacyCredentialModal(source: File | string) {
+  dialog.set({
+    headlineKey: 'dialog.legacyContentCredentials.headline',
+    contentKey: 'dialog.legacyContentCredentials.content',
+    open: true,
+    onCancel: () => dialog.update((x) => ({ ...x, open: false })),
+    onConfirm: () => {
+      const path = get(page)?.path ?? '/';
+      const redirectTo = `${LEGACY_VERIFY_URL}${path}`;
+      if (typeof source === 'string') {
+        logLegacyRedirect('link');
+        window.location.assign(`${redirectTo}?source=${source}`);
+      } else {
+        logLegacyRedirect('upload');
+        window.location.assign(redirectTo);
+      }
+    },
+  });
+}
+
+async function hasLegacyCredentials(source: File | string) {
+  try {
+    const legacySdk = 'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12';
+    const wasmSrc =
+      'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12/dist/assets/wasm/toolkit_bg.wasm';
+    const workerSrc =
+      'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12/dist/cai-sdk.worker.min.js';
+    const { ContentAuth } = await import(legacySdk);
+    const sdk = new ContentAuth({
+      wasmSrc,
+      workerSrc,
+    });
+    const result = await sdk.processImage(source);
+    return result.exists;
+  } catch (err) {
+    console.error('Error when testing for legacy credential version', err);
+  }
+  return null;
+}
+
 async function processSourceImage(sourceParam: string, params: ILoaderParams) {
+  const onSuccess = (result) => {
+    setProvenance(result);
+    lastUrlSource.set(sourceParam);
+    logSuccess(result, 'link');
+  };
   setIsLoading(true);
   try {
     const sdk = await getSdk();
     const result = await sdk.read(sourceParam);
     await window.newrelic?.setCustomAttribute('source', sourceParam);
-    setProvenance(result);
-    lastUrlSource.set(sourceParam);
-    logSuccess(result, 'link');
+    if (result?.manifestStore) {
+      onSuccess(result);
+    } else {
+      const isLegacy = await hasLegacyCredentials(sourceParam);
+      if (isLegacy) {
+        logLegacyContentCredentials('link');
+        showLegacyCredentialModal(sourceParam);
+      } else {
+        onSuccess(result);
+      }
+    }
+
     params.onLoaded();
   } catch (err) {
     logError(err, 'link');
@@ -84,6 +157,10 @@ export async function processFiles(
   params: ILoaderParams,
 ) {
   const fileArray = Array.from(files);
+  const onSuccess = (result) => {
+    setProvenance(result);
+    logSuccess(result, 'upload');
+  };
   if (fileArray.length) {
     setIsLoading(true);
     const sdk = await getSdk();
@@ -94,8 +171,18 @@ export async function processFiles(
     });
     try {
       const result = await sdk.read(file);
-      logSuccess(result, 'upload');
-      setProvenance(result);
+      if (result.manifestStore) {
+        onSuccess(result);
+      } else {
+        const legacyResult = await hasLegacyCredentials(file);
+        if (legacyResult) {
+          logLegacyContentCredentials('upload');
+          showLegacyCredentialModal(file);
+        } else {
+          // Only change UI if it is not a newer image
+          onSuccess(result);
+        }
+      }
     } catch (err) {
       logError(err, 'upload');
       window.newrelic?.noticeError(err, {

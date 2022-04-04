@@ -16,7 +16,7 @@
   import { _ } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
-  import { urlParams, provenance, isMobileViewerShown } from '../../stores';
+  import { provenance, isMobileViewerShown } from '../../stores';
   import FileDropper from '../FileDropper.svelte';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
   import { thumbnail, handleImgSrc } from '../../lib/thumbnail';
@@ -42,8 +42,7 @@
     width: side,
     height: side,
   };
-  $: urlSource = $urlParams.source;
-  $: isUploadMode = (!urlSource && !$provenance && !isLoading) || isDragging;
+  $: isUploadMode = (!$provenance && !isLoading) || isDragging;
 </script>
 
 <div class="viewer-wrapper">

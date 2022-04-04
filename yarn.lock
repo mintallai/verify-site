@@ -1060,6 +1060,14 @@
     lit-html "^1.0.0"
     tslib "^2.0.0"
 
+"@spectrum-web-components/button-group@^0.6.10":
+  version "0.6.10"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/button-group/-/button-group-0.6.10.tgz#ee384a197aa846e9bda27adfd9f2cf5091789b7b"
+  integrity sha512-f5TQowXimC4YWDL88RIE2Hgs6CVPOv2Qb9h0hBmeJAC+jzqPFudjLa4tSGQB6bdukm9/qAM9uqKr5D5BIguY6Q==
+  dependencies:
+    "@spectrum-web-components/base" "^0.4.5"
+    tslib "^2.0.0"
+
 "@spectrum-web-components/button@^0.14.9":
   version "0.14.9"
   resolved "https://registry.yarnpkg.com/@spectrum-web-components/button/-/button-0.14.9.tgz#e710a79c23e3f5811164d822406c1e31d60784a5"
@@ -1075,6 +1083,32 @@
   version "0.6.8"
   resolved "https://registry.yarnpkg.com/@spectrum-web-components/coachmark/-/coachmark-0.6.8.tgz#8026bafeb24a1de628795db79fa3d53603715ef9"
   integrity sha512-G1ZLxpbqTqOSReFSRQPOCmXfptozbKlE8Bv/pGGNynPvqeASpo/XaPulLX2IhMHsbl5hDnASOtJeK97qcBhILg==
+  dependencies:
+    "@spectrum-web-components/base" "^0.4.5"
+    tslib "^2.0.0"
+
+"@spectrum-web-components/dialog@^0.6.18":
+  version "0.6.18"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/dialog/-/dialog-0.6.18.tgz#5f7e66667195ce74b0db1c7140780fb535444087"
+  integrity sha512-kXgf1xyOQBRh1o84YjGm5GqFZU0rA8nLVataWaH0f98ItU8OIe4wgC3yBpWnVixRjp1fhrxNqcWrpc3kBJcHXg==
+  dependencies:
+    "@spectrum-web-components/action-button" "^0.5.9"
+    "@spectrum-web-components/base" "^0.4.5"
+    "@spectrum-web-components/button" "^0.14.9"
+    "@spectrum-web-components/button-group" "^0.6.10"
+    "@spectrum-web-components/divider" "^0.2.8"
+    "@spectrum-web-components/icon" "^0.9.11"
+    "@spectrum-web-components/icons-ui" "^0.6.11"
+    "@spectrum-web-components/icons-workflow" "^0.6.11"
+    "@spectrum-web-components/modal" "^0.3.8"
+    "@spectrum-web-components/shared" "^0.12.9"
+    "@spectrum-web-components/underlay" "^0.6.9"
+    tslib "^2.0.0"
+
+"@spectrum-web-components/divider@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/divider/-/divider-0.2.8.tgz#08dc81dcc8baa3dd4349acab4e05f297c9c53f6d"
+  integrity sha512-eiZx0pyJ5FEnbzw/QU9m9v425RJ+TSp79Abi2868VykyPCkyW50bgv0/JGRo8+BX3HfRgKEcyQG/Mo6FQFD2tA==
   dependencies:
     "@spectrum-web-components/base" "^0.4.5"
     tslib "^2.0.0"
@@ -1134,6 +1168,14 @@
     "@spectrum-web-components/icon" "^0.9.11"
     "@spectrum-web-components/icons-ui" "^0.6.11"
     "@spectrum-web-components/shared" "^0.12.9"
+    tslib "^2.0.0"
+
+"@spectrum-web-components/modal@^0.3.8":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/modal/-/modal-0.3.8.tgz#6ea4e04363a0c1c81879d5b05a5608b05d473876"
+  integrity sha512-lid2fPd36/nVBRFHJfgt5ImO3praUa/bE+30A6jijv/PYFRNKOJ7IuewgQ/4g5Gm4rZglZ7/sIbXflluY0j5Ow==
+  dependencies:
+    "@spectrum-web-components/base" "^0.4.5"
     tslib "^2.0.0"
 
 "@spectrum-web-components/overlay@^0.11.16":
@@ -1214,6 +1256,14 @@
   dependencies:
     "@spectrum-web-components/base" "^0.4.5"
     "@spectrum-web-components/styles" "^0.9.11"
+    tslib "^2.0.0"
+
+"@spectrum-web-components/underlay@^0.6.9":
+  version "0.6.9"
+  resolved "https://registry.yarnpkg.com/@spectrum-web-components/underlay/-/underlay-0.6.9.tgz#02feeb1653361791e4e18d79fd1f86768bdc4863"
+  integrity sha512-SGI4axZ0kbHCcuajsUycXvY1nA8yujkLR5rWoqQTUsfPD8PCeUpHjoq310j0zPB4sk3U6SPqKZuKXCP7q+qKDQ==
+  dependencies:
+    "@spectrum-web-components/base" "^0.4.5"
     tslib "^2.0.0"
 
 "@sveltech/ssr@^0.0.11":
