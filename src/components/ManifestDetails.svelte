@@ -14,14 +14,18 @@
 -->
 <script lang="ts">
   import { _, date, time } from 'svelte-i18n';
-  import cssVars from 'svelte-css-vars';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
   import Thumbnail from './Thumbnail.svelte';
   import Web3Address from './Web3Address.svelte';
   import { getFaqUrl, navigateToChild } from '../stores';
-  import { getManifest, getBadgeProps, getIsOriginal } from '../lib/node';
+  import {
+    getManifest,
+    getBadgeProps,
+    getIsOriginal,
+    getReviewRatings,
+  } from '../lib/node';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
@@ -32,7 +36,7 @@
   export let isMobileViewer: boolean = false;
 
   $: manifest = getManifest(node);
-  $: isOriginal = getIsOriginal(manifest);
+  $: isOriginal = getIsOriginal(node);
   $: generator = manifest.claimGenerator.product;
   $: issuer = manifest?.signature?.issuer;
   $: sigDate = manifest?.signature?.date;
@@ -43,19 +47,7 @@
   $: web3Addresses = manifest.web3;
 
   // FIXME: Make this work
-  $: hasUnknownActions = false;
-  $: wasPossiblyModified = false;
-  // $: actionsAssertion = claim.findAssertion(
-  //   AssertionLabel.Actions,
-  // ) as ActionsAssertion | null;
-  // $: hasUnknownActions = actionsAssertion?.data?.metadata?.reviewRatings?.find(
-  //   (ratings) => ratings.code === 'actions.unknownActionsPerformed',
-  // );
-  // $: wasPossiblyModified = claim.ingredients?.find((ingredient) =>
-  //   ingredient.data.reviews?.find(
-  //     (review) => review.code === 'ingredient.possiblyModified',
-  //   ),
-  // );
+  $: ratings = getReviewRatings(node);
 
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
@@ -135,7 +127,7 @@
             </div>
           </cai-tooltip>
         </dt>
-        {#if hasUnknownActions || wasPossiblyModified}
+        {#if ratings.hasUnknownActions || ratings.wasPossiblyModified}
           <dd data-test-id="about.unknownActionsAlert" class="flex mt-1">
             <div class="relative top-0.5">
               <AlertOutlineIcon width="16px" height="16px" class="mr-2" />
@@ -160,7 +152,7 @@
 {/await}
 <div>
   {#if isOriginal}
-    <!-- <OriginalCreation type="original" {claim} /> -->
+    <OriginalCreation type="original" {node} />
   {:else}
     <dl class="attributes" data-test-id="about.assets">
       <dt>

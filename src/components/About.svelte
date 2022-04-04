@@ -17,12 +17,7 @@
   import cssVars from 'svelte-css-vars';
   import ManifestDetails from './ManifestDetails.svelte';
   import Thumbnail from './Thumbnail.svelte';
-  import {
-    getManifest,
-    getBadgeProps,
-    getFilename,
-    getIsOriginal,
-  } from '../lib/node';
+  import { getBadgeProps, getFilename } from '../lib/node';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';

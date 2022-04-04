@@ -12,8 +12,9 @@
 // from Adobe.
 
 import startsWith from 'lodash/startsWith';
-import { Manifest } from './sdk';
 import type { HierarchyTreeNode } from '../stores';
+
+const DELIVERED_ACTION = 'adobe.delivered';
 
 export type BadgeType = 'none' | 'info' | 'missing' | 'alert';
 
@@ -38,14 +39,23 @@ export function getThumbnail(node: HierarchyTreeNode) {
   return node?.data.node.thumbnail;
 }
 
-export function getIsOriginal(manifest: Manifest) {
-  // FIXME: This should support original creations in Photoshop
-  // const noIngredients = claim.ingredients.length === 0;
-  // const actionAssertion = claim.findAssertion(ACTION_ASSERTION_LABEL);
-  // const actions = actionAssertion?.data?.actions;
-  // const isDelivered = actions?.find((x) => x.action === DELIVERED_ACTION);
-  // return noIngredients && !isDelivered;
-  return false;
+export function getIsOriginal(node: HierarchyTreeNode) {
+  const manifest = getManifest(node);
+  const noIngredients = manifest.ingredients?.length === 0;
+  const actions = manifest.assertions.get('c2pa.actions')?.actions;
+  const isDelivered = actions?.some((x) => x.action === DELIVERED_ACTION);
+
+  return noIngredients && !isDelivered;
+}
+
+export function getReviewRatings(node: HierarchyTreeNode) {
+  const manifest = getManifest(node);
+  // @ts-ignore
+  const reviewRatings = manifest.assertions.get('c2pa.actions')?.metadata?.reviewRatings ?? [];
+  return {
+    hasUnknownActions: reviewRatings.some((review) => review.code === 'actions.unknownActionsPerformed'),
+    wasPossiblyModified: reviewRatings.some((review) => review.code === 'ingredient.possiblyModified')
+  };
 }
 
 export function isAncestorOf(path: string, loc: string) {

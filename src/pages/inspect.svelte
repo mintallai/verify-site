@@ -129,6 +129,14 @@
         class:loading={$isLoading}>
         <CircleLoader />
       </section>
+    {:else if $noMetadata}
+      <section class="left-col">
+        <Navigation node={$primary} />
+      </section>
+      <Viewer node={$primary} {isDragging} />
+      <section data-test-id="inspect.right-col" class="right-col p-4">
+        <ContentCredentialsError isComparing={$isComparing} />
+      </section>
     {:else if $primary}
       <!-- Asset has loaded, show manifest info -->
       <!-- Left column -->

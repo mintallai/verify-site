@@ -45,8 +45,8 @@ export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
   return {
     async update(newTreeNode?: HierarchyTreeNode) {
       if (newTreeNode) {
-        const prevHash = await getThumbnail(currTreeNode).hash();
-        const currHash = await getThumbnail(newTreeNode).hash();
+        const prevHash = await getThumbnail(currTreeNode).hash?.();
+        const currHash = await getThumbnail(newTreeNode).hash?.();
         if (prevHash !== currHash) {
           const result = await generateThumbnail(node, getThumbnail(newTreeNode));
           currThumbnail?.dispose?.();

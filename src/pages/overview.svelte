@@ -20,6 +20,7 @@
   import FileDropper from '../components/FileDropper.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
+  import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
   import TreeView from '../components/overview/TreeView.svelte';
@@ -125,6 +126,8 @@
           <div class="w-full">
             <Alert severity="error">{$_(error)}</Alert>
           </div>
+        {:else if $noMetadata}
+          <ContentCredentialsError isComparing={false} />
         {:else if $primary}
           <About node={$primary} isMobileViewer={$isMobileViewerShown} />
         {:else if $isLoading}
