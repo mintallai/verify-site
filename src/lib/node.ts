@@ -50,8 +50,17 @@ export function getIsOriginal(node: HierarchyTreeNode) {
 
 export function getReviewRatings(node: HierarchyTreeNode) {
   const manifest = getManifest(node);
-  const reviewRatings =
+  const ingredientRatings = manifest.ingredients?.reduce((acc, ingredient) => {
+    return [
+      ...acc,
+      // @ts-ignore
+      ...(ingredient.data.ingredient.metadata?.reviewRatings ?? []),
+    ];
+  }, []);
+  const actionRatings =
     manifest.assertions.get('c2pa.actions')?.metadata?.reviewRatings ?? [];
+  const reviewRatings = [...ingredientRatings, ...actionRatings];
+
   return {
     hasUnknownActions: reviewRatings.some(
       (review) => review.code === 'actions.unknownActionsPerformed',

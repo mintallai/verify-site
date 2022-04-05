@@ -17,6 +17,7 @@ import dragDrop from 'drag-drop';
 import { page } from '@roxi/routify';
 import { postEvent, IngestPayload } from '../lib/analytics';
 import { getSdk } from '../lib/sdk';
+import { getConfig } from '../lib/config';
 import {
   urlParams,
   provenance,
@@ -27,7 +28,6 @@ import {
 } from '../stores';
 
 export const CONTEXT_KEY = 'loader';
-export const LEGACY_VERIFY_URL = 'https://verify-beta.contentauthenticity.org';
 
 export interface ILoaderParams {
   onError: (error: Error, message: string) => void;
@@ -83,9 +83,14 @@ function showLegacyCredentialModal(source: File | string) {
     contentKey: 'dialog.legacyContentCredentials.content',
     open: true,
     onCancel: () => dialog.update((x) => ({ ...x, open: false })),
-    onConfirm: () => {
+    onConfirm: async () => {
+      const config = await getConfig();
+      const legacyVerifyUrl =
+        config.env === 'stage'
+          ? 'https://verify-beta-stage.contentauthenticity.org'
+          : 'https://verify-beta.contentauthenticity.org';
       const path = get(page)?.path ?? '/';
-      const redirectTo = `${LEGACY_VERIFY_URL}${path}`;
+      const redirectTo = `${legacyVerifyUrl}${path}`;
       if (typeof source === 'string') {
         logLegacyRedirect('link');
         window.location.assign(`${redirectTo}?source=${source}`);
