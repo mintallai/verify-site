@@ -212,9 +212,9 @@
     </dl>
   </div>
 {/if}
-{#if socialAccounts.length || web3Addresses.length}
+{#if socialAccounts?.length || web3Addresses?.length}
   <div class="space-y-4">
-    {#if socialAccounts.length}
+    {#if socialAccounts?.length}
       <dl class="attributes">
         <dt class="flex space-x-2">
           <div class="whitespace-nowrap">{$_('comp.about.social')}</div>
@@ -238,7 +238,7 @@
         </dd>
       </dl>
     {/if}
-    {#if web3Addresses.length}
+    {#if web3Addresses?.length}
       <dl class="attributes">
         <dt class="flex space-x-2">
           <div class="whitespace-nowrap">{$_('comp.about.web3')}</div>
