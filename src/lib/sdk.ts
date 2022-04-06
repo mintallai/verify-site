@@ -55,8 +55,8 @@ export async function getSdk() {
   if (!sdk) {
     try {
       sdk = await createC2pa({
-        wasmSrc: 'sdk/toolkit_bg.wasm',
-        workerSrc: 'sdk/cai-sdk.worker.min.js',
+        wasmSrc: `sdk/toolkit_bg.wasm?v=${process.env.GIT_REVISION}`,
+        workerSrc: `sdk/cai-sdk.worker.min.js?v=${process.env.GIT_REVISION}`,
         manifestResolvers: {
           ...resolvers.editsAndActivityResolver,
           isBeta: isBetaResolver,
