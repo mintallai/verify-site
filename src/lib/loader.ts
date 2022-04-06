@@ -16,7 +16,7 @@ import { get } from 'svelte/store';
 import dragDrop from 'drag-drop';
 import { page } from '@roxi/routify';
 import { postEvent, IngestPayload } from '../lib/analytics';
-import { getSdk } from '../lib/sdk';
+import { getSdk, SdkResult } from '../lib/sdk';
 import { getConfig } from '../lib/config';
 import {
   urlParams,
@@ -58,11 +58,11 @@ function logLegacyRedirect(type: IngestPayload['ui.view_type']) {
   });
 }
 
-function logSuccess(result, type: IngestPayload['ui.view_type']) {
+function logSuccess(result: SdkResult, type: IngestPayload['ui.view_type']) {
   postEvent({
     'event.type': 'success',
     'event.subtype': 'verify',
-    'event.value': result?.exists ? 'full' : 'none',
+    'event.value': result?.manifestStore ? 'full' : 'none',
     'ui.view_type': type,
   });
 }
