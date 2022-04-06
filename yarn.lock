@@ -563,10 +563,15 @@
   resolved "https://registry.yarnpkg.com/@contentauth/detector/-/detector-0.2.9.tgz#7d0d68441fbbd504f68561356fcd33d26e19b3c2"
   integrity sha512-LpV+34c7u25+h4tPmgTt0De0XVr9iHkN0ZkhKX/aSZgw+s/GB9tC6xpmtc6fbqlZojRdQ7H7uIqSG1wOxjcYbw==
 
-"@contentauth/toolkit@0.7.0-alpha.12", "@contentauth/toolkit@^0.7.0-alpha.12+d5c0d9d":
+"@contentauth/toolkit@0.7.0-alpha.12":
   version "0.7.0-alpha.12"
   resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.7.0-alpha.12.tgz#b469e2f30bee3bc2bf9594460be2f24ca3533c5d"
   integrity sha512-k7fsmeRBfa7A7Owz9IV8UXw7VCIQCWzC3sF2GSR5+KaOryPmI/yvWO+i0zcH6gFUpf6j2B1rNPvv9BHe3OYRAg==
+
+"@contentauth/toolkit@^0.7.0-alpha.13+3e2d308":
+  version "0.7.0-alpha.13"
+  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.7.0-alpha.13.tgz#a813456251746af257870fe0b0914a9959fdf45a"
+  integrity sha512-di7zqpqN6eQaYBe1Snq3KVeCmI2SdNGPN6FQHB3+eqcM7vadOE+bkyT/VLKgISFWlUKD98D9K2gKYjiP3KAe9w==
 
 "@contentauth/web-components@^0.4.1":
   version "0.4.1"
@@ -2041,13 +2046,13 @@ bytes@3.1.2, bytes@^3.0.0:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa@0.9.0-alpha.256:
-  version "0.9.0-alpha.256"
-  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.9.0-alpha.256.tgz#91fa3c05d3c48fb3e3d9d9593e29aeae4edb1cde"
-  integrity sha512-wgpEFSjaKNZR3EooUVLVTSRt/sP/HNxtM7hLop0Z94856WDTlTO65vYXbyS4HdBGmKMN4b7KZqHeez5x8a4TUQ==
+c2pa@0.9.0-alpha.257:
+  version "0.9.0-alpha.257"
+  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.9.0-alpha.257.tgz#39281b515b3bbb2e07643b9a7b38d75216a68e42"
+  integrity sha512-p+it1Ui0mmnsKDKhWVRkX57wOBqa2OkOAC/58IpuEfwfiDZ8Q0yrBg6x8KnI9O2KpZ6c5ktXYstZjqg9M7d3hw==
   dependencies:
     "@contentauth/detector" "^0.2.9"
-    "@contentauth/toolkit" "^0.7.0-alpha.12+d5c0d9d"
+    "@contentauth/toolkit" "^0.7.0-alpha.13+3e2d308"
     date-fns "^2.24.0"
     lodash "^4.17.21"
     make-error "^1.3.6"
