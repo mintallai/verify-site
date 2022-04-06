@@ -106,13 +106,13 @@ function baseConfig(config, ctx) {
   } = config;
 
   const outputConfig = !!dynamicImports
-    ? { format: 'esm', dir: buildDir }
-    : { format: 'iife', file: `${buildDir}/bundle.js` };
+    ? { format: 'esm', dir: `${buildDir}/${gitRevision}` }
+    : { format: 'iife', file: `${buildDir}/${gitRevision}/bundle.js` };
 
   const _svelteConfig = {
     dev: !production, // run-time checks
     // Extract component CSS — better performance
-    css: (css) => css.write(`${buildDir}/bundle.css`),
+    css: (css) => css.write(`${buildDir}/${gitRevision}/bundle.css`),
     hot: isNollup,
   };
 
@@ -237,8 +237,8 @@ function baseConfig(config, ctx) {
     const scriptTag =
       typeof config.scriptTag != 'undefined'
         ? config.scriptTag
-        : `<script type="module" defer src="/build/main.js?v=${gitRevision}"></script>`;
-    const bundleTag = `<script defer src="/build/bundle.js?v=${gitRevision}"></script>`;
+        : `<script type="module" defer src="/build/${gitRevision}/main.js"></script>`;
+    const bundleTag = `<script defer src="/build/${gitRevision}/bundle.js"></script>`;
     return contents
       .toString()
       .replace('__NEW_RELIC__', production ? newrelic : '')
