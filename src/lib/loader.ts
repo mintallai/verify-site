@@ -122,6 +122,38 @@ async function hasLegacyCredentials(source: File | string) {
   return null;
 }
 
+/**
+ * Adding this function since c2pa-toolkit now throws a `LogStop` error on 0.8
+ * test images. I haven't removed the 0.8 null handling yet since I'm not sure
+ * if some 0.8 images still report null and don't throw an error, so decided
+ * to keep it in there for now. -dkozma
+ */
+async function handleError(
+  err: Error,
+  source: File | string,
+  params: ILoaderParams,
+) {
+  const origin = typeof source === 'string' ? 'link' : 'upload';
+  const nrParams =
+    typeof source === 'string'
+      ? { source: 'url' }
+      : { source: 'file', type: source.type };
+  let isLegacy;
+  // LogStop now gets triggered when a 0.8 image is supplied
+  if (err.name === 'C2pa(LogStop)') {
+    isLegacy = await hasLegacyCredentials(source);
+    if (isLegacy) {
+      logLegacyContentCredentials(origin);
+      showLegacyCredentialModal(source);
+    }
+  }
+  if (!isLegacy) {
+    logError(err, origin);
+    window.newrelic?.noticeError(err, nrParams);
+    params.onError(err, getErrorMessage(err));
+  }
+}
+
 async function processSourceImage(sourceParam: string, params: ILoaderParams) {
   const onSuccess = (result) => {
     setProvenance(result);
@@ -147,11 +179,7 @@ async function processSourceImage(sourceParam: string, params: ILoaderParams) {
 
     params.onLoaded();
   } catch (err) {
-    logError(err, 'link');
-    window.newrelic?.noticeError(err, {
-      source: 'url',
-    });
-    params.onError(err, getErrorMessage(err));
+    await handleError(err, sourceParam, params);
   } finally {
     setIsLoading(false);
   }
@@ -189,12 +217,7 @@ export async function processFiles(
         }
       }
     } catch (err) {
-      logError(err, 'upload');
-      window.newrelic?.noticeError(err, {
-        source: 'file',
-        type: file.type,
-      });
-      params.onError(err, getErrorMessage(err));
+      await handleError(err, file, params);
     } finally {
       setIsLoading(false);
     }
