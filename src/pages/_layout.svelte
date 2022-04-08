@@ -12,5 +12,10 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
+<script lang="ts">
+  import Dialog from '../components/Dialog.svelte';
+  import { dialog } from '../stores';
+</script>
 
 <slot />
+<Dialog {...$dialog} />

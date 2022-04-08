@@ -12,43 +12,40 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import equal from 'fast-deep-equal';
-  import { primaryPath } from '../../stores';
+  import { primaryLoc } from '../../stores';
   import Thumbnail from '../Thumbnail.svelte';
-  import { getBadgeProps, getPath, isInPath } from '../../lib/claim';
-  import type { ITreeNode } from '../../lib/types';
+  import { getBadgeProps, getFilename, isAncestorOf } from '../../lib/node';
   import type { HierarchyPointNode } from 'd3-hierarchy';
-  export let node: HierarchyPointNode<ITreeNode>;
+  import type { TreeNode } from '../../stores';
+
+  export let node: HierarchyPointNode<TreeNode>;
   export let width: number;
   export let height: number;
 
+  $: filename = getFilename(node);
   $: data = node.data;
+  $: loc = node.data.loc;
   $: tx = node.x - width / 2;
   $: ty = node.y - height / 2;
   $: style = `width: ${width}px; height: ${height}px; transform: translate3d(${tx}px, ${ty}px, 0)`;
-  $: path = getPath(node);
-  $: isSelected = equal($primaryPath, path);
-  $: isAncestor = !isSelected && isInPath($primaryPath, path);
-  $: badgeProps = getBadgeProps({
-    claim: node.data.claim,
-    errors: node.data.errors,
-  });
+  $: isSelected = $primaryLoc === loc;
+  $: isAncestor = !isSelected && isAncestorOf($primaryLoc, loc);
+  $: badgeProps = getBadgeProps(node);
 </script>
 
 <div
   class="node"
   class:selected={isSelected}
   class:ancestor={isAncestor}
-  data-node-idx={data.locatorString}
+  data-node-idx={data.loc}
   {style}>
   <div class="content">
-    <Thumbnail asset={node.data.asset} {...badgeProps} />
+    <Thumbnail {node} {...badgeProps} />
     <div>
       <h6>{$_('comp.asset.fileName')}</h6>
-      <div class="file-name">{node.data.name}</div>
+      <div class="file-name">{filename}</div>
     </div>
   </div>
 </div>

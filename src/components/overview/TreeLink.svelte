@@ -12,13 +12,12 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { path as d3Path, Path } from 'd3-path';
-  import type { ITreeNode } from '../../lib/types';
+  import type { TreeNode } from '../../stores';
   import type { HierarchyPointLink } from 'd3-hierarchy';
 
-  export let link: HierarchyPointLink<ITreeNode>;
+  export let link: HierarchyPointLink<TreeNode>;
   export let ancestor: boolean = false;
   export let nodeHeight: number;
 

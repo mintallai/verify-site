@@ -14,14 +14,17 @@
 import { setContext } from 'svelte';
 import { get } from 'svelte/store';
 import dragDrop from 'drag-drop';
+import { page } from '@roxi/routify';
 import { postEvent, IngestPayload } from '../lib/analytics';
-import { getSdk } from '../lib/sdk';
+import { getSdk, SdkResult } from '../lib/sdk';
+import { getConfig } from '../lib/config';
 import {
   urlParams,
   provenance,
   setProvenance,
   setIsLoading,
   lastUrlSource,
+  dialog,
 } from '../stores';
 
 export const CONTEXT_KEY = 'loader';
@@ -39,11 +42,27 @@ function getErrorMessage(err: Error) {
   return 'error.unknown';
 }
 
-function logSuccess(result, type: IngestPayload['ui.view_type']) {
+function logLegacyContentCredentials(type: IngestPayload['ui.view_type']) {
+  postEvent({
+    'event.type': 'legacy_cc',
+    'event.subtype': 'verify',
+    'ui.view_type': type,
+  });
+}
+
+function logLegacyRedirect(type: IngestPayload['ui.view_type']) {
+  postEvent({
+    'event.type': 'click',
+    'event.subtype': 'legacy_verify',
+    'ui.view_type': type,
+  });
+}
+
+function logSuccess(result: SdkResult, type: IngestPayload['ui.view_type']) {
   postEvent({
     'event.type': 'success',
     'event.subtype': 'verify',
-    'event.value': result?.exists ? 'full' : 'none',
+    'event.value': result?.manifestStore ? 'full' : 'none',
     'ui.view_type': type,
   });
 }
@@ -58,22 +77,109 @@ function logError(err, type: IngestPayload['ui.view_type']) {
   });
 }
 
-async function processSourceImage(sourceParam: string, params: ILoaderParams) {
-  setIsLoading(true);
+function showLegacyCredentialModal(source: File | string) {
+  dialog.set({
+    headlineKey: 'dialog.legacyContentCredentials.headline',
+    contentKey: 'dialog.legacyContentCredentials.content',
+    open: true,
+    onCancel: () => dialog.update((x) => ({ ...x, open: false })),
+    onConfirm: async () => {
+      const config = await getConfig();
+      const legacyVerifyUrl =
+        config.env === 'stage'
+          ? 'https://verify-beta-stage.contentauthenticity.org'
+          : 'https://verify-beta.contentauthenticity.org';
+      const path = get(page)?.path ?? '/';
+      const redirectTo = `${legacyVerifyUrl}${path}`;
+      if (typeof source === 'string') {
+        logLegacyRedirect('link');
+        window.location.assign(`${redirectTo}?source=${source}`);
+      } else {
+        logLegacyRedirect('upload');
+        window.location.assign(redirectTo);
+      }
+    },
+  });
+}
+
+async function hasLegacyCredentials(source: File | string) {
   try {
-    const sdk = await getSdk();
-    const result = await sdk.processImage(sourceParam);
-    await window.newrelic?.setCustomAttribute('source', sourceParam);
+    const legacySdk = 'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12';
+    const wasmSrc =
+      'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12/dist/assets/wasm/toolkit_bg.wasm';
+    const workerSrc =
+      'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12/dist/cai-sdk.worker.min.js';
+    const { ContentAuth } = await import(legacySdk);
+    const sdk = new ContentAuth({
+      wasmSrc,
+      workerSrc,
+    });
+    const result = await sdk.processImage(source);
+    return result.exists;
+  } catch (err) {
+    console.error('Error when testing for legacy credential version', err);
+  }
+  return null;
+}
+
+/**
+ * Adding this function since c2pa-toolkit now throws a `LogStop` error on 0.8
+ * test images. I haven't removed the 0.8 null handling yet since I'm not sure
+ * if some 0.8 images still report null and don't throw an error, so decided
+ * to keep it in there for now. -dkozma
+ */
+async function handleError(
+  err: Error,
+  source: File | string,
+  params: ILoaderParams,
+) {
+  const origin = typeof source === 'string' ? 'link' : 'upload';
+  const nrParams =
+    typeof source === 'string'
+      ? { source: 'url' }
+      : { source: 'file', type: source.type };
+  let isLegacy;
+  // LogStop now gets triggered when a 0.8 image is supplied
+  if (err.name === 'C2pa(LogStop)') {
+    isLegacy = await hasLegacyCredentials(source);
+    if (isLegacy) {
+      logLegacyContentCredentials(origin);
+      showLegacyCredentialModal(source);
+    }
+  }
+  if (!isLegacy) {
+    logError(err, origin);
+    window.newrelic?.noticeError(err, nrParams);
+    params.onError(err, getErrorMessage(err));
+  }
+}
+
+async function processSourceImage(sourceParam: string, params: ILoaderParams) {
+  const onSuccess = (result) => {
     setProvenance(result);
     lastUrlSource.set(sourceParam);
     logSuccess(result, 'link');
+  };
+  setIsLoading(true);
+  try {
+    const sdk = await getSdk();
+    const result = await sdk.read(sourceParam);
+    await window.newrelic?.setCustomAttribute('source', sourceParam);
+    if (result?.manifestStore) {
+      onSuccess(result);
+    } else {
+      const isLegacy = await hasLegacyCredentials(sourceParam);
+      if (isLegacy) {
+        logLegacyContentCredentials('link');
+        showLegacyCredentialModal(sourceParam);
+      } else {
+        onSuccess(result);
+      }
+    }
+
     params.onLoaded();
   } catch (err) {
-    logError(err, 'link');
-    window.newrelic?.noticeError(err, {
-      source: 'url',
-    });
-    params.onError(err, getErrorMessage(err));
+    await handleError(err, sourceParam, params);
   } finally {
     setIsLoading(false);
   }
@@ -84,6 +190,10 @@ export async function processFiles(
   params: ILoaderParams,
 ) {
   const fileArray = Array.from(files);
+  const onSuccess = (result) => {
+    setProvenance(result);
+    logSuccess(result, 'upload');
+  };
   if (fileArray.length) {
     setIsLoading(true);
     const sdk = await getSdk();
@@ -93,16 +203,21 @@ export async function processFiles(
       type: file.type,
     });
     try {
-      const result = await sdk.processImage(file);
-      logSuccess(result, 'upload');
-      setProvenance(result);
+      const result = await sdk.read(file);
+      if (result.manifestStore) {
+        onSuccess(result);
+      } else {
+        const legacyResult = await hasLegacyCredentials(file);
+        if (legacyResult) {
+          logLegacyContentCredentials('upload');
+          showLegacyCredentialModal(file);
+        } else {
+          // Only change UI if it is not a newer image
+          onSuccess(result);
+        }
+      }
     } catch (err) {
-      logError(err, 'upload');
-      window.newrelic?.noticeError(err, {
-        source: 'file',
-        type: file.type,
-      });
-      params.onError(err, getErrorMessage(err));
+      await handleError(err, file, params);
     } finally {
       setIsLoading(false);
     }

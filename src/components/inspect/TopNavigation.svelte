@@ -12,40 +12,35 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { goto, params, url } from '@roxi/routify';
   import { createEventDispatcher } from 'svelte';
   import { _ } from 'svelte-i18n';
   import {
-    primaryId,
-    primaryPath,
-    primaryAsset,
+    primaryLoc,
     ancestors,
     compareMode,
     setCompareMode,
     CompareMode,
     isMobileViewerShown,
-    navigateToPath,
-    hierarchy,
+    navigateTo,
   } from '../../stores';
-  import { Source } from '../../lib/sdk';
+  import type { HierarchyTreeNode } from '../../stores';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import ChevronRight from '../../../assets/svg/monochrome/chevron-right.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
+  import Thumbnail from '../Thumbnail.svelte';
+  import { getFilename } from '../../lib/node';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
-  import Thumbnail from '../Thumbnail.svelte';
-  import { getPath } from '../../lib/claim';
-  import equal from 'fast-deep-equal';
 
   type Page = 'overview' | 'inspect';
 
+  export let node: HierarchyTreeNode;
   export let currentPage: Page = 'overview';
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
-  export let source: Source | null = null;
   const dispatch = createEventDispatcher();
 
   function handleNavChange() {
@@ -58,17 +53,11 @@
 
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
-  $: thumbnailAsset =
-    $primaryAsset instanceof Source ? $primaryAsset : $primaryAsset?.asset;
-  $: thumbnailTitle =
-    $primaryAsset instanceof Source
-      ? $primaryAsset.filename
-      : $primaryAsset?.title;
 </script>
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
   <!-- Only display Top Nav if there is an active asset -->
-  {#if $primaryId}
+  {#if $primaryLoc}
     <sp-theme color="lightest" scale="medium" class="w-full">
       {#if isComparing}
         <div class="flex space-x-5 py-3">
@@ -99,7 +88,7 @@
       {:else if showMenu}
         <div class="flex self-center">
           {#if nodeAncestors?.length > 1}
-            <sp-action-menu class="-ml-3" value={$primaryId}>
+            <sp-action-menu class="-ml-3" value={$primaryLoc}>
               <div slot="icon" class="py-2">
                 <BreadcrumbDropdown
                   slot="icon"
@@ -107,15 +96,14 @@
                   height="16"
                   class="breadcrumb-nav text-gray-800" />
               </div>
-              {#each nodeAncestors.reverse() as parent (parent.data?.id)}
-                <!-- neither this on:click or getPath produce the correct result for Gavin's deeply nested CICA image -->
+              {#each nodeAncestors.reverse() as parent (parent.data?.loc)}
                 <sp-menu-item
-                  selected={equal(getPath(parent), $primaryPath)}
-                  on:click={navigateToPath(getPath(parent))}
-                  value={parent.data?.id}>
+                  selected={$primaryLoc === parent.data.loc}
+                  on:click={navigateTo(parent.data.loc)}
+                  value={parent.data?.loc}>
                   <div class="flex items-center">
-                    <Thumbnail slot="icon" asset={parent.data?.asset} />
-                    <span class="ml-2 items-center">{parent.data?.name}</span>
+                    <Thumbnail slot="icon" node={parent} />
+                    <span class="ml-2 items-center">{getFilename(parent)}</span>
                   </div>
                 </sp-menu-item>
               {/each}
@@ -125,8 +113,8 @@
             </div>
           {/if}
           <div class="breadcrumb-item items-center current">
-            <Thumbnail asset={thumbnailAsset} />
-            <span class="font-regular text-smd ml-2">{thumbnailTitle}</span>
+            <Thumbnail {node} />
+            <span class="font-regular text-smd ml-2">{getFilename(node)}</span>
           </div>
         </div>
       {:else}

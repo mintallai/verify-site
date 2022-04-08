@@ -12,18 +12,15 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import equal from 'fast-deep-equal';
-  import { Claim, Ingredient } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
-  import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
   import FileDropper from '../components/FileDropper.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
+  import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
   import TreeView from '../components/overview/TreeView.svelte';
@@ -31,34 +28,24 @@
   import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
   import { breakpoints } from '../lib/breakpoints';
   import {
-    urlParams,
-    provenance,
-    hierarchy,
-    primaryAsset,
-    primaryPath,
+    hasContent,
     isBurgerMenuShown,
-    isMobileViewerShown,
     isLoading,
+    isMobileViewerShown,
+    noMetadata,
+    primary,
+    provenance,
+    urlParams,
   } from '../stores';
-  import { getIsIngredientWithClaim, getPath } from '../lib/claim';
 
   let isDragging = false;
   let error = null;
   let tour: ReturnType<typeof startTour>;
 
-  $: source = $provenance?.source;
-  $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $provenance || $isLoading;
-  $: isUploadMode = !hasContent || isDragging;
-  $: primary = $primaryAsset;
-  $: primaryNode = $hierarchy?.find((node) =>
-    equal(getPath(node), $primaryPath),
-  );
-  $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !$provenance?.exists;
+  $: isUploadMode = !$hasContent || isDragging;
   $: {
     // Cancel the tour if the overlay is showing
-    if (tour && tour.isActive() && isMobileViewer) {
+    if (tour && tour.isActive() && $isMobileViewerShown) {
       tour.cancel();
     }
     // Clear errors if the store report has changed
@@ -74,7 +61,7 @@
     onLoaded() {
       error = null;
       const { tourFlag, forceTourFlag } = $urlParams;
-      if (isMobileViewer === false) {
+      if ($isMobileViewerShown === false) {
         // tour = startTour({
         //   provenance: $provenance,
         //   start: tourFlag,
@@ -105,8 +92,11 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if hasContent}
-    <TopNavigation {noMetadata} {source} currentPage="overview" />
+  {#if $hasContent || error}
+    <TopNavigation
+      node={$primary}
+      noMetadata={$noMetadata}
+      currentPage="overview" />
   {/if}
   <div class="dragdrop">
     <FileDropper {isUploadMode} {isDragging} isError={!!error} />
@@ -117,7 +107,7 @@
         in:fade={{ duration: 150 }} />
     {/if}
   </div>
-  {#if hasContent}
+  {#if $hasContent || error}
     {#if $isLoading}
       <div class="w-full h-full bg-gray-75 flex items-center justify-center">
         <CircleLoader />
@@ -134,22 +124,14 @@
           <div class="w-full">
             <Alert severity="error">{$_(error)}</Alert>
           </div>
-        {:else if primary instanceof Claim}
-          <About
-            claim={primary}
-            title={primaryNode?.data?.name}
-            {isMobileViewer} />
-        {:else if primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
-          <About
-            claim={primary.claim}
-            title={primaryNode?.data?.name}
-            {isMobileViewer} />
+        {:else if $noMetadata}
+          <ContentCredentialsError isComparing={false} />
+        {:else if $primary}
+          <About node={$primary} isMobileViewer={$isMobileViewerShown} />
         {:else if $isLoading}
           <div class="flex items-center justify-center">
             <CircleLoader />
           </div>
-        {:else}
-          <AboutNoClaim {primary} errors={primaryNode?.data?.errors ?? []} />
         {/if}
       </div>
     </section>

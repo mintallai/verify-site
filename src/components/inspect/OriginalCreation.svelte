@@ -12,14 +12,16 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import Alert from '../Alert.svelte';
-  import { Claim, RecorderFormat } from '../../lib/sdk';
+  import type { HierarchyTreeNode } from '../../stores';
+  import { getManifest } from '../../lib/node';
 
   export let type: 'original' | 'secureCapture' = 'original';
-  export let claim: Claim;
+  export let node: HierarchyTreeNode;
+
+  $: product = getManifest(node)?.claimGenerator?.product ?? '';
 </script>
 
 <Alert severity="info">
@@ -29,11 +31,9 @@
     </div>
     <div>
       {#if type === 'original'}
-        {$_('comp.originalCreation.recorder', {
+        {$_('comp.originalCreation.generator', {
           values: {
-            application: claim.formatRecorder(
-              RecorderFormat.ProgramNameAndVersion,
-            ),
+            product,
           },
         })}
       {:else if type === 'secureCapture'}

@@ -12,21 +12,17 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import cssVars from 'svelte-css-vars';
   import CircleLoader from '../CircleLoader.svelte';
-  import { urlParams, provenance, isMobileViewerShown } from '../../stores';
+  import { provenance, isMobileViewerShown } from '../../stores';
   import FileDropper from '../FileDropper.svelte';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
   import { thumbnail, handleImgSrc } from '../../lib/thumbnail';
-  import type { Asset, Source } from '../../lib/sdk';
-  import debug from 'debug';
+  import type { HierarchyTreeNode } from '../../stores';
 
-  const dbg = debug('viewer');
-
-  export let asset: Asset | Source | undefined = undefined;
+  export let node: HierarchyTreeNode | null = null;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
   export let isError: boolean = false;
@@ -46,8 +42,7 @@
     width: side,
     height: side,
   };
-  $: urlSource = $urlParams.source;
-  $: isUploadMode = (!urlSource && !$provenance && !isLoading) || isDragging;
+  $: isUploadMode = (!$provenance && !isLoading) || isDragging;
 </script>
 
 <div class="viewer-wrapper">
@@ -64,7 +59,7 @@
         {#if !isLoading && !isError}
           <img
             data-test-id="viewer.thumbnail"
-            use:thumbnail={asset}
+            use:thumbnail={node}
             on:thumbnail={handleImgSrc}
             alt="Thumbnail"
             class="h-full w-full object-contain object-center" />

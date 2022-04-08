@@ -11,47 +11,47 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { Asset, Source, IThumbnail } from './sdk';
+import type { Thumbnail } from '../lib/sdk';
+import { getThumbnail } from '../lib/node';
+import type { HierarchyTreeNode } from '../stores';
 
-export interface IThumbnailEvent {
+export interface ThumbnailEvent {
   target: Node;
   url: string;
 }
 
-async function generateThumbnail(node, asset: Asset | Source) {
-  let result;
-  if (asset instanceof Asset) {
-    result = await asset.generateThumbnailUrl();
-  } else if (asset instanceof Source) {
-    result = await asset.generateUrl();
-  }
+async function generateThumbnail(node: Node, asset: Thumbnail) {
+  const result = await asset.getUrl();
+
   if (result) {
     node.dispatchEvent(
-      new CustomEvent<IThumbnailEvent>('thumbnail', {
-        detail: { target: node, url: result.url },
+      new CustomEvent<ThumbnailEvent>('thumbnail', {
+        detail: { target: node, url: result.data.url },
       }),
     );
   }
+
   return result;
 }
 
-export function thumbnail(node: Node, asset?: Asset | Source) {
-  let currAsset = asset;
-  let currThumbnail: IThumbnail;
+export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
+  let currTreeNode = treeNode;
+  let currThumbnail: ReturnType<Thumbnail['getUrl']>;
+  const asset = getThumbnail(treeNode);
   if (asset) {
     generateThumbnail(node, asset).then((result) => (currThumbnail = result));
   }
 
   return {
-    async update(asset?: Asset | Source) {
-      if (asset) {
-        const prevHash = await currAsset?.computeHash();
-        const currHash = await asset.computeHash();
+    async update(newTreeNode?: HierarchyTreeNode) {
+      if (newTreeNode) {
+        const prevHash = await getThumbnail(currTreeNode).hash?.();
+        const currHash = await getThumbnail(newTreeNode).hash?.();
         if (prevHash !== currHash) {
-          const result = await generateThumbnail(node, asset);
+          const result = await generateThumbnail(node, getThumbnail(newTreeNode));
           currThumbnail?.dispose?.();
           currThumbnail = result;
-          currAsset = asset;
+          currTreeNode = newTreeNode;
         }
       }
     },
@@ -62,7 +62,7 @@ export function thumbnail(node: Node, asset?: Asset | Source) {
   };
 }
 
-export function handleImgSrc(evt: CustomEvent<IThumbnailEvent>) {
+export function handleImgSrc(evt: CustomEvent<ThumbnailEvent>) {
   const { target, url } = evt.detail;
   (target as HTMLImageElement).src = url;
 }

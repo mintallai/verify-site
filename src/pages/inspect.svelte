@@ -12,12 +12,9 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
-  import equal from 'fast-deep-equal';
-  import { Claim, Ingredient, Source } from '../lib/sdk';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
@@ -33,24 +30,21 @@
   import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
   import { breakpoints } from '../lib/breakpoints';
   import {
-    urlParams,
-    provenance,
-    hierarchy,
-    primaryPath,
-    compareWithPath,
-    primaryAsset,
-    secondaryAsset,
+    compareWith,
+    hasContent,
     isBurgerMenuShown,
-    isMobileViewerShown,
+    isComparing,
     isLoading,
-    secondaryPath,
+    isMobileViewerShown,
+    noMetadata,
+    primary,
+    provenance,
+    secondary,
+    urlParams,
   } from '../stores';
-  // TODO: Reconcile `About` and `AboutNoClaim` components
-  import AboutNoClaim from '../components/overview/AboutNoClaim.svelte';
-  import { getIsIngredientWithClaim, getPath } from '../lib/claim';
 
   function handleClose() {
-    compareWithPath(null);
+    compareWith(null);
   }
 
   let isDragging = false;
@@ -64,7 +58,7 @@
     onLoaded() {
       error = null;
       const { tourFlag, forceTourFlag } = $urlParams;
-      if (isMobileViewer === false) {
+      if ($isMobileViewerShown === false) {
         // tour = startTour({
         //   provenance: $provenance,
         //   start: tourFlag,
@@ -76,27 +70,12 @@
       isDragging = newState;
     },
   };
+
   setLoaderContext(loaderParams);
 
-  $: source = $provenance?.source;
-  $: sourceParam = $urlParams.source;
-  $: hasContent = sourceParam || $provenance || $isLoading;
-  // TODO: Consolidate primary && primaryNode/secondary && secondaryNode
-  // after integration tests are set up
-  $: primary = $primaryAsset;
-  $: secondary = $secondaryAsset;
-  $: primaryNode = $hierarchy?.find((node) =>
-    equal(getPath(node), $primaryPath),
-  );
-  $: secondaryNode = $hierarchy?.find((node) =>
-    equal(getPath(node), $secondaryPath),
-  );
-  $: isComparing = !!(primary && secondary);
-  $: isMobileViewer = $isMobileViewerShown;
-  $: noMetadata = !$provenance?.exists;
   $: {
     // Cancel the tour if the overlay is showing
-    if (tour && tour.isActive() && isMobileViewer) {
+    if (tour && tour.isActive() && $isMobileViewerShown) {
       tour.cancel();
     }
     // Clear errors if the store report has changed
@@ -114,8 +93,8 @@
   use:loader={loaderParams}
   use:breakpoints
   class="theme-light"
-  class:no-content={!hasContent}
-  class:comparing={isComparing}>
+  class:no-content={!$hasContent}
+  class:comparing={$isComparing}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -123,20 +102,15 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if hasContent}
+  {#if $hasContent}
     <TopNavigation
-      {isComparing}
-      {noMetadata}
-      {source}
+      isComparing={$isComparing}
+      noMetadata={$noMetadata}
+      node={$primary}
       currentPage="inspect"
       on:back={handleClose} />
-    {#if error}
-      <section class="left-col" class:loading={$isLoading} />
-      <Viewer isError={!!error} />
-      <section data-test-id="inspect.right-col" class="right-col p-4">
-        <Alert severity="error">{$_(error)}</Alert>
-      </section>
-    {:else if $isLoading}
+    {#if $isLoading}
+      <!-- Asset/provenance data is loading -->
       <section class="left-col" class:loading={$isLoading}>
         <CircleLoader />
       </section>
@@ -147,120 +121,61 @@
         class:loading={$isLoading}>
         <CircleLoader />
       </section>
-    {:else if noMetadata}
+    {:else if $noMetadata}
       <section class="left-col">
-        <Navigation {source} />
+        <Navigation node={$primary} />
       </section>
-      <Viewer asset={$provenance?.source} {isDragging} />
+      <Viewer node={$primary} {isDragging} />
       <section data-test-id="inspect.right-col" class="right-col p-4">
-        <ContentCredentialsError {isComparing} />
+        <ContentCredentialsError isComparing={$isComparing} />
       </section>
-    {:else if primary}
+    {:else if $primary}
+      <!-- Asset has loaded, show manifest info -->
+      <!-- Left column -->
       <section class="left-col">
-        {#if !isComparing}
-          <Navigation claim={primary} />
-        {:else}
+        {#if $isComparing}
           <div class="w-full p-4">
-            {#if primary instanceof Claim}
-              <About
-                claim={primary}
-                title={primaryNode?.data?.name}
-                {isComparing}
-                {isMobileViewer} />
-            {:else if primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
-              <div class="wrapper">
-                <About
-                  claim={primary.claim}
-                  title={primaryNode?.data?.name}
-                  {isComparing} />
-              </div>
-            {:else if primary instanceof Ingredient}
-              <div class="wrapper">
-                <AboutNoClaim {primary} {isComparing} />
-              </div>
-            {:else if primary instanceof Source}
-              <div class="wrapper">
-                <AboutNoClaim
-                  {primary}
-                  errors={primaryNode?.data?.errors ?? []}
-                  {isComparing} />
-              </div>
-            {/if}
+            <About
+              node={$primary}
+              isComparing={$isComparing}
+              isMobileViewer={$isMobileViewerShown} />
           </div>
+        {:else}
+          <Navigation node={$primary} />
         {/if}
       </section>
-      {#if isComparing}
-        <Comparison {primary} {secondary} />
-      {:else if primary instanceof Source}
-        <Viewer asset={primary} {isDragging} />
+      <!-- Main area (viewer) -->
+      {#if $isComparing}
+        <Comparison primary={$primary} secondary={$secondary} />
       {:else}
-        <Viewer asset={primary?.asset} {isDragging} />
+        <Viewer node={$primary} {isDragging} />
       {/if}
+      <!-- Right column -->
       <section
         data-test-id="inspect.right-col"
         class="right-col p-4 pt-0 md:pt-4">
-        {#if !isComparing && primary instanceof Claim}
+        {#if $isComparing}
+          <About
+            node={$secondary}
+            isComparing={$isComparing}
+            isMobileViewer={$isMobileViewerShown} />
+        {:else}
           <div class="wrapper">
             <About
-              claim={primary}
-              title={primaryNode?.data?.name}
-              {isComparing}
-              {isMobileViewer} />
-            {#if isMobileViewer}
-              <CompareLatestButton claim={primary} {isComparing} />
+              node={$primary}
+              isComparing={$isComparing}
+              isMobileViewer={$isMobileViewerShown} />
+            {#if $isMobileViewerShown}
+              <CompareLatestButton node={$primary} isComparing={$isComparing} />
             {/if}
           </div>
-        {:else if !isComparing && primary instanceof Ingredient && getIsIngredientWithClaim(primary)}
-          <div class="wrapper">
-            <About
-              claim={primary.claim}
-              title={primaryNode?.data?.name}
-              {isComparing} />
-            {#if isMobileViewer}
-              <CompareLatestButton claim={null} {isComparing} />
-            {/if}
-          </div>
-        {:else if !isComparing && primary instanceof Ingredient}
-          <div class="wrapper">
-            <AboutNoClaim {primary} {isComparing} />
-            {#if isMobileViewer}
-              <CompareLatestButton claim={null} {isComparing} />
-            {/if}
-          </div>
-        {:else if !isComparing && primary instanceof Source}
-          <div class="wrapper">
-            <AboutNoClaim
-              {primary}
-              errors={primaryNode?.data?.errors ?? []}
-              {isComparing} />
-            {#if isMobileViewer}
-              <CompareLatestButton claim={null} {isComparing} />
-            {/if}
-          </div>
-        {:else if secondary instanceof Claim}
-          <About
-            claim={secondary}
-            title={secondaryNode?.data?.name}
-            {isComparing}
-            {isMobileViewer} />
-        {:else if secondary instanceof Ingredient && getIsIngredientWithClaim(secondary)}
-          <About
-            claim={secondary.claim}
-            title={secondaryNode?.data?.name}
-            {isComparing} />
-        {:else if secondary instanceof Ingredient}
-          <AboutNoClaim primary={secondary} {isComparing} />
-        {:else if secondary instanceof Source}
-          <AboutNoClaim
-            primary={secondary}
-            errors={secondaryNode?.data?.errors ?? []}
-            {isComparing} />
         {/if}
       </section>
     {/if}
   {:else}
+    <!-- An unrecoverable error occurred (e.g. cannot load asset) -->
     <section />
-    <Viewer {isDragging} />
+    <Viewer {isDragging} isError={!!error} />
     {#if error}
       <section class="right-col p-4">
         <Alert severity="error">{$_(error)}</Alert>

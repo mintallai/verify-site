@@ -11,7 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { BadgeType } from '../../src/lib/types';
+import { BadgeType } from '../../src/lib/node';
 
 export interface TestImageDescriptor {
   imagePath: string;

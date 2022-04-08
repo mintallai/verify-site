@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { onMount } from 'svelte';
   import cssVars from 'svelte-css-vars';
@@ -20,11 +19,11 @@
   import type { DragEvent } from '@interactjs/types';
   import ChevronLeft from '../../../../assets/svg/monochrome/chevron-left.svg';
   import ChevronRight from '../../../../assets/svg/monochrome/chevron-right.svg';
-  import { Source } from '../../../lib/sdk';
   import type { TippyProps } from '../../../lib/tippy';
   import { tippy } from '../../../lib/tippy';
   import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
-  import type { ViewableItem } from '../../../lib/types';
+  import { getFilename } from '../../../lib/node';
+  import type { HierarchyTreeNode } from '../../../stores';
 
   export let side = 0;
   let slider: HTMLDivElement;
@@ -37,8 +36,8 @@
     rightWidth: `${100 - sliderX * 100}%`,
   };
 
-  export let primary: ViewableItem;
-  export let secondary: ViewableItem;
+  export let primary: HierarchyTreeNode;
+  export let secondary: HierarchyTreeNode;
 
   let tippyOpts: Partial<TippyProps> = {
     placement: 'top',
@@ -89,40 +88,19 @@
     </div>
   </div>
   <div class="primary">
-    {#if primary instanceof Source}
-      <div
-        class="thumbnail"
-        use:tippy={{ content: primary.filename, ...tippyOpts }}>
-        <img use:thumbnail={primary} on:thumbnail={handleImgSrc} alt="" />
-      </div>
-    {:else}
-      <div
-        class="thumbnail"
-        use:tippy={{ content: primary.title, ...tippyOpts }}>
-        <img use:thumbnail={primary.asset} on:thumbnail={handleImgSrc} alt="" />
-      </div>
-    {/if}
+    <div
+      class="thumbnail"
+      use:tippy={{ content: getFilename(primary), ...tippyOpts }}>
+      <img use:thumbnail={primary} on:thumbnail={handleImgSrc} alt="" />
+    </div>
   </div>
-  {#if secondary instanceof Source}
-    <div
-      class="secondary"
-      use:tippy={{ content: secondary.filename, ...tippyOpts }}>
-      <div class="thumbnail">
-        <img use:thumbnail={secondary} on:thumbnail={handleImgSrc} alt="" />
-      </div>
+  <div
+    class="secondary"
+    use:tippy={{ content: getFilename(secondary), ...tippyOpts }}>
+    <div class="thumbnail">
+      <img use:thumbnail={secondary} on:thumbnail={handleImgSrc} alt="" />
     </div>
-  {:else}
-    <div
-      class="secondary"
-      use:tippy={{ content: secondary.title, ...tippyOpts }}>
-      <div class="thumbnail">
-        <img
-          use:thumbnail={secondary.asset}
-          on:thumbnail={handleImgSrc}
-          alt="" />
-      </div>
-    </div>
-  {/if}
+  </div>
 </div>
 
 <style lang="postcss">

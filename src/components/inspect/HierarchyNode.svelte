@@ -12,43 +12,39 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import equal from 'fast-deep-equal';
   import Thumbnail from '../Thumbnail.svelte';
   import ExpandHierarchy from '../../../assets/svg/monochrome/expand-hierarchy.svg';
   import {
     collapsedBranches,
     toggleBranch,
-    primaryPath,
-    compareWithPath,
-    navigateToPath,
+    primaryLoc,
+    compareWith,
+    navigateTo,
     isCompareSelectMode,
   } from '../../stores';
-  import { getBadgeProps, getPath } from '../../lib/claim';
-  import type { HierarchyNode } from 'd3-hierarchy';
-  import type { ITreeNode } from '../../lib/types';
+  import type { HierarchyTreeNode } from '../../stores';
+  import { getBadgeProps, getFilename } from '../../lib/node';
 
-  export let node: HierarchyNode<ITreeNode>;
+  export let node: HierarchyTreeNode;
 
   $: data = node.data;
-  $: asset = data.asset;
+  $: loc = data.loc;
   $: children = node.children ?? [];
   $: hasChildren = children.length > 0;
   $: isSingle = node.depth === 0 && !hasChildren;
-  $: path = getPath(node);
-  $: isExpanded = !$collapsedBranches.has(data.id);
-  $: isSelected = equal($primaryPath, path);
+  $: isExpanded = !$collapsedBranches.has(loc);
+  $: isSelected = $primaryLoc === loc;
   $: compare = $isCompareSelectMode && !isSelected;
-  $: badgeProps = getBadgeProps(data);
+  $: badgeProps = getBadgeProps(node);
 
   function handleClick() {
     if (!isSelected) {
       if (compare) {
-        compareWithPath(path);
+        compareWith(loc);
       } else {
-        navigateToPath(path);
+        navigateTo(loc);
       }
     }
   }
@@ -58,14 +54,14 @@
   <div
     class="item"
     class:single={isSingle}
-    data-node-idx={data.locatorString}
-    data-item-id={data.id.toString()}>
+    data-node-idx={data.loc}
+    data-item-id={data.loc}>
     {#if !isSingle}
       <div class="callout" class:compare />
       <div
         class="flex items-center justify-center h-full"
         class:cursor-pointer={hasChildren}
-        on:click={() => hasChildren && toggleBranch(data.id)}>
+        on:click={() => hasChildren && toggleBranch(data.loc)}>
         {#if hasChildren}
           <div class="arrow" class:expanded={isExpanded}>
             <ExpandHierarchy width="11" height="6" class="text-black" />
@@ -77,11 +73,11 @@
       class="w-12 h-12"
       class:cursor-pointer={!isSelected}
       on:click={handleClick}>
-      <Thumbnail {asset} {isSelected} {...badgeProps} />
+      <Thumbnail {node} {isSelected} {...badgeProps} />
     </div>
     <div class="pl-3" class:cursor-pointer={!isSelected} on:click={handleClick}>
       <h6>{$_('comp.asset.fileName')}</h6>
-      <div>{data.name}</div>
+      <div>{getFilename(node)}</div>
     </div>
   </div>
   <div class="pl-6 space-y-5" class:hidden={!isExpanded}>

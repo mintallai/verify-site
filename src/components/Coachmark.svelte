@@ -13,6 +13,6 @@
   from Adobe.
 -->
 
-<sp-theme color="lightest" scale="large">
+<sp-theme color="lightest" scale="medium">
   <sp-coachmark />
 </sp-theme>

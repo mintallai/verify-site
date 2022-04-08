@@ -58,8 +58,8 @@ export interface IngestPayload {
   'event.offline': boolean;
   'event.referrer': string;
   'event.subcategory': string;
-  'event.subtype': 'page' | 'verify' | 'learn' | 'faq';
-  'event.type': 'render' | 'success' | 'error' | 'click';
+  'event.subtype': 'page' | 'verify' | 'legacy_verify' | 'learn' | 'faq';
+  'event.type': 'render' | 'success' | 'legacy_cc' | 'error' | 'click';
   'event.user_agent': string;
   'event.url': string;
   'event.value': number | string;

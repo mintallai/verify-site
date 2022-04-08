@@ -11,18 +11,57 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { ContentAuth } from '@contentauth/sdk';
+import { createC2pa, resolvers } from 'c2pa';
 
-let sdk: ContentAuth;
+export type Sdk = Awaited<ReturnType<typeof createC2pa>>;
+export type SdkResult = Awaited<ReturnType<Sdk['read']>>;
+export type Manifest = SdkResult['manifestStore']['activeManifest'];
+export type Ingredient = Manifest['ingredients'][number];
+export type Source = SdkResult['source'];
+
+let sdk: Sdk;
+
+declare module 'c2pa' {
+  interface ManifestAssertions {
+    'adobe.crypto.assertions': {
+      ethereum?: string[];
+      solana?: string[];
+    };
+  }
+}
+
+function isBetaResolver(manifest) {
+  return !!manifest.assertions.get('adobe.beta')?.version;
+}
+
+function websiteResolver(manifest) {
+  const site = manifest.assertions.get('stds.schema-org.CreativeWork')?.url;
+  if (site) {
+    const url = new URL(site);
+    if (url.protocol === 'https:' && url.hostname === 'stock.adobe.com') {
+      return site;
+    }
+  }
+}
+
+function web3Resolver(manifest) {
+  const cryptoEntries = manifest.assertions.get('adobe.crypto.addresses') ?? {};
+  return (Object.entries(cryptoEntries) as [string, string[]][]).filter(
+    ([type, [address]]) => address && ['solana', 'ethereum'].includes(type),
+  );
+}
 
 export async function getSdk() {
   if (!sdk) {
     try {
-      sdk = new ContentAuth({
+      sdk = await createC2pa({
         wasmSrc: 'sdk/toolkit_bg.wasm',
         workerSrc: 'sdk/cai-sdk.worker.min.js',
-        poolOptions: {
-          maxWorkers: Math.min(navigator.hardwareConcurrency ?? 4, 4),
+        manifestResolvers: {
+          ...resolvers.editsAndActivityResolver,
+          isBeta: isBetaResolver,
+          website: websiteResolver,
+          web3: web3Resolver,
         },
       });
     } catch (err) {
@@ -34,4 +73,4 @@ export async function getSdk() {
   return sdk;
 }
 
-export * from '@contentauth/sdk';
+export * from 'c2pa';

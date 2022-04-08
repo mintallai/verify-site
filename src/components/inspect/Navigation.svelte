@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import { _ } from 'svelte-i18n';
@@ -20,11 +19,9 @@
   import OriginalCreation from './OriginalCreation.svelte';
   import HierarchyNode from './HierarchyNode.svelte';
   import { hierarchy, isCompareSelectMode } from '../../stores';
-  import type { ViewableItem } from '../../lib/types';
-  import { Claim, Source } from '../../lib/sdk';
+  import type { HierarchyTreeNode } from '../../stores';
 
-  export let claim: ViewableItem | null = null;
-  export let source: Source | null = null;
+  export let node: HierarchyTreeNode;
   let container: any;
   let secureCapture: false;
 
@@ -56,11 +53,11 @@
       {/if}
     </div>
   </div>
-  {#if secureCapture && claim instanceof Claim}
+  <!-- {#if secureCapture}
     <div class="mx-4">
       <OriginalCreation type="secureCapture" {claim} />
     </div>
-  {/if}
+  {/if} -->
   {#if $hierarchy?.children}
     <div
       class="sticky nav-width bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent">

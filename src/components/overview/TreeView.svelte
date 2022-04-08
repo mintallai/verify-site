@@ -12,24 +12,25 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { onMount } from 'svelte';
-  import equal from 'fast-deep-equal';
   import partial from 'lodash/partial';
   import {
-    primaryPath,
+    primaryLoc,
     hierarchy,
-    navigateToPath,
+    navigateTo,
     overviewTransform,
   } from '../../stores';
-  import { getPath, isInPath } from '../../lib/claim';
+  import { isAncestorOf } from '../../lib/node';
   import TreeNode from './TreeNode.svelte';
   import TreeLink from './TreeLink.svelte';
-  import type { ITreeNode } from '../../lib/types';
   import { select as d3Select } from 'd3-selection';
   import { zoom as d3Zoom, zoomIdentity, ZoomTransform } from 'd3-zoom';
   import { tree as D3Tree, HierarchyPointNode } from 'd3-hierarchy';
+  import type {
+    TreeNode as TreeNodeType,
+    HierarchyTreeNode,
+  } from '../../stores';
   import ZoomIn from '../../../assets/svg/monochrome/zoom-in.svg';
   import ZoomOut from '../../../assets/svg/monochrome/zoom-out.svg';
 
@@ -44,7 +45,7 @@
   let svgSel: any;
   let bounds: SVGGraphicsElement;
   let boundsTransform: ZoomTransform;
-  let tree: HierarchyPointNode<ITreeNode>;
+  let tree: HierarchyPointNode<TreeNodeType>;
   let zoom = d3Zoom().on('zoom', (evt) => {
     if (!boundsTransform && $overviewTransform) {
       boundsTransform = $overviewTransform;
@@ -64,11 +65,10 @@
     return 1;
   }
 
-  function handleNodeClick(node) {
-    const path = getPath(node);
-    const selected = equal($primaryPath, path);
+  function handleNodeClick(node: HierarchyTreeNode) {
+    const selected = $primaryLoc === node.data.loc;
     if (!selected) {
-      navigateToPath(path);
+      navigateTo(node.data.loc);
     }
   }
 
@@ -106,7 +106,7 @@
   $: {
     // Once the hierarchy is ready, create the tree
     if ($hierarchy) {
-      const d3Tree = D3Tree<ITreeNode>();
+      const d3Tree = D3Tree<TreeNodeType>();
       d3Tree.size([width, height]);
       d3Tree.nodeSize([nodeWidth + vPad, nodeHeight + hPad]);
       d3Tree.separation((a, b) => (a.parent == b.parent ? 1 : 1));
@@ -124,8 +124,8 @@
     .map((link, idx) => {
       const { source, target } = link;
       const ancestor =
-        isInPath($primaryPath, getPath(source)) &&
-        isInPath($primaryPath, getPath(target));
+        isAncestorOf($primaryLoc, source.data.loc) &&
+        isAncestorOf($primaryLoc, target.data.loc);
       return { link, idx, ancestor };
     })
     // Make sure the highlighted (ancestor) paths appear on top

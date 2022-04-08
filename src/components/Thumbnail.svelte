@@ -12,26 +12,25 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { Asset, Source } from '../lib/sdk';
-  import { IBadgeProps } from '../lib/types';
-  import { thumbnail, handleImgSrc, IThumbnailEvent } from '../lib/thumbnail';
+  import { thumbnail, ThumbnailEvent } from '../lib/thumbnail';
+  import type { BadgeProps } from '../lib/node';
+  import type { HierarchyTreeNode } from '../stores';
 
-  export let asset: Asset | Source;
+  export let node: HierarchyTreeNode;
   export let isSelected = false;
-  export let badgeType: IBadgeProps['badgeType'] = 'none';
-  export let badgeHelpText: IBadgeProps['badgeHelpText'] = null;
+  export let badgeType: BadgeProps['badgeType'] = 'none';
+  export let badgeHelpText: BadgeProps['badgeHelpText'] = null;
   let src = '';
 
-  function handleThumbnail(evt: CustomEvent<IThumbnailEvent>) {
+  function handleThumbnail(evt: CustomEvent<ThumbnailEvent>) {
     src = evt.detail.url;
   }
 </script>
 
 <cai-thumbnail
-  use:thumbnail={asset}
+  use:thumbnail={node}
   on:thumbnail={handleThumbnail}
   {src}
   selected={isSelected}
