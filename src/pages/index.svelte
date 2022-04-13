@@ -1,18 +1,3 @@
-<!--
-  ADOBE CONFIDENTIAL
-  Copyright 2020 Adobe
-  All Rights Reserved.
-
-  NOTICE: All information contained herein is, and remains
-  the property of Adobe and its suppliers, if any. The intellectual
-  and technical concepts contained herein are proprietary to Adobe
-  and its suppliers and are protected by all applicable intellectual
-  property laws, including trade secret and copyright laws.
-  Dissemination of this information or reproduction of this material
-  is strictly forbidden unless prior written permission is obtained
-  from Adobe.
--->
-
 <!-- routify:options reset=true -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
@@ -21,9 +6,9 @@
   import Arrow from '../../assets/svg/monochrome/arrow-back.svg';
   import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
   import hero from '../../assets/png/hero-img.png';
-  import section1 from '../../assets/png/section1.jpg';
-  import section2 from '../../assets/png/section2.png';
-  import section3 from '../../assets/png/section3.png';
+  import section1 from '../../assets/png/collage.jpg';
+  import section2 from '../../assets/png/arctic-pyramids.jpg';
+  import section3 from '../../assets/png/brooklyn-park.jpg';
   import { breakpoints } from '../lib/breakpoints';
 
   function upload(evt: Event) {
@@ -44,6 +29,21 @@
     return url.toString();
   }
 </script>
+
+<!--
+  ADOBE CONFIDENTIAL
+  Copyright 2020 Adobe
+  All Rights Reserved.
+
+  NOTICE: All information contained herein is, and remains
+  the property of Adobe and its suppliers, if any. The intellectual
+  and technical concepts contained herein are proprietary to Adobe
+  and its suppliers and are protected by all applicable intellectual
+  property laws, including trade secret and copyright laws.
+  Dissemination of this information or reproduction of this material
+  is strictly forbidden unless prior written permission is obtained
+  from Adobe.
+-->
 
 <div use:breakpoints class="theme-light overflow-show">
   <Header />
