@@ -31,6 +31,7 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
+const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
 export const ROOT_LOC = '0';
 
 /**
@@ -238,13 +239,13 @@ export type TreeNode = ManifestTreeNode | IngredientTreeNode | SourceTreeNode;
 export type HierarchyTreeNode = HierarchyNode<TreeNode>;
 
 function hasOtgpStatus(validationStatus: any[]) {
-  return validationStatus.some(
-    (err) => err.code === 'assertion.dataHash.mismatch',
-  );
+  return validationStatus.some((err) => err.code === OTGP_ERROR_CODE);
 }
 
 function hasErrorStatus(validationStatus: any[]) {
-  return validationStatus.some((err) => err.code === 'claimSignature.mismatch');
+  return (
+    validationStatus.filter((err) => err.code !== OTGP_ERROR_CODE).length > 0
+  );
 }
 
 function parseProvenance(
@@ -304,11 +305,7 @@ function parseProvenance(
 export const validationErrors = derived<[typeof provenance], any[]>(
   [provenance],
   ([$provenance]) => {
-    return (
-      $provenance?.manifestStore?.validationEntries
-        ?.filter((entry) => entry.isError)
-        .map((entry) => entry.status) ?? []
-    );
+    return $provenance?.manifestStore.activeManifest.errors ?? [];
   },
 );
 
@@ -319,16 +316,13 @@ export const hierarchy = derived<
   if ($provenance) {
     const { source, manifestStore } = $provenance;
     const activeManifest = manifestStore?.activeManifest;
-    const errors = $validationErrors.filter((error) =>
-      error.url.includes(activeManifest.label),
-    );
     // We have a normal manifest structure and no top-level errors
-    if (activeManifest && !errors.length) {
+    if (activeManifest && !$validationErrors.length) {
       return d3Hierarchy(parseProvenance(activeManifest, $validationErrors));
     }
     // We have top-level errors or no metadata on this image
     // Show the source as the root node and manifests underneath
-    if (source && (errors.length || !activeManifest)) {
+    if (source && ($validationErrors.length || !activeManifest)) {
       return d3Hierarchy({
         loc: ROOT_LOC,
         type: 'source',
@@ -336,8 +330,8 @@ export const hierarchy = derived<
         title: source.metadata.filename,
         thumbnail: source.thumbnail,
         format: source.type,
-        isOtgp: hasOtgpStatus(errors),
-        hasError: hasErrorStatus(errors),
+        isOtgp: hasOtgpStatus($validationErrors),
+        hasError: hasErrorStatus($validationErrors),
         children: activeManifest
           ? [
               parseProvenance(
