@@ -248,25 +248,19 @@ function hasErrorStatus(validationStatus: any[]) {
   );
 }
 
-function parseProvenance(
-  toolkitNode: any,
-  validationErrors: any[],
-  loc = ROOT_LOC,
-): TreeNode {
+function parseProvenance(toolkitNode: any, loc = ROOT_LOC): TreeNode {
   const isIngredient = toolkitNode.hasOwnProperty('manifest');
   const ingredients =
     toolkitNode.manifest?.ingredients ?? toolkitNode.ingredients;
   let children = ingredients?.map((ingredient, idx) =>
-    parseProvenance(ingredient, validationErrors, `${loc}.${idx}`),
+    parseProvenance(ingredient, `${loc}.${idx}`),
   );
   if (isIngredient) {
     const manifest = toolkitNode.manifest;
     const statuses = toolkitNode.data.ingredient.validationStatus ?? [];
     const isOtgp = hasOtgpStatus(statuses);
     if (isOtgp) {
-      children = manifest
-        ? [parseProvenance(manifest, validationErrors, `${loc}.0`)]
-        : [];
+      children = manifest ? [parseProvenance(manifest, `${loc}.0`)] : [];
     }
     return {
       loc,
@@ -283,9 +277,7 @@ function parseProvenance(
   } else {
     // ID for root node (active manifest) should be `0`
     // unless there is a top-level error, where it is `0.0` (since `source` is `0`)
-    const errors = validationErrors.filter((error) =>
-      error.url.includes(toolkitNode.label),
-    );
+    const errors = toolkitNode.errors;
     return {
       loc,
       type: 'manifest',
@@ -295,9 +287,8 @@ function parseProvenance(
       node: toolkitNode,
       errors,
       children,
-      // These will be handled in the `hierarchy` function, since we have to show the source image
-      isOtgp: false,
-      hasError: false,
+      isOtgp: hasOtgpStatus(errors),
+      hasError: hasErrorStatus(errors),
     };
   }
 }
@@ -317,12 +308,12 @@ export const hierarchy = derived<
     const { source, manifestStore } = $provenance;
     const activeManifest = manifestStore?.activeManifest;
     // We have a normal manifest structure and no top-level errors
-    if (activeManifest && !$validationErrors.length) {
-      return d3Hierarchy(parseProvenance(activeManifest, $validationErrors));
+    if (activeManifest) {
+      return d3Hierarchy(parseProvenance(activeManifest));
     }
     // We have top-level errors or no metadata on this image
     // Show the source as the root node and manifests underneath
-    if (source && ($validationErrors.length || !activeManifest)) {
+    if (source && !activeManifest) {
       return d3Hierarchy({
         loc: ROOT_LOC,
         type: 'source',
@@ -330,17 +321,9 @@ export const hierarchy = derived<
         title: source.metadata.filename,
         thumbnail: source.thumbnail,
         format: source.type,
-        isOtgp: hasOtgpStatus($validationErrors),
-        hasError: hasErrorStatus($validationErrors),
-        children: activeManifest
-          ? [
-              parseProvenance(
-                activeManifest,
-                $validationErrors,
-                `${ROOT_LOC}.0`,
-              ),
-            ]
-          : [],
+        isOtgp: false,
+        hasError: false,
+        children: [],
       } as SourceTreeNode);
     }
   }
