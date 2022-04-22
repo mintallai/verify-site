@@ -251,7 +251,7 @@ function hasOtgpStatus(validationStatus: any[]) {
 
 /**
  * Determines if a validation status list contains an error (anything not in the Rust SDK's
- * `C2PA_STATUS_VALID_SET` list _and_ not and OTGP status) and therefore, should present with a red badge.
+ * `C2PA_STATUS_VALID_SET` list _and_ not an OTGP status) and therefore, should present with a red badge.
  *
  * @param validationStatus
  * @returns `true` if we find an error
