@@ -238,17 +238,52 @@ export type TreeNode = ManifestTreeNode | IngredientTreeNode | SourceTreeNode;
 
 export type HierarchyTreeNode = HierarchyNode<TreeNode>;
 
+/**
+ * Determines if a validation status list contains an OTGP (`assertion.dataHash.mismatch`)
+ * status, and therefore, should present with an orange badge.
+ *
+ * @param validationStatus
+ * @returns `true` if we find an OTGP status
+ */
 function hasOtgpStatus(validationStatus: any[]) {
   return validationStatus.some((err) => err.code === OTGP_ERROR_CODE);
 }
 
+/**
+ * Determines if a validation status list contains an error (anything not in the Rust SDK's
+ * `C2PA_STATUS_VALID_SET` list _and_ not and OTGP status) and therefore, should present with a red badge.
+ *
+ * @param validationStatus
+ * @returns `true` if we find an error
+ */
 function hasErrorStatus(validationStatus: any[]) {
   return (
     validationStatus.filter((err) => err.code !== OTGP_ERROR_CODE).length > 0
   );
 }
 
+/**
+ * This function takes the provenance structure of the toolkit and returns a
+ * TreeNode that is used in our D3 hierarchy tree that serves as our main
+ * reference for the data we show on the site, since this data is hierarchical,
+ * which is apparent both in the overview page as well as the inspect page navigation.
+ *
+ * In most cases, the tree is set up like this:
+ * - If we have provenance data _without_ a top-level OTGP, the root node (`0`)
+ *   corresponds with the active manifest, and all leaf nodes correspond with
+ *   an ingredient.
+ * - If we have provenance data _with_ a top-level OTGP, the root node (`0`)
+ *   is the source asset (so we can show the current state), its child (`0.0`)
+ *   is the active manifest, and all leaf nodes correspond with an ingredient.
+ * - If we do not have provenance data, the root node (`0`) is the source asset
+ *   so the user can see what they dragged in, and is the only item in the tree.
+ *
+ * @param toolkitNode The provenance entity from the toolkit we are parsing
+ * @param loc The locator string of the node
+ * @returns TreeNode
+ */
 function parseProvenance(toolkitNode: any, loc = ROOT_LOC): TreeNode {
+  // The active manifest should be at the root location (0)
   const isActiveManifest = loc === ROOT_LOC;
   const isIngredient = toolkitNode.hasOwnProperty('manifest');
   const ingredients =
@@ -276,8 +311,10 @@ function parseProvenance(toolkitNode: any, loc = ROOT_LOC): TreeNode {
       children,
     };
   } else {
-    // ID for root node (active manifest) should be `0`
-    // unless there is a top-level error, where it is `0.0` (since `source` is `0`)
+    // If this is the active manifest (in a non-top-level OTGP scenario)
+    // we show the errors from the active manifest here. However, if this
+    // is a top-level OTGP, we do not show errors since these are shown
+    // on the source (root) asset (and this would be the first child).
     const errors = isActiveManifest ? toolkitNode.errors ?? [] : [];
     return {
       loc,
@@ -310,12 +347,21 @@ export const hierarchy = derived<
     const activeManifest = manifestStore?.activeManifest;
     const isPureOtgp =
       hasOtgpStatus($validationErrors) && !hasErrorStatus($validationErrors);
-    // We have a normal manifest structure and no top-level errors
+    // We have C2PA provenance data and no top-level OTGP
+    // This means we should make the hierarchy map directly to the provenance data structure
     if (activeManifest && !isPureOtgp) {
       return d3Hierarchy(parseProvenance(activeManifest));
     }
-    // We have top-level errors or no metadata on this image
-    // Show the source as the root node and manifests underneath
+    /**
+     * If we do not have an active manifest OR top-level OTGP, we do one of two things:
+     *
+     * 1. If we have OTGP at the top level, this means that the current state of the image
+     *    does not necessairly match the thumbnail of the active manifest. Because
+     *    of this, we need to display the source (i.e. the current state of the asset)
+     *    as the parent of the provenance claim in our hierarchy, together with an OTGP badge.
+     * 2. If we don't have provenance data for this asset, we only show the source and
+     *    have no children underneath.
+     */
     if (source && (isPureOtgp || !activeManifest)) {
       return d3Hierarchy({
         loc: ROOT_LOC,
