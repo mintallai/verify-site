@@ -305,7 +305,7 @@ function parseProvenance(
 export const validationErrors = derived<[typeof provenance], any[]>(
   [provenance],
   ([$provenance]) => {
-    return $provenance?.manifestStore.activeManifest.errors ?? [];
+    return $provenance?.manifestStore?.activeManifest.errors ?? [];
   },
 );
 
@@ -393,12 +393,12 @@ export const isComparing = derived<[typeof primary, typeof secondary], boolean>(
   },
 );
 
-export const noMetadata = derived<[typeof provenance], boolean>(
-  [provenance],
-  ([$provenance]) => {
-    return !$provenance?.manifestStore?.activeManifest;
-  },
-);
+export const noMetadata = derived<
+  [typeof provenance, typeof isLoading],
+  boolean
+>([provenance, isLoading], ([$provenance, $isLoading]) => {
+  return !$isLoading && !$provenance?.manifestStore?.activeManifest;
+});
 
 /**
  * Convenience function to navigate to the root claim
