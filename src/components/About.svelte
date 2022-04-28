@@ -17,6 +17,7 @@
   import cssVars from 'svelte-css-vars';
   import ManifestDetails from './ManifestDetails.svelte';
   import Thumbnail from './Thumbnail.svelte';
+  import AboutSection from './inspect/AboutSection.svelte';
   import { getBadgeProps, getFilename } from '../lib/node';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
@@ -40,28 +41,23 @@
 <div data-test-id="about" class="w-full flex justify-center">
   <div class="about-info w-full max-w-xs">
     <div class="hidden lg:block">
-      <dl class="attributes">
-        <dt>
-          <div>
-            {$_('comp.about.contentCredentials.header')}
-          </div>
-          <cai-tooltip placement="left" class="theme-spectrum">
-            <div slot="content" class="text-gray-900" style="width: 200px;">
-              {$_('comp.about.contentCredentials.helpText')}
+      <dl>
+        <AboutSection
+          title={$_('comp.about.contentCredentials.header')}
+          helper={$_('comp.about.contentCredentials.helpText')}
+          collapsible={false}>
+          <dd
+            class="flex space-x-2 items-center mt-1"
+            data-test-id="about.file-name">
+            <div class="w-12 h-12">
+              <Thumbnail {node} {...badgeProps} />
             </div>
-          </cai-tooltip>
-        </dt>
-        <dd
-          class="flex space-x-2 items-center mt-1"
-          data-test-id="about.file-name">
-          <div class="w-12 h-12">
-            <Thumbnail {node} {...badgeProps} />
-          </div>
-          <div>
-            <h6>{$_('comp.about.fileName')}</h6>
-            <div>{filename}</div>
-          </div>
-        </dd>
+            <div>
+              <h6>{$_('comp.about.fileName')}</h6>
+              <div>{filename}</div>
+            </div>
+          </dd>
+        </AboutSection>
       </dl>
     </div>
     <div bind:clientWidth={colWidth} class="lg:hidden w-full overflow-x-hidden">

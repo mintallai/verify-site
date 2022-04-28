@@ -1,3 +1,17 @@
+<!--
+  ADOBE CONFIDENTIAL
+  Copyright 2022 Adobe
+  All Rights Reserved.
+
+  NOTICE: All information contained herein is, and remains
+  the property of Adobe and its suppliers, if any. The intellectual
+  and technical concepts contained herein are proprietary to Adobe
+  and its suppliers and are protected by all applicable intellectual
+  property laws, including trade secret and copyright laws.
+  Dissemination of this information or reproduction of this material
+  is strictly forbidden unless prior written permission is obtained
+  from Adobe.
+-->
 <script>
   // based on suggestions from:
   // Inclusive Components by Heydon Pickering https://inclusive-components.design/collapsible-sections/
@@ -5,7 +19,6 @@
   export let helper;
   import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
   let expanded = true;
-
   function expand() {
     expanded = !expanded;
   }
