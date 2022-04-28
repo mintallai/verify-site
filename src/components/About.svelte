@@ -60,7 +60,9 @@
             </div>
           </dd>
           {#if isOriginal}
-            <OriginalCreation type="original" {node} />
+            <div class="mt-4">
+              <OriginalCreation type="original" {node} />
+            </div>
           {/if}
         </AboutSection>
       </dl>
