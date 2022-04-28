@@ -19,13 +19,13 @@
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import Thumbnail from './Thumbnail.svelte';
   import AboutSection from './inspect/AboutSection.svelte';
-  import { getBadgeProps, getFilename } from '../lib/node';
+  import { getBadgeProps, getFilename, getIsOriginal } from '../lib/node';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
   import type { HierarchyTreeNode } from '../stores';
   import debug from 'debug';
-  import { getIsOriginal } from '../lib/node';
+
   const dbg = debug('about');
 
   export let node: HierarchyTreeNode;
