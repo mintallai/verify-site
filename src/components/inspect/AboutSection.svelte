@@ -12,11 +12,11 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-<script>
-  export let collapsible;
-  export let title;
-  export let helper;
+<script lang="ts">
   import CollapsibleSection from '../CollapsibleSection.svelte';
+  export let collapsible = true; // `boolean` is inferred
+  export let title: string;
+  export let helper: string;
 </script>
 
 {#if collapsible}

@@ -54,8 +54,7 @@
   <dl>
     <AboutSection
       title={$_('comp.about.signedBy')}
-      helper={$_('comp.about.signedBy.helpText')}
-      collapsible="true">
+      helper={$_('comp.about.signedBy.helpText')}>
       <dd class="flex space-x-2 !mb-0 " data-test-id="about.signed-by">
         <div class="relative top-0.5">
           <ProviderIcon provider={issuer} />
@@ -81,8 +80,7 @@
   <dl data-test-id="about.produced-with">
     <AboutSection
       title={$_('comp.about.producedWith')}
-      helper={$_('comp.about.producedWith.helpText')}
-      collapsible="true">
+      helper={$_('comp.about.producedWith.helpText')}>
       <dd class="flex">
         <div class="relative top-0.5">
           <ProviderIcon provider={generator} class="mr-2" />
@@ -99,8 +97,7 @@
 </div>
 <AboutSection
   title={$_('comp.about.editsActivity.header')}
-  helper={$_('comp.about.editsActivity.helpText')}
-  collapsible="true">
+  helper={$_('comp.about.editsActivity.helpText')}>
   {#await manifest.editsAndActivity() then categories}
     {#if categories}
       <div>
@@ -133,8 +130,7 @@
 {#if !isOriginal}
   <AboutSection
     title={$_('comp.about.assets.header')}
-    helper={$_('comp.about.assets.helpText')}
-    collapsible="true">
+    helper={$_('comp.about.assets.helpText')}>
     <dl data-test-id="about.assets">
       <dd class="pt-2 pb-1">
         {#if node.children.length}
@@ -159,8 +155,7 @@
   <div>
     <AboutSection
       title={$_('comp.about.producedBy')}
-      helper={$_('comp.about.producedBy.helpText')}
-      collapsible="true">
+      helper={$_('comp.about.producedBy.helpText')}>
       <dl data-test-id="about.produced-by">
         <dd>{producer.name}</dd>
       </dl>
@@ -171,8 +166,7 @@
   <div>
     <AboutSection
       title={$_('comp.about.website')}
-      helper={$_('comp.about.website.helpText')}
-      collapsible="true">
+      helper={$_('comp.about.website.helpText')}>
       <dl>
         <dd class="truncate">
           <a href={website} target="_blank" class="link">{website}</a>
@@ -187,8 +181,7 @@
       <dl>
         <AboutSection
           title={$_('comp.about.social')}
-          helper={$_('comp.about.social.helpText')}
-          collapsible="true">
+          helper={$_('comp.about.social.helpText')}>
           <dd class="social-accounts">
             {#each socialAccounts as account (account['@id'])}
               <div class="relative top-0.5">
@@ -208,8 +201,7 @@
       <dl>
         <AboutSection
           title={$_('comp.about.web3')}
-          helper={$_('comp.about.web3.helpText')}
-          collapsible="true">
+          helper={$_('comp.about.web3.helpText')}>
           {#each web3Addresses as [type, [address]]}
             <Web3Address {type} {address} />
           {/each}

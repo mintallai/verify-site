@@ -12,23 +12,20 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-<script>
+<script lang="ts">
   // based on suggestions from:
   // Inclusive Components by Heydon Pickering https://inclusive-components.design/collapsible-sections/
-  export let headerText;
-  export let helper;
   import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
+  export let headerText: string;
+  export let helper: string;
   let expanded = true;
-  function expand() {
-    expanded = !expanded;
-  }
 </script>
 
 <div>
   <h3 class="flex justify-between">
     <button
       class="flex font-bold text-75 uppercase text-gray-700"
-      on:click={() => expand()}>
+      on:click={() => (expanded = !expanded)}>
       <DownArrow
         class="h-4 w-4 text-gray-500 mr-1 transform {expanded
           ? 'rotate-0'
@@ -43,8 +40,6 @@
   </h3>
 
   <div hidden={!expanded} class="relative top-1.5">
-    <div>
-      <slot />
-    </div>
+    <slot />
   </div>
 </div>
