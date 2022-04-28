@@ -62,19 +62,18 @@
         </div>
         <div>
           {issuer ?? ''}
+          <div data-test-id="about.signed-on">
+            {#if sigDate && sigDate.toString() !== 'Invalid Date'}
+              <div class="text-gray-700 -top-1.5">
+                {$date(sigDate, { format: 'long' })}{' at '}
+                {$time(sigDate, { format: 'short' })}
+              </div>
+            {:else}
+              {$_('comp.about.signedOn.notAvailable')}
+            {/if}
+          </div>
         </div>
       </dd>
-
-      <div data-test-id="about.signed-on">
-        {#if sigDate && sigDate.toString() !== 'Invalid Date'}
-          <div class="text-gray-700 -top-1.5 ml-6 ">
-            {$date(sigDate, { format: 'long' })}{' at '}
-            {$time(sigDate, { format: 'short' })}
-          </div>
-        {:else}
-          {$_('comp.about.signedOn.notAvailable')}
-        {/if}
-      </div>
     </AboutSection>
   </dl>
 </div>
@@ -130,34 +129,32 @@
     {/if}
   {/await}
 </AboutSection>
-<div>
-  {#if isOriginal}
-    <OriginalCreation type="original" {node} />
-  {:else}
-    <AboutSection
-      title={$_('comp.about.assets.header')}
-      helper={$_('comp.about.assets.helpText')}
-      collapsible="true">
-      <dl data-test-id="about.assets">
-        <dd class="pt-2 pb-1">
-          {#if node.children.length}
-            <div class="assets-used">
-              {#each node.children as childNode}
-                <div
-                  class="w-12 h-12 cursor-pointer"
-                  on:click={() => navigateToChild(childNode.data.loc)}>
-                  <Thumbnail node={childNode} {...getBadgeProps(childNode)} />
-                </div>
-              {/each}
-            </div>
-          {:else}
-            {$_('comp.about.none')}
-          {/if}
-        </dd>
-      </dl>
-    </AboutSection>
-  {/if}
-</div>
+
+{#if !isOriginal}
+  <AboutSection
+    title={$_('comp.about.assets.header')}
+    helper={$_('comp.about.assets.helpText')}
+    collapsible="true">
+    <dl data-test-id="about.assets">
+      <dd class="pt-2 pb-1">
+        {#if node.children.length}
+          <div class="assets-used">
+            {#each node.children as childNode}
+              <div
+                class="w-12 h-12 cursor-pointer"
+                on:click={() => navigateToChild(childNode.data.loc)}>
+                <Thumbnail node={childNode} {...getBadgeProps(childNode)} />
+              </div>
+            {/each}
+          </div>
+        {:else}
+          {$_('comp.about.none')}
+        {/if}
+      </dd>
+    </dl>
+  </AboutSection>
+{/if}
+
 {#if producer}
   <div>
     <AboutSection
