@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import AdobeLogo from '../../../assets/svg/color/logos/adobe.svg';
   import AdobeStockLogo from '../../../assets/svg/color/logos/adobe-stock.svg';
@@ -33,6 +32,8 @@
     { pattern: /behance\.net/i, icon: BehanceLogo },
     { pattern: /facebook\.com/i, icon: FacebookLogo },
     { pattern: /instagram\.com/i, icon: InstagramLogo },
+    // Behance staging
+    { pattern: /net\.s2stagehance\.com/i, icon: BehanceLogo },
     { pattern: /truepic/i, icon: TruepicLogo },
     { pattern: /twitter\.com/i, icon: TwitterLogo },
   ];
