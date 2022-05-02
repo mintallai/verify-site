@@ -165,7 +165,7 @@
         </cai-tooltip>
       </dt>
       <dd class="pt-2 pb-1">
-        {#if node.children.length}
+        {#if node.children?.length}
           <div class="assets-used">
             {#each node.children as childNode}
               <div
