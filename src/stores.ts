@@ -31,6 +31,7 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
+const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
 export const ROOT_LOC = '0';
 
 /**
@@ -237,35 +238,65 @@ export type TreeNode = ManifestTreeNode | IngredientTreeNode | SourceTreeNode;
 
 export type HierarchyTreeNode = HierarchyNode<TreeNode>;
 
+/**
+ * Determines if a validation status list contains an OTGP (`assertion.dataHash.mismatch`)
+ * status, and therefore, should present with an orange badge.
+ *
+ * @param validationStatus
+ * @returns `true` if we find an OTGP status
+ */
 function hasOtgpStatus(validationStatus: any[]) {
-  return validationStatus.some(
-    (err) => err.code === 'assertion.dataHash.mismatch',
+  return validationStatus.some((err) => err.code === OTGP_ERROR_CODE);
+}
+
+/**
+ * Determines if a validation status list contains an error (anything not in the Rust SDK's
+ * `C2PA_STATUS_VALID_SET` list _and_ not an OTGP status) and therefore, should present with a red badge.
+ *
+ * @param validationStatus
+ * @returns `true` if we find an error
+ */
+function hasErrorStatus(validationStatus: any[]) {
+  return (
+    validationStatus.filter((err) => err.code !== OTGP_ERROR_CODE).length > 0
   );
 }
 
-function hasErrorStatus(validationStatus: any[]) {
-  return validationStatus.some((err) => err.code === 'claimSignature.mismatch');
-}
-
-function parseProvenance(
-  toolkitNode: any,
-  validationErrors: any[],
-  loc = ROOT_LOC,
-): TreeNode {
+/**
+ * This function takes the provenance structure of the toolkit and returns a
+ * TreeNode that is used in our D3 hierarchy tree that serves as our main
+ * reference for the data we show on the site, since this data is hierarchical,
+ * which is apparent both in the overview page as well as the inspect page navigation.
+ *
+ * In most cases, the tree is set up like this:
+ * - If we have provenance data _without_ a top-level OTGP, the root node (`0`)
+ *   corresponds with the active manifest, and all leaf nodes correspond with
+ *   an ingredient.
+ * - If we have provenance data _with_ a top-level OTGP, the root node (`0`)
+ *   is the source asset (so we can show the current state), its child (`0.0`)
+ *   is the active manifest, and all leaf nodes correspond with an ingredient.
+ * - If we do not have provenance data, the root node (`0`) is the source asset
+ *   so the user can see what they dragged in, and is the only item in the tree.
+ *
+ * @param toolkitNode The provenance entity from the toolkit we are parsing
+ * @param loc The locator string of the node
+ * @returns TreeNode
+ */
+function parseProvenance(toolkitNode: any, loc = ROOT_LOC): TreeNode {
+  // The active manifest should be at the root location (0)
+  const isActiveManifest = loc === ROOT_LOC;
   const isIngredient = toolkitNode.hasOwnProperty('manifest');
   const ingredients =
     toolkitNode.manifest?.ingredients ?? toolkitNode.ingredients;
   let children = ingredients?.map((ingredient, idx) =>
-    parseProvenance(ingredient, validationErrors, `${loc}.${idx}`),
+    parseProvenance(ingredient, `${loc}.${idx}`),
   );
   if (isIngredient) {
     const manifest = toolkitNode.manifest;
     const statuses = toolkitNode.data.ingredient.validationStatus ?? [];
     const isOtgp = hasOtgpStatus(statuses);
     if (isOtgp) {
-      children = manifest
-        ? [parseProvenance(manifest, validationErrors, `${loc}.0`)]
-        : [];
+      children = manifest ? [parseProvenance(manifest, `${loc}.0`)] : [];
     }
     return {
       loc,
@@ -280,11 +311,11 @@ function parseProvenance(
       children,
     };
   } else {
-    // ID for root node (active manifest) should be `0`
-    // unless there is a top-level error, where it is `0.0` (since `source` is `0`)
-    const errors = validationErrors.filter((error) =>
-      error.url.includes(toolkitNode.label),
-    );
+    // If this is the active manifest (in a non-top-level OTGP scenario)
+    // we show the errors from the active manifest here. However, if this
+    // is a top-level OTGP, we do not show errors since these are shown
+    // on the source (root) asset (and this would be the first child).
+    const errors = isActiveManifest ? toolkitNode.errors ?? [] : [];
     return {
       loc,
       type: 'manifest',
@@ -294,9 +325,8 @@ function parseProvenance(
       node: toolkitNode,
       errors,
       children,
-      // These will be handled in the `hierarchy` function, since we have to show the source image
-      isOtgp: false,
-      hasError: false,
+      isOtgp: hasOtgpStatus(errors),
+      hasError: hasErrorStatus(errors),
     };
   }
 }
@@ -304,11 +334,7 @@ function parseProvenance(
 export const validationErrors = derived<[typeof provenance], any[]>(
   [provenance],
   ([$provenance]) => {
-    return (
-      $provenance?.manifestStore?.validationEntries
-        ?.filter((entry) => entry.isError)
-        .map((entry) => entry.status) ?? []
-    );
+    return $provenance?.manifestStore?.activeManifest.errors ?? [];
   },
 );
 
@@ -319,16 +345,24 @@ export const hierarchy = derived<
   if ($provenance) {
     const { source, manifestStore } = $provenance;
     const activeManifest = manifestStore?.activeManifest;
-    const errors = $validationErrors.filter((error) =>
-      error.url.includes(activeManifest.label),
-    );
-    // We have a normal manifest structure and no top-level errors
-    if (activeManifest && !errors.length) {
-      return d3Hierarchy(parseProvenance(activeManifest, $validationErrors));
+    const isPureOtgp =
+      hasOtgpStatus($validationErrors) && !hasErrorStatus($validationErrors);
+    // We have C2PA provenance data and no top-level OTGP
+    // This means we should make the hierarchy map directly to the provenance data structure
+    if (activeManifest && !isPureOtgp) {
+      return d3Hierarchy(parseProvenance(activeManifest));
     }
-    // We have top-level errors or no metadata on this image
-    // Show the source as the root node and manifests underneath
-    if (source && (errors.length || !activeManifest)) {
+    /**
+     * If we do not have an active manifest OR top-level OTGP, we do one of two things:
+     *
+     * 1. If we have OTGP at the top level, this means that the current state of the image
+     *    does not necessairly match the thumbnail of the active manifest. Because
+     *    of this, we need to display the source (i.e. the current state of the asset)
+     *    as the parent of the provenance claim in our hierarchy, together with an OTGP badge.
+     * 2. If we don't have provenance data for this asset, we only show the source and
+     *    have no children underneath.
+     */
+    if (source && (isPureOtgp || !activeManifest)) {
       return d3Hierarchy({
         loc: ROOT_LOC,
         type: 'source',
@@ -336,16 +370,10 @@ export const hierarchy = derived<
         title: source.metadata.filename,
         thumbnail: source.thumbnail,
         format: source.type,
-        isOtgp: hasOtgpStatus(errors),
-        hasError: hasErrorStatus(errors),
+        isOtgp: hasOtgpStatus($validationErrors),
+        hasError: hasErrorStatus($validationErrors),
         children: activeManifest
-          ? [
-              parseProvenance(
-                activeManifest,
-                $validationErrors,
-                `${ROOT_LOC}.0`,
-              ),
-            ]
+          ? [parseProvenance(activeManifest, `${ROOT_LOC}.0`)]
           : [],
       } as SourceTreeNode);
     }
@@ -399,12 +427,12 @@ export const isComparing = derived<[typeof primary, typeof secondary], boolean>(
   },
 );
 
-export const noMetadata = derived<[typeof provenance], boolean>(
-  [provenance],
-  ([$provenance]) => {
-    return !$provenance?.manifestStore?.activeManifest;
-  },
-);
+export const noMetadata = derived<
+  [typeof provenance, typeof isLoading],
+  boolean
+>([provenance, isLoading], ([$provenance, $isLoading]) => {
+  return !$isLoading && !$provenance?.manifestStore?.activeManifest;
+});
 
 /**
  * Convenience function to navigate to the root claim

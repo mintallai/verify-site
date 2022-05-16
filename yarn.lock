@@ -558,20 +558,20 @@
   resolved "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adobe-release/@ccx-public/ingest/-/@ccx-public/ingest-4.3.0.tgz#baab1d88b1cb154dc09b10f5104d2599c4aeaddb"
   integrity sha1-uqsdiLHLFU3AmxD1EE0lmcSurds=
 
-"@contentauth/detector@^0.2.9":
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/@contentauth/detector/-/detector-0.2.9.tgz#7d0d68441fbbd504f68561356fcd33d26e19b3c2"
-  integrity sha512-LpV+34c7u25+h4tPmgTt0De0XVr9iHkN0ZkhKX/aSZgw+s/GB9tC6xpmtc6fbqlZojRdQ7H7uIqSG1wOxjcYbw==
+"@contentauth/detector@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@contentauth/detector/-/detector-0.3.0.tgz#c5bf9bccef434e21f813d7d4c14098181a4153fe"
+  integrity sha512-FyOX0srUvImLEF9Hb7K02RannDerD//v2lRdgvmHCu9rum2DUEu0mfCMFjuVzPP2DYoG++K98q4q3iSbyCvwoA==
 
 "@contentauth/toolkit@0.7.0-alpha.12":
   version "0.7.0-alpha.12"
   resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.7.0-alpha.12.tgz#b469e2f30bee3bc2bf9594460be2f24ca3533c5d"
   integrity sha512-k7fsmeRBfa7A7Owz9IV8UXw7VCIQCWzC3sF2GSR5+KaOryPmI/yvWO+i0zcH6gFUpf6j2B1rNPvv9BHe3OYRAg==
 
-"@contentauth/toolkit@^0.7.0-alpha.18+f3973e4":
-  version "0.7.0-alpha.18"
-  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.7.0-alpha.18.tgz#e45a30094c1ea321806d08d9f96d5cacdb38f6b6"
-  integrity sha512-+Eq6JK3myxnAA+DWyVGnxaiIwO+CXkXy7piO8ne6tOdQHOAaFChlahKqfutVg+aeKjWh2jZ2Op62roFnkGH1IQ==
+"@contentauth/toolkit@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.7.0.tgz#8509c78f2a3b7b0c864052bafe2788603c8f1542"
+  integrity sha512-yCGe77iFFmgW5MNaGaLRrnkojVmLD9ZbEbm+lfvEdRV9ovEwZXHB8MVy+lqJHz+HMhj9YF23WvVtGMbQSc63fQ==
 
 "@contentauth/web-components@^0.4.1":
   version "0.4.1"
@@ -2046,13 +2046,13 @@ bytes@3.1.2, bytes@^3.0.0:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa@0.9.0-alpha.262:
-  version "0.9.0-alpha.262"
-  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.9.0-alpha.262.tgz#ac0bac1a748a94758686386a62fe07d75ea55063"
-  integrity sha512-xW/NzuRijSpsSzhWU2rAc+VTUJN70MMMLcfW2UDo4Oxk+j22a0PM1tZ09MyR6mQEKpgVFe1FvwsoodM1+W9RQA==
+c2pa@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.9.0.tgz#ef226d4e1beb14b21502e72d7d9dea927e31c930"
+  integrity sha512-haDasn/LA1OeAOopEMH4F5PFtQ61GL1AEaAl6WYeGCXYNbI8Pb63wnpmtykLELCoj39sZYwYEY3niGZ4fmGN2g==
   dependencies:
-    "@contentauth/detector" "^0.2.9"
-    "@contentauth/toolkit" "^0.7.0-alpha.18+f3973e4"
+    "@contentauth/detector" "^0.3.0"
+    "@contentauth/toolkit" "^0.7.0"
     date-fns "^2.24.0"
     lodash "^4.17.21"
     make-error "^1.3.6"

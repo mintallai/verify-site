@@ -13,13 +13,14 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _, date, time } from 'svelte-i18n';
+  import { _, date, time, locale } from 'svelte-i18n';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
   import Thumbnail from './Thumbnail.svelte';
   import Web3Address from './Web3Address.svelte';
   import { getFaqUrl, navigateToChild } from '../stores';
+  import { DEFAULT_LOCALE } from '../lib/i18n';
   import {
     getManifest,
     getBadgeProps,
@@ -34,6 +35,8 @@
   export let node: HierarchyTreeNode;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
+
+  $: currentLocale = $locale || DEFAULT_LOCALE;
   $: manifest = getManifest(node);
   $: isOriginal = getIsOriginal(node);
   $: generator = manifest.claimGenerator.product;
@@ -98,7 +101,7 @@
 <AboutSection
   title={$_('comp.about.editsActivity.header')}
   helper={$_('comp.about.editsActivity.helpText')}>
-  {#await manifest.editsAndActivity() then categories}
+  {#await manifest.editsAndActivity(currentLocale) then categories}
     {#if categories}
       <div>
         <dl>
@@ -133,7 +136,7 @@
     helper={$_('comp.about.assets.helpText')}>
     <dl data-test-id="about.assets">
       <dd class="pt-2 pb-1">
-        {#if node.children.length}
+        {#if node.children?.length}
           <div class="assets-used">
             {#each node.children as childNode}
               <div
