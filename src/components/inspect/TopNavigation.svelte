@@ -156,6 +156,7 @@
     --spectrum-tabs-rule-color: var(--white);
     --spectrum-tabs-m-text-color: var(--gray-700);
     --spectrum-tabs-m-selection-indicator-color: var(--blue-500);
+    --spectrum-tabs-rule-border-radius: 0;
     --spectrum-tabs-m-rule-size: 4px;
     --spectrum-tabs-item-gap: 1.25rem;
   }
