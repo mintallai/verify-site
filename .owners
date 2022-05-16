@@ -9,6 +9,7 @@ groups:
     - dstein
     - mensch
     - jfarzan
+    - mmahamli
 
 features:
   everything:
