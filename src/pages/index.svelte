@@ -6,9 +6,9 @@
   import Arrow from '../../assets/svg/monochrome/arrow-back.svg';
   import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
   import hero from '../../assets/png/hero-img.png';
-  import section1 from '../../assets/png/collage.jpg';
-  import section2 from '../../assets/png/arctic-pyramids.jpg';
-  import section3 from '../../assets/png/brooklyn-park.jpg';
+  import section1 from '../../assets/sample-images/fake-news.jpg';
+  import section2 from '../../assets/sample-images/moonrise.jpg';
+  import section3 from '../../assets/sample-images/orb-ii.jpg';
   import { breakpoints } from '../lib/breakpoints';
 
   function upload(evt: Event) {
