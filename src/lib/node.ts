@@ -41,6 +41,9 @@ export function getThumbnail(node: HierarchyTreeNode) {
 
 export function getIsOriginal(node: HierarchyTreeNode) {
   const manifest = getManifest(node);
+
+  if (!manifest) return false;
+
   const noIngredients = manifest.ingredients?.length === 0;
   const actions = manifest.assertions.get('c2pa.actions')?.actions;
   const isDelivered = actions?.some((x) => x.action === DELIVERED_ACTION);
