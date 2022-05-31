@@ -16,9 +16,8 @@ import { test } from './test';
 import { allImages } from './descriptors';
 import { flattenTree } from './utils/tree';
 import { aboutHelper } from './helpers/about';
-
 import CAICAI from './descriptors/images/CAICAI';
-import CAIECA from './descriptors/images/CAIECA';
+import { data } from 'autoprefixer';
 
 test.describe('overview - UI rendering', () => {
   for (const { description, imagePath, claim } of allImages) {
@@ -39,10 +38,11 @@ test.describe('overview - UI rendering', () => {
           await expect(node).toHaveCAIBadge(data.badge);
         }
       });
-
-      await test.step('about panel', async () => {
-        await aboutHelper(overviewPage.page).expectToMatchClaim(claim);
-      });
+      if (claim.data.claimStatus != 'none') {
+        await test.step('about panel', async () => {
+          await aboutHelper(overviewPage.page).expectToMatchClaim(claim);
+        });
+      }
     });
   }
 });

@@ -14,14 +14,14 @@
 import { TestImageDescriptor } from '../types';
 
 const claim: TestImageDescriptor = {
-  imagePath: 'CAIECA.jpg',
+  imagePath: 'CIE-sig-CA.jpg',
   description: 'nested error',
   claim: {
     data: {
-      fileName: 'CAIECA.jpg',
+      fileName: 'CIE-sig-CA.jpg',
       badge: 'info',
       signedBy: 'Adobe, Inc.',
-      signedOn: '10/13/21,  9:44 PM',
+      signedOn: 'April 20, 2022 at  6:44 PM',
       producedWith: 'C2PA Testing',
       isBeta: true,
       editsAndActivity: [
@@ -49,13 +49,7 @@ const claim: TestImageDescriptor = {
     ingredients: [
       {
         data: {
-          fileName: 'A.jpg',
-          claimStatus: 'none',
-        },
-      },
-      {
-        data: {
-          fileName: 'ECA.jpg',
+          fileName: 'E-sig-CA.jpg',
           badge: 'alert',
           claimStatus: 'otgp',
         },
