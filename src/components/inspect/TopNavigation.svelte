@@ -15,7 +15,7 @@
 <script lang="ts">
   import { goto, params, url } from '@roxi/routify';
   import { createEventDispatcher } from 'svelte';
-  import { _ } from 'svelte-i18n';
+  import { _, locale } from 'svelte-i18n';
   import {
     primaryLoc,
     ancestors,
@@ -70,19 +70,21 @@
             </div>
           </div>
           <div class="flex pl-5 items-center border-l border-gray-300">
-            <sp-picker
-              id="compare-picker"
-              on:change={handleCompareChange}
-              value={$compareMode}
-              quiet
-              size="m">
-              <sp-menu-item value={CompareMode.Slider}>
-                {$_('comp.topNavigation.slider')}
-              </sp-menu-item>
-              <sp-menu-item value={CompareMode.Split}>
-                {$_('comp.topNavigation.split')}
-              </sp-menu-item>
-            </sp-picker>
+            {#key $locale}
+              <sp-picker
+                id="compare-picker"
+                on:change={handleCompareChange}
+                quiet
+                value={$compareMode}
+                size="m">
+                <sp-menu-item value={CompareMode.Slider}>
+                  {$_('comp.topNavigation.slider')}
+                </sp-menu-item>
+                <sp-menu-item value={CompareMode.Split}>
+                  {$_('comp.topNavigation.split')}
+                </sp-menu-item>
+              </sp-picker>
+            {/key}
           </div>
         </div>
       {:else if showMenu}
