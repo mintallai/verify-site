@@ -24,7 +24,7 @@ const claim: TestImageDescriptor = {
 
       signedBy: 'Adobe, Inc.',
       signedOn: 'April 20, 2022 at  6:44 PM',
-      producedWith: 'C2PA Testing',
+      producedWith: 'C2PA',
       isBeta: true,
       editsAndActivity: [
         {

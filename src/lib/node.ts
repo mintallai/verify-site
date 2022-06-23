@@ -15,6 +15,8 @@ import startsWith from 'lodash/startsWith';
 import type { HierarchyTreeNode } from '../stores';
 
 const DELIVERED_ACTION = 'adobe.delivered';
+const PARENS_REGEX = /\([^\)]*\)/g;
+const SPACE_VERSION_REGEX = /\s+\d+\.\d(\.\d)*\s+/;
 
 export type BadgeType = 'none' | 'info' | 'missing' | 'alert';
 
@@ -33,6 +35,34 @@ export function getManifest(node: HierarchyTreeNode) {
 
 export function getFilename(node: HierarchyTreeNode): string {
   return node?.data?.title ?? '';
+}
+
+export function parseGenerator(value: string): string {
+  // We are stripping parenthesis so that any version matches in there don't influence the test
+  const withoutParens = value.replace(PARENS_REGEX, '');
+  if (SPACE_VERSION_REGEX.test(withoutParens)) {
+    // Old-style (XMP Agent) string (match space + version)
+    return value.split('(')[0]?.trim();
+  } else {
+    // User-Agent string
+    // Split by space (the RFC uses the space as a separator)
+    const firstItem = withoutParens.split(/\s+/)?.[0] ?? '';
+    // Parse product name from version
+    // Adobe_Photoshop/23.3.1 -> [Adobe_Photoshop, 23.3.1]
+    const [product, version] = firstItem.split('/');
+    // Replace underscores with spaces
+    // Adobe_Photoshop -> Adobe Photoshop
+    const formattedProduct = product.replace(/_/g, ' ');
+    if (version) {
+      return `${formattedProduct} ${version}`;
+    }
+    return formattedProduct;
+  }
+}
+
+export function getGenerator(node: HierarchyTreeNode): string {
+  const generator = getManifest(node)?.claimGenerator?.value ?? '';
+  return parseGenerator(generator);
 }
 
 export function getThumbnail(node: HierarchyTreeNode) {
