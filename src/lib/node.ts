@@ -45,8 +45,13 @@ export function parseGenerator(value: string): string {
     return value.split('(')[0]?.trim();
   } else {
     // User-Agent string
+    // Split by space (the RFC uses the space as a separator)
     const firstItem = withoutParens.split(/\s+/)?.[0] ?? '';
+    // Parse product name from version
+    // Adobe_Photoshop/23.3.1 -> [Adobe_Photoshop, 23.3.1]
     const [product, version] = firstItem.split('/');
+    // Replace underscores with spaces
+    // Adobe_Photoshop -> Adobe Photoshop
     const formattedProduct = product.replace(/_/g, ' ');
     if (version) {
       return `${formattedProduct} ${version}`;
