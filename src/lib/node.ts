@@ -15,6 +15,7 @@ import startsWith from 'lodash/startsWith';
 import type { HierarchyTreeNode } from '../stores';
 
 const DELIVERED_ACTION = 'adobe.delivered';
+const PARENS_REGEX = /\([^\)]*\)/g;
 const SPACE_VERSION_REGEX = /\s+\d+\.\d(\.\d)*\s+/;
 
 export type BadgeType = 'none' | 'info' | 'missing' | 'alert';
@@ -37,12 +38,14 @@ export function getFilename(node: HierarchyTreeNode): string {
 }
 
 export function parseGenerator(value: string): string {
-  if (SPACE_VERSION_REGEX.test(value)) {
+  // We are stripping parenthesis so that any version matches in there don't influence the test
+  const withoutParens = value.replace(PARENS_REGEX, '');
+  if (SPACE_VERSION_REGEX.test(withoutParens)) {
     // Old-style (XMP Agent) string (match space + version)
     return value.split('(')[0]?.trim();
   } else {
     // User-Agent string
-    const firstItem = value.split(/\s+/)?.[0] ?? '';
+    const firstItem = withoutParens.split(/\s+/)?.[0] ?? '';
     const [product, version] = firstItem.split('/');
     const formattedProduct = product.replace(/_/g, ' ');
     if (version) {
@@ -54,7 +57,6 @@ export function parseGenerator(value: string): string {
 
 export function getGenerator(node: HierarchyTreeNode): string {
   const generator = getManifest(node)?.claimGenerator?.value ?? '';
-  console.log('generator', generator, parseGenerator(generator));
   return parseGenerator(generator);
 }
 

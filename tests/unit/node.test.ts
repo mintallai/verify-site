@@ -5,6 +5,11 @@ describe('parseGenerator', () => {
     const withVersion = parseGenerator('Adobe_Stock/1.0.0 c2pa-rs/0.5.0');
     expect(withVersion).toEqual('Adobe Stock 1.0.0');
 
+    const withParens = parseGenerator(
+      'Adobe_Stock/1.0.0 (plugin version 2.3.1) c2pa-rs/0.5.0 (openssl version 0.9.8)',
+    );
+    expect(withParens).toEqual('Adobe Stock 1.0.0');
+
     const withoutVersion = parseGenerator('Adobe_Stock c2pa-rs/0.4.2');
     expect(withoutVersion).toEqual('Adobe Stock');
   });
