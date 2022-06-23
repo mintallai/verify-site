@@ -13,24 +13,25 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _, date, time, locale } from 'svelte-i18n';
-  import OriginalCreation from './inspect/OriginalCreation.svelte';
-  import ProviderIcon from './inspect/ProviderIcon.svelte';
-  import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
-  import Thumbnail from './Thumbnail.svelte';
-  import Web3Address from './Web3Address.svelte';
-  import { getFaqUrl, navigateToChild } from '../stores';
-  import { DEFAULT_LOCALE } from '../lib/i18n';
-  import {
-    getManifest,
-    getBadgeProps,
-    getIsOriginal,
-    getReviewRatings,
-  } from '../lib/node';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
+  import { date, locale, time, _ } from 'svelte-i18n';
+  import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
+  import { DEFAULT_LOCALE } from '../lib/i18n';
+  import {
+    getBadgeProps,
+    getGenerator,
+    getIsOriginal,
+    getManifest,
+    getReviewRatings,
+  } from '../lib/node';
   import type { HierarchyTreeNode } from '../stores';
+  import { getFaqUrl, navigateToChild } from '../stores';
+  import OriginalCreation from './inspect/OriginalCreation.svelte';
+  import ProviderIcon from './inspect/ProviderIcon.svelte';
+  import Thumbnail from './Thumbnail.svelte';
+  import Web3Address from './Web3Address.svelte';
 
   export let node: HierarchyTreeNode;
   export let isComparing: boolean = false;
@@ -39,7 +40,7 @@
   $: currentLocale = $locale || DEFAULT_LOCALE;
   $: manifest = getManifest(node);
   $: isOriginal = getIsOriginal(node);
-  $: generator = manifest.claimGenerator.product;
+  $: generator = getGenerator(node);
   $: issuer = manifest?.signature?.issuer;
   $: sigDate = manifest?.signature?.date;
   $: producer = manifest.producer;
