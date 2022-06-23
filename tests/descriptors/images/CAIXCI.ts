@@ -22,7 +22,7 @@ const claim: TestImageDescriptor = {
       badge: 'info',
       signedBy: 'Adobe, Inc.',
       signedOn: '10/13/21,  9:44 PM',
-      producedWith: 'C2PA Testing',
+      producedWith: 'C2PA',
       isBeta: true,
       editsAndActivity: [
         {
@@ -53,7 +53,7 @@ const claim: TestImageDescriptor = {
           badge: 'info',
           signedBy: 'Adobe, Inc.',
           signedOn: '10/13/21,  9:44 PM',
-          producedWith: 'C2PA Testing',
+          producedWith: 'C2PA',
           isBeta: true,
           editsAndActivity: [
             {
@@ -94,7 +94,7 @@ const claim: TestImageDescriptor = {
               badge: 'info',
               signedBy: 'Adobe, Inc.',
               signedOn: '10/13/21,  9:44 PM',
-              producedWith: 'C2PA Testing',
+              producedWith: 'C2PA',
               isBeta: true,
               editsAndActivity: [
                 {

@@ -14,7 +14,7 @@
     "routify": "routify",
     "test:unit": "jest",
     "test:playwright": "playwright test",
-    "test": "run-p test:*",
+    "test": "run-s test:*",
     "test:server": "node tests/scripts/server.js",
     "test:watch": "nodemon -w tests -e 'ts' -x 'yarn test'",
     "test:watch:local": "cross-env BASE_URL=http://localhost:5000 nodemon -w tests -e 'ts' -x 'yarn test'",
