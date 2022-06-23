@@ -838,7 +838,7 @@
     "@spectrum-web-components/base" "^0.4.5"
     tslib "^2.0.0"
 
-"@spectrum-web-components/button@^0.14.9":
+"@spectrum-web-components/button@0.14.9", "@spectrum-web-components/button@^0.14.9":
   version "0.14.9"
   resolved "https://registry.yarnpkg.com/@spectrum-web-components/button/-/button-0.14.9.tgz#e710a79c23e3f5811164d822406c1e31d60784a5"
   integrity sha512-elsiNOhWKGAUk3BTKzT//hxK/o7VfXZliBh5qCCnN186+7AkWW7r0flBqUPAkUWoDXcYYipXglDwCtQ4BAz+Zg==
