@@ -21,7 +21,7 @@ const claim: TestImageDescriptor = {
       fileName: 'CAIXCI.jpg',
       badge: 'info',
       signedBy: 'Adobe, Inc.',
-      signedOn: '10/13/21,  9:44 PM',
+      signedOn: 'April 20, 2022 at  6:44 PM',
       producedWith: 'C2PA',
       isBeta: true,
       editsAndActivity: [
@@ -52,7 +52,7 @@ const claim: TestImageDescriptor = {
           fileName: 'CA.jpg',
           badge: 'info',
           signedBy: 'Adobe, Inc.',
-          signedOn: '10/13/21,  9:44 PM',
+          signedOn: 'April 20, 2022 at  6:44 PM',
           producedWith: 'C2PA',
           isBeta: true,
           editsAndActivity: [
@@ -93,7 +93,7 @@ const claim: TestImageDescriptor = {
               fileName: 'CI.jpg',
               badge: 'info',
               signedBy: 'Adobe, Inc.',
-              signedOn: '10/13/21,  9:44 PM',
+              signedOn: 'April 20, 2022 at  6:44 PM',
               producedWith: 'C2PA',
               isBeta: true,
               editsAndActivity: [

@@ -177,7 +177,7 @@
     <section />
     <Viewer {isDragging} isError={!!error} />
     {#if error}
-      <section class="right-col p-4">
+      <section class="right-col p-4" data-test-id="inspect.right-col">
         <Alert severity="error">{$_(error)}</Alert>
       </section>
     {:else}

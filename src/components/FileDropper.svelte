@@ -73,6 +73,6 @@
     @apply flex justify-center items-center flex-col;
   }
   .dropper.fullscreen {
-    @apply absolute inset-0 z-40;
+    @apply absolute inset-0 z-0;
   }
 </style>

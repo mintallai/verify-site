@@ -12,12 +12,10 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _, locale } from 'svelte-i18n';
   import { getLocalizedURL } from '@intl/adobe-locales';
   import { DEFAULT_LOCALE, setLanguage } from '../lib/i18n';
-  import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
   import type { TippyProps, ReferenceElement } from '../lib/tippy';
   import { tippy } from '../lib/tippy';
 
@@ -98,10 +96,6 @@
             role="button">
             <div class="inline-flex items-center space-x-0.5 -mr-0.5">
               <span class="underline">{currentLangString}</span>
-              <DownArrow
-                class="h-2 w-2 transform {menuShown
-                  ? 'rotate-0'
-                  : 'rotate-180'}" />
             </div>
           </button>
         {/if}
