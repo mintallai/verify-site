@@ -103,7 +103,7 @@ export function aboutHelper(root: Locator | Page) {
 
       if (data.isOriginalCreation) {
         await expect(panel.originalCreation).toContainText(
-          `This photo was first produced in ${data.producedWith}.`,
+          `Original creation This image was first produced in ${data.producedWith}.`,
         );
       } else {
         await expect(panel.originalCreation).toHaveCount(0);

@@ -14,30 +14,43 @@
 import { TestImageDescriptor } from '../types';
 
 const claim: TestImageDescriptor = {
-  imagePath: 'crypto.jpg',
-  description: 'attached crypto address',
+  imagePath: 'E-sig-CA.jpg',
+  description: 'top-level error',
   claim: {
     data: {
-      fileName: 'crypto.jpg',
-      badge: 'info',
-      signedBy: 'Adobe Inc.',
-      signedOn: '12/21/21,  12:35 PM',
-      producedWith: 'Adobe Photoshop 23.1.0',
+      fileName: 'CA.jpg',
+      badge: 'alert',
+      claimStatus: 'error',
+
+      signedBy: 'Adobe, Inc.',
+      signedOn: 'April 20, 2022 at  6:44 PM',
+      producedWith: 'C2PA',
       isBeta: true,
-      isOriginalCreation: true,
       editsAndActivity: [
         {
-          name: 'Paint tools',
-          label: 'Edited with brushes or eraser tools',
+          name: 'Color adjustments',
+          label: 'Changed tone, saturation, etc.',
+        },
+        {
+          name: 'Imported assets',
+          label: 'Added images, videos, etc.',
         },
       ],
-      producedBy: 'Eli Mensch',
-      cryptoAddress: [
+      producedBy: 'Gavin Peacock',
+      socialMedia: [
         {
-          address: '0x5e6bd70bc8df4b35a5b81fd7814623d81ce1609e',
+          url: 'https://www.twitter.com/gvnpeacock',
+          username: '@gvnpeacock',
         },
       ],
     },
+    ingredients: [
+      {
+        data: {
+          fileName: 'A.jpg',
+        },
+      },
+    ],
   },
 };
 

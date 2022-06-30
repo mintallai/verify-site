@@ -16,9 +16,7 @@ import { test } from './test';
 import { allImages } from './descriptors';
 import { flattenTree } from './utils/tree';
 import { aboutHelper } from './helpers/about';
-
 import CAICAI from './descriptors/images/CAICAI';
-import CAIECA from './descriptors/images/CAIECA';
 
 test.describe('inspect - UI rendering', () => {
   for (const { description, imagePath, claim } of allImages) {
