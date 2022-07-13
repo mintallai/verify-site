@@ -245,7 +245,7 @@ export type HierarchyTreeNode = HierarchyNode<TreeNode>;
  * @param validationStatus
  * @returns `true` if we find an OTGP status
  */
-function hasOtgpStatus(validationStatus: any[]) {
+function hasOtgpStatus(validationStatus: any[] = []) {
   return validationStatus.some((err) => err.code === OTGP_ERROR_CODE);
 }
 
@@ -256,7 +256,7 @@ function hasOtgpStatus(validationStatus: any[]) {
  * @param validationStatus
  * @returns `true` if we find an error
  */
-function hasErrorStatus(validationStatus: any[]) {
+function hasErrorStatus(validationStatus: any[] = []) {
   return (
     validationStatus.filter((err) => err.code !== OTGP_ERROR_CODE).length > 0
   );
@@ -280,9 +280,15 @@ function hasErrorStatus(validationStatus: any[]) {
  *
  * @param toolkitNode The provenance entity from the toolkit we are parsing
  * @param loc The locator string of the node
+ * @param validationStatus The validation status array associated with manifest.
+ * Only used for display of top-level errors (i.e. on the active manifest)
  * @returns TreeNode
  */
-function parseProvenance(toolkitNode: any, loc = ROOT_LOC): TreeNode {
+function parseProvenance(
+  toolkitNode: any,
+  loc = ROOT_LOC,
+  validationStatus?: any[],
+): TreeNode {
   // The active manifest should be at the root location (0)
   const isActiveManifest = loc === ROOT_LOC;
   const isIngredient = toolkitNode.hasOwnProperty('manifest');
@@ -293,7 +299,7 @@ function parseProvenance(toolkitNode: any, loc = ROOT_LOC): TreeNode {
   );
   if (isIngredient) {
     const manifest = toolkitNode.manifest;
-    const statuses = toolkitNode.data.ingredient.validationStatus ?? [];
+    const statuses = toolkitNode?.validationStatus ?? [];
     const isOtgp = hasOtgpStatus(statuses);
     if (isOtgp) {
       children = manifest ? [parseProvenance(manifest, `${loc}.0`)] : [];
@@ -315,7 +321,8 @@ function parseProvenance(toolkitNode: any, loc = ROOT_LOC): TreeNode {
     // we show the errors from the active manifest here. However, if this
     // is a top-level OTGP, we do not show errors since these are shown
     // on the source (root) asset (and this would be the first child).
-    const errors = isActiveManifest ? toolkitNode.errors ?? [] : [];
+    const errors = isActiveManifest ? validationStatus : [];
+
     return {
       loc,
       type: 'manifest',
@@ -331,55 +338,52 @@ function parseProvenance(toolkitNode: any, loc = ROOT_LOC): TreeNode {
   }
 }
 
-export const validationErrors = derived<[typeof provenance], any[]>(
+export const hierarchy = derived<[typeof provenance], HierarchyTreeNode | null>(
   [provenance],
   ([$provenance]) => {
-    return $provenance?.manifestStore?.activeManifest.errors ?? [];
+    if ($provenance) {
+      const { source, manifestStore } = $provenance;
+      const activeManifest = manifestStore?.activeManifest;
+      const validationStatus = manifestStore?.validationStatus;
+
+      const isPureOtgp =
+        hasOtgpStatus(validationStatus) && !hasErrorStatus(validationStatus);
+      // We have C2PA provenance data and no top-level OTGP
+      // This means we should make the hierarchy map directly to the provenance data structure
+      if (activeManifest && !isPureOtgp) {
+        return d3Hierarchy(
+          parseProvenance(activeManifest, '0', validationStatus),
+        );
+      }
+      /**
+       * If we do not have an active manifest OR top-level OTGP, we do one of two things:
+       *
+       * 1. If we have OTGP at the top level, this means that the current state of the image
+       *    does not necessairly match the thumbnail of the active manifest. Because
+       *    of this, we need to display the source (i.e. the current state of the asset)
+       *    as the parent of the provenance claim in our hierarchy, together with an OTGP badge.
+       * 2. If we don't have provenance data for this asset, we only show the source and
+       *    have no children underneath.
+       */
+      if (source && (isPureOtgp || !activeManifest)) {
+        return d3Hierarchy({
+          loc: ROOT_LOC,
+          type: 'source',
+          node: source,
+          title: source.metadata.filename,
+          thumbnail: source.thumbnail,
+          format: source.type,
+          isOtgp: hasOtgpStatus(validationStatus),
+          hasError: hasErrorStatus(validationStatus),
+          children: activeManifest
+            ? [parseProvenance(activeManifest, `${ROOT_LOC}.0`)]
+            : [],
+        } as SourceTreeNode);
+      }
+    }
+    return null;
   },
 );
-
-export const hierarchy = derived<
-  [typeof provenance, typeof validationErrors],
-  HierarchyTreeNode | null
->([provenance, validationErrors], ([$provenance, $validationErrors]) => {
-  if ($provenance) {
-    const { source, manifestStore } = $provenance;
-    const activeManifest = manifestStore?.activeManifest;
-    const isPureOtgp =
-      hasOtgpStatus($validationErrors) && !hasErrorStatus($validationErrors);
-    // We have C2PA provenance data and no top-level OTGP
-    // This means we should make the hierarchy map directly to the provenance data structure
-    if (activeManifest && !isPureOtgp) {
-      return d3Hierarchy(parseProvenance(activeManifest));
-    }
-    /**
-     * If we do not have an active manifest OR top-level OTGP, we do one of two things:
-     *
-     * 1. If we have OTGP at the top level, this means that the current state of the image
-     *    does not necessairly match the thumbnail of the active manifest. Because
-     *    of this, we need to display the source (i.e. the current state of the asset)
-     *    as the parent of the provenance claim in our hierarchy, together with an OTGP badge.
-     * 2. If we don't have provenance data for this asset, we only show the source and
-     *    have no children underneath.
-     */
-    if (source && (isPureOtgp || !activeManifest)) {
-      return d3Hierarchy({
-        loc: ROOT_LOC,
-        type: 'source',
-        node: source,
-        title: source.metadata.filename,
-        thumbnail: source.thumbnail,
-        format: source.type,
-        isOtgp: hasOtgpStatus($validationErrors),
-        hasError: hasErrorStatus($validationErrors),
-        children: activeManifest
-          ? [parseProvenance(activeManifest, `${ROOT_LOC}.0`)]
-          : [],
-      } as SourceTreeNode);
-    }
-  }
-  return null;
-});
 
 /**
  * Convenience accessor for the claim/ingredient data that's linked to the `primaryLoc`.

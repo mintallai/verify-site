@@ -75,7 +75,7 @@ export function getIsOriginal(node: HierarchyTreeNode) {
   if (!manifest) return false;
 
   const noIngredients = manifest.ingredients?.length === 0;
-  const actions = manifest.assertions.get('c2pa.actions')?.actions;
+  const actions = manifest.assertions.get('c2pa.actions')?.data.actions;
   const isDelivered = actions?.some((x) => x.action === DELIVERED_ACTION);
 
   return noIngredients && !isDelivered;
@@ -84,11 +84,7 @@ export function getIsOriginal(node: HierarchyTreeNode) {
 export function getReviewRatings(node: HierarchyTreeNode) {
   const manifest = getManifest(node);
   const ingredientRatings = manifest.ingredients?.reduce((acc, ingredient) => {
-    return [
-      ...acc,
-      // @ts-ignore
-      ...(ingredient.data.ingredient.metadata?.reviewRatings ?? []),
-    ];
+    return [...acc, ...(ingredient.data.metadata?.reviewRatings ?? [])];
   }, []);
   const actionRatings =
     manifest.assertions.get('c2pa.actions')?.metadata?.reviewRatings ?? [];

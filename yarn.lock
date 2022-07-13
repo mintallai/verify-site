@@ -299,15 +299,15 @@
   resolved "https://registry.yarnpkg.com/@contentauth/detector/-/detector-0.3.0.tgz#c5bf9bccef434e21f813d7d4c14098181a4153fe"
   integrity sha512-FyOX0srUvImLEF9Hb7K02RannDerD//v2lRdgvmHCu9rum2DUEu0mfCMFjuVzPP2DYoG++K98q4q3iSbyCvwoA==
 
-"@contentauth/toolkit@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.7.0.tgz#8509c78f2a3b7b0c864052bafe2788603c8f1542"
-  integrity sha512-yCGe77iFFmgW5MNaGaLRrnkojVmLD9ZbEbm+lfvEdRV9ovEwZXHB8MVy+lqJHz+HMhj9YF23WvVtGMbQSc63fQ==
-
 "@contentauth/toolkit@0.7.0-alpha.12":
   version "0.7.0-alpha.12"
   resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.7.0-alpha.12.tgz#b469e2f30bee3bc2bf9594460be2f24ca3533c5d"
   integrity sha512-k7fsmeRBfa7A7Owz9IV8UXw7VCIQCWzC3sF2GSR5+KaOryPmI/yvWO+i0zcH6gFUpf6j2B1rNPvv9BHe3OYRAg==
+
+"@contentauth/toolkit@0.8.0-alpha.0":
+  version "0.8.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.8.0-alpha.0.tgz#c9beca7dcddb92bd09fc1832ae55b5b03cb65b79"
+  integrity sha512-85qIfopZaoGBzDsIyCfgpP7Kw87dYfZZ8iNWvl8aaYs7fFYPVAJ2DK0mKhWCgKBkGJQXuOil6ZPGZvEGMA2D/g==
 
 "@contentauth/web-components@^0.4.1":
   version "0.4.1"
@@ -1754,13 +1754,13 @@ bytes@3.1.2, bytes@^3.0.0:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa@^0.9.2:
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.9.2.tgz#8b0fe26d6b06c70eb973418eebdc8bb6dc50009a"
-  integrity sha512-AT+4RPqcOBskUy5vtSOVki6dINc2YxLwWQyC3rrdFu8lOy6Ju/yTn2/NXlk0O1Q/GQiqN7Yw4dy3gumyTwgKWg==
+c2pa@~0.10.0-alpha.0:
+  version "0.10.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.10.0-alpha.0.tgz#02b26060051c21732243c0f631e45937fc6acf90"
+  integrity sha512-7/+4XTGl/3IigANZ759JMjX9FNKkNA5iIhWwhsLK8vGptjDYzSYb725wcgGeCaGLdXeEtzbgSJhzm8/sXI/bZw==
   dependencies:
     "@contentauth/detector" "0.3.0"
-    "@contentauth/toolkit" "0.7.0"
+    "@contentauth/toolkit" "0.8.0-alpha.0"
     date-fns "^2.24.0"
     debug "~4.3.4"
     lodash "^4.17.21"
