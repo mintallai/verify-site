@@ -27,7 +27,7 @@ import debug from 'debug';
 
 const dbg = debug('store');
 
-const LEARN_MORE_URL = 'https://contentauthenticity.org/';
+export const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
