@@ -49,7 +49,8 @@ function websiteResolver(manifest: Manifest) {
 }
 
 function web3Resolver(manifest: Manifest) {
-  const cryptoEntries = manifest.assertions.get('adobe.crypto.addresses') ?? {};
+  const cryptoEntries =
+    manifest.assertions.get('adobe.crypto.addresses')?.data ?? {};
   return (Object.entries(cryptoEntries) as [string, string[]][]).filter(
     ([type, [address]]) => address && ['solana', 'ethereum'].includes(type),
   );
