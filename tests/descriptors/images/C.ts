@@ -20,24 +20,21 @@ const claim: TestImageDescriptor = {
     data: {
       fileName: 'C.jpg',
       badge: 'info',
-      signedBy: 'Adobe, Inc.',
-      signedOn: 'April 20, 2022 at  6:44 PM',
-      producedWith: 'C2PA',
-      isBeta: true,
+      signedBy: 'C2PA Test Signing Cert July 22, 2022 at  3:13 PM',
+      signedOn: 'July 22, 2022 at  3:13 PM',
+      producedWith: 'make test images 0.7.0',
       isOriginalCreation: true,
       editsAndActivity: [
         {
-          name: 'Color adjustments',
-          label: 'Changed tone, saturation, etc.',
+          name: 'Secure creation',
+          label: "The asset was first created, usually the asset's origin",
+        },
+        {
+          name: 'Paint tools',
+          label: 'Edited with brushes or eraser tools',
         },
       ],
       producedBy: 'Gavin Peacock',
-      socialMedia: [
-        {
-          url: 'https://www.twitter.com/gvnpeacock',
-          username: '@gvnpeacock',
-        },
-      ],
     },
   },
 };
