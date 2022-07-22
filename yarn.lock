@@ -304,10 +304,10 @@
   resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.7.0-alpha.12.tgz#b469e2f30bee3bc2bf9594460be2f24ca3533c5d"
   integrity sha512-k7fsmeRBfa7A7Owz9IV8UXw7VCIQCWzC3sF2GSR5+KaOryPmI/yvWO+i0zcH6gFUpf6j2B1rNPvv9BHe3OYRAg==
 
-"@contentauth/toolkit@0.8.0-alpha.0":
-  version "0.8.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.8.0-alpha.0.tgz#c9beca7dcddb92bd09fc1832ae55b5b03cb65b79"
-  integrity sha512-85qIfopZaoGBzDsIyCfgpP7Kw87dYfZZ8iNWvl8aaYs7fFYPVAJ2DK0mKhWCgKBkGJQXuOil6ZPGZvEGMA2D/g==
+"@contentauth/toolkit@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.8.0.tgz#04ff1f2e12519d9a2bf8cb34a3fda7e062b34131"
+  integrity sha512-ellh3MClyP4/HvLLtdbUcDlVapEUSGHr19R7FAVctl16wmoSCXoMF5Gci6aiNhS42VVbDO9CaLE041U1bVGQIA==
 
 "@contentauth/web-components@^0.4.1":
   version "0.4.1"
@@ -1754,13 +1754,13 @@ bytes@3.1.2, bytes@^3.0.0:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa@~0.10.0-alpha.0:
-  version "0.10.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.10.0-alpha.0.tgz#02b26060051c21732243c0f631e45937fc6acf90"
-  integrity sha512-7/+4XTGl/3IigANZ759JMjX9FNKkNA5iIhWwhsLK8vGptjDYzSYb725wcgGeCaGLdXeEtzbgSJhzm8/sXI/bZw==
+c2pa@0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.10.1.tgz#0bf4f6ec4c5306c2cfe8d51db366934e96cf5da5"
+  integrity sha512-Zqvep0A/L88JJ4uOihPRMZvl5J+4sSYRIEqlbD9FIo+OxuCHyQXyt9KEwfxE8110UEHkPssqmPja/V/aLnzw8w==
   dependencies:
     "@contentauth/detector" "0.3.0"
-    "@contentauth/toolkit" "0.8.0-alpha.0"
+    "@contentauth/toolkit" "0.8.0"
     date-fns "^2.24.0"
     debug "~4.3.4"
     lodash "^4.17.21"
