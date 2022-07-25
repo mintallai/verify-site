@@ -27,7 +27,7 @@
     getReviewRatings,
   } from '../lib/node';
   import type { HierarchyTreeNode } from '../stores';
-  import { getFaqUrl, navigateToChild } from '../stores';
+  import { navigateToChild, learnMoreUrl } from '../stores';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Thumbnail from './Thumbnail.svelte';
   import Web3Address from './Web3Address.svelte';
@@ -113,7 +113,7 @@
               </div>
               <div class="italic text-gray-900">
                 <span>{$_('comp.contentCredentialsError.unknownActions')}</span>
-                <a href={getFaqUrl()} target="_blank" class="link"
+                <a href={$learnMoreUrl} target="_blank" class="link"
                   >{$_('comp.contentCredentialsError.learnMore')}</a>
               </div>
             </dd>
