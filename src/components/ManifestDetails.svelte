@@ -127,6 +127,8 @@
           </dd>
         </dl>
       </div>
+    {:else}
+      <div>{$_('comp.about.editsActivity.none')}</div>
     {/if}
   {/await}
 </AboutSection>
