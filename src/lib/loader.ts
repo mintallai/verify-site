@@ -139,8 +139,8 @@ async function handleError(
       ? { source: 'url' }
       : { source: 'file', type: source.type };
   let isLegacy;
-  // LogStop now gets triggered when a 0.8 image is supplied
-  if (err.name === 'C2pa(LogStop)') {
+  // C2pa(PrereleaseError) gets triggered when a 0.8 image is supplied
+  if (err.name === 'C2pa(PrereleaseError)') {
     isLegacy = await hasLegacyCredentials(source);
     if (isLegacy) {
       logLegacyContentCredentials(origin);
