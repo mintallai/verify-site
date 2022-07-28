@@ -13,18 +13,18 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _ } from 'svelte-i18n';
-  import cssVars from 'svelte-css-vars';
-  import ManifestDetails from './ManifestDetails.svelte';
-  import OriginalCreation from './inspect/OriginalCreation.svelte';
-  import Thumbnail from './Thumbnail.svelte';
-  import AboutSection from './inspect/AboutSection.svelte';
-  import { getBadgeProps, getFilename, getIsOriginal } from '../lib/node';
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
-  import type { HierarchyTreeNode } from '../stores';
   import debug from 'debug';
+  import cssVars from 'svelte-css-vars';
+  import { _ } from 'svelte-i18n';
+  import { getBadgeProps, getFilename, getIsOriginal } from '../lib/node';
+  import type { HierarchyTreeNode } from '../stores';
+  import AboutSection from './inspect/AboutSection.svelte';
+  import OriginalCreation from './inspect/OriginalCreation.svelte';
+  import ManifestDetails from './ManifestDetails.svelte';
+  import Thumbnail from './Thumbnail.svelte';
 
   const dbg = debug('about');
 

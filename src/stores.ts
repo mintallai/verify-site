@@ -11,14 +11,14 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { readable, writable, derived, get } from 'svelte/store';
-import { local } from 'store2';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
+import local from 'store2';
+import { derived, get, readable, writable } from 'svelte/store';
 import type {
-  SdkResult,
-  Manifest,
   Ingredient,
+  Manifest,
+  SdkResult,
   Source,
   Thumbnail,
 } from './lib/sdk';
@@ -308,7 +308,7 @@ function parseProvenance(
       loc,
       type: 'ingredient',
       title: toolkitNode.title,
-      format: toolkitNode.thumbnail.format,
+      format: toolkitNode.thumbnail?.format,
       thumbnail: toolkitNode.thumbnail,
       node: toolkitNode,
       statuses,

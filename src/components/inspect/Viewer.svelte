@@ -13,14 +13,14 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _ } from 'svelte-i18n';
-  import cssVars from 'svelte-css-vars';
-  import CircleLoader from '../CircleLoader.svelte';
-  import { provenance, isMobileViewerShown } from '../../stores';
-  import FileDropper from '../FileDropper.svelte';
   import '@contentauth/web-components/dist/icons/monochrome/broken-image';
-  import { thumbnail, handleImgSrc } from '../../lib/thumbnail';
+  import cssVars from 'svelte-css-vars';
+  import { _ } from 'svelte-i18n';
+  import { handleImgSrc, thumbnail } from '../../lib/thumbnail';
   import type { HierarchyTreeNode } from '../../stores';
+  import { isMobileViewerShown, provenance } from '../../stores';
+  import CircleLoader from '../CircleLoader.svelte';
+  import FileDropper from '../FileDropper.svelte';
 
   export let node: HierarchyTreeNode | null = null;
   export let isDragging: boolean = false;
@@ -43,6 +43,7 @@
     height: side,
   };
   $: isUploadMode = (!$provenance && !isLoading) || isDragging;
+  $: hasThumbnail = node?.data?.thumbnail;
 </script>
 
 <div class="viewer-wrapper">
@@ -56,7 +57,7 @@
     <div class="inner" use:cssVars={styles}>
       <FileDropper {isUploadMode} {isDragging} />
       {#if !isUploadMode}
-        {#if !isLoading && !isError}
+        {#if !isLoading && !isError && hasThumbnail}
           <img
             data-test-id="viewer.thumbnail"
             use:thumbnail={node}
@@ -65,7 +66,7 @@
             class="h-full w-full object-contain object-center" />
         {:else}
           <div class="flex items-center justify-center">
-            {#if isError}
+            {#if isError || (!isLoading && !hasThumbnail)}
               <cai-icon-broken-image />
             {:else}
               <CircleLoader />
