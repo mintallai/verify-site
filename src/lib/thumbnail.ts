@@ -11,8 +11,8 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import type { Thumbnail } from '../lib/sdk';
 import { getThumbnail } from '../lib/node';
+import type { Thumbnail } from '../lib/sdk';
 import type { HierarchyTreeNode } from '../stores';
 
 export interface ThumbnailEvent {
@@ -21,7 +21,7 @@ export interface ThumbnailEvent {
 }
 
 async function generateThumbnail(node: Node, asset: Thumbnail) {
-  const result = await asset.getUrl();
+  const result = await asset?.getUrl();
 
   if (result) {
     node.dispatchEvent(
@@ -45,10 +45,13 @@ export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
   return {
     async update(newTreeNode?: HierarchyTreeNode) {
       if (newTreeNode) {
-        const prevHash = await getThumbnail(currTreeNode).hash?.();
-        const currHash = await getThumbnail(newTreeNode).hash?.();
+        const prevHash = (await getThumbnail(currTreeNode)?.hash?.()) ?? 'prev';
+        const currHash = (await getThumbnail(newTreeNode)?.hash?.()) ?? 'curr';
         if (prevHash !== currHash) {
-          const result = await generateThumbnail(node, getThumbnail(newTreeNode));
+          const result = await generateThumbnail(
+            node,
+            getThumbnail(newTreeNode),
+          );
           currThumbnail?.dispose?.();
           currThumbnail = result;
           currTreeNode = newTreeNode;
