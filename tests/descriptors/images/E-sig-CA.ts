@@ -22,9 +22,9 @@ const claim: TestImageDescriptor = {
       badge: 'alert',
       claimStatus: 'error',
 
-      signedBy: 'C2PA Test Signing Cert July 22, 2022 at  3:13 PM',
-      signedOn: 'July 22, 2022 at  3:13 PM',
-      producedWith: 'make test images 0.7.0',
+      signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
+      signedOn: 'August 1, 2022 at  6:48 PM',
+      producedWith: 'make test images 0.11.1',
       editsAndActivity: [
         {
           name: 'Color adjustments',

@@ -20,17 +20,18 @@ const claim: TestImageDescriptor = {
     data: {
       fileName: 'CAICAI.jpg',
       badge: 'info',
-      signedBy: 'C2PA Test Signing Cert July 22, 2022 at  3:13 PM',
-      signedOn: 'July 22, 2022 at  3:13 PM',
-      producedWith: 'make test images 0.7.0',
+      signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
+      signedOn: 'August 1, 2022 at  6:48 PM',
+      producedWith: 'make test images 0.11.1',
       editsAndActivity: [
         {
-          name: 'Secure creation',
-          label: "The asset was first created, usually the asset's origin",
+          name: 'Color adjustments',
+          label: 'Changed tone, saturation, etc.',
         },
         {
-          name: 'Paint tools',
-          label: 'Edited with brushes or eraser tools',
+          name: 'File opened',
+          label:
+            'An existing file containing one or more assets was opened and used as the starting point for editing',
         },
         {
           name: 'Imported assets',
@@ -46,39 +47,17 @@ const claim: TestImageDescriptor = {
     ingredients: [
       {
         data: {
-          fileName: 'CA.jpg',
-          badge: 'info',
-          signedBy: 'C2PA Test Signing Cert July 22, 2022 at  3:13 PM',
-          signedOn: 'July 22, 2022 at  3:13 PM',
-          producedWith: 'make test images 0.7.0',
-          editsAndActivity: [
-            {
-              name: 'Color adjustments',
-              label: 'Changed tone, saturation, etc.',
-            },
-            {
-              name: 'File opened',
-              label:
-                'An existing file containing one or more assets was opened and used as the starting point for editing',
-            },
-          ],
-          producedBy: 'Gavin Peacock',
+          fileName: 'A.jpg',
+          claimStatus: 'none',
         },
-        ingredients: [
-          {
-            data: {
-              fileName: 'A.jpg',
-            },
-          },
-        ],
       },
       {
         data: {
           fileName: 'CAI.jpg',
           badge: 'info',
-          signedBy: 'C2PA Test Signing Cert July 22, 2022 at  3:13 PM',
-          signedOn: 'July 22, 2022 at  3:13 PM',
-          producedWith: 'make test images 0.7.0',
+          signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
+          signedOn: 'August 1, 2022 at  6:48 PM',
+          producedWith: 'make test images 0.11.1',
           editsAndActivity: [
             {
               name: 'Color adjustments',
