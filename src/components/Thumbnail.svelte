@@ -14,8 +14,8 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { thumbnail, ThumbnailEvent } from '../lib/thumbnail';
   import type { BadgeProps } from '../lib/node';
+  import { thumbnail, ThumbnailEvent } from '../lib/thumbnail';
   import type { HierarchyTreeNode } from '../stores';
 
   export let node: HierarchyTreeNode;

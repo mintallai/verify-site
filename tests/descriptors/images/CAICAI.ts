@@ -20,71 +20,63 @@ const claim: TestImageDescriptor = {
     data: {
       fileName: 'CAICAI.jpg',
       badge: 'info',
-      signedBy: 'Adobe, Inc.',
-      signedOn: 'April 20, 2022 at  6:44 PM',
-      producedWith: 'C2PA',
-      isBeta: true,
+      signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
+      signedOn: 'August 1, 2022 at  6:48 PM',
+      producedWith: 'make test images 0.11.1',
       editsAndActivity: [
         {
           name: 'Color adjustments',
           label: 'Changed tone, saturation, etc.',
         },
         {
+          name: 'File opened',
+          label:
+            'An existing file containing one or more assets was opened and used as the starting point for editing',
+        },
+        {
           name: 'Imported assets',
           label: 'Added images, videos, etc.',
         },
         {
-          name: 'Size and position adjustments',
-          label: 'Changed size, orientation, direction, or position',
+          name: 'Size adjustments',
+          label: 'Changed asset dimensions',
         },
       ],
       producedBy: 'Gavin Peacock',
-      socialMedia: [
-        {
-          url: 'https://www.twitter.com/gvnpeacock',
-          username: '@gvnpeacock',
-        },
-      ],
     },
     ingredients: [
       {
         data: {
-          fileName: 'CA.jpg',
+          fileName: 'A.jpg',
+          claimStatus: 'none',
+        },
+      },
+      {
+        data: {
+          fileName: 'CAI.jpg',
           badge: 'info',
-          signedBy: 'Adobe, Inc.',
-          signedOn: 'April 20, 2022 at  6:44 PM',
-          producedWith: 'C2PA',
-          isBeta: true,
+          signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
+          signedOn: 'August 1, 2022 at  6:48 PM',
+          producedWith: 'make test images 0.11.1',
           editsAndActivity: [
             {
               name: 'Color adjustments',
               label: 'Changed tone, saturation, etc.',
             },
             {
+              name: 'File opened',
+              label:
+                'An existing file containing one or more assets was opened and used as the starting point for editing',
+            },
+            {
               name: 'Imported assets',
               label: 'Added images, videos, etc.',
             },
-          ],
-          producedBy: 'Gavin Peacock',
-          socialMedia: [
             {
-              url: 'https://www.twitter.com/gvnpeacock',
-              username: '@gvnpeacock',
+              name: 'Size adjustments',
+              label: 'Changed asset dimensions',
             },
           ],
-        },
-        ingredients: [
-          {
-            data: {
-              fileName: 'A.jpg',
-            },
-          },
-        ],
-      },
-      {
-        data: {
-          fileName: 'CAI.jpg',
-          badge: 'info',
         },
         ingredients: [
           {

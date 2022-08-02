@@ -22,10 +22,9 @@ const claim: TestImageDescriptor = {
       badge: 'alert',
       claimStatus: 'error',
 
-      signedBy: 'Adobe, Inc.',
-      signedOn: 'April 20, 2022 at  6:44 PM',
-      producedWith: 'C2PA',
-      isBeta: true,
+      signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
+      signedOn: 'August 1, 2022 at  6:48 PM',
+      producedWith: 'make test images 0.11.1',
       editsAndActivity: [
         {
           name: 'Color adjustments',
@@ -37,12 +36,6 @@ const claim: TestImageDescriptor = {
         },
       ],
       producedBy: 'Gavin Peacock',
-      socialMedia: [
-        {
-          url: 'https://www.twitter.com/gvnpeacock',
-          username: '@gvnpeacock',
-        },
-      ],
     },
     ingredients: [
       {

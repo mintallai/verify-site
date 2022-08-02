@@ -22,20 +22,24 @@ export type Source = SdkResult['source'];
 let sdk: Sdk;
 
 declare module 'c2pa' {
-  interface ManifestAssertions {
-    'adobe.crypto.assertions': {
+  interface ExtendedAssertions {
+    'adobe.crypto.addresses': {
       ethereum?: string[];
       solana?: string[];
+    };
+    'adobe.beta': {
+      version: string;
     };
   }
 }
 
-function isBetaResolver(manifest) {
-  return !!manifest.assertions.get('adobe.beta')?.version;
+function isBetaResolver(manifest: Manifest) {
+  return !!manifest.assertions.get('adobe.beta')?.data.version;
 }
 
-function websiteResolver(manifest) {
-  const site = manifest.assertions.get('stds.schema-org.CreativeWork')?.url;
+function websiteResolver(manifest: Manifest) {
+  const site = manifest.assertions.get('stds.schema-org.CreativeWork')?.data
+    .url;
   if (site) {
     const url = new URL(site);
     if (url.protocol === 'https:' && url.hostname === 'stock.adobe.com') {
@@ -44,8 +48,9 @@ function websiteResolver(manifest) {
   }
 }
 
-function web3Resolver(manifest) {
-  const cryptoEntries = manifest.assertions.get('adobe.crypto.addresses') ?? {};
+function web3Resolver(manifest: Manifest) {
+  const cryptoEntries =
+    manifest.assertions.get('adobe.crypto.addresses')?.data ?? {};
   return (Object.entries(cryptoEntries) as [string, string[]][]).filter(
     ([type, [address]]) => address && ['solana', 'ethereum'].includes(type),
   );

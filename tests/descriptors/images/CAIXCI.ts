@@ -20,31 +20,28 @@ const claim: TestImageDescriptor = {
     data: {
       fileName: 'CAIXCI.jpg',
       badge: 'info',
-      signedBy: 'Adobe, Inc.',
-      signedOn: 'April 20, 2022 at  6:44 PM',
-      producedWith: 'C2PA',
-      isBeta: true,
+      signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
+      signedOn: 'August 1, 2022 at  6:48 PM',
+      producedWith: 'make test images 0.11.1',
       editsAndActivity: [
         {
-          name: 'Color adjustments',
-          label: 'Changed tone, saturation, etc.',
+          name: 'Secure creation',
+          label: "The asset was first created, usually the asset's origin",
+        },
+        {
+          name: 'Paint tools',
+          label: 'Edited with brushes or eraser tools',
         },
         {
           name: 'Imported assets',
           label: 'Added images, videos, etc.',
         },
         {
-          name: 'Size and position adjustments',
-          label: 'Changed size, orientation, direction, or position',
+          name: 'Size adjustments',
+          label: 'Changed asset dimensions',
         },
       ],
       producedBy: 'Gavin Peacock',
-      socialMedia: [
-        {
-          url: 'https://www.twitter.com/gvnpeacock',
-          username: '@gvnpeacock',
-        },
-      ],
     },
     ingredients: [
       {
@@ -53,25 +50,19 @@ const claim: TestImageDescriptor = {
           badge: 'info',
           signedBy: 'Adobe, Inc.',
           signedOn: 'April 20, 2022 at  6:44 PM',
-          producedWith: 'C2PA',
-          isBeta: true,
+          producedWith: 'make test images 0.7.0',
           editsAndActivity: [
             {
               name: 'Color adjustments',
               label: 'Changed tone, saturation, etc.',
             },
             {
-              name: 'Imported assets',
-              label: 'Added images, videos, etc.',
+              name: 'File opened',
+              label:
+                'An existing file containing one or more assets was opened and used as the starting point for editing',
             },
           ],
           producedBy: 'Gavin Peacock',
-          socialMedia: [
-            {
-              url: 'https://www.twitter.com/gvnpeacock',
-              username: '@gvnpeacock',
-            },
-          ],
         },
         ingredients: [
           {
@@ -92,31 +83,29 @@ const claim: TestImageDescriptor = {
             data: {
               fileName: 'CI.jpg',
               badge: 'info',
-              signedBy: 'Adobe, Inc.',
-              signedOn: 'April 20, 2022 at  6:44 PM',
-              producedWith: 'C2PA',
-              isBeta: true,
+              signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
+              signedOn: 'August 1, 2022 at  6:48 PM',
+              producedWith: 'make test images 0.7.0',
               editsAndActivity: [
                 {
-                  name: 'Color adjustments',
-                  label: 'Changed tone, saturation, etc.',
+                  name: 'Secure creation',
+                  label:
+                    "The asset was first created, usually the asset's origin",
+                },
+                {
+                  name: 'Paint tools',
+                  label: 'Edited with brushes or eraser tools',
                 },
                 {
                   name: 'Imported assets',
                   label: 'Added images, videos, etc.',
                 },
                 {
-                  name: 'Size and position adjustments',
-                  label: 'Changed size, orientation, direction, or position',
+                  name: 'Size adjustments',
+                  label: 'Changed asset dimensions',
                 },
               ],
               producedBy: 'Gavin Peacock',
-              socialMedia: [
-                {
-                  url: 'https://www.twitter.com/gvnpeacock',
-                  username: '@gvnpeacock',
-                },
-              ],
             },
             ingredients: [
               {
