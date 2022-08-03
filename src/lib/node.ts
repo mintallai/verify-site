@@ -87,7 +87,9 @@ export function getReviewRatings(node: HierarchyTreeNode) {
     return [...acc, ...(ingredient.data.metadata?.reviewRatings ?? [])];
   }, []);
   const actionRatings =
-    manifest.assertions.get('c2pa.actions')?.metadata?.reviewRatings ?? [];
+    // @ts-ignore
+    manifest.assertions.get('c2pa.actions')?.data?.metadata?.reviewRatings ??
+    [];
   const reviewRatings = [...ingredientRatings, ...actionRatings];
 
   return {
