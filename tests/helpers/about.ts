@@ -11,8 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { expect, Page } from '@playwright/test';
-import { Locator } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import {
   NestedTestClaimDescriptor,
   TestClaimDescriptor,
@@ -33,6 +32,9 @@ export function aboutHelper(root: Locator | Page) {
     originalCreation: panelLocator.locator(testID('original-creation')),
     editsAndActivityItems: panelLocator.locator(
       `${testID('about.edits-and-activity')} .item-text`,
+    ),
+    unknownActionsAlert: panelLocator.locator(
+      `${testID('about.unknownActionsAlert')}`,
     ),
     assetItems: panelLocator.locator(`${testID('about.assets')} cai-thumbnail`),
     socialAccountLinks: panelLocator.locator(
@@ -126,6 +128,15 @@ export function aboutHelper(root: Locator | Page) {
         }
       } else {
         await expect(panel.editsAndActivityItems).toHaveCount(0);
+      }
+
+      if (data.unknownActionsAlert) {
+        await expect(panel.unknownActionsAlert).toHaveCount(1);
+        await expect(panel.unknownActionsAlert).toContainText(
+          data.unknownActionsAlert,
+        );
+      } else {
+        await expect(panel.unknownActionsAlert).toHaveCount(0);
       }
 
       // assets

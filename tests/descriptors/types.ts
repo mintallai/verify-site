@@ -34,6 +34,7 @@ export interface TestClaimDescriptor {
   isBeta?: boolean;
   isOriginalCreation?: boolean;
   editsAndActivity?: EditsAndActivityItem[];
+  unknownActionsAlert?: string;
   producedBy?: string;
   socialMedia?: SocialMediaItem[];
   cryptoAddress?: CryptoAddressItem[];
