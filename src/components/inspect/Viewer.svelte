@@ -21,7 +21,7 @@
   import { isMobileViewerShown, provenance } from '../../stores';
   import CircleLoader from '../CircleLoader.svelte';
   import FileDropper from '../FileDropper.svelte';
-
+  import ViewControls from '../ViewControls.svelte';
   export let node: HierarchyTreeNode | null = null;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
@@ -58,12 +58,16 @@
       <FileDropper {isUploadMode} {isDragging} />
       {#if !isUploadMode}
         {#if !isLoading && !isError && hasThumbnail}
-          <img
-            data-test-id="viewer.thumbnail"
-            use:thumbnail={node}
-            on:thumbnail={handleImgSrc}
-            alt="Thumbnail"
-            class="h-full w-full object-contain object-center" />
+          <div class="grid grid-cols-1 grid-rows-10">
+            <div class="row-span-1"><ViewControls /></div>
+
+            <img
+              data-test-id="viewer.thumbnail"
+              use:thumbnail={node}
+              on:thumbnail={handleImgSrc}
+              alt="Thumbnail"
+              class="h-full w-full object-contain object-center row-span-9" />
+          </div>
         {:else}
           <div class="flex items-center justify-center">
             {#if isError || (!isLoading && !hasThumbnail)}
