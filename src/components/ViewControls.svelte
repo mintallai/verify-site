@@ -24,7 +24,7 @@
 </script>
 
 <sp-theme color="lightest" scale="medium">
-  <div class="inline-block ">
+  <div class="inline-block">
     {#if inOverview}
       <div class="container1Selected inline-block">
         <sp-button on:click={$goto('/overview')}>
