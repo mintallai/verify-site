@@ -14,6 +14,7 @@
 -->
 <script lang="ts">
   import { goto, params, url } from '@roxi/routify';
+  import { _, locale } from 'svelte-i18n';
   import OverviewIcon from '../../assets/svg/monochrome/overview.svg';
   import InspectIcon from '../../assets/svg/monochrome/inspect.svg';
   import { style } from 'd3-selection';
@@ -29,7 +30,7 @@
         <sp-button on:click={$goto('/overview')}>
           <div class="flex">
             <OverviewIcon class="h-4 w-4 mr-2" />
-            Overview
+            {$_('comp.topNavigation.overview')}
           </div>
         </sp-button>
       </div>
@@ -38,7 +39,7 @@
         <sp-button on:click={$goto('/overview')}>
           <div class="flex">
             <OverviewIcon class="h-4 w-4 mr-2" />
-            Overview
+            {$_('comp.topNavigation.overview')}
           </div>
         </sp-button>
       </div>
@@ -47,8 +48,8 @@
       <div class="container2Selected inline-block">
         <sp-button on:click={$goto('/inspect')}>
           <div class="flex">
-            <OverviewIcon class="h-4 w-4 mr-2" />
-            Inspect
+            <InspectIcon class="h-4 w-4 mr-2" />
+            {$_('comp.topNavigation.inspect')}
           </div>
         </sp-button>
       </div>
@@ -56,8 +57,8 @@
       <div class="container2 inline-block">
         <sp-button on:click={$goto('/inspect')}>
           <div class="flex">
-            <OverviewIcon class="h-4 w-4 mr-2" />
-            Inspect
+            <InspectIcon class="h-4 w-4 mr-2" />
+            {$_('comp.topNavigation.inspect')}
           </div>
         </sp-button>
       </div>

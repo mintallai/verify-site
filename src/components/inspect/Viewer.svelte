@@ -90,7 +90,7 @@
     @apply w-full bg-gray-75 flex items-center justify-center overflow-hidden;
   }
   .viewertree {
-    @apply w-full bg-gray-75 flex mt-4 justify-center overflow-hidden;
+    @apply w-full bg-gray-75 flex p-4 justify-center overflow-hidden;
   }
   .viewer.no-source {
     @apply bg-white;
