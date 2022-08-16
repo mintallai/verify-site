@@ -119,14 +119,6 @@
             <span class="font-regular text-smd ml-2">{getFilename(node)}</span>
           </div>
         </div>
-      {:else}
-        <sp-tabs
-          selected={$url()}
-          on:change={handleNavChange}
-          class="nav-tabs mt-1 -ml-4">
-          <sp-tab label={$_('comp.topNavigation.overview')} value="/overview" />
-          <sp-tab label={$_('comp.topNavigation.inspect')} value="/inspect" />
-        </sp-tabs>
       {/if}
     </sp-theme>
   {/if}
