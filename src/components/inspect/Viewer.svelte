@@ -48,7 +48,8 @@
 
 <div class="viewer-wrapper">
   <div
-    class="viewer"
+    class:viewer={isUploadMode}
+    class:viewertree={!isUploadMode}
     class:no-source={!$provenance && !isLoading}
     class:upload={isUploadMode}
     class:dragging={isDragging}
@@ -58,8 +59,10 @@
       <FileDropper {isUploadMode} {isDragging} />
       {#if !isUploadMode}
         {#if !isLoading && !isError && hasThumbnail}
-          <div class="grid grid-cols-1 grid-rows-10">
-            <div class="row-span-1"><ViewControls /></div>
+          <div class="grid grid-cols-1 grid-rows-10  justify-items-center">
+            <div class="row-span-1">
+              <ViewControls inInspect={true} inOverview={false} />
+            </div>
 
             <img
               data-test-id="viewer.thumbnail"
@@ -85,6 +88,9 @@
 <style lang="postcss">
   .viewer {
     @apply w-full bg-gray-75 flex items-center justify-center overflow-hidden;
+  }
+  .viewertree {
+    @apply w-full bg-gray-75 flex mt-4 justify-center overflow-hidden;
   }
   .viewer.no-source {
     @apply bg-white;

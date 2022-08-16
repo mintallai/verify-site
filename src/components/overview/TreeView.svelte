@@ -33,7 +33,7 @@
   } from '../../stores';
   import ZoomIn from '../../../assets/svg/monochrome/zoom-in.svg';
   import ZoomOut from '../../../assets/svg/monochrome/zoom-out.svg';
-
+  import ViewControls from '../ViewControls.svelte';
   let width = 1;
   let height = 1;
   let margin = 0.95;
@@ -152,6 +152,9 @@
   class="relative bg-gray-75 w-full h-full overflow-hidden z-0"
   bind:clientWidth={width}
   bind:clientHeight={height}>
+  <div class="mt-4 grid justify-items-center">
+    <ViewControls inInspect={false} inOverview={true} />
+  </div>
   <svg bind:this={svg} {width} {height} view-box={`0 0 ${width} ${height}`}>
     <g bind:this={bounds} transform={gTransform}>
       {#each links as { link, idx, ancestor }, _i (idx)}

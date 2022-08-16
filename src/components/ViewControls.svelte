@@ -12,11 +12,103 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-<script lang="ts" context="module">
-  import '@spectrum-web-components/action-group/sp-action-group.js';
+<script lang="ts">
+  import { goto, params, url } from '@roxi/routify';
+  import OverviewIcon from '../../assets/svg/monochrome/overview.svg';
+  import InspectIcon from '../../assets/svg/monochrome/inspect.svg';
+  import { style } from 'd3-selection';
+  let textColor = 'blue';
+  export let inInspect: boolean;
+  export let inOverview: boolean;
 </script>
 
 <sp-theme color="lightest" scale="medium">
-  <sp-button> Button 1 </sp-button>
-  <sp-button> Longer Button 2 </sp-button>
-</sp-theme>
+  <div class="inline-block ">
+    {#if inOverview}
+      <div class="container1Selected inline-block">
+        <sp-button on:click={$goto('/overview')}>
+          <div class="flex">
+            <OverviewIcon class="h-4 w-4 mr-2" />
+            Overview
+          </div>
+        </sp-button>
+      </div>
+    {:else}
+      <div class="container1 inline-block">
+        <sp-button on:click={$goto('/overview')}>
+          <div class="flex">
+            <OverviewIcon class="h-4 w-4 mr-2" />
+            Overview
+          </div>
+        </sp-button>
+      </div>
+    {/if}
+    {#if inInspect}
+      <div class="container2Selected inline-block">
+        <sp-button on:click={$goto('/inspect')}>
+          <div class="flex">
+            <OverviewIcon class="h-4 w-4 mr-2" />
+            Inspect
+          </div>
+        </sp-button>
+      </div>
+    {:else}
+      <div class="container2 inline-block">
+        <sp-button on:click={$goto('/inspect')}>
+          <div class="flex">
+            <OverviewIcon class="h-4 w-4 mr-2" />
+            Inspect
+          </div>
+        </sp-button>
+      </div>
+    {/if}
+  </div></sp-theme>
+
+<style lang="postcss">
+  .container1 > sp-button {
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 0%;
+    border-top-left-radius: 10%;
+    border-bottom-left-radius: 10%;
+    width: 100px;
+    color: black;
+    background-color: white;
+    border: 2px solid #cacaca;
+  }
+  .container1Selected > sp-button {
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 0%;
+    border-top-left-radius: 10%;
+    border-bottom-left-radius: 10%;
+    width: 100px;
+    color: #1473e6;
+    background-color: white;
+    border: 2px solid #cacaca;
+  }
+  .container1 > sp-button:hover {
+    color: #1473e6;
+  }
+  .container2 > sp-button:hover {
+    color: #1473e6;
+  }
+  .container2 > sp-button {
+    border-top-right-radius: 10%;
+    border-bottom-right-radius: 10%;
+    border-top-left-radius: 0%;
+    border-bottom-left-radius: 0%;
+    width: 100px;
+    color: black;
+    background-color: white;
+    border: 2px solid #cacaca;
+  }
+  .container2Selected > sp-button {
+    border-top-right-radius: 10%;
+    border-bottom-right-radius: 10%;
+    border-top-left-radius: 0%;
+    border-bottom-left-radius: 0%;
+    width: 100px;
+    color: #1473e6;
+    background-color: white;
+    border: 2px solid #cacaca;
+  }
+</style>
