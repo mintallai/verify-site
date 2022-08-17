@@ -13,18 +13,18 @@
   from Adobe.
 -->
 <script lang="ts">
+  import '@contentauth/web-components/dist/icons/color/logos/adobe';
   import { _ } from 'svelte-i18n';
   import { slide } from 'svelte/transition';
-  import { postEvent, IngestPayload } from '../lib/analytics';
-  import Button from './Button.svelte';
+  import 'vanilla-hamburger/fade-burger';
+  import { IngestPayload, postEvent } from '../lib/analytics';
   import {
-    learnMoreUrl,
     getFaqUrl,
     isBurgerMenuShown,
+    learnMoreUrl,
     setProvenance,
   } from '../stores';
-  import '@contentauth/web-components/dist/icons/color/logos/adobe';
-  import 'vanilla-hamburger/fade-burger';
+  import Button from './Button.svelte';
 
   function handleBurgerClick() {
     isBurgerMenuShown.update((shown) => !shown);
