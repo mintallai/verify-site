@@ -16,6 +16,7 @@
   import { goto, params, url } from '@roxi/routify';
   import { createEventDispatcher } from 'svelte';
   import { _, locale } from 'svelte-i18n';
+  import { recoverManifests } from '../../lib/manifest-recovery';
   import {
     primaryLoc,
     ancestors,
@@ -127,6 +128,9 @@
           <sp-tab label={$_('comp.topNavigation.overview')} value="/overview" />
           <sp-tab label={$_('comp.topNavigation.inspect')} value="/inspect" />
         </sp-tabs>
+        <sp-button size="s" onclick={recoverManifests}
+          >Search for more results
+        </sp-button>
       {/if}
     </sp-theme>
   {/if}

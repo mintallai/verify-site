@@ -447,3 +447,9 @@ export function navigateToRoot(logEvent = true): void {
   secondaryLoc.set('');
   navigateTo(ROOT_LOC, logEvent);
 }
+
+/**
+ * Store for recovered manifests
+ *
+ */
+export const recoveredManifests = writable([]);
