@@ -19,14 +19,16 @@ export const recoverManifests = async () => {
         });
         const resultData = await resultResponse.arrayBuffer();
         console.log('arrayBuffer', resultData);
-        const blob = new Blob([resultData], { type: 'application/c2pa' });
+        const blob = new Blob([resultData], {
+          type: 'application/x-c2pa-manifest-store',
+        });
         return sdk.read(blob);
       };
       return limit(processResult);
     });
     // Only one promise is run at once
     const result = await Promise.all(inputs);
-    recoveredManifests.set(result);
+    return result;
   } catch (err) {
     console.log(err);
   }
