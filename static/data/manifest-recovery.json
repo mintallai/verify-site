@@ -1,0 +1,10 @@
+{
+    "results": [
+        {
+            "url": "http://localhost:3000/https://cai-manifests-stage.adobe.com/manifests/adobetest-urn-uuid-bb090c77-bc99-4582-b365-6dbc24aef1fd"
+        },
+        {
+            "url": "http://localhost:3000/https://cai-manifests-stage.adobe.com/manifests/contentauth-urn-uuid-56860f0a-d01d-4cea-8b56-4e0921b26751"
+        }
+    ]
+} 

@@ -299,15 +299,10 @@
   resolved "https://registry.yarnpkg.com/@contentauth/detector/-/detector-0.3.0.tgz#c5bf9bccef434e21f813d7d4c14098181a4153fe"
   integrity sha512-FyOX0srUvImLEF9Hb7K02RannDerD//v2lRdgvmHCu9rum2DUEu0mfCMFjuVzPP2DYoG++K98q4q3iSbyCvwoA==
 
-"@contentauth/toolkit@0.7.0-alpha.12":
-  version "0.7.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.7.0-alpha.12.tgz#b469e2f30bee3bc2bf9594460be2f24ca3533c5d"
-  integrity sha512-k7fsmeRBfa7A7Owz9IV8UXw7VCIQCWzC3sF2GSR5+KaOryPmI/yvWO+i0zcH6gFUpf6j2B1rNPvv9BHe3OYRAg==
-
-"@contentauth/toolkit@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.8.0.tgz#04ff1f2e12519d9a2bf8cb34a3fda7e062b34131"
-  integrity sha512-ellh3MClyP4/HvLLtdbUcDlVapEUSGHr19R7FAVctl16wmoSCXoMF5Gci6aiNhS42VVbDO9CaLE041U1bVGQIA==
+"@contentauth/toolkit@0.8.1", "@contentauth/toolkit@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.8.1.tgz#e7e5362186ce19bf2a530a7d206de4eb09e36a45"
+  integrity sha512-6nnKaj+/4yPtodJNvkBMYHW1nZZzLYrJaKZ5DoovUI5cUKcXTusU6LciKa8EMYxJ2/aQs5djv04Ud1iciisvDw==
 
 "@contentauth/web-components@^0.4.1":
   version "0.4.1"
@@ -1754,13 +1749,13 @@ bytes@3.1.2, bytes@^3.0.0:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa@0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.10.1.tgz#0bf4f6ec4c5306c2cfe8d51db366934e96cf5da5"
-  integrity sha512-Zqvep0A/L88JJ4uOihPRMZvl5J+4sSYRIEqlbD9FIo+OxuCHyQXyt9KEwfxE8110UEHkPssqmPja/V/aLnzw8w==
+c2pa@0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.10.2.tgz#0e3dede6b60c407f8c2bce11d410b81f5275434b"
+  integrity sha512-X24wmwkUQrGBRdySRzO2RsORqNuFGznO/21YH1q5yNu0g5Y6ebSIZEUxdPpRpu6QWOB1tMtqF5gIW6QICQ4KEQ==
   dependencies:
     "@contentauth/detector" "0.3.0"
-    "@contentauth/toolkit" "0.8.0"
+    "@contentauth/toolkit" "0.8.1"
     date-fns "^2.24.0"
     debug "~4.3.4"
     lodash "^4.17.21"
@@ -2382,10 +2377,15 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-date-fns@^2.16.1, date-fns@^2.19.0, date-fns@^2.24.0:
+date-fns@^2.16.1, date-fns@^2.19.0:
   version "2.28.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
   integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
+
+date-fns@^2.24.0:
+  version "2.29.2"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.2.tgz#0d4b3d0f3dff0f920820a070920f0d9662c51931"
+  integrity sha512-0VNbwmWJDS/G3ySwFSJA3ayhbURMTJLtwM2DTxf9CWondCnh6DTNlO9JgRSq6ibf4eD0lfMJNBxUdEAHHix+bA==
 
 debug@2.6.9:
   version "2.6.9"
@@ -5031,7 +5031,7 @@ p-defer@^1.0.0:
   resolved "https://registry.yarnpkg.com/p-defer/-/p-defer-1.0.0.tgz#9f6eb182f6c9aa8cd743004a7d4f96b196b0fb0c"
   integrity sha512-wB3wfAxZpk2AzOfUMJNL+d36xothRSyj8EXOa4f6GMqYDN9BJaaSISbsk+wS9abmnebVw95C2Kb5t85UmpCxuw==
 
-p-limit@^2.2.0, p-limit@^2.2.2:
+p-limit@2.3.0, p-limit@^2.2.0, p-limit@^2.2.2:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.3.0.tgz#3dd33c647a214fdfffd835933eb086da0dc21db1"
   integrity sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==
