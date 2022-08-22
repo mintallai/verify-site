@@ -20,7 +20,7 @@ import { getSdk, SdkResult } from '../lib/sdk';
 import { getConfig } from '../lib/config';
 import {
   urlParams,
-  provenance,
+  sourceManifestStore,
   setProvenance,
   setIsLoading,
   lastUrlSource,
@@ -235,7 +235,7 @@ export function setLoaderContext(params: ILoaderParams) {
 export function loader(node, params: ILoaderParams) {
   const { onDragStateChange, onError } = params;
   const sourceParam = get(urlParams).source;
-  const prov = get(provenance);
+  const prov = get(sourceManifestStore);
   const sourceChanged = get(lastUrlSource) !== sourceParam;
 
   if (sourceParam && (!prov || (prov && sourceChanged))) {

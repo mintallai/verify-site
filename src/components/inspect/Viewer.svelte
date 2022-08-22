@@ -18,7 +18,7 @@
   import { _ } from 'svelte-i18n';
   import { handleImgSrc, thumbnail } from '../../lib/thumbnail';
   import type { HierarchyTreeNode } from '../../stores';
-  import { isMobileViewerShown, provenance } from '../../stores';
+  import { isMobileViewerShown, sourceManifestStore } from '../../stores';
   import CircleLoader from '../CircleLoader.svelte';
   import FileDropper from '../FileDropper.svelte';
 
@@ -42,14 +42,14 @@
     width: side,
     height: side,
   };
-  $: isUploadMode = (!$provenance && !isLoading) || isDragging;
+  $: isUploadMode = (!$sourceManifestStore && !isLoading) || isDragging;
   $: hasThumbnail = node?.data?.thumbnail;
 </script>
 
 <div class="viewer-wrapper">
   <div
     class="viewer"
-    class:no-source={!$provenance && !isLoading}
+    class:no-source={!$sourceManifestStore && !isLoading}
     class:upload={isUploadMode}
     class:dragging={isDragging}
     bind:clientWidth={width}

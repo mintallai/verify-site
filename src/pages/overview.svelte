@@ -34,7 +34,7 @@
     isMobileViewerShown,
     noMetadata,
     primary,
-    provenance,
+    sourceManifestStore,
     urlParams,
   } from '../stores';
 
@@ -49,7 +49,7 @@
       tour.cancel();
     }
     // Clear errors if the store report has changed
-    if ($provenance !== undefined) {
+    if ($sourceManifestStore !== undefined) {
       error = null;
     }
   }
@@ -84,7 +84,7 @@
   use:loader={loaderParams}
   use:breakpoints
   class="theme-light"
-  class:full-width={isUploadMode && !$provenance && !error}>
+  class:full-width={isUploadMode && !$sourceManifestStore && !error}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}

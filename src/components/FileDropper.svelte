@@ -16,7 +16,7 @@
   import { fade } from 'svelte/transition';
   import { onMount, getContext } from 'svelte';
   import { _ } from 'svelte-i18n';
-  import { provenance } from '../stores';
+  import { sourceManifestStore } from '../stores';
   import { CONTEXT_KEY } from '../lib/loader';
   import DropFile from '../../assets/svg/monochrome/drop-file.svg';
 
@@ -55,7 +55,7 @@
       width={58}
       height={99}
       class="mb-8 {isDragging ? 'text-blue-500' : 'text-gray-500'}" />
-    {#if $provenance}
+    {#if $sourceManifestStore}
       <div class="message-heading">{$_('comp.viewer.dropFile')}</div>
     {:else}
       <div class="message-heading">{$_('comp.viewer.dragDropFile')}</div>
