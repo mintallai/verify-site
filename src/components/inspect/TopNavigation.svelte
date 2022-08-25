@@ -18,7 +18,9 @@
   import { _, locale } from 'svelte-i18n';
   import { recoverManifests } from '../../lib/manifest-recovery';
   import BreadcrumbAsset from '../BreadcrumbAsset.svelte';
-  import { onMount } from 'svelte';
+  import Dots from '../../../assets/svg/monochrome/dots.svg';
+  import CircleLoader from '../CircleLoader.svelte';
+
   import {
     primaryLoc,
     ancestors,
@@ -28,7 +30,7 @@
     isMobileViewerShown,
     navigateTo,
     resultsManifestStore,
-    resultHierarchies,
+    activeAsset,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
@@ -48,9 +50,14 @@
   export let currentPage: Page = 'overview';
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
-  let numberofMatches: number = 0;
+  let btnShow: boolean = true;
+  let loadingMatches: boolean = false;
   const dispatch = createEventDispatcher();
+  let sourceActive: boolean = true;
 
+  if ($activeAsset == ['s']) {
+    sourceActive = true;
+  }
   function handleNavChange() {
     $goto(this.selected, $params);
   }
@@ -61,8 +68,10 @@
   //onmount
 
   async function handleButtonClick() {
+    btnShow = false;
+    loadingMatches = true;
     const matchesManifests = await recoverManifests();
-
+    loadingMatches = false;
     if (Array.isArray(matchesManifests)) {
       resultsManifestStore.set(matchesManifests);
     }
@@ -137,22 +146,27 @@
           </div>
         </div>
       {:else}
-        <sp-tabs
-          selected={$url()}
-          on:change={handleNavChange}
-          class="nav-tabs mt-1 -ml-4">
-          <sp-tab label={$_('comp.topNavigation.overview')} value="/overview" />
-          <sp-tab label={$_('comp.topNavigation.inspect')} value="/inspect" />
-        </sp-tabs>
         <BreadcrumbAsset value={null} />
-        <sp-button size="s" onclick={handleButtonClick}
-          >Search for more results
-        </sp-button>
-        {#each $resultsManifestStore as { manifestStore }, i}
-          <div class="breadcrumb-item items-center current p-0" />
 
-          <BreadcrumbAsset value={i} />
-        {/each}
+        <Dots class="w-1" />
+        {#if btnShow}
+          <div class="match-btn self-center ml-5">
+            <sp-button size="s" onclick={handleButtonClick}>
+              {$_('comp.topNavigation.matches')}
+            </sp-button>
+          </div>
+        {/if}
+        {#if loadingMatches}
+          <div class="self-center ml-5">
+            <CircleLoader isSmall={true} />
+          </div>
+        {:else}
+          {#each $resultsManifestStore as { manifestStore }, i}
+            <div class="breadcrumb-item items-center current p-0 ml-5" />
+
+            <BreadcrumbAsset value={i} />
+          {/each}
+        {/if}
       {/if}
     </sp-theme>
   {/if}
@@ -167,6 +181,13 @@
     grid-area: breadcrumb;
     height: 60px;
   }
+  .match-btn > sp-button {
+    width: fit-content;
+    height: 34px;
+    color: #6e6e6e;
+    background-color: #f6f6f6;
+  }
+
   .container > sp-theme {
     @apply flex items-stretch;
   }
@@ -180,6 +201,7 @@
   .breadcrumb-nav {
     --cai-thumbnail-size: 20px;
   }
+
   .nav-tabs {
     --spectrum-tabs-rule-color: var(--white);
     --spectrum-tabs-m-text-color: var(--gray-700);

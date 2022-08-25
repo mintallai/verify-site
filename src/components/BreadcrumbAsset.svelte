@@ -16,10 +16,10 @@
   import allo from '../../assets/sample-images/fake-news.jpg';
   import { date, locale, time, _ } from 'svelte-i18n';
   export let hasc2padata: boolean = true;
-  import { resultHierarchies, sourceHierarchy } from '../stores';
+  import { resultHierarchies, sourceHierarchy, activeAsset } from '../stores';
 
   import { thumbnail, ThumbnailEvent } from '../lib/thumbnail';
-  import type { HierarchyTreeNode } from '../stores';
+
   import {
     getBadgeProps,
     getFilename,
@@ -39,33 +39,39 @@
   let node;
 
   export let value: number | null;
+  let active: boolean;
   if (value != null) {
     node = $resultHierarchies[value];
   } else {
     node = $sourceHierarchy;
+    active = true;
   }
   $: manifest = getManifest(node);
   $: sigDate = manifest?.signature?.date;
   $: filename = getFilename(node);
   $: badgeProps = getBadgeProps(node);
 
-  console.log($resultHierarchies[value]);
+  function handleActiveAsset() {
+    activeAsset.set(['r', value]);
+    active = true;
+  }
 </script>
 
 <sp-theme color="lightest" scale="medium">
-  <div class="container mt-1">
-    <sp-button
+  <div class="container mt-1" class:active>
+    <sp-button onclick={handleActiveAsset}
       ><div class="grid grid-cols-4 gap-3">
         <Thumbnail {node} {...badgeProps} />
         <div class="col-span-3 text-left font-regular self-center">
           <p class="filename">
             {filename}
           </p>
-
-          <p class="date">
-            {$date(sigDate, { format: 'medium' })}{' at '}
-            {$time(sigDate, { format: 'short' })}
-          </p>
+          {#if value != null}
+            <p class="date">
+              {$date(sigDate, { format: 'medium' })}{' at '}
+              {$time(sigDate, { format: 'short' })}
+            </p>
+          {/if}
         </div>
       </div></sp-button>
   </div>
@@ -75,10 +81,7 @@
   .container {
     --cai-thumbnail-size: 39px;
   }
-  img {
-    width: 48px;
-    height: 48px !important;
-  }
+
   .container > sp-button {
     width: 207px;
     height: 48px;
@@ -87,8 +90,6 @@
     padding: 0;
   }
   .container > sp-button:hover {
-    width: 207px;
-    height: 48px;
     background-color: #ecf6ff;
     border: 2px solid #2680eb;
     border-radius: 5px;
@@ -99,6 +100,12 @@
   }
   .date {
     color: #6e6e6e;
+  }
+  .active > sp-button {
+    background-color: #ecf6ff;
+    border: 2px solid #2680eb;
+    border-radius: 5px;
+    padding: 0;
   }
   .img-container {
     position: relative;

@@ -12,14 +12,23 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-<script lang="ts" context="module">
+<script lang="ts">
   import '@spectrum-web-components/progress-circle/sp-progress-circle.js';
+  export let isSmall: boolean = false;
 </script>
 
 <sp-theme color="lightest" scale="medium">
-  <sp-progress-circle
-    label="Loading asset data"
-    indeterminate="true"
-    size="large"
-    class="loader" />
+  {#if isSmall}
+    <sp-progress-circle
+      label="Loading asset data"
+      indeterminate="true"
+      size="s"
+      class="loader" />
+  {:else}
+    <sp-progress-circle
+      label="Loading asset data"
+      indeterminate="true"
+      size="large"
+      class="loader" />
+  {/if}
 </sp-theme>
