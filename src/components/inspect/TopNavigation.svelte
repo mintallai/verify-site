@@ -17,6 +17,8 @@
   import { createEventDispatcher } from 'svelte';
   import { _, locale } from 'svelte-i18n';
   import { recoverManifests } from '../../lib/manifest-recovery';
+  import BreadcrumbAsset from '../BreadcrumbAsset.svelte';
+  import { onMount } from 'svelte';
   import {
     primaryLoc,
     ancestors,
@@ -25,16 +27,20 @@
     CompareMode,
     isMobileViewerShown,
     navigateTo,
+    resultsManifestStore,
+    resultHierarchies,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import ChevronRight from '../../../assets/svg/monochrome/chevron-right.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
   import Thumbnail from '../Thumbnail.svelte';
+
   import { getFilename } from '../../lib/node';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
+  import { result } from 'lodash';
 
   type Page = 'overview' | 'inspect';
 
@@ -42,6 +48,7 @@
   export let currentPage: Page = 'overview';
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
+  let numberofMatches: number = 0;
   const dispatch = createEventDispatcher();
 
   function handleNavChange() {
@@ -50,6 +57,15 @@
 
   function handleCompareChange() {
     setCompareMode(this.value);
+  }
+  //onmount
+
+  async function handleButtonClick() {
+    const matchesManifests = await recoverManifests();
+
+    if (Array.isArray(matchesManifests)) {
+      resultsManifestStore.set(matchesManifests);
+    }
   }
 
   $: showMenu = $isMobileViewerShown;
@@ -128,9 +144,15 @@
           <sp-tab label={$_('comp.topNavigation.overview')} value="/overview" />
           <sp-tab label={$_('comp.topNavigation.inspect')} value="/inspect" />
         </sp-tabs>
-        <sp-button size="s" onclick={recoverManifests}
+        <BreadcrumbAsset value={null} />
+        <sp-button size="s" onclick={handleButtonClick}
           >Search for more results
         </sp-button>
+        {#each $resultsManifestStore as { manifestStore }, i}
+          <div class="breadcrumb-item items-center current p-0" />
+
+          <BreadcrumbAsset value={i} />
+        {/each}
       {/if}
     </sp-theme>
   {/if}

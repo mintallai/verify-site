@@ -17,6 +17,7 @@ import dragDrop from 'drag-drop';
 import { page } from '@roxi/routify';
 import { postEvent, IngestPayload } from '../lib/analytics';
 import { getSdk, SdkResult } from '../lib/sdk';
+import { recoverManifests } from './manifest-recovery';
 import { getConfig } from '../lib/config';
 import {
   urlParams,

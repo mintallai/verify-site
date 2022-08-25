@@ -1,7 +1,7 @@
 import pLimit from 'p-limit';
 import { getSdk, SdkResult } from '../lib/sdk';
 const limit = pLimit(4);
-import { recoveredManifests } from '../stores';
+import { activeAsset } from '../stores';
 
 export const recoverManifests = async () => {
   try {
@@ -28,6 +28,7 @@ export const recoverManifests = async () => {
     });
     // Only one promise is run at once
     const result = await Promise.all(inputs);
+
     return result;
   } catch (err) {
     console.log(err);

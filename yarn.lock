@@ -1749,10 +1749,10 @@ bytes@3.1.2, bytes@^3.0.0:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa@0.10.2:
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.10.2.tgz#0e3dede6b60c407f8c2bce11d410b81f5275434b"
-  integrity sha512-X24wmwkUQrGBRdySRzO2RsORqNuFGznO/21YH1q5yNu0g5Y6ebSIZEUxdPpRpu6QWOB1tMtqF5gIW6QICQ4KEQ==
+c2pa@^0.10.3:
+  version "0.10.3"
+  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.10.3.tgz#be462007fa2a6cb2d2345d4cdd25927ef7d8e7f6"
+  integrity sha512-u8QN1ldpGwglbZwkgaMJ8tjUBB03q/iy3zSrsF1YNjqz4+7m+7OP+agMDEn581X6f4dJY6A8vvX/E4BB03jy4g==
   dependencies:
     "@contentauth/detector" "0.3.0"
     "@contentauth/toolkit" "0.8.1"

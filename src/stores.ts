@@ -198,9 +198,7 @@ export const sourceManifestStore = writable<SdkResult | null>(null, (set) => {
 /**
  * Contains an array of SdkResults of the returned matches
  */
-export const resultsManifestStore = writable<SdkResult[]>([], (set) => {
-  return () => [{}];
-});
+export const resultsManifestStore = writable<SdkResult[]>([]);
 
 /**
  * Sets the SdkResult of the loaded asset.
@@ -382,6 +380,7 @@ function manifestStoreToHierarchy(result: SdkResult) {
    *    have no children underneath.
    */
   if (source && (isPureOtgp || !activeManifest)) {
+    console.log('second if');
     return d3Hierarchy({
       loc: ROOT_LOC,
       type: 'source',
