@@ -42,9 +42,19 @@
   let active: boolean;
   if (value != null) {
     node = $resultHierarchies[value];
+    if ($activeAsset == ['r', value]) {
+      active = true;
+    } else {
+      active = false;
+    }
   } else {
     node = $sourceHierarchy;
-    active = true;
+
+    if ($activeAsset == ['s']) {
+      active = true;
+    } else {
+      active = false;
+    }
   }
   $: manifest = getManifest(node);
   $: sigDate = manifest?.signature?.date;
@@ -53,7 +63,6 @@
 
   function handleActiveAsset() {
     activeAsset.set(['r', value]);
-    active = true;
   }
 </script>
 
