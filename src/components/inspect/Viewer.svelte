@@ -21,7 +21,7 @@
   import { isMobileViewerShown, sourceManifestStore } from '../../stores';
   import CircleLoader from '../CircleLoader.svelte';
   import FileDropper from '../FileDropper.svelte';
-
+  import ViewControls from '../ViewControls.svelte';
   export let node: HierarchyTreeNode | null = null;
   export let isDragging: boolean = false;
   export let isLoading: boolean = false;
@@ -48,7 +48,8 @@
 
 <div class="viewer-wrapper">
   <div
-    class="viewer"
+    class:viewer={isUploadMode}
+    class:viewertree={!isUploadMode}
     class:no-source={!$sourceManifestStore && !isLoading}
     class:upload={isUploadMode}
     class:dragging={isDragging}
@@ -58,12 +59,18 @@
       <FileDropper {isUploadMode} {isDragging} />
       {#if !isUploadMode}
         {#if !isLoading && !isError && hasThumbnail}
-          <img
-            data-test-id="viewer.thumbnail"
-            use:thumbnail={node}
-            on:thumbnail={handleImgSrc}
-            alt="Thumbnail"
-            class="h-full w-full object-contain object-center" />
+          <div class="grid grid-cols-1 grid-rows-10  justify-items-center">
+            <div class="row-span-1">
+              <ViewControls inInspect={true} inOverview={false} />
+            </div>
+
+            <img
+              data-test-id="viewer.thumbnail"
+              use:thumbnail={node}
+              on:thumbnail={handleImgSrc}
+              alt="Thumbnail"
+              class="h-full w-full object-contain object-center row-span-9" />
+          </div>
         {:else}
           <div class="flex items-center justify-center">
             {#if isError || (!isLoading && !hasThumbnail)}
@@ -81,6 +88,9 @@
 <style lang="postcss">
   .viewer {
     @apply w-full bg-gray-75 flex items-center justify-center overflow-hidden;
+  }
+  .viewertree {
+    @apply w-full bg-gray-75 flex p-4 justify-center overflow-hidden;
   }
   .viewer.no-source {
     @apply bg-white;
