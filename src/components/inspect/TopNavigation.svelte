@@ -20,6 +20,7 @@
   import BreadcrumbAsset from '../BreadcrumbAsset.svelte';
   import Dots from '../../../assets/svg/monochrome/dots.svg';
   import CircleLoader from '../CircleLoader.svelte';
+  import DialogManifestRecovery from '../dialogManifestRecovery.svelte';
 
   import {
     primaryLoc,
@@ -31,6 +32,8 @@
     navigateTo,
     resultsManifestStore,
     activeAsset,
+    btnShow,
+    dialog,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
@@ -43,6 +46,7 @@
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
   import { result } from 'lodash';
+  import { writable } from 'svelte/store';
 
   type Page = 'overview' | 'inspect';
 
@@ -50,7 +54,7 @@
   export let currentPage: Page = 'overview';
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
-  let btnShow: boolean = true;
+
   let loadingMatches: boolean = false;
   const dispatch = createEventDispatcher();
   let sourceActive: boolean = true;
@@ -68,7 +72,8 @@
   //onmount
 
   async function handleButtonClick() {
-    btnShow = false;
+    console.log('THIS IS THE BTTON', $btnShow);
+    btnShow.set(false);
     loadingMatches = true;
     const matchesManifests = await recoverManifests();
     loadingMatches = false;
@@ -146,16 +151,32 @@
           </div>
         </div>
       {:else}
-        <BreadcrumbAsset value={null} />
-
-        <Dots class="w-1" />
-        {#if btnShow}
+        <div class="mr-5">
+          <BreadcrumbAsset value={null} />
+        </div>
+        <button>
+          <Dots class="w-1" />
+        </button>
+        <DialogManifestRecovery />
+        {#if $btnShow}
           <div class="match-btn self-center ml-5">
             <sp-button size="s" onclick={handleButtonClick}>
               {$_('comp.topNavigation.matches')}
             </sp-button>
           </div>
+          <div class="self-center ml-5">
+            <cai-tooltip placement="right" class="theme-spectrum">
+              <div
+                slot="content"
+                class="text-gray-900 z-100"
+                style="width: 200px;">
+                Search Content Credentials cloud to see if there is additional
+                attribution and history data associated with your chosen asset.
+              </div>
+            </cai-tooltip>
+          </div>
         {/if}
+
         {#if loadingMatches}
           <div class="self-center ml-5">
             <CircleLoader isSmall={true} />
@@ -176,7 +197,7 @@
   .container {
     --spectrum-picker-m-text-color: var(--black);
     --spectrum-picker-m-text-color-hover: var(--black);
-    --cai-thumbnail-size: 32px;
+    --cai-thumbnail-size: 48px;
     @apply flex bg-white border-b-2 border-gray-200 px-5 max-w-full z-30 items-stretch;
     grid-area: breadcrumb;
     height: 60px;

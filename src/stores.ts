@@ -86,6 +86,8 @@ export const primaryLoc = writable<string>('');
  */
 export const secondaryLoc = writable<string>('');
 
+export const btnShow = writable<boolean>(true);
+
 export const isLoading = writable<boolean>(false);
 
 export const isBurgerMenuShown = writable<boolean>(false);
@@ -428,9 +430,9 @@ export let hierarchy = derived(
  * Convenience accessor for the claim/ingredient data that's linked to the `primaryLoc`.
  */
 export const primary = derived<
-  [typeof sourceHierarchy, typeof primaryLoc],
+  [typeof hierarchy, typeof primaryLoc],
   HierarchyTreeNode
->([sourceHierarchy, primaryLoc], ([$hierarchy, $primaryLoc]) => {
+>([hierarchy, primaryLoc], ([$hierarchy, $primaryLoc]) => {
   return $hierarchy?.find((node) => node.data.loc === $primaryLoc);
 });
 

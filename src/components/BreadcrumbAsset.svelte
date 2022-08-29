@@ -13,7 +13,6 @@
   from Adobe.
 -->
 <script lang="ts">
-  import allo from '../../assets/sample-images/fake-news.jpg';
   import { date, locale, time, _ } from 'svelte-i18n';
   export let hasc2padata: boolean = true;
   import { resultHierarchies, sourceHierarchy, activeAsset } from '../stores';
@@ -26,48 +25,43 @@
     getManifest,
     BadgeProps,
   } from '../lib/node';
-  // export let node: HierarchyTreeNode;
-  // export let isSelected = false;
-  // export let badgeType: BadgeProps['badgeType'] = 'none';
-  // export let badgeHelpText: BadgeProps['badgeHelpText'] = null;
+
   let src = '';
 
   function handleThumbnail(evt: CustomEvent<ThumbnailEvent>) {
     src = evt.detail.url;
   }
   import Thumbnail from './Thumbnail.svelte';
+
   let node;
 
   export let value: number | null;
   let active: boolean;
   if (value != null) {
     node = $resultHierarchies[value];
-    if ($activeAsset == ['r', value]) {
-      active = true;
-    } else {
-      active = false;
-    }
   } else {
     node = $sourceHierarchy;
-
-    if ($activeAsset == ['s']) {
-      active = true;
-    } else {
-      active = false;
-    }
+    active = true;
   }
   $: manifest = getManifest(node);
   $: sigDate = manifest?.signature?.date;
   $: filename = getFilename(node);
   $: badgeProps = getBadgeProps(node);
+  $: isActive =
+    (value === null && $activeAsset[0] == 's') ||
+    (value != null && $activeAsset[1] === value);
 
   function handleActiveAsset() {
-    activeAsset.set(['r', value]);
+    if (value != null) {
+      activeAsset.set(['r', value]);
+    } else {
+      activeAsset.set(['s']);
+    }
   }
 </script>
 
 <sp-theme color="lightest" scale="medium">
-  <div class="container mt-1" class:active>
+  <div class="container mt-1" class:active={isActive}>
     <sp-button onclick={handleActiveAsset}
       ><div class="grid grid-cols-4 gap-3">
         <Thumbnail {node} {...badgeProps} />
@@ -75,12 +69,11 @@
           <p class="filename">
             {filename}
           </p>
-          {#if value != null}
-            <p class="date">
-              {$date(sigDate, { format: 'medium' })}{' at '}
-              {$time(sigDate, { format: 'short' })}
-            </p>
-          {/if}
+
+          <p class="date">
+            {$date(sigDate, { format: 'medium' })}{' at '}
+            {$time(sigDate, { format: 'short' })}
+          </p>
         </div>
       </div></sp-button>
   </div>
@@ -88,12 +81,12 @@
 
 <style lang="postcss">
   .container {
-    --cai-thumbnail-size: 39px;
+    --cai-thumbnail-size: 48px;
   }
 
   .container > sp-button {
     width: 207px;
-    height: 48px;
+    height: 52px;
     background-color: white;
 
     padding: 0;

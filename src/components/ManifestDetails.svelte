@@ -54,6 +54,19 @@
   });
 </script>
 
+{#if producer}
+  <div>
+    <dl>
+      <AboutSection
+        title={$_('comp.about.producedBy')}
+        helper={$_('comp.about.producedBy.helpText')}>
+        <dl data-test-id="about.produced-by">
+          <dd>{producer.name}</dd>
+        </dl>
+      </AboutSection>
+    </dl>
+  </div>
+{/if}
 <div>
   <dl>
     <AboutSection
@@ -157,17 +170,6 @@
   </AboutSection>
 {/if}
 
-{#if producer}
-  <div>
-    <AboutSection
-      title={$_('comp.about.producedBy')}
-      helper={$_('comp.about.producedBy.helpText')}>
-      <dl data-test-id="about.produced-by">
-        <dd>{producer.name}</dd>
-      </dl>
-    </AboutSection>
-  </div>
-{/if}
 {#if website}
   <div>
     <AboutSection
