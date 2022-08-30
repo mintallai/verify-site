@@ -16,9 +16,7 @@
   import { date, locale, time, _ } from 'svelte-i18n';
   export let hasc2padata: boolean = true;
   import { resultHierarchies, sourceHierarchy, activeAsset } from '../stores';
-
   import { thumbnail, ThumbnailEvent } from '../lib/thumbnail';
-
   import {
     getBadgeProps,
     getFilename,

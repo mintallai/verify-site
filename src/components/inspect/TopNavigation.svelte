@@ -20,11 +20,8 @@
   import BreadcrumbAsset from '../BreadcrumbAsset.svelte';
   import Dots from '../../../assets/svg/monochrome/dots.svg';
   import CircleLoader from '../CircleLoader.svelte';
-  import Dialog from '../Dialog.svelte';
-  import DialogManifestRecovery from '../dialogManifestRecovery.svelte';
   import '@spectrum-web-components/overlay/overlay-trigger.js';
   import '@spectrum-web-components/dialog/sp-dialog-wrapper.js';
-
   import {
     primaryLoc,
     ancestors,
@@ -36,19 +33,16 @@
     resultsManifestStore,
     activeAsset,
     btnShow,
-    dialog,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import ChevronRight from '../../../assets/svg/monochrome/chevron-right.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
   import Thumbnail from '../Thumbnail.svelte';
-
   import { getFilename } from '../../lib/node';
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
-  import { result, truncate } from 'lodash';
   import { writable } from 'svelte/store';
 
   type Page = 'overview' | 'inspect';
@@ -57,7 +51,6 @@
   export let currentPage: Page = 'overview';
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
-  let ModalOpen = false;
   let loadingMatches: boolean = false;
   const dispatch = createEventDispatcher();
   let sourceActive: boolean = true;
@@ -82,22 +75,16 @@
       resultsManifestStore.set(matchesManifests);
     }
   }
-  const modalOpen = writable<boolean>(true);
-  function handleModal() {
-    ModalOpen = true;
-  }
+  let open: boolean = true;
+
   const onCancel = () => {
-    console.log(open);
-    modalOpen.set(false);
+    open = false;
   };
   const onConfirm = () => {
-    console.log(open);
-    modalOpen.set(true);
-    console.log(open);
+    open = true;
   };
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
-  $: open = $modalOpen;
 </script>
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
@@ -168,12 +155,10 @@
         <div class="mr-5">
           <BreadcrumbAsset value={null} />
         </div>
-        <!-- <button onclick={handleModal}> -->
         <div class="modal flex items-center">
-          <overlay-trigger placement="left-start" type="replace" {open}>
+          <overlay-trigger placement="right-start" type="replace" {open}>
             <sp-button slot="trigger" variant="none" onclick={onConfirm}>
               <Dots class="w-1" /></sp-button>
-
             <sp-popover slot="click-content">
               <sp-dialog size="s">
                 <h1 slot="heading" class="font-bold">
@@ -219,7 +204,7 @@
 
         {#if loadingMatches}
           <div class="self-center ml-5">
-            <CircleLoader isSmall={true} />
+            <CircleLoader size="s" />
           </div>
         {:else}
           {#each $resultsManifestStore as { manifestStore }, i}
