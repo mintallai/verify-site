@@ -63,7 +63,6 @@
             <div class="row-span-1">
               <ViewControls inInspect={true} inOverview={false} />
             </div>
-
             <img
               data-test-id="viewer.thumbnail"
               use:thumbnail={node}

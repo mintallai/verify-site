@@ -48,7 +48,7 @@
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
-  import { result } from 'lodash';
+  import { result, truncate } from 'lodash';
   import { writable } from 'svelte/store';
 
   type Page = 'overview' | 'inspect';
@@ -82,18 +82,22 @@
       resultsManifestStore.set(matchesManifests);
     }
   }
-
+  const modalOpen = writable<boolean>(true);
   function handleModal() {
     ModalOpen = true;
   }
-  function onCancel() {
-    open: false;
-  }
-  function onConfirm() {
-    open: true;
-  }
+  const onCancel = () => {
+    console.log(open);
+    modalOpen.set(false);
+  };
+  const onConfirm = () => {
+    console.log(open);
+    modalOpen.set(true);
+    console.log(open);
+  };
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
+  $: open = $modalOpen;
 </script>
 
 <div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
@@ -165,31 +169,35 @@
           <BreadcrumbAsset value={null} />
         </div>
         <!-- <button onclick={handleModal}> -->
-        <div class="modal">
-          <overlay-trigger offset="0" type="replace">
-            <sp-button slot="trigger" variant="none">
+        <div class="modal flex items-center">
+          <overlay-trigger placement="left-start" type="replace" {open}>
+            <sp-button slot="trigger" variant="none" onclick={onConfirm}>
               <Dots class="w-1" /></sp-button>
 
-            <sp-dialog-wrapper
-              slot="click-content"
-              headline={$_('dialog.manifestRecovery.headline')}
-              size="s"
-              open="true"
-              cancel-label={$_('dialog.manifestRecovery.buttons.OK')}
-              confirm-label={$_('dialog.manifestRecovery.buttons.feedback')}
-              on:cancel={onCancel}
-              on:confirm={onConfirm}>
-              {$_('dialog.manifestRecovery.intro')} <br /> <br />
-              {$_('dialog.manifestRecovery.search')}
-              <a
-                href="https://contentauthenticity.org/"
-                class="underline text-blue-400"
-                >{$_('dialog.manifestRecovery.link')}</a>
-            </sp-dialog-wrapper>
+            <sp-popover slot="click-content">
+              <sp-dialog size="s">
+                <h1 slot="heading" class="font-bold">
+                  {$_('dialog.manifestRecovery.headline')}
+                </h1>
+                {$_('dialog.manifestRecovery.intro')} <br /> <br />
+                {$_('dialog.manifestRecovery.search')}
+                <a
+                  href="https://contentauthenticity.org/"
+                  class="underline text-blue-400"
+                  >{$_('dialog.manifestRecovery.link')}</a>
+                <sp-button
+                  slot="button"
+                  treatment="outline"
+                  variant="primary"
+                  class="border-2 border-solid border-[#4A4A4A]"
+                  onclick={onCancel}>
+                  OK
+                </sp-button>
+              </sp-dialog>
+            </sp-popover>
           </overlay-trigger>
         </div>
-        <!-- </button>
-        <DialogManifestRecovery open={ModalOpen} /> -->
+
         {#if $btnShow}
           <div class="match-btn self-center ml-5">
             <sp-button size="s" onclick={handleButtonClick}>
@@ -241,6 +249,9 @@
     background-color: #f6f6f6;
   }
 
+  .modal > overlay-trigger > sp-popover > sp-dialog > sp-button {
+    border: 2px solid black;
+  }
   .container > sp-theme {
     @apply flex items-stretch;
   }
