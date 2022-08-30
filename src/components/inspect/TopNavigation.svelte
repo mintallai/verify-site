@@ -20,7 +20,10 @@
   import BreadcrumbAsset from '../BreadcrumbAsset.svelte';
   import Dots from '../../../assets/svg/monochrome/dots.svg';
   import CircleLoader from '../CircleLoader.svelte';
+  import Dialog from '../Dialog.svelte';
   import DialogManifestRecovery from '../dialogManifestRecovery.svelte';
+  import '@spectrum-web-components/overlay/overlay-trigger.js';
+  import '@spectrum-web-components/dialog/sp-dialog-wrapper.js';
 
   import {
     primaryLoc,
@@ -54,7 +57,7 @@
   export let currentPage: Page = 'overview';
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
-
+  let ModalOpen = false;
   let loadingMatches: boolean = false;
   const dispatch = createEventDispatcher();
   let sourceActive: boolean = true;
@@ -69,10 +72,8 @@
   function handleCompareChange() {
     setCompareMode(this.value);
   }
-  //onmount
 
   async function handleButtonClick() {
-    console.log('THIS IS THE BTTON', $btnShow);
     btnShow.set(false);
     loadingMatches = true;
     const matchesManifests = await recoverManifests();
@@ -82,6 +83,15 @@
     }
   }
 
+  function handleModal() {
+    ModalOpen = true;
+  }
+  function onCancel() {
+    open: false;
+  }
+  function onConfirm() {
+    open: true;
+  }
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
 </script>
@@ -154,10 +164,32 @@
         <div class="mr-5">
           <BreadcrumbAsset value={null} />
         </div>
-        <button>
-          <Dots class="w-1" />
-        </button>
-        <DialogManifestRecovery />
+        <!-- <button onclick={handleModal}> -->
+        <div class="modal">
+          <overlay-trigger offset="0" type="replace">
+            <sp-button slot="trigger" variant="none">
+              <Dots class="w-1" /></sp-button>
+
+            <sp-dialog-wrapper
+              slot="click-content"
+              headline={$_('dialog.manifestRecovery.headline')}
+              size="s"
+              open="true"
+              cancel-label={$_('dialog.manifestRecovery.buttons.OK')}
+              confirm-label={$_('dialog.manifestRecovery.buttons.feedback')}
+              on:cancel={onCancel}
+              on:confirm={onConfirm}>
+              {$_('dialog.manifestRecovery.intro')} <br /> <br />
+              {$_('dialog.manifestRecovery.search')}
+              <a
+                href="https://contentauthenticity.org/"
+                class="underline text-blue-400"
+                >{$_('dialog.manifestRecovery.link')}</a>
+            </sp-dialog-wrapper>
+          </overlay-trigger>
+        </div>
+        <!-- </button>
+        <DialogManifestRecovery open={ModalOpen} /> -->
         {#if $btnShow}
           <div class="match-btn self-center ml-5">
             <sp-button size="s" onclick={handleButtonClick}>
@@ -168,7 +200,7 @@
             <cai-tooltip placement="right" class="theme-spectrum">
               <div
                 slot="content"
-                class="text-gray-900 z-100"
+                class="text-gray-900 z-50"
                 style="width: 200px;">
                 Search Content Credentials cloud to see if there is additional
                 attribution and history data associated with your chosen asset.
