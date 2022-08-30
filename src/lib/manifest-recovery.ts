@@ -18,7 +18,6 @@ const uploadToS3 = async (url, sourceImage) => {
 };
 
 const getUploadUrlAndFilename = async (sourceImage) => {
-  console.log(sourceImage);
   const body = JSON.stringify({ content_type: sourceImage.type });
   const headers = { 'Content-Type': 'application/json' };
   try {
@@ -50,24 +49,19 @@ export const recoverManifests = async () => {
     const data = await getUploadUrlAndFilename(sourceImage);
     const url = data.url;
     const filename = data.filename;
-    console.log(data);
     if ((await uploadToS3(url, sourceImage)) === 200) {
       const res = await fetchManifests(filename);
       const manifests = await res.json();
-      console.log(manifests.results);
       const sdk = await getSdk();
       const inputs = manifests.results?.map(({ url }) => {
-        console.log('input url', url);
         const processResult = async () => {
           const resultResponse = await fetch(url.replace(/\/assets\/.*$/, ''), {
             mode: 'cors',
           });
           const resultData = await resultResponse.arrayBuffer();
-          console.log('arrayBuffer', resultData);
           const blob = new Blob([resultData], {
             type: 'application/x-c2pa-manifest-store',
           });
-          console.log(blob.type);
           return sdk.read(blob);
         };
         return limit(processResult);
