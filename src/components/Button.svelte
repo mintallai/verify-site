@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   export let href: string | undefined = undefined;
   export let secondary: boolean = false;
