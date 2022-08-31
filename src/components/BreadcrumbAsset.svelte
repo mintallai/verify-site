@@ -19,17 +19,10 @@
   import { getBadgeProps, getFilename, getManifest } from '../lib/node';
   import Thumbnail from './Thumbnail.svelte';
 
-  let active: boolean;
-  let node;
   let src = '';
   export let value: number | null;
-  
-  if (value != null) {
-    node = $resultHierarchies[value];
-  } else {
-    node = $sourceHierarchy;
-    active = true;
-  }
+
+  $: node = value != null ? $resultHierarchies[value] : $sourceHierarchy;
   $: manifest = getManifest(node);
   $: sigDate = manifest?.signature?.date;
   $: filename = getFilename(node);
@@ -37,7 +30,7 @@
   $: isActive =
     (value === null && $activeAsset[0] == 's') ||
     (value != null && $activeAsset[1] === value);
-    
+
   function handleThumbnail(evt: CustomEvent<ThumbnailEvent>) {
     src = evt.detail.url;
   }
