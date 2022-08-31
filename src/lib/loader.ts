@@ -17,7 +17,6 @@ import dragDrop from 'drag-drop';
 import { page } from '@roxi/routify';
 import { postEvent, IngestPayload } from '../lib/analytics';
 import { getSdk, SdkResult } from '../lib/sdk';
-import { recoverManifests } from './manifest-recovery';
 import { getConfig } from '../lib/config';
 import {
   urlParams,
@@ -102,15 +101,7 @@ function showLegacyCredentialModal(source: File | string) {
     },
   });
 }
-export function showManifestRecoveryModal() {
-  dialog.set({
-    headlineKey: 'dialog.manifestRecovery.headline',
-    contentKey: 'dialog.manifestRecovery.content',
-    open: true,
-    onCancel: () => dialog.update((x) => ({ ...x, open: false })),
-    onConfirm: () => dialog.update((x) => ({ ...x, open: false })),
-  });
-}
+
 async function hasLegacyCredentials(source: File | string) {
   try {
     const legacySdk = 'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12';

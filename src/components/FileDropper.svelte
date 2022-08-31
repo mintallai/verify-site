@@ -23,7 +23,7 @@
   export let isDragging: boolean = false;
   export let isError: boolean = false;
   let fileInput: HTMLInputElement;
-  const { loadFile } = getContext(CONTEXT_KEY);
+  const { loadFile } = getContext<any>(CONTEXT_KEY);
   function browseFile() {
     fileInput.click();
   }

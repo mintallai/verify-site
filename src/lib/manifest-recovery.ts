@@ -1,61 +1,78 @@
 import pLimit from 'p-limit';
-import { getSdk, SdkResult } from '../lib/sdk';
+import { getSdk } from '../lib/sdk';
 const limit = pLimit(4);
-import { activeAsset, urlParams, sourceManifestStore } from '../stores';
+import { sourceManifestStore } from '../stores';
 import { get } from 'svelte/store';
-const baseUrl = `https://cai-msb-stage.adobe.io`;
+import { getConfig } from '../lib/config';
 const apiKey = 'cai-verify-site';
+const baseParams = { api_key: apiKey };
 
 const uploadToS3 = async (url, sourceImage) => {
   const body = sourceImage;
   const headers = { 'Content-Type': sourceImage.type };
   try {
     const res = await fetch(`${url}`, { method: 'PUT', body, headers });
-    return res.status;
+    if (res.status === 200) {
+      return true;
+    }
   } catch (err) {
-    return err;
+    throw new Error(`S3 upload failed`);
   }
 };
 
-const getUploadUrlAndFilename = async (sourceImage) => {
+const getUploadUrlAndFilename = async (sourceImage, baseUrl) => {
   const body = JSON.stringify({ content_type: sourceImage.type });
   const headers = { 'Content-Type': 'application/json' };
+  const params = new URLSearchParams(baseParams);
   try {
-    const res = await fetch(`${baseUrl}/sign_upload/v1?api_key=${apiKey}`, {
+    const res = await fetch(`${baseUrl}/sign_upload/v1?${params.toString()}`, {
       method: 'POST',
       body,
       headers,
     });
-    const data = await res.json();
-    return data;
+    return res.json();
   } catch (err) {
-    return err;
+    throw new Error(`Get search upload URL failed`);
   }
 };
 
-const fetchManifests = async (filename) => {
+const fetchManifests = async (filename: string, baseUrl) => {
+  const params = new URLSearchParams({
+    ...baseParams,
+    filename: filename,
+    real_search: '1',
+  });
   try {
     const manifests = await fetch(
-      `${baseUrl}/manifests/v1?api_key=cai-verify-site&real_search=1&filename=${filename}`,
+      `${baseUrl}/manifests/v1?${params.toString()}`,
     );
-    return manifests;
+    return manifests.json();
   } catch (err) {
-    return err;
+    throw new Error(`Fetching manifests with filename failed`);
   }
 };
 export const recoverManifests = async () => {
   try {
     const sourceImage = get(sourceManifestStore)?.source.blob;
-    const data = await getUploadUrlAndFilename(sourceImage);
-    const url = data.url;
-    const filename = data.filename;
-    if ((await uploadToS3(url, sourceImage)) === 200) {
-      const res = await fetchManifests(filename);
-      const manifests = await res.json();
+    if (!sourceImage) {
+      return;
+    }
+    const config = await getConfig();
+    const baseUrl =
+      config.env === 'prod'
+        ? `https://cai-msb.adobe.io`
+        : `https://cai-msb-stage.adobe.io`;
+    const { url, filename } = await getUploadUrlAndFilename(
+      sourceImage,
+      baseUrl,
+    );
+    if (await uploadToS3(url, sourceImage)) {
+      const manifests = await fetchManifests(filename, baseUrl);
       const sdk = await getSdk();
       const inputs = manifests.results?.map(({ url }) => {
         const processResult = async () => {
           const resultResponse = await fetch(url.replace(/\/assets\/.*$/, ''), {
+            //TODO : remove this field once it's been solved on the service side
             mode: 'cors',
           });
           const resultData = await resultResponse.arrayBuffer();
@@ -67,10 +84,9 @@ export const recoverManifests = async () => {
         return limit(processResult);
       });
       // Only one promise is run at once
-      const result = await Promise.all(inputs);
-      return result;
+      return Promise.all(inputs);
     }
   } catch (err) {
-    console.log(err);
+    throw new Error(`Recover manifests failed`);
   }
 };

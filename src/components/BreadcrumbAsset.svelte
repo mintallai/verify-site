@@ -13,23 +13,16 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { date, locale, time, _ } from 'svelte-i18n';
-  export let hasc2padata: boolean = true;
+  import { date, time, _ } from 'svelte-i18n';
   import { resultHierarchies, sourceHierarchy, activeAsset } from '../stores';
-  import { thumbnail, ThumbnailEvent } from '../lib/thumbnail';
-  import {
-    getBadgeProps,
-    getFilename,
-    getManifest,
-    BadgeProps,
-  } from '../lib/node';
-
+  import { ThumbnailEvent } from '../lib/thumbnail';
+  import { getBadgeProps, getFilename, getManifest } from '../lib/node';
+  import Thumbnail from './Thumbnail.svelte';
   let src = '';
 
   function handleThumbnail(evt: CustomEvent<ThumbnailEvent>) {
     src = evt.detail.url;
   }
-  import Thumbnail from './Thumbnail.svelte';
 
   let node;
 

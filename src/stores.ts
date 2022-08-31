@@ -185,7 +185,6 @@ export function compareWith(loc: string | null, logEvent = true): void {
     });
   }
 }
-//writable
 type ActiveAssetType = ['s'] | ['r', number];
 
 export const activeAsset = writable<ActiveAssetType>(['s']);
@@ -412,7 +411,6 @@ export const resultHierarchies = derived<
     return null;
   });
 });
-//should i be mapping through result manifest here
 
 export let hierarchy = derived(
   [sourceHierarchy, resultHierarchies, activeAsset],

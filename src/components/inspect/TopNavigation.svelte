@@ -1,6 +1,6 @@
 <!--
   ADOBE CONFIDENTIAL
-  Copyright 2021 Adobe
+  Copyright 2022 Adobe
   All Rights Reserved.
 
   NOTICE: All information contained herein is, and remains
@@ -55,9 +55,6 @@
   const dispatch = createEventDispatcher();
   let sourceActive: boolean = true;
 
-  if ($activeAsset == ['s']) {
-    sourceActive = true;
-  }
   function handleNavChange() {
     $goto(this.selected, $params);
   }
@@ -174,7 +171,7 @@
                   slot="button"
                   treatment="outline"
                   variant="primary"
-                  class="border-2 border-solid border-[#4A4A4A]"
+                  class="border-2 border-solid border-gray-800"
                   onclick={onCancel}>
                   OK
                 </sp-button>
@@ -228,15 +225,9 @@
     height: 60px;
   }
   .match-btn > sp-button {
-    width: fit-content;
-    height: 34px;
-    color: #6e6e6e;
-    background-color: #f6f6f6;
+    @apply w-fit h-[34px] text-gray-700 bg-gray-100;
   }
 
-  .modal > overlay-trigger > sp-popover > sp-dialog > sp-button {
-    border: 2px solid black;
-  }
   .container > sp-theme {
     @apply flex items-stretch;
   }
