@@ -27,7 +27,7 @@
   <div class="inline-block">
     {#if inOverview}
       <div class="container1Selected inline-block">
-        <sp-button on:click={$goto('/overview')}>
+        <sp-button on:click={$goto('/overview')} data-test-id="overview.btn">
           <div class="flex">
             <OverviewIcon class="h-4 w-4 mr-2" />
             {$_('comp.topNavigation.overview')}

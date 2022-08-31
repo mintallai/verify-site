@@ -13,6 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
   import { goto, params } from '@roxi/routify';
@@ -75,9 +76,11 @@
     },
   };
   setLoaderContext(loaderParams);
-  if (!$hasContent) {
-    $goto('/inspect', $params);
-  }
+  onMount(() => {
+    if (!$hasContent) {
+      $goto('/inspect', $params);
+    }
+  });
 </script>
 
 <svelte:window />

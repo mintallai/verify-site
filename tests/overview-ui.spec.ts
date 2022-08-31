@@ -21,8 +21,11 @@ import { data } from 'autoprefixer';
 
 test.describe('overview - UI rendering', () => {
   for (const { description, imagePath, claim } of allImages) {
-    test(`${description} [${imagePath}]`, async ({ overviewPage }) => {
-      await overviewPage.uploadImage(imagePath);
+    test(`${description} [${imagePath}]`, async ({
+      overviewPage,
+      inspectPage,
+    }) => {
+      await inspectPage.uploadImage(imagePath);
 
       await test.step('tree view', async () => {
         await overviewPage.uploadImage(imagePath);

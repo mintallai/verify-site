@@ -153,8 +153,8 @@
         </div>
         <div class="modal flex items-center">
           <overlay-trigger placement="right-start" type="replace" {open}>
-            <sp-button slot="trigger" variant="none" onclick={onConfirm}>
-              <Dots class="w-1" /></sp-button>
+            <button slot="trigger" onclick={onConfirm}>
+              <Dots class="w-1" /></button>
             <sp-popover slot="click-content">
               <sp-dialog size="s">
                 <h1 slot="heading" class="font-bold">
