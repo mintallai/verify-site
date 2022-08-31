@@ -38,7 +38,7 @@
     isMobileViewerShown,
     noMetadata,
     primary,
-    provenance,
+    sourceManifestStore,
     secondary,
     urlParams,
   } from '../stores';
@@ -79,7 +79,7 @@
       tour.cancel();
     }
     // Clear errors if the store report has changed
-    if ($provenance !== undefined) {
+    if ($sourceManifestStore !== undefined) {
       error = null;
     }
   }

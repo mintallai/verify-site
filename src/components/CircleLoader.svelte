@@ -16,10 +16,14 @@
   import '@spectrum-web-components/progress-circle/sp-progress-circle.js';
 </script>
 
+<script lang="ts">
+  export let size: string = 'large';
+</script>
+
 <sp-theme color="lightest" scale="medium">
   <sp-progress-circle
     label="Loading asset data"
     indeterminate="true"
-    size="large"
+    {size}
     class="loader" />
 </sp-theme>

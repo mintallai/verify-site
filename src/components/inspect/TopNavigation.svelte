@@ -16,6 +16,12 @@
   import { goto, params, url } from '@roxi/routify';
   import { createEventDispatcher } from 'svelte';
   import { _, locale } from 'svelte-i18n';
+  import { recoverManifests } from '../../lib/manifest-recovery';
+  import BreadcrumbAsset from '../BreadcrumbAsset.svelte';
+  import Dots from '../../../assets/svg/monochrome/dots.svg';
+  import CircleLoader from '../CircleLoader.svelte';
+  import '@spectrum-web-components/overlay/overlay-trigger.js';
+  import '@spectrum-web-components/dialog/sp-dialog-wrapper.js';
   import {
     primaryLoc,
     ancestors,
@@ -24,6 +30,9 @@
     CompareMode,
     isMobileViewerShown,
     navigateTo,
+    resultsManifestStore,
+    activeAsset,
+    btnShow,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
@@ -41,7 +50,9 @@
   export let currentPage: Page = 'overview';
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
+  let loadingMatches: boolean = false;
   const dispatch = createEventDispatcher();
+  let sourceActive: boolean = true;
 
   function handleNavChange() {
     $goto(this.selected, $params);
@@ -51,6 +62,23 @@
     setCompareMode(this.value);
   }
 
+  async function handleButtonClick() {
+    btnShow.set(false);
+    loadingMatches = true;
+    const matchesManifests = await recoverManifests();
+    loadingMatches = false;
+    if (Array.isArray(matchesManifests)) {
+      resultsManifestStore.set(matchesManifests);
+    }
+  }
+  let open: boolean = true;
+
+  const onCancel = () => {
+    open = false;
+  };
+  const onConfirm = () => {
+    open = true;
+  };
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
 </script>
@@ -119,6 +147,67 @@
             <span class="font-regular text-smd ml-2">{getFilename(node)}</span>
           </div>
         </div>
+      {:else}
+        <div class="mr-5">
+          <BreadcrumbAsset value={null} />
+        </div>
+        <div class="modal flex items-center">
+          <overlay-trigger placement="right-start" type="replace" {open}>
+            <button slot="trigger" onclick={onConfirm}>
+              <Dots class="w-1" /></button>
+            <sp-popover slot="click-content">
+              <sp-dialog size="s">
+                <h1 slot="heading" class="font-bold">
+                  {$_('dialog.manifestRecovery.headline')}
+                </h1>
+                {$_('dialog.manifestRecovery.intro')} <br /> <br />
+                {$_('dialog.manifestRecovery.search')}
+                <a
+                  href="https://contentauthenticity.org/"
+                  class="underline text-blue-400"
+                  >{$_('dialog.manifestRecovery.link')}</a>
+                <sp-button
+                  slot="button"
+                  treatment="outline"
+                  variant="primary"
+                  class="border-2 border-solid border-gray-800"
+                  onclick={onCancel}>
+                  OK
+                </sp-button>
+              </sp-dialog>
+            </sp-popover>
+          </overlay-trigger>
+        </div>
+
+        {#if $btnShow}
+          <div class="match-btn self-center ml-5">
+            <sp-button size="s" onclick={handleButtonClick}>
+              {$_('comp.topNavigation.matches')}
+            </sp-button>
+          </div>
+          <div class="self-center ml-5">
+            <cai-tooltip placement="right" class="theme-spectrum">
+              <div
+                slot="content"
+                class="text-gray-900 z-50"
+                style="width: 200px;">
+                {$_('comp.topNavigation.tooltip')}
+              </div>
+            </cai-tooltip>
+          </div>
+        {/if}
+
+        {#if loadingMatches}
+          <div class="self-center ml-5">
+            <CircleLoader size="s" />
+          </div>
+        {:else}
+          {#each $resultsManifestStore as { manifestStore }, i}
+            <div class="breadcrumb-item items-center current p-0 ml-5" />
+
+            <BreadcrumbAsset value={i} />
+          {/each}
+        {/if}
       {/if}
     </sp-theme>
   {/if}
@@ -128,11 +217,15 @@
   .container {
     --spectrum-picker-m-text-color: var(--black);
     --spectrum-picker-m-text-color-hover: var(--black);
-    --cai-thumbnail-size: 32px;
+    --cai-thumbnail-size: 48px;
     @apply flex bg-white border-b-2 border-gray-200 px-5 max-w-full z-30 items-stretch;
     grid-area: breadcrumb;
     height: 60px;
   }
+  .match-btn > sp-button {
+    @apply w-fit h-[34px] text-gray-700 bg-gray-100;
+  }
+
   .container > sp-theme {
     @apply flex items-stretch;
   }
@@ -146,6 +239,7 @@
   .breadcrumb-nav {
     --cai-thumbnail-size: 20px;
   }
+
   .nav-tabs {
     --spectrum-tabs-rule-color: var(--white);
     --spectrum-tabs-m-text-color: var(--gray-700);

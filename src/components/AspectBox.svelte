@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import cssVars from 'svelte-css-vars';
   export let ratio: number = 1;

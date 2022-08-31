@@ -13,8 +13,10 @@
   from Adobe.
 -->
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
+  import { goto, params } from '@roxi/routify';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
   import FileDropper from '../components/FileDropper.svelte';
@@ -34,7 +36,7 @@
     isMobileViewerShown,
     noMetadata,
     primary,
-    provenance,
+    sourceManifestStore,
     urlParams,
   } from '../stores';
 
@@ -49,7 +51,7 @@
       tour.cancel();
     }
     // Clear errors if the store report has changed
-    if ($provenance !== undefined) {
+    if ($sourceManifestStore !== undefined) {
       error = null;
     }
   }
@@ -74,6 +76,11 @@
     },
   };
   setLoaderContext(loaderParams);
+  // onMount(() => {
+  //   if (!$hasContent) {
+  //     $goto('/inspect', $params);
+  //   }
+  // });
 </script>
 
 <svelte:window />
@@ -84,7 +91,7 @@
   use:loader={loaderParams}
   use:breakpoints
   class="theme-light"
-  class:full-width={isUploadMode && !$provenance && !error}>
+  class:full-width={isUploadMode && !$sourceManifestStore && !error}>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
