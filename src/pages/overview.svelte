@@ -76,11 +76,11 @@
     },
   };
   setLoaderContext(loaderParams);
-  onMount(() => {
-    if (!$hasContent) {
-      $goto('/inspect', $params);
-    }
-  });
+  // onMount(() => {
+  //   if (!$hasContent) {
+  //     $goto('/inspect', $params);
+  //   }
+  // });
 </script>
 
 <svelte:window />
