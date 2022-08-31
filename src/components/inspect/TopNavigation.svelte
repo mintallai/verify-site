@@ -1,6 +1,6 @@
 <!--
   ADOBE CONFIDENTIAL
-  Copyright 2022 Adobe
+  Copyright 2021 Adobe
   All Rights Reserved.
 
   NOTICE: All information contained herein is, and remains
@@ -43,7 +43,6 @@
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
-  import { writable } from 'svelte/store';
 
   type Page = 'overview' | 'inspect';
 
@@ -192,8 +191,7 @@
                 slot="content"
                 class="text-gray-900 z-50"
                 style="width: 200px;">
-                Search Content Credentials cloud to see if there is additional
-                attribution and history data associated with your chosen asset.
+                {$_('comp.topNavigation.tooltip')}
               </div>
             </cai-tooltip>
           </div>
