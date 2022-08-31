@@ -60,11 +60,12 @@
           <p class="filename">
             {filename}
           </p>
-
-          <p class="date">
-            {$date(sigDate, { format: 'medium' })}{' at '}
-            {$time(sigDate, { format: 'short' })}
-          </p>
+          {#if sigDate}
+            <p class="date">
+              {$date(sigDate, { format: 'medium' })}{' at '}
+              {$time(sigDate, { format: 'short' })}
+            </p>
+          {/if}
         </div>
       </div></sp-button>
   </div>
