@@ -18,16 +18,12 @@
   import { ThumbnailEvent } from '../lib/thumbnail';
   import { getBadgeProps, getFilename, getManifest } from '../lib/node';
   import Thumbnail from './Thumbnail.svelte';
-  let src = '';
 
-  function handleThumbnail(evt: CustomEvent<ThumbnailEvent>) {
-    src = evt.detail.url;
-  }
-
-  let node;
-
-  export let value: number | null;
   let active: boolean;
+  let node;
+  let src = '';
+  export let value: number | null;
+  
   if (value != null) {
     node = $resultHierarchies[value];
   } else {
@@ -41,6 +37,10 @@
   $: isActive =
     (value === null && $activeAsset[0] == 's') ||
     (value != null && $activeAsset[1] === value);
+    
+  function handleThumbnail(evt: CustomEvent<ThumbnailEvent>) {
+    src = evt.detail.url;
+  }
 
   function handleActiveAsset() {
     if (value != null) {
