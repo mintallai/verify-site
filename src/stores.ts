@@ -214,6 +214,8 @@ export async function setProvenance(result: SdkResult | null) {
   } else {
     dbg('No provenance found');
     sourceManifestStore.set(null);
+    resultsManifestStore.set([]);
+    btnShow.set(true);
   }
 }
 

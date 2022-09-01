@@ -50,7 +50,7 @@
       ><div class="grid grid-cols-4 gap-3">
         <Thumbnail {node} {...badgeProps} />
         <div class="col-span-3 text-left font-regular self-center">
-          <p class="filename">
+          <p class="filename truncate">
             {filename}
           </p>
           {#if sigDate}
