@@ -214,6 +214,8 @@ export async function setProvenance(result: SdkResult | null) {
   } else {
     dbg('No provenance found');
     sourceManifestStore.set(null);
+    resultsManifestStore.set([]);
+    btnShow.set(true);
   }
 }
 
@@ -381,7 +383,6 @@ function manifestStoreToHierarchy(result: SdkResult) {
    *    have no children underneath.
    */
   if (source && (isPureOtgp || !activeManifest)) {
-    console.log('second if');
     return d3Hierarchy({
       loc: ROOT_LOC,
       type: 'source',

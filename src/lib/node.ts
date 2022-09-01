@@ -110,12 +110,12 @@ export function isAncestorOf(path: string, loc: string) {
  * Generates the badge props (used by the `cai-thumbnail`) from the claim data
  */
 export function getBadgeProps(node: HierarchyTreeNode): BadgeProps {
-  if (node.data.hasError) {
+  if (node?.data.hasError) {
     return {
       badgeType: 'alert',
       badgeHelpText: 'comp.asset.badgeError.helpText',
     };
-  } else if (node.data.isOtgp) {
+  } else if (node?.data.isOtgp) {
     return {
       badgeType: 'missing',
       badgeHelpText: 'comp.asset.badgeMissing.helpText',

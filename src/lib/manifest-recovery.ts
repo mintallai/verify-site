@@ -1,9 +1,12 @@
 import pLimit from 'p-limit';
 import { getSdk } from '../lib/sdk';
-const limit = pLimit(4);
 import { sourceManifestStore } from '../stores';
 import { get } from 'svelte/store';
 import { getConfig } from '../lib/config';
+import debug from 'debug';
+
+const dbg = debug('manifest-recovery');
+const limit = pLimit(4);
 const apiKey = 'cai-verify-site';
 const baseParams = { api_key: apiKey };
 
@@ -67,7 +70,9 @@ export const recoverManifests = async () => {
       baseUrl,
     );
     if (await uploadToS3(url, sourceImage)) {
+      dbg('Upload to S3 succeded', { filename, sourceImage });
       const manifests = await fetchManifests(filename, baseUrl);
+      dbg('Manifests search returned', manifests);
       const sdk = await getSdk();
       const inputs = manifests.results?.map(({ url }) => {
         const processResult = async () => {
@@ -85,6 +90,8 @@ export const recoverManifests = async () => {
       });
       // Only one promise is run at once
       return Promise.all(inputs);
+    } else {
+      dbg('Upload to S3 failed');
     }
   } catch (err) {
     throw new Error(`Recover manifests failed`);
