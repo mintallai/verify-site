@@ -381,7 +381,6 @@ function manifestStoreToHierarchy(result: SdkResult) {
    *    have no children underneath.
    */
   if (source && (isPureOtgp || !activeManifest)) {
-    console.log('second if');
     return d3Hierarchy({
       loc: ROOT_LOC,
       type: 'source',
