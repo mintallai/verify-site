@@ -217,6 +217,7 @@ export async function setProvenance(result: SdkResult | null) {
     sourceManifestStore.set(null);
     resultsManifestStore.set([]);
     btnShow.set(true);
+    NoManifestsStore.set(false);
   }
 }
 

@@ -43,6 +43,8 @@
   import '@contentauth/web-components/dist/icons/monochrome/cai';
   import '@contentauth/web-components/dist/components/Thumbnail';
   import '@contentauth/web-components/dist/components/Tooltip';
+  import UploadedAsset from '../UploadedAsset.svelte';
+  import ResultManifestsDisplay from '../ResultManifestsDisplay.svelte';
 
   type Page = 'overview' | 'inspect';
 
@@ -138,49 +140,20 @@
           {/if}
           <div class="grid grid-rows-2">
             <div class="flex">
-              <div class="breadcrumb-item items-center current inline-block">
-                <BreadcrumbAsset value={null} />
-              </div>
-              <div class="ml-8  self-center">
-                <PopoverManifestRecov placement="bottom" />
-              </div>
+              <UploadedAsset mobile={showMenu} />
             </div>
-
-            <div class="flex items-center overflow-hidden">
-              <div class="match-btn">
+            <div class="flex ">
+              <div class="match-btn self-center ">
                 <sp-button size="s" onclick={handleButtonClick}>
                   {$_('comp.topNavigation.matches')}
                 </sp-button>
               </div>
-              {#if loadingMatches}
-                <div class="self-center ml-5">
-                  <CircleLoader size="s" />
-                </div>
-              {:else}
-                {#if $NoManifestsStore}
-                  <div class="font-bold text-gray-700 self-center ml-5 ">
-                    No results found
-                  </div>
-                {/if}
-                <div class="flex overflow-x-auto">
-                  {#each $resultsManifestStore as { manifestStore }, i}
-                    <div class="inline-block">
-                      <BreadcrumbAsset value={i} />
-                    </div>
-                  {/each}
-                </div>
-              {/if}
+              <ResultManifestsDisplay {loadingMatches} mobile={showMenu} />
             </div>
           </div>
         </div>
       {:else}
-        <div class="mr-5">
-          <BreadcrumbAsset value={null} />
-        </div>
-        <div class="modal flex items-center">
-          <PopoverManifestRecov />
-        </div>
-
+        <UploadedAsset mobile={showMenu} />
         <div class="match-btn self-center ml-5">
           <sp-button size="s" onclick={handleButtonClick}>
             {$_('comp.topNavigation.matches')}
@@ -196,22 +169,7 @@
             </div>
           </cai-tooltip>
         </div>
-
-        {#if loadingMatches}
-          <div class="self-center ml-5">
-            <CircleLoader size="s" />
-          </div>
-        {:else}
-          {#if $NoManifestsStore}
-            <div class="font-bold text-gray-700 self-center ml-5 ">
-              No results found
-            </div>
-          {/if}
-          {#each $resultsManifestStore as { manifestStore }, i}
-            <div class="breadcrumb-item items-center current p-0 ml-5" />
-            <BreadcrumbAsset value={i} />
-          {/each}
-        {/if}
+        <ResultManifestsDisplay {loadingMatches} mobile={showMenu} />
       {/if}
     </sp-theme>
   {/if}
