@@ -70,7 +70,6 @@
     }
   }
 
-  console.log('NoManifestsStore', $NoManifestsStore);
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
 </script>
