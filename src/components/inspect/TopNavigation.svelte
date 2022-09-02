@@ -17,9 +17,6 @@
   import { createEventDispatcher } from 'svelte';
   import { _, locale } from 'svelte-i18n';
   import { recoverManifests } from '../../lib/manifest-recovery';
-  import BreadcrumbAsset from '../BreadcrumbAsset.svelte';
-  import CircleLoader from '../CircleLoader.svelte';
-  import PopoverManifestRecov from '../PopoverManifestRecov.svelte';
   import '@spectrum-web-components/overlay/overlay-trigger.js';
   import '@spectrum-web-components/dialog/sp-dialog-wrapper.js';
   import {
@@ -54,7 +51,6 @@
   export let noMetadata: boolean = false;
   let loadingMatches: boolean = false;
   const dispatch = createEventDispatcher();
-  let sourceActive: boolean = true;
 
   function handleNavChange() {
     $goto(this.selected, $params);
@@ -73,7 +69,7 @@
       resultsManifestStore.set(matchesManifests);
     }
   }
-  let open: boolean = true;
+
   console.log('NoManifestsStore', $NoManifestsStore);
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
