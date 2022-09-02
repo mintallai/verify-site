@@ -21,7 +21,6 @@
   export let placement: string = 'right-start';
   const onCancel = () => {
     open = false;
-    console.log(open);
   };
   const onConfirm = () => {
     open = true;

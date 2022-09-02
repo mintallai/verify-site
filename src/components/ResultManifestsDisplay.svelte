@@ -19,8 +19,6 @@
   import { resultsManifestStore, NoManifestsStore } from '../stores';
   export let loadingMatches: boolean = false;
   export let mobile: boolean = false;
-
-  console.log('mobile', mobile);
 </script>
 
 {#if loadingMatches}
