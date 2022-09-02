@@ -201,6 +201,7 @@ export const sourceManifestStore = writable<SdkResult | null>(null, (set) => {
  */
 export const resultsManifestStore = writable<SdkResult[]>([]);
 
+export const NoManifestsStore = writable<boolean>(false);
 /**
  * Sets the SdkResult of the loaded asset.
  */

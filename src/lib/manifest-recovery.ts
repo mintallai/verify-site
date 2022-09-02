@@ -1,6 +1,6 @@
 import pLimit from 'p-limit';
 import { getSdk } from '../lib/sdk';
-import { sourceManifestStore } from '../stores';
+import { sourceManifestStore, NoManifestsStore } from '../stores';
 import { get } from 'svelte/store';
 import { getConfig } from '../lib/config';
 import debug from 'debug';
@@ -73,6 +73,9 @@ export const recoverManifests = async () => {
       dbg('Upload to S3 succeded', { filename, sourceImage });
       const manifests = await fetchManifests(filename, baseUrl);
       dbg('Manifests search returned', manifests);
+      if (manifests.results.length == 0) {
+        NoManifestsStore.set(true);
+      }
       const sdk = await getSdk();
       const inputs = manifests.results?.map(({ url }) => {
         const processResult = async () => {

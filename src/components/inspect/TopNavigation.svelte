@@ -18,8 +18,8 @@
   import { _, locale } from 'svelte-i18n';
   import { recoverManifests } from '../../lib/manifest-recovery';
   import BreadcrumbAsset from '../BreadcrumbAsset.svelte';
-  import Dots from '../../../assets/svg/monochrome/dots.svg';
   import CircleLoader from '../CircleLoader.svelte';
+  import PopoverManifestRecov from '../PopoverManifestRecov.svelte';
   import '@spectrum-web-components/overlay/overlay-trigger.js';
   import '@spectrum-web-components/dialog/sp-dialog-wrapper.js';
   import {
@@ -31,7 +31,7 @@
     isMobileViewerShown,
     navigateTo,
     resultsManifestStore,
-    activeAsset,
+    NoManifestsStore,
     btnShow,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
@@ -72,13 +72,7 @@
     }
   }
   let open: boolean = true;
-
-  const onCancel = () => {
-    open = false;
-  };
-  const onConfirm = () => {
-    open = true;
-  };
+  console.log('NoManifestsStore', $NoManifestsStore);
   $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
 </script>
@@ -142,9 +136,41 @@
               <ChevronRight width="16px" height="16px" class="text-gray-700" />
             </div>
           {/if}
-          <div class="breadcrumb-item items-center current">
-            <Thumbnail {node} />
-            <span class="font-regular text-smd ml-2">{getFilename(node)}</span>
+          <div class="grid grid-rows-2">
+            <div class="flex">
+              <div class="breadcrumb-item items-center current inline-block">
+                <BreadcrumbAsset value={null} />
+              </div>
+              <div class="ml-8  self-center">
+                <PopoverManifestRecov placement="bottom" />
+              </div>
+            </div>
+
+            <div class="flex items-center overflow-hidden">
+              <div class="match-btn">
+                <sp-button size="s" onclick={handleButtonClick}>
+                  {$_('comp.topNavigation.matches')}
+                </sp-button>
+              </div>
+              {#if loadingMatches}
+                <div class="self-center ml-5">
+                  <CircleLoader size="s" />
+                </div>
+              {:else}
+                {#if $NoManifestsStore}
+                  <div class="font-bold text-gray-700 self-center ml-5 ">
+                    No results found
+                  </div>
+                {/if}
+                <div class="flex overflow-x-auto">
+                  {#each $resultsManifestStore as { manifestStore }, i}
+                    <div class="inline-block">
+                      <BreadcrumbAsset value={i} />
+                    </div>
+                  {/each}
+                </div>
+              {/if}
+            </div>
           </div>
         </div>
       {:else}
@@ -152,59 +178,37 @@
           <BreadcrumbAsset value={null} />
         </div>
         <div class="modal flex items-center">
-          <overlay-trigger placement="right-start" type="replace" {open}>
-            <button slot="trigger" onclick={onConfirm}>
-              <Dots class="w-1" /></button>
-            <sp-popover slot="click-content">
-              <sp-dialog size="s">
-                <h1 slot="heading" class="font-bold">
-                  {$_('dialog.manifestRecovery.headline')}
-                </h1>
-                {$_('dialog.manifestRecovery.intro')} <br /> <br />
-                {$_('dialog.manifestRecovery.search')}
-                <a
-                  href="https://contentauthenticity.org/"
-                  class="underline text-blue-400"
-                  >{$_('dialog.manifestRecovery.link')}</a>
-                <sp-button
-                  slot="button"
-                  treatment="outline"
-                  variant="primary"
-                  class="border-2 border-solid border-gray-800"
-                  onclick={onCancel}>
-                  OK
-                </sp-button>
-              </sp-dialog>
-            </sp-popover>
-          </overlay-trigger>
+          <PopoverManifestRecov />
         </div>
 
-        {#if $btnShow}
-          <div class="match-btn self-center ml-5">
-            <sp-button size="s" onclick={handleButtonClick}>
-              {$_('comp.topNavigation.matches')}
-            </sp-button>
-          </div>
-          <div class="self-center ml-5">
-            <cai-tooltip placement="right" class="theme-spectrum">
-              <div
-                slot="content"
-                class="text-gray-900 z-50"
-                style="width: 200px;">
-                {$_('comp.topNavigation.tooltip')}
-              </div>
-            </cai-tooltip>
-          </div>
-        {/if}
+        <div class="match-btn self-center ml-5">
+          <sp-button size="s" onclick={handleButtonClick}>
+            {$_('comp.topNavigation.matches')}
+          </sp-button>
+        </div>
+        <div class="self-center ml-5">
+          <cai-tooltip placement="right" class="theme-spectrum">
+            <div
+              slot="content"
+              class="text-gray-900 z-50"
+              style="width: 200px;">
+              {$_('comp.topNavigation.tooltip')}
+            </div>
+          </cai-tooltip>
+        </div>
 
         {#if loadingMatches}
           <div class="self-center ml-5">
             <CircleLoader size="s" />
           </div>
         {:else}
+          {#if $NoManifestsStore}
+            <div class="font-bold text-gray-700 self-center ml-5 ">
+              No results found
+            </div>
+          {/if}
           {#each $resultsManifestStore as { manifestStore }, i}
             <div class="breadcrumb-item items-center current p-0 ml-5" />
-
             <BreadcrumbAsset value={i} />
           {/each}
         {/if}
@@ -235,7 +239,10 @@
   .breadcrumb-item.current {
     @apply font-bold cursor-default;
   }
-
+  .menu-view {
+    /* @apply grid grid-rows-2; */
+    height: 120px;
+  }
   .breadcrumb-nav {
     --cai-thumbnail-size: 20px;
   }
