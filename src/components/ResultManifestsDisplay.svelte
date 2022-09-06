@@ -18,29 +18,22 @@
   import CircleLoader from './CircleLoader.svelte';
   import { resultsManifestStore, NoManifestsStore } from '../stores';
   export let loadingMatches: boolean = false;
-  export let mobile: boolean = false;
 </script>
 
 {#if loadingMatches}
   <div class="self-center ml-5">
     <CircleLoader size="s" />
   </div>
-{:else}
-  {#if $NoManifestsStore}
+{:else if $resultsManifestStore}
+  {#if $resultsManifestStore.length == 0}
     <div class="font-bold text-gray-700 self-center ml-5 ">
       No results found
     </div>
   {/if}
-  {#if !mobile}
+  <div class="flex overflow-x-auto">
     {#each $resultsManifestStore as { manifestStore }, i}
-      <div class="breadcrumb-item items-center current p-0 ml-5" />
+      <div class="md:ml-5" />
       <BreadcrumbAsset value={i} />
     {/each}
-  {:else}
-    <div class="flex overflow-x-auto">
-      {#each $resultsManifestStore as { manifestStore }, i}
-        <BreadcrumbAsset value={i} />
-      {/each}
-    </div>
-  {/if}
+  </div>
 {/if}

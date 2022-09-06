@@ -15,8 +15,8 @@
 <script lang="ts">
   import PopoverManifestRecov from './PopoverManifestRecov.svelte';
   import BreadcrumbAsset from './BreadcrumbAsset.svelte';
-  export let mobile: boolean = false;
-  $: placement = mobile ? 'bottom' : 'left-start';
+  import { isMobileViewerShown } from '../stores';
+  $: placement = $isMobileViewerShown ? 'bottom' : 'left-start';
 </script>
 
 <div class="mr-5">

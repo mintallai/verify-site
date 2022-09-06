@@ -14,8 +14,6 @@
 -->
 <script lang="ts">
   import { _, locale } from 'svelte-i18n';
-  import '@spectrum-web-components/overlay/overlay-trigger.js';
-  import '@spectrum-web-components/dialog/sp-dialog-wrapper.js';
   import Dots from '../../assets/svg/monochrome/dots.svg';
   let open: boolean = true;
   export let placement: string = 'right-start';

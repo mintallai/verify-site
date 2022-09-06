@@ -17,8 +17,7 @@
   import { createEventDispatcher } from 'svelte';
   import { _, locale } from 'svelte-i18n';
   import { recoverManifests } from '../../lib/manifest-recovery';
-  import '@spectrum-web-components/overlay/overlay-trigger.js';
-  import '@spectrum-web-components/dialog/sp-dialog-wrapper.js';
+
   import {
     primaryLoc,
     ancestors,
@@ -28,7 +27,6 @@
     isMobileViewerShown,
     navigateTo,
     resultsManifestStore,
-    NoManifestsStore,
     btnShow,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
@@ -70,11 +68,13 @@
     }
   }
 
-  $: showMenu = $isMobileViewerShown;
   $: nodeAncestors = $ancestors;
 </script>
 
-<div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
+<div
+  id="breadcrumb-bar"
+  class="container"
+  class:menu-view={$isMobileViewerShown}>
   <!-- Only display Top Nav if there is an active asset -->
   {#if $primaryLoc}
     <sp-theme color="lightest" scale="medium" class="w-full">
@@ -106,7 +106,7 @@
             {/key}
           </div>
         </div>
-      {:else if showMenu}
+      {:else if $isMobileViewerShown}
         <div class="flex self-center">
           {#if nodeAncestors?.length > 1}
             <sp-action-menu class="-ml-3" value={$primaryLoc}>
@@ -135,7 +135,7 @@
           {/if}
           <div class="grid grid-rows-2">
             <div class="flex">
-              <UploadedAsset mobile={showMenu} />
+              <UploadedAsset />
             </div>
             <div class="flex ">
               <div class="match-btn self-center ">
@@ -143,12 +143,12 @@
                   {$_('comp.topNavigation.matches')}
                 </sp-button>
               </div>
-              <ResultManifestsDisplay {loadingMatches} mobile={showMenu} />
+              <ResultManifestsDisplay {loadingMatches} />
             </div>
           </div>
         </div>
       {:else}
-        <UploadedAsset mobile={showMenu} />
+        <UploadedAsset />
         <div class="match-btn self-center ml-5">
           <sp-button size="s" onclick={handleButtonClick}>
             {$_('comp.topNavigation.matches')}
@@ -164,7 +164,7 @@
             </div>
           </cai-tooltip>
         </div>
-        <ResultManifestsDisplay {loadingMatches} mobile={showMenu} />
+        <ResultManifestsDisplay {loadingMatches} />
       {/if}
     </sp-theme>
   {/if}

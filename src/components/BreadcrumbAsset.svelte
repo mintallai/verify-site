@@ -22,7 +22,10 @@
   let src = '';
   export let value: number | null;
 
-  $: node = value != null ? $resultHierarchies[value] : $sourceHierarchy;
+  $: node =
+    value != null && $resultHierarchies
+      ? $resultHierarchies[value]
+      : $sourceHierarchy;
   $: manifest = getManifest(node);
   $: sigDate = manifest?.signature?.date;
   $: filename = getFilename(node);

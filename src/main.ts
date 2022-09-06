@@ -29,7 +29,8 @@ import '@spectrum-web-components/theme/scale-large.js';
 import '@spectrum-web-components/theme/scale-medium.js';
 import '@spectrum-web-components/theme/sp-theme.js';
 import '@spectrum-web-components/theme/theme-lightest.js';
-
+import '@spectrum-web-components/overlay/overlay-trigger.js';
+import '@spectrum-web-components/dialog/sp-dialog-wrapper.js';
 // TODO: Update this with newrelic typescript defs
 declare global {
   interface Window {
