@@ -19,13 +19,7 @@
   import { date, locale, time, _ } from 'svelte-i18n';
   import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
   import { DEFAULT_LOCALE } from '../lib/i18n';
-  import {
-    getBadgeProps,
-    getGenerator,
-    getIsOriginal,
-    getManifest,
-    getReviewRatings,
-  } from '../lib/node';
+  import { getBadgeProps, getManifest } from '../lib/node';
   import type { HierarchyTreeNode } from '../stores';
   import { navigateToChild, learnMoreUrl } from '../stores';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
@@ -33,22 +27,36 @@
   import Web3Address from './Web3Address.svelte';
 
   import AboutSection from './inspect/AboutSection.svelte';
+  import {
+    selectEditsAndActivity,
+    selectProducer,
+    selectSocialAccounts,
+  } from 'c2pa';
+  import {
+    selectFormattedDate,
+    selectFormattedGenerator,
+    selectIsBeta,
+    selectIsOriginal,
+    selectReviewRatings,
+    selectWeb3,
+    selectWebsite,
+  } from '../lib/sdk';
   export let node: HierarchyTreeNode;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
 
   $: currentLocale = $locale || DEFAULT_LOCALE;
   $: manifest = getManifest(node);
-  $: isOriginal = getIsOriginal(node);
-  $: generator = getGenerator(node);
-  $: issuer = manifest?.signature?.issuer;
-  $: sigDate = manifest?.signature?.date;
-  $: producer = manifest.producer;
-  $: isBeta = manifest.isBeta;
-  $: website = manifest.website;
-  $: socialAccounts = manifest.socialAccounts;
-  $: web3Addresses = manifest.web3;
-  $: ratings = getReviewRatings(node);
+  $: isOriginal = selectIsOriginal(manifest);
+  $: generator = selectFormattedGenerator(manifest);
+  $: issuer = manifest?.signatureInfo.issuer;
+  $: sigDate = selectFormattedDate(manifest);
+  $: producer = selectProducer(manifest);
+  $: isBeta = selectIsBeta(manifest);
+  $: website = selectWebsite(manifest);
+  $: socialAccounts = selectSocialAccounts(manifest);
+  $: web3Addresses = selectWeb3(manifest);
+  $: ratings = selectReviewRatings(manifest);
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
   });
@@ -115,7 +123,7 @@
 <AboutSection
   title={$_('comp.about.editsActivity.header')}
   helper={$_('comp.about.editsActivity.helpText')}>
-  {#await manifest.editsAndActivity(currentLocale) then categories}
+  {#await selectEditsAndActivity(manifest, currentLocale) then categories}
     {#if categories}
       <div>
         <dl>
@@ -190,7 +198,7 @@
         <AboutSection
           title={$_('comp.about.social')}
           helper={$_('comp.about.social.helpText')}>
-          <dd class="social-accounts">
+          <dd class="accounts">
             {#each socialAccounts as account (account['@id'])}
               <div class="relative top-0.5">
                 <ProviderIcon provider={account['@id']} class="mr-2" />
@@ -211,7 +219,9 @@
           title={$_('comp.about.web3')}
           helper={$_('comp.about.web3.helpText')}>
           {#each web3Addresses as [type, [address]]}
-            <Web3Address {type} {address} />
+            <div class="pb-1">
+              <Web3Address {type} {address} />
+            </div>
           {/each}
         </AboutSection>
       </dl>
@@ -224,7 +234,7 @@
     @apply grid gap-3;
     grid-template-columns: repeat(auto-fit, 48px);
   }
-  .social-accounts {
+  .accounts {
     @apply grid gap-x-2 gap-y-1 items-center;
     grid-template-columns: 16px auto;
   }

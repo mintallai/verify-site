@@ -18,6 +18,7 @@
   import { ThumbnailEvent } from '../lib/thumbnail';
   import { getBadgeProps, getFilename, getManifest } from '../lib/node';
   import Thumbnail from './Thumbnail.svelte';
+  import { selectFormattedDate } from '../lib/sdk';
 
   let src = '';
   export let value: number | null;
@@ -27,7 +28,7 @@
       ? $resultHierarchies[value]
       : $sourceHierarchy;
   $: manifest = getManifest(node);
-  $: sigDate = manifest?.signature?.date;
+  $: sigDate = selectFormattedDate(manifest);
   $: filename = getFilename(node);
   $: badgeProps = getBadgeProps(node);
   $: isActive =

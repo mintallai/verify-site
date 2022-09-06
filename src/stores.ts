@@ -18,10 +18,10 @@ import { derived, get, readable, writable } from 'svelte/store';
 import type {
   Ingredient,
   Manifest,
-  SdkResult,
+  C2paReadResult,
   Source,
   Thumbnail,
-} from './lib/sdk';
+} from 'c2pa';
 
 import debug from 'debug';
 
@@ -190,19 +190,22 @@ export const activeAsset = writable<ActiveAssetType>(['s']);
 /**
  * Contains the SdkResult of the loaded asset.
  */
-export const sourceManifestStore = writable<SdkResult | null>(null, (set) => {
-  return () => {};
-});
+export const sourceManifestStore = writable<C2paReadResult | null>(
+  null,
+  (set) => {
+    return () => {};
+  },
+);
 
 /**
  * Contains an array of SdkResults of the returned matches
  */
-export const resultsManifestStore = writable<SdkResult[]>(null);
+export const resultsManifestStore = writable<C2paReadResult[]>(null);
 
 /**
  * Sets the SdkResult of the loaded asset.
  */
-export async function setProvenance(result: SdkResult | null) {
+export async function setProvenance(result: C2paReadResult | null) {
   dbg('Calling setProvenance with', result);
 
   if (result) {
@@ -359,7 +362,7 @@ export const sourceHierarchy = derived<
   return null;
 });
 
-function manifestStoreToHierarchy(result: SdkResult) {
+function manifestStoreToHierarchy(result: C2paReadResult) {
   const { source, manifestStore } = result;
   const activeManifest = manifestStore?.activeManifest;
   const validationStatus = manifestStore?.validationStatus;
