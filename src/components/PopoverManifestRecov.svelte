@@ -42,7 +42,7 @@
         variant="primary"
         class="border-2 border-solid border-gray-800"
         onclick={onCancel}>
-        OK
+        {$_('dialog.manifestRecovery.buttons.OK')}
       </sp-button>
     </sp-dialog>
   </sp-popover>
