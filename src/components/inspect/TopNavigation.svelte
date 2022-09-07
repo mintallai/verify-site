@@ -27,7 +27,6 @@
     isMobileViewerShown,
     navigateTo,
     resultsManifestStore,
-    btnShow,
   } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
@@ -59,7 +58,6 @@
   }
 
   async function handleButtonClick() {
-    btnShow.set(false);
     loadingMatches = true;
     const matchesManifests = await recoverManifests();
     loadingMatches = false;

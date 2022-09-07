@@ -13,10 +13,9 @@
   from Adobe.
 -->
 <script lang="ts">
-  import PopoverManifestRecov from './PopoverManifestRecov.svelte';
   import BreadcrumbAsset from './BreadcrumbAsset.svelte';
   import CircleLoader from './CircleLoader.svelte';
-  import { resultsManifestStore, NoManifestsStore } from '../stores';
+  import { resultsManifestStore } from '../stores';
   export let loadingMatches: boolean = false;
 </script>
 

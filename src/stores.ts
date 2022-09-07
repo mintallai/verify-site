@@ -86,8 +86,6 @@ export const primaryLoc = writable<string>('');
  */
 export const secondaryLoc = writable<string>('');
 
-export const btnShow = writable<boolean>(true);
-
 export const isLoading = writable<boolean>(false);
 
 export const isBurgerMenuShown = writable<boolean>(false);
@@ -201,7 +199,6 @@ export const sourceManifestStore = writable<SdkResult | null>(null, (set) => {
  */
 export const resultsManifestStore = writable<SdkResult[]>(null);
 
-export const NoManifestsStore = writable<boolean>(false);
 /**
  * Sets the SdkResult of the loaded asset.
  */
@@ -211,13 +208,12 @@ export async function setProvenance(result: SdkResult | null) {
   if (result) {
     sourceManifestStore.set(result);
     overviewTransform.set(null);
+    activeAsset.set(['s']);
     navigateToRoot();
   } else {
     dbg('No provenance found');
     sourceManifestStore.set(null);
-    // resultsManifestStore.set([]);
-    btnShow.set(true);
-    NoManifestsStore.set(false);
+    activeAsset.set(['s']);
     resultsManifestStore.set(null);
   }
 }
