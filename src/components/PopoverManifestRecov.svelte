@@ -13,7 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _, locale } from 'svelte-i18n';
+  import { _ } from 'svelte-i18n';
   import Dots from '../../assets/svg/monochrome/dots.svg';
   let open: boolean = true;
   export let placement: string = 'right-start';

@@ -97,18 +97,4 @@
     border-radius: 5px;
     padding: 0;
   }
-  .img-container {
-    position: relative;
-    display: inline-block;
-  }
-  .img-container img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-  }
-  .img-container svg {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
 </style>
