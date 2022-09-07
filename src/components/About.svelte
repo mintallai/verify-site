@@ -19,7 +19,8 @@
   import debug from 'debug';
   import cssVars from 'svelte-css-vars';
   import { _ } from 'svelte-i18n';
-  import { getBadgeProps, getFilename, getIsOriginal } from '../lib/node';
+  import { getBadgeProps, getFilename, getManifest } from '../lib/node';
+  import { selectIsOriginal } from '../lib/sdk';
   import type { HierarchyTreeNode } from '../stores';
   import AboutSection from './inspect/AboutSection.svelte';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
@@ -34,7 +35,7 @@
 
   let colWidth: number;
 
-  $: isOriginal = getIsOriginal(node);
+  $: isOriginal = selectIsOriginal(getManifest(node));
   $: filename = getFilename(node);
   $: badgeProps = getBadgeProps(node);
   $: showDetails = badgeProps?.badgeType === 'info';
