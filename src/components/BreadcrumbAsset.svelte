@@ -22,7 +22,10 @@
   let src = '';
   export let value: number | null;
 
-  $: node = value != null ? $resultHierarchies[value] : $sourceHierarchy;
+  $: node =
+    value != null && $resultHierarchies
+      ? $resultHierarchies[value]
+      : $sourceHierarchy;
   $: manifest = getManifest(node);
   $: sigDate = manifest?.signature?.date;
   $: filename = getFilename(node);
@@ -93,19 +96,5 @@
     border: 2px solid #2680eb;
     border-radius: 5px;
     padding: 0;
-  }
-  .img-container {
-    position: relative;
-    display: inline-block;
-  }
-  .img-container img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-  }
-  .img-container svg {
-    position: absolute;
-    top: 0;
-    right: 0;
   }
 </style>

@@ -86,8 +86,6 @@ export const primaryLoc = writable<string>('');
  */
 export const secondaryLoc = writable<string>('');
 
-export const btnShow = writable<boolean>(true);
-
 export const isLoading = writable<boolean>(false);
 
 export const isBurgerMenuShown = writable<boolean>(false);
@@ -199,7 +197,7 @@ export const sourceManifestStore = writable<SdkResult | null>(null, (set) => {
 /**
  * Contains an array of SdkResults of the returned matches
  */
-export const resultsManifestStore = writable<SdkResult[]>([]);
+export const resultsManifestStore = writable<SdkResult[]>(null);
 
 /**
  * Sets the SdkResult of the loaded asset.
@@ -210,12 +208,13 @@ export async function setProvenance(result: SdkResult | null) {
   if (result) {
     sourceManifestStore.set(result);
     overviewTransform.set(null);
+    activeAsset.set(['s']);
     navigateToRoot();
   } else {
     dbg('No provenance found');
     sourceManifestStore.set(null);
-    resultsManifestStore.set([]);
-    btnShow.set(true);
+    activeAsset.set(['s']);
+    resultsManifestStore.set(null);
   }
 }
 
@@ -405,7 +404,7 @@ export const resultHierarchies = derived<
   [typeof resultsManifestStore],
   HierarchyTreeNode[]
 >([resultsManifestStore], ([$resultsManifestStore]) => {
-  return $resultsManifestStore.map((result) => {
+  return $resultsManifestStore?.map((result) => {
     if (result) {
       return manifestStoreToHierarchy(result);
     }
@@ -421,7 +420,9 @@ export let hierarchy = derived(
     if (type == 's') {
       return $sourceHierarchy;
     } else {
-      return $resultHierarchies[resultNumber];
+      if ($resultHierarchies) {
+        return $resultHierarchies[resultNumber];
+      }
     }
   },
 );
