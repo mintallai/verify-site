@@ -118,5 +118,7 @@ export function selectReviewRatings(manifest: Manifest) {
 }
 
 export function selectFormattedDate(manifest: Manifest) {
-  return manifest?.signatureInfo ? new Date(manifest.signatureInfo.time) : null;
+  return manifest?.signatureInfo.time
+    ? new Date(manifest.signatureInfo.time)
+    : null;
 }

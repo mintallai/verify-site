@@ -29,7 +29,7 @@
       No results found
     </div>
   {/if}
-  <div class="flex overflow-x-auto md:overflow-hidden">
+  <div class="flex overflow-x-auto md:overflow-visible">
     {#each $resultsManifestStore as { manifestStore }, i}
       <div class="md:ml-5" />
       <BreadcrumbAsset value={i} />

@@ -38,7 +38,7 @@
   function handleThumbnail(evt: CustomEvent<ThumbnailEvent>) {
     src = evt.detail.url;
   }
-
+  console.log('sigDate', sigDate);
   function handleActiveAsset() {
     if (value != null) {
       activeAsset.set(['r', value]);
