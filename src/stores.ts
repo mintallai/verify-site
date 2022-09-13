@@ -31,7 +31,7 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
-export const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
+const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
 export const ROOT_LOC = '0';
 
 /**

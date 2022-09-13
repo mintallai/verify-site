@@ -1,6 +1,6 @@
 import pLimit from 'p-limit';
 import { getSdk } from '../lib/sdk';
-import { sourceManifestStore, OTGP_ERROR_CODE, isMatchResult } from '../stores';
+import { sourceManifestStore, isMatchResult } from '../stores';
 import { get } from 'svelte/store';
 import { getConfig } from '../lib/config';
 import debug from 'debug';
