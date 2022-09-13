@@ -252,6 +252,7 @@ export type TreeNode = ManifestTreeNode | IngredientTreeNode | SourceTreeNode;
 
 export type HierarchyTreeNode = HierarchyNode<TreeNode>;
 
+export let isMatchResult: boolean = false;
 /**
  * Determines if a validation status list contains an OTGP (`assertion.dataHash.mismatch`)
  * status, and therefore, should present with an orange badge.
@@ -260,6 +261,9 @@ export type HierarchyTreeNode = HierarchyNode<TreeNode>;
  * @returns `true` if we find an OTGP status
  */
 function hasOtgpStatus(validationStatus: any[] = []) {
+  if (isMatchResult) {
+    return false;
+  }
   return validationStatus.some((err) => err.code === OTGP_ERROR_CODE);
 }
 

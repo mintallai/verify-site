@@ -1,6 +1,6 @@
 import pLimit from 'p-limit';
 import { getSdk } from '../lib/sdk';
-import { sourceManifestStore } from '../stores';
+import { sourceManifestStore, isMatchResult } from '../stores';
 import { get } from 'svelte/store';
 import { getConfig } from '../lib/config';
 import debug from 'debug';
@@ -84,7 +84,9 @@ export const recoverManifests = async () => {
           const blob = new Blob([resultData], {
             type: 'application/x-c2pa-manifest-store',
           });
-          return sdk.read(blob);
+          let res = sdk.read(blob);
+          console.log('res', res);
+          return res;
         };
         return limit(processResult);
       });
