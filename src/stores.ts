@@ -31,7 +31,7 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
-const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
+export const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
 export const ROOT_LOC = '0';
 
 /**
@@ -93,6 +93,8 @@ export const isBurgerMenuShown = writable<boolean>(false);
 export const isMobileViewerShown = writable<boolean>(false);
 
 export const isCompareSelectMode = writable<boolean>(false);
+
+export const isMatchResult = writable<boolean>(false);
 
 // TODO: See if we can import the Dialog component props instead of repeating this
 export interface Dialog {
@@ -252,7 +254,6 @@ export type TreeNode = ManifestTreeNode | IngredientTreeNode | SourceTreeNode;
 
 export type HierarchyTreeNode = HierarchyNode<TreeNode>;
 
-export let isMatchResult: boolean = false;
 /**
  * Determines if a validation status list contains an OTGP (`assertion.dataHash.mismatch`)
  * status, and therefore, should present with an orange badge.
@@ -261,7 +262,7 @@ export let isMatchResult: boolean = false;
  * @returns `true` if we find an OTGP status
  */
 function hasOtgpStatus(validationStatus: any[] = []) {
-  if (isMatchResult) {
+  if (get(isMatchResult)) {
     return false;
   }
   return validationStatus.some((err) => err.code === OTGP_ERROR_CODE);
