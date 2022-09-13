@@ -91,7 +91,7 @@ export function selectIsOriginal(manifest: Manifest) {
   }
 
   const noIngredients = manifest.ingredients?.length === 0;
-  const actions = manifest.assertions.get('c2pa.actions')[0].data.actions;
+  const actions = manifest.assertions.get('c2pa.actions')[0]?.data?.actions;
   const isDelivered = actions?.some((x) => x.action === 'adobe.delivered');
 
   return noIngredients && !isDelivered;
@@ -118,5 +118,7 @@ export function selectReviewRatings(manifest: Manifest) {
 }
 
 export function selectFormattedDate(manifest: Manifest) {
-  return manifest?.signatureInfo ? new Date(manifest.signatureInfo.time) : null;
+  return manifest?.signatureInfo.time
+    ? new Date(manifest.signatureInfo.time)
+    : null;
 }
