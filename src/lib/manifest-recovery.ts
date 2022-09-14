@@ -1,6 +1,6 @@
 import pLimit from 'p-limit';
 import { getSdk } from '../lib/sdk';
-import { sourceManifestStore, isMatchResult } from '../stores';
+import { sourceManifestStore, OTGP_ERROR_CODE, SearchError } from '../stores';
 import { get } from 'svelte/store';
 import { getConfig } from '../lib/config';
 import debug from 'debug';
@@ -84,10 +84,19 @@ export const recoverManifests = async () => {
           const blob = new Blob([resultData], {
             type: 'application/x-c2pa-manifest-store',
           });
-          isMatchResult.set(true);
-          return sdk.read(blob);
+
+          const res = await sdk.read(blob);
+          console.log('res', res);
+          let allo = {
+            ...res,
+            validationStatus: res?.manifestStore?.validationStatus?.filter(
+              (x) => x.code !== OTGP_ERROR_CODE,
+            ),
+          };
+          console.log('allo', allo.manifestStore.validationStatus[2].code);
+          return allo;
         };
-        isMatchResult.set(false);
+
         return limit(processResult);
       });
       // Only one promise is run at once
@@ -96,6 +105,10 @@ export const recoverManifests = async () => {
       dbg('Upload to S3 failed');
     }
   } catch (err) {
+    if ((err = 503)) {
+      SearchError.set(true);
+      return;
+    }
     throw new Error(`Recover manifests failed`);
   }
 };

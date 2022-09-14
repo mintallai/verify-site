@@ -15,10 +15,15 @@
 <script lang="ts">
   import BreadcrumbAsset from './BreadcrumbAsset.svelte';
   import CircleLoader from './CircleLoader.svelte';
-  import { resultsManifestStore } from '../stores';
+  import { resultsManifestStore, SearchError } from '../stores';
   export let loadingMatches: boolean = false;
 </script>
 
+{#if $SearchError}
+  <div class="font-bold text-gray-700 self-center ml-5 ">
+    Search failed , please try again
+  </div>
+{/if}
 {#if loadingMatches}
   <div class="self-center ml-5">
     <CircleLoader size="s" />
