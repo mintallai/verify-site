@@ -1,6 +1,6 @@
 import pLimit from 'p-limit';
 import { getSdk } from '../lib/sdk';
-import { sourceManifestStore } from '../stores';
+import { sourceManifestStore, OTGP_ERROR_CODE } from '../stores';
 import { get } from 'svelte/store';
 import { getConfig } from '../lib/config';
 import debug from 'debug';
@@ -84,8 +84,19 @@ export const recoverManifests = async () => {
           const blob = new Blob([resultData], {
             type: 'application/x-c2pa-manifest-store',
           });
-          return sdk.read(blob);
+
+          const res = await sdk.read(blob);
+
+          if (res.manifestStore.validationStatus) {
+            res.manifestStore.validationStatus =
+              res.manifestStore.validationStatus.filter(
+                (x) => x.code !== OTGP_ERROR_CODE,
+              );
+          }
+
+          return res;
         };
+
         return limit(processResult);
       });
       // Only one promise is run at once
