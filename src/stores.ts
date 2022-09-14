@@ -94,8 +94,6 @@ export const isMobileViewerShown = writable<boolean>(false);
 
 export const isCompareSelectMode = writable<boolean>(false);
 
-export const SearchError = writable<boolean>(false);
-
 // TODO: See if we can import the Dialog component props instead of repeating this
 export interface Dialog {
   headlineKey: string;

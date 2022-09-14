@@ -1,6 +1,6 @@
 import pLimit from 'p-limit';
 import { getSdk } from '../lib/sdk';
-import { sourceManifestStore, OTGP_ERROR_CODE, SearchError } from '../stores';
+import { sourceManifestStore, OTGP_ERROR_CODE } from '../stores';
 import { get } from 'svelte/store';
 import { getConfig } from '../lib/config';
 import debug from 'debug';
@@ -86,15 +86,15 @@ export const recoverManifests = async () => {
           });
 
           const res = await sdk.read(blob);
-          console.log('res', res);
-          let allo = {
-            ...res,
-            validationStatus: res?.manifestStore?.validationStatus?.filter(
-              (x) => x.code !== OTGP_ERROR_CODE,
-            ),
-          };
-          console.log('allo', allo.manifestStore.validationStatus[2].code);
-          return allo;
+
+          if (res.manifestStore.validationStatus) {
+            res.manifestStore.validationStatus =
+              res.manifestStore.validationStatus.filter(
+                (x) => x.code !== OTGP_ERROR_CODE,
+              );
+          }
+
+          return res;
         };
 
         return limit(processResult);
@@ -105,10 +105,6 @@ export const recoverManifests = async () => {
       dbg('Upload to S3 failed');
     }
   } catch (err) {
-    if ((err = 503)) {
-      SearchError.set(true);
-      return;
-    }
     throw new Error(`Recover manifests failed`);
   }
 };
