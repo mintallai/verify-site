@@ -16,22 +16,15 @@
   import '@contentauth/web-components/dist/components/panels/EditsActivity';
   import '@contentauth/web-components/dist/components/Tooltip';
   import '@contentauth/web-components/dist/themes/spectrum';
-  import { date, locale, time, _ } from 'svelte-i18n';
-  import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
-  import { DEFAULT_LOCALE } from '../lib/i18n';
-  import { getBadgeProps, getManifest } from '../lib/node';
-  import type { HierarchyTreeNode } from '../stores';
-  import { navigateToChild, learnMoreUrl } from '../stores';
-  import ProviderIcon from './inspect/ProviderIcon.svelte';
-  import Thumbnail from './Thumbnail.svelte';
-  import Web3Address from './Web3Address.svelte';
-
-  import AboutSection from './inspect/AboutSection.svelte';
   import {
     selectEditsAndActivity,
     selectProducer,
     selectSocialAccounts,
   } from 'c2pa';
+  import { date, locale, time, _ } from 'svelte-i18n';
+  import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
+  import { DEFAULT_LOCALE } from '../lib/i18n';
+  import { getBadgeProps, getManifest } from '../lib/node';
   import {
     selectFormattedDate,
     selectFormattedGenerator,
@@ -41,6 +34,13 @@
     selectWeb3,
     selectWebsite,
   } from '../lib/sdk';
+  import type { HierarchyTreeNode } from '../stores';
+  import { learnMoreUrl, navigateToChild } from '../stores';
+  import AboutSection from './inspect/AboutSection.svelte';
+  import ProviderIcon from './inspect/ProviderIcon.svelte';
+  import Thumbnail from './Thumbnail.svelte';
+  import Web3Address from './Web3Address.svelte';
+
   export let node: HierarchyTreeNode;
   export let isComparing: boolean = false;
   export let isMobileViewer: boolean = false;
@@ -113,7 +113,9 @@
         <div class="break-word">
           <div>{generator}</div>
           {#if isBeta}
-            <div class="text-gray-700">Content Credentials (Beta)</div>
+            <div class="text-gray-700">
+              {$_('comp.about.producedWith.contentCredentialsBeta')}
+            </div>
           {/if}
         </div>
       </dd>
