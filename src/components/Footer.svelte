@@ -85,6 +85,9 @@
             $locale,
           )}
           target="_blank">{$_('comp.footer.termsOfUse')}</a>
+        <a href="https://contentauthenticity.org/contact" target="_blank">
+          {$_('comp.footer.contactUs')}
+        </a>
         {#if languageMenu}
           <button
             bind:this={languageTrigger}
@@ -99,9 +102,6 @@
             </div>
           </button>
         {/if}
-        <a href="https://contentauthenticity.org/contact" target="_blank">
-          {$_('comp.footer.contactUs')}
-        </a>
       </div>
     </div>
   </sp-theme>
