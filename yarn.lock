@@ -305,10 +305,10 @@
   resolved "https://registry.yarnpkg.com/@contentauth/detector/-/detector-0.3.1.tgz#35ce9ba52038fa88c26e20fc8b4c61b530f081e8"
   integrity sha512-TtqQayjAE3SytCuc8XrfjpfBUmDaw5qfQggFCWNQM6PfwLJw7e2p7THUuuxYlqFMBdyVPnxVFlYIOPqXnuFS/Q==
 
-"@contentauth/toolkit@0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.9.1.tgz#12cc62171d131fbbc0164112ed85d38198fd1a90"
-  integrity sha512-hbV8Bz10x5BxSb91vjVD7xQLoS9z/4msal7IcdLFdzYC8BgrqHCB5pOt+p1AVZkVMo3S4G8+5EE6PDjlf11yxg==
+"@contentauth/toolkit@0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.9.2.tgz#b84e6aa6228d33ba722c70a93b79d4f992fff873"
+  integrity sha512-PJMQYSIMCUmnb0Y2Ylr+8rcY/npOQoOVx08ZpwBjUgObd2RNssPndVeNozCLSKGOZvcxe4BynxMbQ1JzChZ9Mw==
 
 "@contentauth/toolkit@^0.8.1":
   version "0.8.1"
@@ -1722,13 +1722,13 @@ bytes@3.1.2:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa@^0.11.1:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.11.1.tgz#3da68c4c375179176eef230582ae957f8cd79b7b"
-  integrity sha512-gMv3pvYtEaqrhOZR68Hm2tV9TGv09FaqRLAT1w23k5Xw9TeRcapjOR0XbsagCptwwvnZ5/uKJBe3lde+buk9Xw==
+c2pa@~0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.11.2.tgz#f1f5311cb65e72e2adcb57824b5d3e1e6bad7065"
+  integrity sha512-RH04sByZXt/rvg2HbQcVmxwqB7SE/hVNj3KqbiKA1VulWEKwcESb6xSaF9EEhpCdokxXEkraz31ZMQCQP3PpGw==
   dependencies:
     "@contentauth/detector" "0.3.1"
-    "@contentauth/toolkit" "0.9.1"
+    "@contentauth/toolkit" "0.9.2"
     debug "~4.3.4"
     lodash "^4.17.21"
     make-error "^1.3.6"
