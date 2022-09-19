@@ -39,6 +39,7 @@
   import '@contentauth/web-components/dist/components/Tooltip';
   import UploadedAsset from '../UploadedAsset.svelte';
   import ResultManifestsDisplay from '../ResultManifestsDisplay.svelte';
+  import { selectFormattedDate } from '../../lib/sdk';
 
   type Page = 'overview' | 'inspect';
 
@@ -61,11 +62,29 @@
     loadingMatches = true;
     const matchesManifests = await recoverManifests();
     loadingMatches = false;
+    console.log('matchesManifests', matchesManifests);
+    const sortedMatches = sortMatches(matchesManifests);
+    console.log('sortedMatches', sortedMatches);
+    //need to add handling for when the match has no date
     if (Array.isArray(matchesManifests)) {
       resultsManifestStore.set(matchesManifests);
     }
   }
 
+  function sortMatches(matches) {
+    let sortedMatches = matches.sort((n1, n2) => {
+      if (selectFormattedDate(n1) > selectFormattedDate(n2)) {
+        return 1;
+      }
+
+      if (selectFormattedDate(n1) > selectFormattedDate(n2)) {
+        return -1;
+      }
+
+      return 0;
+    });
+    return sortedMatches;
+  }
   $: nodeAncestors = $ancestors;
 </script>
 
