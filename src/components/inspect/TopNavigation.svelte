@@ -61,11 +61,31 @@
     loadingMatches = true;
     const matchesManifests = await recoverManifests();
     loadingMatches = false;
+    sortMatches(matchesManifests);
     if (Array.isArray(matchesManifests)) {
       resultsManifestStore.set(matchesManifests);
     }
   }
 
+  function selectDate(node) {
+    return node.manifestStore.activeManifest.signatureInfo.time;
+  }
+  function sortMatches(matches) {
+    const sortedMatches = matches.sort((n1, n2) => {
+      const date1 = selectDate(n1);
+      const date2 = selectDate(n2);
+
+      if (date1 > date2) {
+        return 1;
+      }
+      if (date1 < date2) {
+        return -1;
+      }
+
+      return 0;
+    });
+    return sortedMatches;
+  }
   $: nodeAncestors = $ancestors;
 </script>
 
