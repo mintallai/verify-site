@@ -68,10 +68,7 @@
   }
 
   function selectDate(node) {
-    return (
-      node.manifestStore.activeManifest.signatureInfo.time ??
-      Number.NEGATIVE_INFINITY
-    );
+    return node.manifestStore.activeManifest.signatureInfo.time;
   }
   function sortMatches(matches) {
     const sortedMatches = matches.sort((n1, n2) => {
