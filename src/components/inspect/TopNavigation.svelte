@@ -39,9 +39,6 @@
   import '@contentauth/web-components/dist/components/Tooltip';
   import UploadedAsset from '../UploadedAsset.svelte';
   import ResultManifestsDisplay from '../ResultManifestsDisplay.svelte';
-  import { selectFormattedDate } from '../../lib/sdk';
-  import { createManifestStore } from 'c2pa/dist/src/manifestStore';
-  import { Manifest } from 'c2pa/dist/src/manifest';
 
   type Page = 'overview' | 'inspect';
 
