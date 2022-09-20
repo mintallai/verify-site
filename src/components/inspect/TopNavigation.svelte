@@ -76,14 +76,12 @@
       const date2 = selectDate(n2);
 
       if (date1 > date2) {
-        console.log('date1>date2', date1 > date2);
         return 1;
       }
       if (date1 < date2) {
-        console.log('date1<date2', date1 < date2);
         return -1;
       }
-      console.log('return 0');
+
       return 0;
     });
     return sortedMatches;
