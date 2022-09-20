@@ -67,19 +67,26 @@
     }
   }
 
-  export function selectDate(node) {
-    return node.manifestStore.activeManifest.signatureInfo.time;
+  function selectDate(node) {
+    return (
+      node.manifestStore.activeManifest.signatureInfo.time ??
+      Number.NEGATIVE_INFINITY
+    );
   }
   function sortMatches(matches) {
-    let sortedMatches = matches.sort((n1, n2) => {
-      if (selectDate(n1) > selectDate(n2)) {
+    const sortedMatches = matches.sort((n1, n2) => {
+      const date1 = selectDate(n1);
+      const date2 = selectDate(n2);
+
+      if (date1 > date2) {
+        console.log('date1>date2', date1 > date2);
         return 1;
       }
-
-      if (selectDate(n1) < selectDate(n2)) {
+      if (date1 < date2) {
+        console.log('date1<date2', date1 < date2);
         return -1;
       }
-
+      console.log('return 0');
       return 0;
     });
     return sortedMatches;
