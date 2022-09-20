@@ -40,6 +40,8 @@
   import UploadedAsset from '../UploadedAsset.svelte';
   import ResultManifestsDisplay from '../ResultManifestsDisplay.svelte';
   import { selectFormattedDate } from '../../lib/sdk';
+  import { createManifestStore } from 'c2pa/dist/src/manifestStore';
+  import { Manifest } from 'c2pa/dist/src/manifest';
 
   type Page = 'overview' | 'inspect';
 
@@ -62,22 +64,22 @@
     loadingMatches = true;
     const matchesManifests = await recoverManifests();
     loadingMatches = false;
-    console.log('matchesManifests', matchesManifests);
-    const sortedMatches = sortMatches(matchesManifests);
-    console.log('sortedMatches', sortedMatches);
-    //need to add handling for when the match has no date
+    sortMatches(matchesManifests);
     if (Array.isArray(matchesManifests)) {
       resultsManifestStore.set(matchesManifests);
     }
   }
 
+  export function selectDate(node) {
+    return node.manifestStore.activeManifest.signatureInfo.time;
+  }
   function sortMatches(matches) {
     let sortedMatches = matches.sort((n1, n2) => {
-      if (selectFormattedDate(n1) > selectFormattedDate(n2)) {
+      if (selectDate(n1) > selectDate(n2)) {
         return 1;
       }
 
-      if (selectFormattedDate(n1) > selectFormattedDate(n2)) {
+      if (selectDate(n1) < selectDate(n2)) {
         return -1;
       }
 
