@@ -21,6 +21,10 @@
   import PhotoshopLogo from '../../../assets/svg/color/logos/photoshop.svg';
   import TruepicLogo from '../../../assets/svg/color/logos/truepic.svg';
   import TwitterLogo from '../../../assets/svg/color/logos/twitter.svg';
+  import LeicaLogo from '../../../assets/svg/color/logos/leica_logo.svg';
+  import PinterestLogo from '../../../assets/svg/color/logos/pinterest.svg';
+  import YoutubeLogo from '../../../assets/svg/color/logos/YT.svg';
+  import VimeoLogo from '../../../assets/svg/color/logos/vimeo.svg';
 
   export let provider: string;
   let className: string = '';
@@ -36,6 +40,11 @@
     { pattern: /net\.s2stagehance\.com/i, icon: BehanceLogo },
     { pattern: /truepic/i, icon: TruepicLogo },
     { pattern: /twitter\.com/i, icon: TwitterLogo },
+    { pattern: /pinterest\.com/i, icon: PinterestLogo },
+    { pattern: /vimeo\.com/i, icon: VimeoLogo },
+    { pattern: /youtube\.com/i, icon: YoutubeLogo },
+    { pattern: /leica/i, icon: LeicaLogo },
+    { pattern: /M11/i, icon: LeicaLogo },
   ];
 
   $: iconComponent =
