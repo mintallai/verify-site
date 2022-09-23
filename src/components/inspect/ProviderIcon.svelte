@@ -44,6 +44,7 @@
     { pattern: /vimeo\.com/i, icon: VimeoLogo },
     { pattern: /youtube\.com/i, icon: YoutubeLogo },
     { pattern: /leica/i, icon: LeicaLogo },
+    { pattern: /M11/i, icon: LeicaLogo },
   ];
 
   $: iconComponent =
