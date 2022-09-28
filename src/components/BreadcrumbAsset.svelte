@@ -54,9 +54,19 @@
       ><div class="grid grid-cols-4 gap-3">
         <Thumbnail {node} {...badgeProps} />
         <div class="col-span-3 text-left font-regular self-center">
-          <p class="filename truncate">
-            {filename}
-          </p>
+          {#if filename.length > 24}
+            <cai-tooltip placement="top" class="theme-spectrum self-center">
+              <div slot="trigger" class="max-w-[150px]">
+                <p class="filename truncate">{filename}</p>
+              </div>
+              <div slot="content" class="text-gray-900" style="width: 200px;">
+                {filename}
+              </div>
+            </cai-tooltip>
+          {:else}
+            <p class="filename truncate">{filename}</p>
+          {/if}
+
           {#if sigDate}
             <p class="date">
               {$date(sigDate, { format: 'medium' })}{' at '}

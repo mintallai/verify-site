@@ -27,13 +27,6 @@
 <div class="mr-5">
   <BreadcrumbAsset value={null} />
 </div>
-{#if filename.length > 21}
-  <cai-tooltip placement="right" class="theme-spectrum self-center mr-5">
-    <div slot="content" class="text-gray-900" style="width: 200px;">
-      {filename}
-    </div>
-  </cai-tooltip>
-{/if}
 
 <div class="self-center">
   <PopoverManifestRecov {placement} />
