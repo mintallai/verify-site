@@ -156,7 +156,6 @@ function baseConfig(config, ctx) {
         flatten: true,
         verbose: true,
       }),
-
       copy({
         targets: [
           {
@@ -209,6 +208,8 @@ function baseConfig(config, ctx) {
 
       production &&
         terser({
+          // This is needed by image-blob-reduce
+          compress: { evaluate: false },
           format: {
             comments: function (node, comment) {
               var text = comment.value;

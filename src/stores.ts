@@ -11,17 +11,17 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+import type {
+  C2paReadResult,
+  Ingredient,
+  Manifest,
+  Source,
+  Thumbnail,
+} from 'c2pa';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
 import local from 'store2';
 import { derived, get, readable, writable } from 'svelte/store';
-import type {
-  Ingredient,
-  Manifest,
-  C2paReadResult,
-  Source,
-  Thumbnail,
-} from 'c2pa';
 
 import debug from 'debug';
 
@@ -73,6 +73,14 @@ export function toggleBranch(id: string) {
 }
 
 export const overviewTransform = writable<ZoomTransform | null>(null);
+
+/**
+ * Option to force usage of production services while testing
+ */
+export const forceProductionServices = readable<boolean>(false, (set) => {
+  const value = window.localStorage.getItem('forceProduction');
+  set(!!value);
+});
 
 /**
  * The primary universal ID (claim/parent/ingredient) that is being shown in the
