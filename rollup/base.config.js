@@ -156,7 +156,6 @@ function baseConfig(config, ctx) {
         flatten: true,
         verbose: true,
       }),
-
       copy({
         targets: [
           {
@@ -209,6 +208,7 @@ function baseConfig(config, ctx) {
 
       production &&
         terser({
+          compress: { evaluate: false },
           format: {
             comments: function (node, comment) {
               var text = comment.value;

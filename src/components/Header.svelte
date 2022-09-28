@@ -19,6 +19,7 @@
   import 'vanilla-hamburger/fade-burger';
   import { IngestPayload, postEvent } from '../lib/analytics';
   import {
+    forceProductionServices,
     getFaqUrl,
     isBurgerMenuShown,
     learnMoreUrl,
@@ -69,6 +70,9 @@
         {$_('comp.header.productName')}
       </h1>
       <div class="beta">{$_('comp.header.beta')}</div>
+      {#if $forceProductionServices}
+        <div class="flag">Using production</div>
+      {/if}
     </button>
   </div>
   <div class="links full-menu">
@@ -130,6 +134,10 @@
   }
   .beta {
     @apply inline-block bg-gray-200 text-gray-700 font-semi-bold text-xxs rounded px-2 py-0 ml-3;
+    line-height: 1.4375rem;
+  }
+  .flag {
+    @apply inline-block bg-red-500 text-white font-semi-bold text-xxs rounded px-2 py-0 ml-3;
     line-height: 1.4375rem;
   }
   .links {
