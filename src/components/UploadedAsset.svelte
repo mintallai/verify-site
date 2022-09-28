@@ -27,7 +27,6 @@
 <div class="mr-5">
   <BreadcrumbAsset value={null} />
 </div>
-
 <div class="self-center">
   <PopoverManifestRecov {placement} />
 </div>
