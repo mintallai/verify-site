@@ -15,13 +15,26 @@
 <script lang="ts">
   import PopoverManifestRecov from './PopoverManifestRecov.svelte';
   import BreadcrumbAsset from './BreadcrumbAsset.svelte';
-  import { isMobileViewerShown } from '../stores';
+  import { isMobileViewerShown, sourceHierarchy } from '../stores';
+  import { getFilename } from '../lib/node';
+  import { asFilename } from '../lib/util/format';
+
   $: placement = $isMobileViewerShown ? 'bottom' : 'left-start';
+  $: node = $sourceHierarchy;
+  $: filename = getFilename(node);
 </script>
 
 <div class="mr-5">
   <BreadcrumbAsset value={null} />
 </div>
+{#if filename.length > 21}
+  <cai-tooltip placement="right" class="theme-spectrum self-center mr-5">
+    <div slot="content" class="text-gray-900" style="width: 200px;">
+      {filename}
+    </div>
+  </cai-tooltip>
+{/if}
+
 <div class="self-center">
   <PopoverManifestRecov {placement} />
 </div>
