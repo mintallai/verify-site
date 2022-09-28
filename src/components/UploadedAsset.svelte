@@ -16,7 +16,6 @@
   import PopoverManifestRecov from './PopoverManifestRecov.svelte';
   import BreadcrumbAsset from './BreadcrumbAsset.svelte';
   import { isMobileViewerShown } from '../stores';
-
   $: placement = $isMobileViewerShown ? 'bottom' : 'left-start';
 </script>
 
