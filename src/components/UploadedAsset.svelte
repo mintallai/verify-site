@@ -15,13 +15,9 @@
 <script lang="ts">
   import PopoverManifestRecov from './PopoverManifestRecov.svelte';
   import BreadcrumbAsset from './BreadcrumbAsset.svelte';
-  import { isMobileViewerShown, sourceHierarchy } from '../stores';
-  import { getFilename } from '../lib/node';
-  import { asFilename } from '../lib/util/format';
+  import { isMobileViewerShown } from '../stores';
 
   $: placement = $isMobileViewerShown ? 'bottom' : 'left-start';
-  $: node = $sourceHierarchy;
-  $: filename = getFilename(node);
 </script>
 
 <div class="mr-5">
