@@ -56,9 +56,9 @@
     {:else}
       <div class="message-heading">{$_('comp.viewer.dragDropFile')}</div>
       <div class="message-text">
-        <span class="link" on:click={browseFile}>
+        <button class="link" on:click={browseFile}>
           {$_('comp.viewer.selectFromComputer')}
-        </span>
+        </button>
       </div>
     {/if}
   </div>
