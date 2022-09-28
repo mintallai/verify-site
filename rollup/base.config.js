@@ -208,6 +208,7 @@ function baseConfig(config, ctx) {
 
       production &&
         terser({
+          // This is needed by image-blob-reduce
           compress: { evaluate: false },
           format: {
             comments: function (node, comment) {
