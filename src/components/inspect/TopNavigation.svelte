@@ -15,30 +15,30 @@
 <script lang="ts">
   import { goto, params, url } from '@roxi/routify';
   import { createEventDispatcher } from 'svelte';
-  import { _, locale } from 'svelte-i18n';
+  import { locale, _ } from 'svelte-i18n';
   import { recoverManifests } from '../../lib/manifest-recovery';
 
-  import {
-    primaryLoc,
-    ancestors,
-    compareMode,
-    setCompareMode,
-    CompareMode,
-    isMobileViewerShown,
-    navigateTo,
-    resultsManifestStore,
-  } from '../../stores';
-  import type { HierarchyTreeNode } from '../../stores';
+  import '@contentauth/web-components/dist/components/Thumbnail';
+  import '@contentauth/web-components/dist/components/Tooltip';
+  import '@contentauth/web-components/dist/icons/monochrome/cai';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import ChevronRight from '../../../assets/svg/monochrome/chevron-right.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
-  import Thumbnail from '../Thumbnail.svelte';
   import { getFilename } from '../../lib/node';
-  import '@contentauth/web-components/dist/icons/monochrome/cai';
-  import '@contentauth/web-components/dist/components/Thumbnail';
-  import '@contentauth/web-components/dist/components/Tooltip';
-  import UploadedAsset from '../UploadedAsset.svelte';
+  import type { HierarchyTreeNode } from '../../stores';
+  import {
+    ancestors,
+    compareMode,
+    CompareMode,
+    isMobileViewerShown,
+    navigateTo,
+    primaryLoc,
+    resultsManifestStore,
+    setCompareMode,
+  } from '../../stores';
   import ResultManifestsDisplay from '../ResultManifestsDisplay.svelte';
+  import Thumbnail from '../Thumbnail.svelte';
+  import UploadedAsset from '../UploadedAsset.svelte';
 
   type Page = 'overview' | 'inspect';
 
@@ -155,6 +155,7 @@
             <div class="flex">
               <UploadedAsset />
             </div>
+            <!--
             <div class="flex ">
               <div class="match-btn self-center ">
                 <sp-button size="s" onclick={handleButtonClick}>
@@ -163,10 +164,12 @@
               </div>
               <ResultManifestsDisplay {loadingMatches} />
             </div>
+            -->
           </div>
         </div>
       {:else}
         <UploadedAsset />
+        <!--
         <div class="match-btn self-center ml-5">
           <sp-button size="s" onclick={handleButtonClick}>
             {$_('comp.topNavigation.matches')}
@@ -183,6 +186,7 @@
           </cai-tooltip>
         </div>
         <ResultManifestsDisplay {loadingMatches} />
+        -->
       {/if}
     </sp-theme>
   {/if}

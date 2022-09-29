@@ -13,15 +13,17 @@
   from Adobe.
 -->
 <script lang="ts">
-  import PopoverManifestRecov from './PopoverManifestRecov.svelte';
-  import BreadcrumbAsset from './BreadcrumbAsset.svelte';
   import { isMobileViewerShown } from '../stores';
+  import BreadcrumbAsset from './BreadcrumbAsset.svelte';
+  import PopoverManifestRecov from './PopoverManifestRecov.svelte';
   $: placement = $isMobileViewerShown ? 'bottom' : 'left-start';
 </script>
 
 <div class="mr-5">
   <BreadcrumbAsset value={null} />
 </div>
+<!--
 <div class="self-center">
   <PopoverManifestRecov {placement} />
 </div>
+-->
