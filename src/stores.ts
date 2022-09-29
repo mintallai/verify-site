@@ -11,17 +11,17 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+import type {
+  C2paReadResult,
+  Ingredient,
+  Manifest,
+  Source,
+  Thumbnail,
+} from 'c2pa';
 import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
 import { ZoomTransform } from 'd3-zoom';
 import local from 'store2';
 import { derived, get, readable, writable } from 'svelte/store';
-import type {
-  Ingredient,
-  Manifest,
-  SdkResult,
-  Source,
-  Thumbnail,
-} from './lib/sdk';
 
 import debug from 'debug';
 
@@ -31,7 +31,7 @@ const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
-const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
+export const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
 export const ROOT_LOC = '0';
 
 /**
@@ -73,6 +73,14 @@ export function toggleBranch(id: string) {
 }
 
 export const overviewTransform = writable<ZoomTransform | null>(null);
+
+/**
+ * Option to force usage of production services while testing
+ */
+export const forceProductionServices = readable<boolean>(false, (set) => {
+  const value = window.localStorage.getItem('forceProduction');
+  set(!!value);
+});
 
 /**
  * The primary universal ID (claim/parent/ingredient) that is being shown in the
@@ -183,27 +191,41 @@ export function compareWith(loc: string | null, logEvent = true): void {
     });
   }
 }
+type ActiveAssetType = ['s'] | ['r', number];
+
+export const activeAsset = writable<ActiveAssetType>(['s']);
 
 /**
  * Contains the SdkResult of the loaded asset.
  */
-export const provenance = writable<SdkResult | null>(null, (set) => {
-  return () => {};
-});
+export const sourceManifestStore = writable<C2paReadResult | null>(
+  null,
+  (set) => {
+    return () => {};
+  },
+);
+
+/**
+ * Contains an array of SdkResults of the returned matches
+ */
+export const resultsManifestStore = writable<C2paReadResult[]>(null);
 
 /**
  * Sets the SdkResult of the loaded asset.
  */
-export async function setProvenance(result: SdkResult | null) {
+export async function setProvenance(result: C2paReadResult | null) {
   dbg('Calling setProvenance with', result);
 
   if (result) {
-    provenance.set(result);
+    sourceManifestStore.set(result);
     overviewTransform.set(null);
+    activeAsset.set(['s']);
     navigateToRoot();
   } else {
     dbg('No provenance found');
-    provenance.set(null);
+    sourceManifestStore.set(null);
+    activeAsset.set(['s']);
+    resultsManifestStore.set(null);
   }
 }
 
@@ -338,53 +360,83 @@ function parseProvenance(
   }
 }
 
-export const hierarchy = derived<[typeof provenance], HierarchyTreeNode | null>(
-  [provenance],
-  ([$provenance]) => {
-    if ($provenance) {
-      const { source, manifestStore } = $provenance;
-      const activeManifest = manifestStore?.activeManifest;
-      const validationStatus = manifestStore?.validationStatus;
+export const sourceHierarchy = derived<
+  [typeof sourceManifestStore],
+  HierarchyTreeNode | null
+>([sourceManifestStore], ([$sourceManifestStore]) => {
+  if ($sourceManifestStore) {
+    return manifestStoreToHierarchy($sourceManifestStore);
+  }
+  return null;
+});
 
-      const isPureOtgp =
-        hasOtgpStatus(validationStatus) && !hasErrorStatus(validationStatus);
-      // We have C2PA provenance data and no top-level OTGP
-      // This means we should make the hierarchy map directly to the provenance data structure
-      if (activeManifest && !isPureOtgp) {
-        return d3Hierarchy(
-          parseProvenance(activeManifest, '0', validationStatus),
-        );
-      }
-      /**
-       * If we do not have an active manifest OR top-level OTGP, we do one of two things:
-       *
-       * 1. If we have OTGP at the top level, this means that the current state of the image
-       *    does not necessairly match the thumbnail of the active manifest. Because
-       *    of this, we need to display the source (i.e. the current state of the asset)
-       *    as the parent of the provenance claim in our hierarchy, together with an OTGP badge.
-       * 2. If we don't have provenance data for this asset, we only show the source and
-       *    have no children underneath.
-       */
-      if (source && (isPureOtgp || !activeManifest)) {
-        return d3Hierarchy({
-          loc: ROOT_LOC,
-          type: 'source',
-          node: source,
-          title: source.metadata.filename,
-          thumbnail: source.thumbnail,
-          format: source.type,
-          isOtgp: hasOtgpStatus(validationStatus),
-          hasError: hasErrorStatus(validationStatus),
-          children: activeManifest
-            ? [parseProvenance(activeManifest, `${ROOT_LOC}.0`)]
-            : [],
-        } as SourceTreeNode);
-      }
+function manifestStoreToHierarchy(result: C2paReadResult) {
+  const { source, manifestStore } = result;
+  const activeManifest = manifestStore?.activeManifest;
+  const validationStatus = manifestStore?.validationStatus;
+
+  const isPureOtgp =
+    hasOtgpStatus(validationStatus) && !hasErrorStatus(validationStatus);
+  // We have C2PA sourceManifestStore data and no top-level OTGP
+  // This means we should make the hierarchy map directly to the sourceManifestStore data structure
+  if (activeManifest && !isPureOtgp) {
+    return d3Hierarchy(parseProvenance(activeManifest, '0', validationStatus));
+  }
+  /**
+   * If we do not have an active manifest OR top-level OTGP, we do one of two things:
+   *
+   * 1. If we have OTGP at the top level, this means that the current state of the image
+   *    does not necessairly match the thumbnail of the active manifest. Because
+   *    of this, we need to display the source (i.e. the current state of the asset)
+   *    as the parent of the provenance claim in our hierarchy, together with an OTGP badge.
+   * 2. If we don't have provenance data for this asset, we only show the source and
+   *    have no children underneath.
+   */
+  if (source && (isPureOtgp || !activeManifest)) {
+    return d3Hierarchy({
+      loc: ROOT_LOC,
+      type: 'source',
+      node: source,
+      title: source.metadata.filename,
+      thumbnail: source.thumbnail,
+      format: source.type,
+      isOtgp: hasOtgpStatus(validationStatus),
+      hasError: hasErrorStatus(validationStatus),
+      children: activeManifest
+        ? [parseProvenance(activeManifest, `${ROOT_LOC}.0`)]
+        : [],
+    } as SourceTreeNode);
+  }
+}
+/**
+ * derived hierarchy for the result manifest store
+ */
+export const resultHierarchies = derived<
+  [typeof resultsManifestStore],
+  HierarchyTreeNode[]
+>([resultsManifestStore], ([$resultsManifestStore]) => {
+  return $resultsManifestStore?.map((result) => {
+    if (result) {
+      return manifestStoreToHierarchy(result);
     }
     return null;
+  });
+});
+
+export let hierarchy = derived(
+  [sourceHierarchy, resultHierarchies, activeAsset],
+  ([$sourceHierarchy, $resultHierarchies, $activeAsset]) => {
+    const [type, resultNumber] = $activeAsset;
+    //if the result is source
+    if (type == 's') {
+      return $sourceHierarchy;
+    } else {
+      if ($resultHierarchies) {
+        return $resultHierarchies[resultNumber];
+      }
+    }
   },
 );
-
 /**
  * Convenience accessor for the claim/ingredient data that's linked to the `primaryLoc`.
  */
@@ -399,16 +451,16 @@ export const primary = derived<
  * Convenience accessor for the claim/ingredient data that's linked to the `secondaryLoc`.
  */
 export const secondary = derived<
-  [typeof hierarchy, typeof secondaryLoc],
+  [typeof sourceHierarchy, typeof secondaryLoc],
   HierarchyTreeNode | undefined
->([hierarchy, secondaryLoc], ([$hierarchy, $secondaryLoc]) => {
+>([sourceHierarchy, secondaryLoc], ([$hierarchy, $secondaryLoc]) => {
   return $hierarchy?.find((node) => node.data.loc === $secondaryLoc);
 });
 
 export const ancestors = derived<
-  [typeof primaryLoc, typeof hierarchy],
+  [typeof primaryLoc, typeof sourceHierarchy],
   HierarchyTreeNode[] | null
->([primaryLoc, hierarchy], ([$primaryLoc, $hierarchy]) => {
+>([primaryLoc, sourceHierarchy], ([$primaryLoc, $hierarchy]) => {
   if ($primaryLoc) {
     return $hierarchy
       ?.find((node) => node.data.loc === $primaryLoc)
@@ -418,10 +470,10 @@ export const ancestors = derived<
 });
 
 export const hasContent = derived<
-  [typeof provenance, typeof isLoading],
+  [typeof sourceManifestStore, typeof isLoading],
   boolean
->([provenance, isLoading], ([$provenance, $isLoading]) => {
-  return !!($provenance || $isLoading);
+>([sourceManifestStore, isLoading], ([$sourceManifestStore, $isLoading]) => {
+  return !!($sourceManifestStore || $isLoading);
 });
 
 export const isComparing = derived<[typeof primary, typeof secondary], boolean>(
@@ -432,10 +484,10 @@ export const isComparing = derived<[typeof primary, typeof secondary], boolean>(
 );
 
 export const noMetadata = derived<
-  [typeof provenance, typeof isLoading],
+  [typeof sourceManifestStore, typeof isLoading],
   boolean
->([provenance, isLoading], ([$provenance, $isLoading]) => {
-  return !$isLoading && !$provenance?.manifestStore?.activeManifest;
+>([sourceManifestStore, isLoading], ([$sourceManifestStore, $isLoading]) => {
+  return !$isLoading && !$sourceManifestStore?.manifestStore?.activeManifest;
 });
 
 /**
@@ -447,3 +499,9 @@ export function navigateToRoot(logEvent = true): void {
   secondaryLoc.set('');
   navigateTo(ROOT_LOC, logEvent);
 }
+
+/**
+ * Store for recovered manifests
+ *
+ */
+export const recoveredManifests = writable([]);

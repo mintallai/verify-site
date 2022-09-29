@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import AlertIcon from '../../assets/svg/monochrome/alert.svg';
   import '@contentauth/web-components/dist/icons/color/info-blue';

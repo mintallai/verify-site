@@ -46,6 +46,10 @@ export class OverviewPage {
       'data-test-id=viewer.fileInput',
       resolve(imageBase, imageRelPath),
     );
+    // await this.page.locator(testID('overview.btn')).click();
     await this.page.waitForSelector(testID('tree-view'));
+  }
+  async navigateToOverview() {
+    await this.goto();
   }
 }

@@ -14,14 +14,15 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { getGenerator } from '../../lib/node';
+  import { getManifest } from '../../lib/node';
+  import { selectFormattedGenerator } from '../../lib/sdk';
   import type { HierarchyTreeNode } from '../../stores';
   import Alert from '../Alert.svelte';
 
   export let type: 'original' | 'secureCapture' = 'original';
   export let node: HierarchyTreeNode;
 
-  $: product = getGenerator(node);
+  $: product = selectFormattedGenerator(getManifest(node));
 </script>
 
 <Alert severity="info">

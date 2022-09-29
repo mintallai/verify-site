@@ -11,16 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { createC2pa, resolvers } from 'c2pa';
-
-export type Sdk = Awaited<ReturnType<typeof createC2pa>>;
-export type SdkResult = Awaited<ReturnType<Sdk['read']>>;
-export type Manifest = SdkResult['manifestStore']['activeManifest'];
-export type Ingredient = Manifest['ingredients'][number];
-export type Source = SdkResult['source'];
-
-let sdk: Sdk;
-
+import { createC2pa, Manifest } from 'c2pa';
 declare module 'c2pa' {
   interface ExtendedAssertions {
     'adobe.crypto.addresses': {
@@ -33,13 +24,26 @@ declare module 'c2pa' {
   }
 }
 
-function isBetaResolver(manifest: Manifest) {
-  return !!manifest.assertions.get('adobe.beta')?.data.version;
+export async function getSdk() {
+  try {
+    return await createC2pa({
+      wasmSrc: 'sdk/toolkit_bg.wasm',
+      workerSrc: 'sdk/c2pa.worker.min.js',
+    });
+  } catch (err) {
+    console.error('Could not load SDK:', err);
+    window.newrelic?.noticeError(err);
+  }
 }
 
-function websiteResolver(manifest: Manifest) {
-  const site = manifest.assertions.get('stds.schema-org.CreativeWork')?.data
+export function selectIsBeta(manifest: Manifest) {
+  return !!manifest.assertions.get('adobe.beta')[0]?.data.version;
+}
+
+export function selectWebsite(manifest: Manifest) {
+  const site = manifest.assertions.get('stds.schema-org.CreativeWork')[0]?.data
     .url;
+
   if (site) {
     const url = new URL(site);
     if (url.protocol === 'https:' && url.hostname === 'stock.adobe.com') {
@@ -48,34 +52,73 @@ function websiteResolver(manifest: Manifest) {
   }
 }
 
-function web3Resolver(manifest: Manifest) {
+export function selectWeb3(manifest: Manifest) {
   const cryptoEntries =
-    manifest.assertions.get('adobe.crypto.addresses')?.data ?? {};
+    manifest.assertions.get('adobe.crypto.addresses')[0]?.data ?? {};
+
   return (Object.entries(cryptoEntries) as [string, string[]][]).filter(
     ([type, [address]]) => address && ['solana', 'ethereum'].includes(type),
   );
 }
 
-export async function getSdk() {
-  if (!sdk) {
-    try {
-      sdk = await createC2pa({
-        wasmSrc: 'sdk/toolkit_bg.wasm',
-        workerSrc: 'sdk/c2pa.worker.min.js',
-        manifestResolvers: {
-          ...resolvers.editsAndActivity,
-          isBeta: isBetaResolver,
-          website: websiteResolver,
-          web3: web3Resolver,
-        },
-      });
-    } catch (err) {
-      console.error('Could not load SDK:', err);
-      window.newrelic?.noticeError(err);
+export function selectFormattedGenerator(manifest: Manifest) {
+  const value = manifest.claimGenerator;
+  // We are stripping parenthesis so that any version matches in there don't influence the test
+  const withoutParens = value.replace(/\([^\)]*\)/g, '');
+  if (/\s+\d+\.\d(\.\d)*\s+/.test(withoutParens)) {
+    // Old-style (XMP Agent) string (match space + version)
+    return value.split('(')[0]?.trim();
+  } else {
+    // User-Agent string
+    // Split by space (the RFC uses the space as a separator)
+    const firstItem = withoutParens.split(/\s+/)?.[0] ?? '';
+    // Parse product name from version
+    // Adobe_Photoshop/23.3.1 -> [Adobe_Photoshop, 23.3.1]
+    const [product, version] = firstItem.split('/');
+    // Replace underscores with spaces
+    // Adobe_Photoshop -> Adobe Photoshop
+    const formattedProduct = product.replace(/_/g, ' ');
+    if (version) {
+      return `${formattedProduct} ${version}`;
     }
+    return formattedProduct;
   }
-
-  return sdk;
 }
 
-export * from 'c2pa';
+export function selectIsOriginal(manifest: Manifest) {
+  if (!manifest) {
+    return false;
+  }
+
+  const noIngredients = manifest.ingredients?.length === 0;
+  const actions = manifest.assertions.get('c2pa.actions')[0]?.data?.actions;
+  const isDelivered = actions?.some((x) => x.action === 'adobe.delivered');
+
+  return noIngredients && !isDelivered;
+}
+
+export function selectReviewRatings(manifest: Manifest) {
+  const ingredientRatings = manifest?.ingredients?.reduce((acc, ingredient) => {
+    return [...acc, ...(ingredient.metadata?.reviewRatings ?? [])];
+  }, []);
+  const actionRatings =
+    // @ts-ignore
+    manifest.assertions.get('c2pa.actions')[0]?.data?.metadata?.reviewRatings ??
+    [];
+  const reviewRatings = [...ingredientRatings, ...actionRatings];
+
+  return {
+    hasUnknownActions: reviewRatings.some(
+      (review) => review.code === 'actions.unknownActionsPerformed',
+    ),
+    wasPossiblyModified: reviewRatings.some(
+      (review) => review.code === 'ingredient.possiblyModified',
+    ),
+  };
+}
+
+export function selectFormattedDate(manifest: Manifest) {
+  return manifest?.signatureInfo.time
+    ? new Date(manifest.signatureInfo.time)
+    : null;
+}

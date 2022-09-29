@@ -37,69 +37,8 @@ export function getFilename(node: HierarchyTreeNode): string {
   return node?.data?.title ?? '';
 }
 
-export function parseGenerator(value: string): string {
-  // We are stripping parenthesis so that any version matches in there don't influence the test
-  const withoutParens = value.replace(PARENS_REGEX, '');
-  if (SPACE_VERSION_REGEX.test(withoutParens)) {
-    // Old-style (XMP Agent) string (match space + version)
-    return value.split('(')[0]?.trim();
-  } else {
-    // User-Agent string
-    // Split by space (the RFC uses the space as a separator)
-    const firstItem = withoutParens.split(/\s+/)?.[0] ?? '';
-    // Parse product name from version
-    // Adobe_Photoshop/23.3.1 -> [Adobe_Photoshop, 23.3.1]
-    const [product, version] = firstItem.split('/');
-    // Replace underscores with spaces
-    // Adobe_Photoshop -> Adobe Photoshop
-    const formattedProduct = product.replace(/_/g, ' ');
-    if (version) {
-      return `${formattedProduct} ${version}`;
-    }
-    return formattedProduct;
-  }
-}
-
-export function getGenerator(node: HierarchyTreeNode): string {
-  const generator = getManifest(node)?.claimGenerator?.value ?? '';
-  return parseGenerator(generator);
-}
-
 export function getThumbnail(node: HierarchyTreeNode) {
   return node?.data.node.thumbnail;
-}
-
-export function getIsOriginal(node: HierarchyTreeNode) {
-  const manifest = getManifest(node);
-
-  if (!manifest) return false;
-
-  const noIngredients = manifest.ingredients?.length === 0;
-  const actions = manifest.assertions.get('c2pa.actions')?.data.actions;
-  const isDelivered = actions?.some((x) => x.action === DELIVERED_ACTION);
-
-  return noIngredients && !isDelivered;
-}
-
-export function getReviewRatings(node: HierarchyTreeNode) {
-  const manifest = getManifest(node);
-  const ingredientRatings = manifest.ingredients?.reduce((acc, ingredient) => {
-    return [...acc, ...(ingredient.data.metadata?.reviewRatings ?? [])];
-  }, []);
-  const actionRatings =
-    // @ts-ignore
-    manifest.assertions.get('c2pa.actions')?.data?.metadata?.reviewRatings ??
-    [];
-  const reviewRatings = [...ingredientRatings, ...actionRatings];
-
-  return {
-    hasUnknownActions: reviewRatings.some(
-      (review) => review.code === 'actions.unknownActionsPerformed',
-    ),
-    wasPossiblyModified: reviewRatings.some(
-      (review) => review.code === 'ingredient.possiblyModified',
-    ),
-  };
 }
 
 export function isAncestorOf(path: string, loc: string) {
@@ -110,12 +49,12 @@ export function isAncestorOf(path: string, loc: string) {
  * Generates the badge props (used by the `cai-thumbnail`) from the claim data
  */
 export function getBadgeProps(node: HierarchyTreeNode): BadgeProps {
-  if (node.data.hasError) {
+  if (node?.data.hasError) {
     return {
       badgeType: 'alert',
       badgeHelpText: 'comp.asset.badgeError.helpText',
     };
-  } else if (node.data.isOtgp) {
+  } else if (node?.data.isOtgp) {
     return {
       badgeType: 'missing',
       badgeHelpText: 'comp.asset.badgeMissing.helpText',

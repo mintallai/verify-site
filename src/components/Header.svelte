@@ -13,18 +13,19 @@
   from Adobe.
 -->
 <script lang="ts">
+  import '@contentauth/web-components/dist/icons/color/logos/adobe';
   import { _ } from 'svelte-i18n';
   import { slide } from 'svelte/transition';
-  import { postEvent, IngestPayload } from '../lib/analytics';
-  import Button from './Button.svelte';
+  import 'vanilla-hamburger/fade-burger';
+  import { IngestPayload, postEvent } from '../lib/analytics';
   import {
-    learnMoreUrl,
+    forceProductionServices,
     getFaqUrl,
     isBurgerMenuShown,
+    learnMoreUrl,
     setProvenance,
   } from '../stores';
-  import '@contentauth/web-components/dist/icons/color/logos/adobe';
-  import 'vanilla-hamburger/fade-burger';
+  import Button from './Button.svelte';
 
   function handleBurgerClick() {
     isBurgerMenuShown.update((shown) => !shown);
@@ -69,6 +70,9 @@
         {$_('comp.header.productName')}
       </h1>
       <div class="beta">{$_('comp.header.beta')}</div>
+      {#if $forceProductionServices}
+        <div class="flag">Using production</div>
+      {/if}
     </button>
   </div>
   <div class="links full-menu">
@@ -120,7 +124,7 @@
 
 <style lang="postcss">
   header {
-    @apply border-gray-200 bg-white border-b-2 px-5 flex items-center justify-between z-50;
+    @apply border-gray-200 bg-white border-b-2 px-5 flex items-center justify-between z-10;
     grid-area: header;
     max-width: 100vw;
     height: 80px;
@@ -130,6 +134,10 @@
   }
   .beta {
     @apply inline-block bg-gray-200 text-gray-700 font-semi-bold text-xxs rounded px-2 py-0 ml-3;
+    line-height: 1.4375rem;
+  }
+  .flag {
+    @apply inline-block bg-red-500 text-white font-semi-bold text-xxs rounded px-2 py-0 ml-3;
     line-height: 1.4375rem;
   }
   .links {

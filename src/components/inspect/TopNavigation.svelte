@@ -15,25 +15,30 @@
 <script lang="ts">
   import { goto, params, url } from '@roxi/routify';
   import { createEventDispatcher } from 'svelte';
-  import { _, locale } from 'svelte-i18n';
-  import {
-    primaryLoc,
-    ancestors,
-    compareMode,
-    setCompareMode,
-    CompareMode,
-    isMobileViewerShown,
-    navigateTo,
-  } from '../../stores';
-  import type { HierarchyTreeNode } from '../../stores';
+  import { locale, _ } from 'svelte-i18n';
+  import { recoverManifests } from '../../lib/manifest-recovery';
+
+  import '@contentauth/web-components/dist/components/Thumbnail';
+  import '@contentauth/web-components/dist/components/Tooltip';
+  import '@contentauth/web-components/dist/icons/monochrome/cai';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import ChevronRight from '../../../assets/svg/monochrome/chevron-right.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
-  import Thumbnail from '../Thumbnail.svelte';
   import { getFilename } from '../../lib/node';
-  import '@contentauth/web-components/dist/icons/monochrome/cai';
-  import '@contentauth/web-components/dist/components/Thumbnail';
-  import '@contentauth/web-components/dist/components/Tooltip';
+  import type { HierarchyTreeNode } from '../../stores';
+  import {
+    ancestors,
+    compareMode,
+    CompareMode,
+    isMobileViewerShown,
+    navigateTo,
+    primaryLoc,
+    resultsManifestStore,
+    setCompareMode,
+  } from '../../stores';
+  import ResultManifestsDisplay from '../ResultManifestsDisplay.svelte';
+  import Thumbnail from '../Thumbnail.svelte';
+  import UploadedAsset from '../UploadedAsset.svelte';
 
   type Page = 'overview' | 'inspect';
 
@@ -41,6 +46,7 @@
   export let currentPage: Page = 'overview';
   export let isComparing: boolean = false;
   export let noMetadata: boolean = false;
+  let loadingMatches: boolean = false;
   const dispatch = createEventDispatcher();
 
   function handleNavChange() {
@@ -51,11 +57,42 @@
     setCompareMode(this.value);
   }
 
-  $: showMenu = $isMobileViewerShown;
+  async function handleButtonClick() {
+    loadingMatches = true;
+    const matchesManifests = await recoverManifests();
+    loadingMatches = false;
+    sortMatches(matchesManifests);
+    if (Array.isArray(matchesManifests)) {
+      resultsManifestStore.set(matchesManifests);
+    }
+  }
+
+  function selectDate(node) {
+    return node.manifestStore.activeManifest.signatureInfo.time;
+  }
+  function sortMatches(matches) {
+    const sortedMatches = matches.sort((n1, n2) => {
+      const date1 = selectDate(n1);
+      const date2 = selectDate(n2);
+
+      if (date1 > date2) {
+        return 1;
+      }
+      if (date1 < date2) {
+        return -1;
+      }
+
+      return 0;
+    });
+    return sortedMatches;
+  }
   $: nodeAncestors = $ancestors;
 </script>
 
-<div id="breadcrumb-bar" class="container" class:menu-view={showMenu}>
+<div
+  id="breadcrumb-bar"
+  class="container"
+  class:menu-view={$isMobileViewerShown}>
   <!-- Only display Top Nav if there is an active asset -->
   {#if $primaryLoc}
     <sp-theme color="lightest" scale="medium" class="w-full">
@@ -87,7 +124,7 @@
             {/key}
           </div>
         </div>
-      {:else if showMenu}
+      {:else if $isMobileViewerShown}
         <div class="flex self-center">
           {#if nodeAncestors?.length > 1}
             <sp-action-menu class="-ml-3" value={$primaryLoc}>
@@ -114,19 +151,42 @@
               <ChevronRight width="16px" height="16px" class="text-gray-700" />
             </div>
           {/if}
-          <div class="breadcrumb-item items-center current">
-            <Thumbnail {node} />
-            <span class="font-regular text-smd ml-2">{getFilename(node)}</span>
+          <div class="grid grid-rows-2">
+            <div class="flex">
+              <UploadedAsset />
+            </div>
+            <!--
+            <div class="flex ">
+              <div class="match-btn self-center ">
+                <sp-button size="s" onclick={handleButtonClick}>
+                  {$_('comp.topNavigation.matches')}
+                </sp-button>
+              </div>
+              <ResultManifestsDisplay {loadingMatches} />
+            </div>
+            -->
           </div>
         </div>
       {:else}
-        <sp-tabs
-          selected={$url()}
-          on:change={handleNavChange}
-          class="nav-tabs mt-1 -ml-4">
-          <sp-tab label={$_('comp.topNavigation.overview')} value="/overview" />
-          <sp-tab label={$_('comp.topNavigation.inspect')} value="/inspect" />
-        </sp-tabs>
+        <UploadedAsset />
+        <!--
+        <div class="match-btn self-center ml-5">
+          <sp-button size="s" onclick={handleButtonClick}>
+            {$_('comp.topNavigation.matches')}
+          </sp-button>
+        </div>
+        <div class="self-center ml-5">
+          <cai-tooltip placement="right" class="theme-spectrum">
+            <div
+              slot="content"
+              class="text-gray-900 z-50"
+              style="width: 200px;">
+              {$_('comp.topNavigation.tooltip')}
+            </div>
+          </cai-tooltip>
+        </div>
+        <ResultManifestsDisplay {loadingMatches} />
+        -->
       {/if}
     </sp-theme>
   {/if}
@@ -136,11 +196,15 @@
   .container {
     --spectrum-picker-m-text-color: var(--black);
     --spectrum-picker-m-text-color-hover: var(--black);
-    --cai-thumbnail-size: 32px;
+    --cai-thumbnail-size: 48px;
     @apply flex bg-white border-b-2 border-gray-200 px-5 max-w-full z-30 items-stretch;
     grid-area: breadcrumb;
     height: 60px;
   }
+  .match-btn > sp-button {
+    @apply w-fit h-[34px] text-gray-700 bg-gray-100;
+  }
+
   .container > sp-theme {
     @apply flex items-stretch;
   }
@@ -150,10 +214,14 @@
   .breadcrumb-item.current {
     @apply font-bold cursor-default;
   }
-
+  .menu-view {
+    /* @apply grid grid-rows-2; */
+    height: 120px;
+  }
   .breadcrumb-nav {
     --cai-thumbnail-size: 20px;
   }
+
   .nav-tabs {
     --spectrum-tabs-rule-color: var(--white);
     --spectrum-tabs-m-text-color: var(--gray-700);

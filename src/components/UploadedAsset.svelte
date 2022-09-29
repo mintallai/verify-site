@@ -1,6 +1,6 @@
 <!--
   ADOBE CONFIDENTIAL
-  Copyright 2020 Adobe
+  Copyright 2022 Adobe
   All Rights Reserved.
 
   NOTICE: All information contained herein is, and remains
@@ -12,18 +12,18 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-<script lang="ts" context="module">
-  import '@spectrum-web-components/progress-circle/sp-progress-circle.js';
-</script>
-
 <script lang="ts">
-  export let size: string = 'large';
+  import { isMobileViewerShown } from '../stores';
+  import BreadcrumbAsset from './BreadcrumbAsset.svelte';
+  import PopoverManifestRecov from './PopoverManifestRecov.svelte';
+  $: placement = $isMobileViewerShown ? 'bottom' : 'left-start';
 </script>
 
-<sp-theme color="lightest" scale="medium">
-  <sp-progress-circle
-    label="Loading asset data"
-    indeterminate="true"
-    {size}
-    class="loader" />
-</sp-theme>
+<div class="mr-5">
+  <BreadcrumbAsset value={null} />
+</div>
+<!--
+<div class="self-center">
+  <PopoverManifestRecov {placement} />
+</div>
+-->

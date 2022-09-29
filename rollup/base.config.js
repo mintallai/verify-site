@@ -11,23 +11,23 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import childProcess from 'child_process';
-import fs from 'fs';
-import path from 'path';
-import svelte from 'rollup-plugin-svelte-hot';
-import Hmr from 'rollup-plugin-hot';
+import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import commonjs from '@rollup/plugin-commonjs';
+import typescript from '@rollup/plugin-typescript';
 import url from '@rollup/plugin-url';
-import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
-import copy from 'rollup-plugin-copy';
+import childProcess from 'child_process';
 import del from 'del';
+import fs from 'fs';
 import git from 'git-rev-sync';
+import path from 'path';
+import copy from 'rollup-plugin-copy';
+import Hmr from 'rollup-plugin-hot';
+import livereload from 'rollup-plugin-livereload';
+import svelte from 'rollup-plugin-svelte-hot';
+import { terser } from 'rollup-plugin-terser';
 import { spassr } from 'spassr';
 import { typescript as embeddedTypescript } from 'svelte-preprocess';
-import typescript from '@rollup/plugin-typescript';
 import svelteSvg from '../etc/rollup/plugins/svelte-svg';
 
 // TODO: Convert this to esm
@@ -156,7 +156,6 @@ function baseConfig(config, ctx) {
         flatten: true,
         verbose: true,
       }),
-
       copy({
         targets: [
           {
@@ -165,7 +164,7 @@ function baseConfig(config, ctx) {
             transform: transformDictionaryJson,
           },
         ],
-        copyOnce: false,
+        copyOnce: true,
         flatten: true,
         verbose: true,
       }),
@@ -209,6 +208,8 @@ function baseConfig(config, ctx) {
 
       production &&
         terser({
+          // This is needed by image-blob-reduce
+          compress: { evaluate: false },
           format: {
             comments: function (node, comment) {
               var text = comment.value;

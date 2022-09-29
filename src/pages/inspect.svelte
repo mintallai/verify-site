@@ -38,7 +38,7 @@
     isMobileViewerShown,
     noMetadata,
     primary,
-    provenance,
+    sourceManifestStore,
     secondary,
     urlParams,
   } from '../stores';
@@ -79,7 +79,7 @@
       tour.cancel();
     }
     // Clear errors if the store report has changed
-    if ($provenance !== undefined) {
+    if ($sourceManifestStore !== undefined) {
       error = null;
     }
   }
@@ -196,7 +196,7 @@
 
     @apply grid w-screen min-h-screen h-full font-base;
     grid-template-columns: 100%;
-    grid-template-rows: 80px 60px var(--viewer-height) 1fr 70px;
+    grid-template-rows: 80px 120px var(--viewer-height) 1fr 70px;
     grid-template-areas:
       'header'
       'breadcrumb'

@@ -12,7 +12,7 @@
 // from Adobe.
 
 import { getThumbnail } from '../lib/node';
-import type { Thumbnail } from '../lib/sdk';
+import type { Thumbnail } from 'c2pa';
 import type { HierarchyTreeNode } from '../stores';
 
 export interface ThumbnailEvent {
@@ -26,7 +26,7 @@ async function generateThumbnail(node: Node, asset: Thumbnail) {
   if (result) {
     node.dispatchEvent(
       new CustomEvent<ThumbnailEvent>('thumbnail', {
-        detail: { target: node, url: result.data.url },
+        detail: { target: node, url: result.url },
       }),
     );
   }

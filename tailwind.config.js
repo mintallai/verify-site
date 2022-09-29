@@ -11,16 +11,11 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-const production = !process.env.ROLLUP_WATCH;
 const merge = require('lodash/merge');
 const spectrumConfig = require('./tailwind.config.spectrum');
 
 module.exports = merge(spectrumConfig, {
-  mode: 'jit',
-  purge: {
-    enabled: production,
-    content: ['./src/**/*.{svelte,js,ts}'],
-  },
+  content: ['./src/**/*.{svelte,js,ts}'],
   theme: {
     screens: {
       sm: '640px',

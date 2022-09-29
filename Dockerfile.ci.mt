@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.17.1-focal
+FROM mcr.microsoft.com/playwright:v1.22.2-focal
 WORKDIR /build
 ADD . .
 RUN yarn install
