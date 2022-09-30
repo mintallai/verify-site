@@ -64,7 +64,7 @@
               </div>
             </cai-tooltip>
           {:else}
-            <p class="filename truncate">{filename}</p>
+            <p class="filename">{filename}</p>
           {/if}
 
           {#if sigDate}

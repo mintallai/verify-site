@@ -48,8 +48,7 @@
 
 <div class="viewer-wrapper">
   <div
-    class:viewer={isUploadMode}
-    class:viewertree={!isUploadMode}
+    class="viewer"
     class:no-source={!$sourceManifestStore && !isLoading}
     class:upload={isUploadMode}
     class:dragging={isDragging}
@@ -58,18 +57,16 @@
     <div class="inner" use:cssVars={styles}>
       <FileDropper {isUploadMode} {isDragging} />
       {#if !isUploadMode}
+        <div class="absolute top-4">
+          <ViewControls inInspect={true} inOverview={false} />
+        </div>
         {#if !isLoading && !isError && hasThumbnail}
-          <div class="grid grid-cols-1 grid-rows-10  justify-items-center">
-            <div class="row-span-1">
-              <ViewControls inInspect={true} inOverview={false} />
-            </div>
-            <img
-              data-test-id="viewer.thumbnail"
-              use:thumbnail={node}
-              on:thumbnail={handleImgSrc}
-              alt="Thumbnail"
-              class="h-full w-full object-contain object-center row-span-9" />
-          </div>
+          <img
+            data-test-id="viewer.thumbnail"
+            use:thumbnail={node}
+            on:thumbnail={handleImgSrc}
+            alt="Thumbnail"
+            class="h-full w-full object-contain pt-24" />
         {:else}
           <div class="flex items-center justify-center">
             {#if isError || (!isLoading && !hasThumbnail)}
@@ -87,9 +84,6 @@
 <style lang="postcss">
   .viewer {
     @apply w-full bg-gray-75 flex items-center justify-center overflow-hidden;
-  }
-  .viewertree {
-    @apply w-full bg-gray-75 flex p-4 justify-center overflow-hidden;
   }
   .viewer.no-source {
     @apply bg-white;
