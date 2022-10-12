@@ -1,6 +1,7 @@
 /* purgecss start ignore */
 :root {
   --drag-bg-color: rgba(20, 115, 230, 0.1);
+  --screen-width: 1024px;
 }
 
 body {

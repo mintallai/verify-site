@@ -2,11 +2,15 @@ import debug from 'debug';
 import pLimit from 'p-limit';
 import { get } from 'svelte/store';
 import { getConfig } from '../lib/config';
-import { getSdk } from '../lib/sdk';
+import { getSdk, getSdk } from '../lib/sdk';
 import {
   forceProductionServices,
   OTGP_ERROR_CODE,
+  OTGP_ERROR_CODE,
+  searchError,
   sourceManifestStore,
+  sourceManifestStore,
+  searchError,
 } from '../stores';
 
 const RESIZE_MAX_SIZE = 512;
@@ -27,6 +31,7 @@ const uploadToS3 = async (url, sourceImage) => {
       return true;
     }
   } catch (err) {
+    searchError.set(true);
     throw new Error(`S3 upload failed`);
   }
 };
@@ -48,6 +53,7 @@ const getUploadUrlAndFilename = async (sourceImage, baseUrl) => {
       `Got error response from search upload URL (${res.status})`,
     );
   } catch (err) {
+    searchError.set(true);
     throw new Error(`Get search upload URL failed: ${err.message}`);
   }
 };
@@ -100,13 +106,19 @@ const fetchManifests = async (filename: string, baseUrl) => {
     filename: filename,
     real_search: '1',
   });
+
   try {
-    const manifests = await fetch(
+    const response = await fetch(
       `${baseUrl}/manifests/v1?${params.toString()}`,
     );
-    return manifests.json();
-  } catch (err) {
-    throw new Error(`Fetching manifests with filename failed`);
+    if (!response.ok) {
+      searchError.set(true);
+    }
+    const manifests = await response.json();
+    return manifests;
+  } catch (e) {
+    searchError.set(true);
+    throw new Error(`Fetching manifests failed`);
   }
 };
 
@@ -134,12 +146,15 @@ export const recoverManifests = async () => {
       const manifests = await fetchManifests(filename, baseUrl);
       dbg('Manifests search returned', manifests);
       const sdk = await getSdk();
-      const inputs = manifests.results?.map(({ url }) => {
+      const inputs = manifests?.results?.map(({ url }) => {
         const processResult = async () => {
           const resultResponse = await fetch(url.replace(/\/assets\/.*$/, ''), {
             //TODO : remove this field once it's been solved on the service side
             mode: 'cors',
           });
+          if (!resultResponse.ok) {
+            searchError.set(true);
+          }
           const resultData = await resultResponse.arrayBuffer();
           const blob = new Blob([resultData], {
             type: 'application/x-c2pa-manifest-store',
@@ -165,6 +180,7 @@ export const recoverManifests = async () => {
       dbg('Upload to S3 failed');
     }
   } catch (err) {
+    searchError.set(true);
     dbg('Recover manifests failed', err);
     throw new Error(`Recover manifests failed`);
   }

@@ -1,14 +1,14 @@
 <!-- routify:options reset=true -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import Header from '../components/Header.svelte';
-  import Footer from '../components/Footer.svelte';
-  import Arrow from '../../assets/svg/monochrome/arrow-back.svg';
-  import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
   import hero from '../../assets/png/hero-img.png';
   import section1 from '../../assets/sample-images/fake-news.jpg';
   import section2 from '../../assets/sample-images/moonrise.jpg';
   import section3 from '../../assets/sample-images/orb-ii.jpg';
+  import Arrow from '../../assets/svg/monochrome/arrow-back.svg';
+  import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
+  import Footer from '../components/Footer.svelte';
+  import Header from '../components/Header.svelte';
   import { breakpoints } from '../lib/breakpoints';
 
   function upload(evt: Event) {
@@ -45,10 +45,12 @@
   from Adobe.
 -->
 
-<div use:breakpoints class="theme-light overflow-show">
+<div
+  use:breakpoints
+  class="theme-light min-w-[var(--screen-width)] overflow-auto max-h-screen">
   <Header />
   <section id="section0" class="overflow-hidden">
-    <div class="hero grid grid-cols-10 my-10">
+    <div class="hero grid grid-cols-10 my-10 min-w-[var(--screen-width)]">
       <div class="hero-text row-span-full col-span-full self-center mx-7">
         <div
           class="hero-header xl:text-8xl text-7xl font-bold text-center lg:text-left leading-4 pb-4 lg:max-w-prose">
@@ -71,7 +73,7 @@
       </div>
     </div>
   </section>
-  <section id="section1">
+  <section id="section1" class="min-w-[var(--screen-width)]">
     <div class="section-grid">
       <div class="content order-1">
         <img id="section1Img" src={section1} alt="Icy lake at dusk" />
@@ -108,7 +110,7 @@
       </div>
     </div>
   </section>
-  <section id="section2">
+  <section id="section2" class="min-w-[var(--screen-width)]">
     <div class="section-grid">
       <div class="content lg:order-2">
         <img id="section2Img" src={section2} alt="Yellow vector art" />
@@ -145,7 +147,7 @@
       </div>
     </div>
   </section>
-  <section id="section3">
+  <section id="section3" class="min-w-[var(--screen-width)]">
     <div class="section-grid">
       <div class="content order-1">
         <img id="section3Img" src={section3} alt="Kaleidescope vector art" />
@@ -187,8 +189,8 @@
 
 <style lang="postcss">
   :global(body) {
-    overflow: visible;
-    @apply font-base;
+    /* overflow: visible;*/
+    @apply font-base overflow-x-auto overflow-y-hidden;
   }
 
   :global(footer) {

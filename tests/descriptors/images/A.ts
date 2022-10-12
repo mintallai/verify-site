@@ -11,17 +11,18 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { TestImageDescriptor } from "../types";
+import { TestImageDescriptor } from '../types';
 
 const claim: TestImageDescriptor = {
   imagePath: 'A.jpg',
   description: 'no claim',
+  overviewDisabled: true,
   claim: {
     data: {
       fileName: 'A.jpg',
-      claimStatus: 'none'
-    }
-  }
-}
+      claimStatus: 'none',
+    },
+  },
+};
 
 export default claim;

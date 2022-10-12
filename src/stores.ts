@@ -28,7 +28,7 @@ import debug from 'debug';
 const dbg = debug('store');
 
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
-const FAQ_URL = 'https://contentauthenticity.org/faq';
+export const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
 const STORAGE_MODE_KEY = 'compareMode';
 export const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
@@ -101,6 +101,8 @@ export const isBurgerMenuShown = writable<boolean>(false);
 export const isMobileViewerShown = writable<boolean>(false);
 
 export const isCompareSelectMode = writable<boolean>(false);
+
+export const searchError = writable<boolean>(false);
 
 // TODO: See if we can import the Dialog component props instead of repeating this
 export interface Dialog {
@@ -215,16 +217,16 @@ export const resultsManifestStore = writable<C2paReadResult[]>(null);
  */
 export async function setProvenance(result: C2paReadResult | null) {
   dbg('Calling setProvenance with', result);
-
+  activeAsset.set(['s']);
+  searchError.set(false);
   if (result) {
     sourceManifestStore.set(result);
     overviewTransform.set(null);
-    activeAsset.set(['s']);
+
     navigateToRoot();
   } else {
     dbg('No provenance found');
     sourceManifestStore.set(null);
-    activeAsset.set(['s']);
     resultsManifestStore.set(null);
   }
 }
@@ -408,8 +410,9 @@ function manifestStoreToHierarchy(result: C2paReadResult) {
     } as SourceTreeNode);
   }
 }
+
 /**
- * derived hierarchy for the result manifest store
+ * Derived hierarchy for the result manifest store
  */
 export const resultHierarchies = derived<
   [typeof resultsManifestStore],
@@ -423,6 +426,10 @@ export const resultHierarchies = derived<
   });
 });
 
+/**
+ * Automatically gives the correct hierarchy based on if the user selects
+ * a source manifest vs a result manifest (for manifest recovery)
+ */
 export let hierarchy = derived(
   [sourceHierarchy, resultHierarchies, activeAsset],
   ([$sourceHierarchy, $resultHierarchies, $activeAsset]) => {
@@ -437,6 +444,7 @@ export let hierarchy = derived(
     }
   },
 );
+
 /**
  * Convenience accessor for the claim/ingredient data that's linked to the `primaryLoc`.
  */
@@ -483,11 +491,34 @@ export const isComparing = derived<[typeof primary, typeof secondary], boolean>(
   },
 );
 
+/**
+ * Automatically gives the correct manifest store based on if the user selects
+ * a source manifest vs a result manifest (for manifest recovery)
+ */
+export const manifestStore = derived<
+  [typeof sourceManifestStore, typeof resultsManifestStore, typeof activeAsset],
+  C2paReadResult | null
+>(
+  [sourceManifestStore, resultsManifestStore, activeAsset],
+  ([$sourceManifestStore, $resultsManifestStore, $activeAsset]) => {
+    const [type, resultNumber] = $activeAsset;
+    //if the result is source
+    if (type == 's') {
+      return $sourceManifestStore;
+    } else {
+      if ($resultsManifestStore) {
+        return $resultsManifestStore[resultNumber];
+      }
+    }
+    return null;
+  },
+);
+
 export const noMetadata = derived<
-  [typeof sourceManifestStore, typeof isLoading],
+  [typeof manifestStore, typeof isLoading],
   boolean
->([sourceManifestStore, isLoading], ([$sourceManifestStore, $isLoading]) => {
-  return !$isLoading && !$sourceManifestStore?.manifestStore?.activeManifest;
+>([manifestStore, isLoading], ([$manifestStore, $isLoading]) => {
+  return !$isLoading && !$manifestStore?.manifestStore?.activeManifest;
 });
 
 /**

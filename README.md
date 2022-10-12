@@ -72,7 +72,3 @@ This is what will get run when a commit is pushed in order to validate.
 ## Branching and tagging
 
 Please see the [Branching and tagging policy in _How We Code_](https://git.corp.adobe.com/cai/how-we-code/blob/main/git.md#branching-for-deployed-services).
-
-## Feature flagging
-
-**TO DO:** @klein and @dkozma to follow up on how to use feature flags in a static site.

@@ -18,9 +18,9 @@ module.exports = merge(spectrumConfig, {
   content: ['./src/**/*.{svelte,js,ts}'],
   theme: {
     screens: {
-      sm: '640px',
-      md: '768px',
-      lg: '1000px',
+      sm: '10px',
+      md: '10px',
+      lg: '50px',
       xl: '1280px',
       '2xl': '1536px',
       '3xl': '1680px',

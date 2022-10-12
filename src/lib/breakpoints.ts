@@ -32,6 +32,8 @@ function handleBreakpointChange({ media, matches }) {
 }
 
 export function breakpoints(_node) {
+  //disablinbg mobile temporarily (manifest-recovery)
+  return {};
   const listenBreakpoints = [mdBreakpoint, lgBreakpoint];
 
   isMobileViewerShown.set(matchMedia(lgBreakpoint).matches);

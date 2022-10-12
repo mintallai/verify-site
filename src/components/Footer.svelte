@@ -13,10 +13,10 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _, locale } from 'svelte-i18n';
   import { getLocalizedURL } from '@intl/adobe-locales';
+  import { locale, _ } from 'svelte-i18n';
   import { DEFAULT_LOCALE, setLanguage } from '../lib/i18n';
-  import type { TippyProps, ReferenceElement } from '../lib/tippy';
+  import type { ReferenceElement, TippyProps } from '../lib/tippy';
   import { tippy } from '../lib/tippy';
 
   const mapping = [
@@ -54,7 +54,7 @@
   }
 </script>
 
-<footer class="z-20 bg-white">
+<footer class="z-20 bg-white min-w-[var(--screen-width)]">
   <div bind:this={languageMenu}>
     <sp-theme color="lightest" scale="medium" class="w-full">
       <sp-menu data-test-id="footer.language-menu" value={currentLocale}>
@@ -95,8 +95,7 @@
             data-test-id="footer.language-picker"
             slot="trigger"
             aria-haspopup="true"
-            aria-controls="popover"
-            role="button">
+            aria-controls="popover">
             <div class="inline-flex items-center space-x-0.5 -mr-0.5">
               <span class="underline">{currentLangString}</span>
             </div>

@@ -18,6 +18,7 @@
   import { slide } from 'svelte/transition';
   import 'vanilla-hamburger/fade-burger';
   import { IngestPayload, postEvent } from '../lib/analytics';
+  import { handleUrl } from '../lib/util/handlers';
   import {
     forceProductionServices,
     getFaqUrl,
@@ -42,24 +43,13 @@
     evt.preventDefault();
   }
 
-  function handleUrl(url: string, evtSubtype: IngestPayload['event.subtype']) {
-    return (evt) => {
-      postEvent({
-        'event.type': 'click',
-        'event.subtype': evtSubtype,
-      });
-      window.open(url);
-      evt.preventDefault();
-    };
-  }
-
   function chooseImage() {
     isBurgerMenuShown.update((shown) => !shown);
     setProvenance(null);
   }
 </script>
 
-<header class="flex relative">
+<header class="flex relative min-w-[var(--screen-width)]">
   <div class="flex-shrink">
     <button
       on:click={goToLanding}
@@ -79,22 +69,22 @@
     <button
       data-test-id="header.choose-image"
       on:click={upload}
-      class="font-bold text-sm tracking-tight">
+      class="text-gray-300 font-medium text-sm tracking-tight">
       {$_('comp.header.uploadImage')}
     </button>
     <a
       href={getFaqUrl()}
       on:click={handleUrl(getFaqUrl(), 'faq')}
       target="_blank"
-      class="font-bold text-sm tracking-tight">{$_('comp.header.faq')}</a>
-  </div>
-  <div class="ml-5 full-menu">
-    <Button
+      class="font-medium text-sm tracking-tight">{$_('comp.header.faq')}</a>
+    <button
+      data-test-id="header.learn-more"
       href={$learnMoreUrl}
       on:click={handleUrl($learnMoreUrl, 'learn')}
-      testId="header.learn-more"
-      outline={true}>{$_('comp.header.learnMore')}</Button>
+      class="font-medium text-sm tracking-tight"
+      >{$_('comp.header.learnMore')}</button>
   </div>
+
   <div class="block md:hidden -mr-3">
     <fade-burger
       on:pressed-changed={handleBurgerClick}
@@ -127,7 +117,7 @@
     @apply border-gray-200 bg-white border-b-2 px-5 flex items-center justify-between z-10;
     grid-area: header;
     max-width: 100vw;
-    height: 80px;
+    height: 60px;
   }
   .full-menu {
     @apply hidden;
@@ -136,20 +126,16 @@
     @apply inline-block bg-gray-200 text-gray-700 font-semi-bold text-xxs rounded px-2 py-0 ml-3;
     line-height: 1.4375rem;
   }
-  .flag {
-    @apply inline-block bg-red-500 text-white font-semi-bold text-xxs rounded px-2 py-0 ml-3;
-    line-height: 1.4375rem;
-  }
   .links {
     @apply flex-grow text-right;
   }
   .links a,
   .links button {
-    @apply ml-4 text-gray-800;
+    @apply ml-4 text-gray-600;
   }
   .burger-menu {
-    @apply flex flex-col absolute bg-white px-4;
-    top: 80px;
+    @apply flex flex-col absolute bg-white px-4 z-30;
+    top: 60px;
     left: 0;
     right: 0;
   }
@@ -168,5 +154,9 @@
     header {
       @apply sticky top-0;
     }
+  }
+  .flag {
+    @apply inline-block bg-red-500 text-white font-semi-bold text-xxs rounded px-2 py-0 ml-3;
+    line-height: 1.4375rem;
   }
 </style>

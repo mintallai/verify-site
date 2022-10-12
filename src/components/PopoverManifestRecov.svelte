@@ -15,6 +15,8 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import Dots from '../../assets/svg/monochrome/dots.svg';
+  import { handleUrl } from '../lib/util/handlers';
+  import { FAQ_URL } from '../stores';
   let open: boolean = true;
   export let placement: string = 'right-start';
   const onCancel = () => {
@@ -26,16 +28,28 @@
 </script>
 
 <overlay-trigger {placement} type="replace" {open}>
-  <button slot="trigger" on:click={onConfirm}> <Dots class="w-1" /></button>
-  <sp-popover slot="click-content" class="max-w-[390px]">
+  <button
+    slot="trigger"
+    on:click={onConfirm}
+    class="w-4 flex items-center justify-center">
+    <Dots class="w-1" /></button>
+  <sp-popover slot="click-content" class="max-w-[420px]">
     <sp-dialog size="s">
-      <h1 slot="heading" class="font-bold">
+      <h1 slot="heading" class="font-bold ">
         {$_('dialog.manifestRecovery.headline')}
       </h1>
-      {$_('dialog.manifestRecovery.intro')} <br /> <br />
-      {$_('dialog.manifestRecovery.search')}
-      <a href="https://contentauthenticity.org/" class="underline text-blue-400"
-        >{$_('dialog.manifestRecovery.link')}</a>
+      <div class="justify-around">
+        {$_('dialog.manifestRecovery.intro')} <br /> <br />
+        {$_('dialog.manifestRecovery.search')}
+      </div>
+      <sp-button
+        slot="button"
+        treatment="outline"
+        variant="secondary"
+        class="border-2 border-solid border-gray-700"
+        onclick={handleUrl(FAQ_URL, 'faq')}>
+        {$_('dialog.manifestRecovery.buttons.learnMore')}
+      </sp-button>
       <sp-button
         slot="button"
         treatment="outline"
@@ -47,6 +61,3 @@
     </sp-dialog>
   </sp-popover>
 </overlay-trigger>
-
-<style>
-</style>

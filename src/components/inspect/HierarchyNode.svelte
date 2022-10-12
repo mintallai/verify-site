@@ -14,18 +14,18 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import Thumbnail from '../Thumbnail.svelte';
   import ExpandHierarchy from '../../../assets/svg/monochrome/expand-hierarchy.svg';
+  import { getBadgeProps, getFilename } from '../../lib/node';
+  import type { HierarchyTreeNode } from '../../stores';
   import {
     collapsedBranches,
-    toggleBranch,
-    primaryLoc,
     compareWith,
-    navigateTo,
     isCompareSelectMode,
+    navigateTo,
+    primaryLoc,
+    toggleBranch,
   } from '../../stores';
-  import type { HierarchyTreeNode } from '../../stores';
-  import { getBadgeProps, getFilename } from '../../lib/node';
+  import Thumbnail from '../Thumbnail.svelte';
 
   export let node: HierarchyTreeNode;
 
@@ -50,7 +50,7 @@
   }
 </script>
 
-<div class="container">
+<div class="h-container">
   <div
     class="item"
     class:single={isSingle}
@@ -69,12 +69,12 @@
         {/if}
       </div>
     {/if}
-    <div
+    <button
       class="w-12 h-12"
       class:cursor-pointer={!isSelected}
       on:click={handleClick}>
       <Thumbnail {node} {isSelected} {...badgeProps} />
-    </div>
+    </button>
     <div class="pl-3" class:cursor-pointer={!isSelected} on:click={handleClick}>
       <h6>{$_('comp.asset.fileName')}</h6>
       <div>{getFilename(node)}</div>
@@ -88,8 +88,9 @@
 </div>
 
 <style lang="postcss">
-  .container {
+  .h-container {
     @apply space-y-5 mb-1 transition duration-200 z-0;
+    --cai-thumbnail-selected-shadow-spread: 2px;
   }
   .item {
     @apply grid items-center max-w-full bg-transparent;
