@@ -16,6 +16,7 @@ import { TestImageDescriptor } from '../types';
 const claim: TestImageDescriptor = {
   imagePath: 'C.jpg',
   description: 'single claim - original creation',
+  overviewDisabled: true,
   claim: {
     data: {
       fileName: 'C.jpg',

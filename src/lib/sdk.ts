@@ -108,8 +108,10 @@ export function selectReviewRatings(manifest: Manifest) {
   const reviewRatings = [...ingredientRatings, ...actionRatings];
 
   return {
-    hasUnknownActions: reviewRatings.some(
-      (review) => review.code === 'actions.unknownActionsPerformed',
+    hasUnknownActions: reviewRatings.some((review) =>
+      ['actions.unknownActionsPerformed', 'actions.possiblyMissing'].includes(
+        review.code,
+      ),
     ),
     wasPossiblyModified: reviewRatings.some(
       (review) => review.code === 'ingredient.possiblyModified',

@@ -15,11 +15,11 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import { _ } from 'svelte-i18n';
-  import Button from '../Button.svelte';
-  import OriginalCreation from './OriginalCreation.svelte';
-  import HierarchyNode from './HierarchyNode.svelte';
-  import { hierarchy, isCompareSelectMode } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
+  import { hierarchy, isCompareSelectMode } from '../../stores';
+  import Button from '../Button.svelte';
+  import HierarchyNode from './HierarchyNode.svelte';
+  import OriginalCreation from './OriginalCreation.svelte';
 
   export let node: HierarchyTreeNode;
   let container: any;

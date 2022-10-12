@@ -16,6 +16,7 @@ import { TestImageDescriptor } from '../types';
 const claim: TestImageDescriptor = {
   imagePath: 'unknown-actions.png',
   description: 'unknown actions',
+  overviewDisabled: true,
   claim: {
     data: {
       fileName: 'Z1.png',

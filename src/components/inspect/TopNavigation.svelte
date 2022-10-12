@@ -34,8 +34,10 @@
     navigateTo,
     primaryLoc,
     resultsManifestStore,
+    searchError,
     setCompareMode,
   } from '../../stores';
+  import Button from '../Button.svelte';
   import ResultManifestsDisplay from '../ResultManifestsDisplay.svelte';
   import Thumbnail from '../Thumbnail.svelte';
   import UploadedAsset from '../UploadedAsset.svelte';
@@ -59,12 +61,17 @@
 
   async function handleButtonClick() {
     loadingMatches = true;
-    const matchesManifests = await recoverManifests();
-    loadingMatches = false;
-    sortMatches(matchesManifests);
-    if (Array.isArray(matchesManifests)) {
-      resultsManifestStore.set(matchesManifests);
+    searchError.set(false);
+    try {
+      const matchesManifests = await recoverManifests();
+      if (Array.isArray(matchesManifests)) {
+        resultsManifestStore.set(matchesManifests);
+      }
+    } catch (err) {
+      loadingMatches = false;
     }
+
+    loadingMatches = false;
   }
 
   function selectDate(node) {
@@ -91,11 +98,11 @@
 
 <div
   id="breadcrumb-bar"
-  class="container"
+  class="nav-container"
   class:menu-view={$isMobileViewerShown}>
-  <!-- Only display Top Nav if there is an active asset -->
-  {#if $primaryLoc}
-    <sp-theme color="lightest" scale="medium" class="w-full">
+  <sp-theme color="lightest" scale="medium" class="w-full">
+    <!-- Only display Top Nav if there is an active asset -->
+    {#if $primaryLoc}
       {#if isComparing}
         <div class="flex space-x-5 py-3">
           <div
@@ -151,61 +158,92 @@
               <ChevronRight width="16px" height="16px" class="text-gray-700" />
             </div>
           {/if}
-          <div class="grid grid-rows-2">
+          <!-- <div class="grid grid-rows-2">
+            <div><UploadedAsset /></div>
+
             <div class="flex">
+              {#if $resultsManifestStore || loadingMatches || $searchError}
+                <div>
+                  <ResultManifestsDisplay
+                    {loadingMatches}
+                    {handleButtonClick} />
+                </div>
+              {:else}
+                <div class="self-center ">
+                  <Button secondary size="s" on:click={handleButtonClick}>
+                    {$_('comp.topNavigation.matches')}
+                  </Button>
+                </div>
+              {/if}
+            </div>
+          </div> -->
+          <div class="flex w-full">
+            <div>
               <UploadedAsset />
             </div>
-            <!--
-            <div class="flex ">
-              <div class="match-btn self-center ">
-                <sp-button size="s" onclick={handleButtonClick}>
-                  {$_('comp.topNavigation.matches')}
-                </sp-button>
-              </div>
-              <ResultManifestsDisplay {loadingMatches} />
+            <div class="flex w-full">
+              {#if $resultsManifestStore || loadingMatches || $searchError}
+                <div class="overflow-x-auto overflow-y-hidden">
+                  <ResultManifestsDisplay
+                    {loadingMatches}
+                    {handleButtonClick} />
+                </div>
+              {:else}
+                <div class="self-center ">
+                  <Button secondary size="s" on:click={handleButtonClick}>
+                    {$_('comp.topNavigation.matches')}
+                  </Button>
+                </div>
+              {/if}
             </div>
-            -->
           </div>
         </div>
       {:else}
-        <UploadedAsset />
-        <!--
-        <div class="match-btn self-center ml-5">
-          <sp-button size="s" onclick={handleButtonClick}>
-            {$_('comp.topNavigation.matches')}
-          </sp-button>
-        </div>
-        <div class="self-center ml-5">
-          <cai-tooltip placement="right" class="theme-spectrum">
-            <div
-              slot="content"
-              class="text-gray-900 z-50"
-              style="width: 200px;">
-              {$_('comp.topNavigation.tooltip')}
+        <div class="flex w-full">
+          <div><UploadedAsset /></div>
+          {#if $resultsManifestStore || loadingMatches || $searchError}
+            <div class="flex-auto">
+              <ResultManifestsDisplay {loadingMatches} {handleButtonClick} />
             </div>
-          </cai-tooltip>
+          {:else}
+            <div class="flex pt-6">
+              <div class="self-center ml-4 inline-block">
+                <Button secondary size="s" on:click={handleButtonClick}>
+                  {$_('comp.topNavigation.matches')}
+                </Button>
+              </div>
+              <div class="self-center ml-5 inline-block">
+                <cai-tooltip placement="right" class="theme-spectrum">
+                  <div
+                    slot="content"
+                    class="text-gray-900 z-50 text-sm justify-around"
+                    style="width: 220px;">
+                    {$_('comp.topNavigation.tooltip')}
+                  </div>
+                </cai-tooltip>
+              </div>
+            </div>
+          {/if}
         </div>
-        <ResultManifestsDisplay {loadingMatches} />
-        -->
       {/if}
-    </sp-theme>
-  {/if}
+    {/if}
+  </sp-theme>
 </div>
 
 <style lang="postcss">
-  .container {
+  .nav-container {
     --spectrum-picker-m-text-color: var(--black);
     --spectrum-picker-m-text-color-hover: var(--black);
     --cai-thumbnail-size: 48px;
-    @apply flex bg-white border-b-2 border-gray-200 px-5 max-w-full z-30 items-stretch;
+    @apply flex bg-white border-b-2 border-gray-200 px-5 max-w-full items-stretch;
     grid-area: breadcrumb;
-    height: 60px;
+    height: 114px;
   }
   .match-btn > sp-button {
-    @apply w-fit h-[34px] text-gray-700 bg-gray-100;
+    @apply w-fit h-[34px] text-gray-700 bg-gray-100 rounded-full;
   }
 
-  .container > sp-theme {
+  .nav-container > sp-theme {
     @apply flex items-stretch;
   }
   .breadcrumb-item {
@@ -216,7 +254,7 @@
   }
   .menu-view {
     /* @apply grid grid-rows-2; */
-    height: 120px;
+    height: 114px;
   }
   .breadcrumb-nav {
     --cai-thumbnail-size: 20px;
@@ -239,9 +277,8 @@
   }
 
   @screen lgHeight {
-    .container {
+    .nav-container {
       @apply sticky;
-      top: 80px;
     }
   }
 </style>

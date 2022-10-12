@@ -24,9 +24,10 @@ export class OverviewPage {
   constructor(page: Page) {
     this.page = page;
   }
-
+  static THUMBNAIL_SEL = '[data-test-id="viewer.thumbnail"][src^="blob:"]';
+  //overview page is blank so we're going to inspect
   async goto(query?: string) {
-    await this.page.goto(query ? `/overview?${query}` : '/overview');
+    await this.page.goto(query ? `/overview?${query}` : '/inspect');
   }
 
   rightColumn() {
@@ -46,8 +47,7 @@ export class OverviewPage {
       'data-test-id=viewer.fileInput',
       resolve(imageBase, imageRelPath),
     );
-    // await this.page.locator(testID('overview.btn')).click();
-    await this.page.waitForSelector(testID('tree-view'));
+    await this.page.waitForSelector(OverviewPage.THUMBNAIL_SEL);
   }
   async navigateToOverview() {
     await this.goto();

@@ -62,19 +62,6 @@
   });
 </script>
 
-{#if producer}
-  <div>
-    <dl>
-      <AboutSection
-        title={$_('comp.about.producedBy')}
-        helper={$_('comp.about.producedBy.helpText')}>
-        <dl data-test-id="about.produced-by">
-          <dd>{producer.name}</dd>
-        </dl>
-      </AboutSection>
-    </dl>
-  </div>
-{/if}
 <div>
   <dl>
     <AboutSection
@@ -101,6 +88,69 @@
     </AboutSection>
   </dl>
 </div>
+{#if producer}
+  <div>
+    <dl>
+      <AboutSection
+        title={$_('comp.about.producedBy')}
+        helper={$_('comp.about.producedBy.helpText')}>
+        <dl data-test-id="about.produced-by">
+          <dd>{producer.name}</dd>
+        </dl>
+      </AboutSection>
+    </dl>
+  </div>
+{/if}
+{#if website}
+  <div>
+    <AboutSection
+      title={$_('comp.about.website')}
+      helper={$_('comp.about.website.helpText')}>
+      <dl>
+        <dd class="truncate">
+          <a href={website} target="_blank" class="link">{website}</a>
+        </dd>
+      </dl>
+    </AboutSection>
+  </div>
+{/if}
+{#if socialAccounts?.length || web3Addresses?.length}
+  <div class="space-y-4">
+    {#if socialAccounts?.length}
+      <dl>
+        <AboutSection
+          title={$_('comp.about.social')}
+          helper={$_('comp.about.social.helpText')}>
+          <dd class="accounts">
+            {#each socialAccounts as account (account['@id'])}
+              <div class="relative top-0.5">
+                <ProviderIcon provider={account['@id']} class="mr-2" />
+              </div>
+              <a
+                href={account['@id']}
+                target="_blank"
+                class="link"
+                data-test-id="about.social-accounts.link">@{account.name}</a>
+            {/each}
+          </dd>
+        </AboutSection>
+      </dl>
+    {/if}
+    {#if web3Addresses?.length}
+      <dl>
+        <AboutSection
+          title={$_('comp.about.web3')}
+          helper={$_('comp.about.web3.helpText')}>
+          {#each web3Addresses as [type, [address]]}
+            <div class="pb-1">
+              <Web3Address {type} {address} />
+            </div>
+          {/each}
+        </AboutSection>
+      </dl>
+    {/if}
+  </div>
+{/if}
 <div>
   <dl data-test-id="about.produced-with">
     <AboutSection
@@ -165,11 +215,11 @@
         {#if node.children?.length}
           <div class="assets-used">
             {#each node.children as childNode}
-              <div
+              <button
                 class="w-12 h-12 cursor-pointer"
                 on:click={() => navigateToChild(childNode.data.loc)}>
                 <Thumbnail node={childNode} {...getBadgeProps(childNode)} />
-              </div>
+              </button>
             {/each}
           </div>
         {:else}
@@ -178,57 +228,6 @@
       </dd>
     </dl>
   </AboutSection>
-{/if}
-
-{#if website}
-  <div>
-    <AboutSection
-      title={$_('comp.about.website')}
-      helper={$_('comp.about.website.helpText')}>
-      <dl>
-        <dd class="truncate">
-          <a href={website} target="_blank" class="link">{website}</a>
-        </dd>
-      </dl>
-    </AboutSection>
-  </div>
-{/if}
-{#if socialAccounts?.length || web3Addresses?.length}
-  <div class="space-y-4">
-    {#if socialAccounts?.length}
-      <dl>
-        <AboutSection
-          title={$_('comp.about.social')}
-          helper={$_('comp.about.social.helpText')}>
-          <dd class="accounts">
-            {#each socialAccounts as account (account['@id'])}
-              <div class="relative top-0.5">
-                <ProviderIcon provider={account['@id']} class="mr-2" />
-              </div>
-              <a
-                href={account['@id']}
-                target="_blank"
-                class="link"
-                data-test-id="about.social-accounts.link">@{account.name}</a>
-            {/each}
-          </dd>
-        </AboutSection>
-      </dl>
-    {/if}
-    {#if web3Addresses?.length}
-      <dl>
-        <AboutSection
-          title={$_('comp.about.web3')}
-          helper={$_('comp.about.web3.helpText')}>
-          {#each web3Addresses as [type, [address]]}
-            <div class="pb-1">
-              <Web3Address {type} {address} />
-            </div>
-          {/each}
-        </AboutSection>
-      </dl>
-    {/if}
-  </div>
 {/if}
 
 <style lang="postcss">

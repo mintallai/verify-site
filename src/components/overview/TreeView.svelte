@@ -13,27 +13,27 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { HierarchyPointNode, tree as D3Tree } from 'd3-hierarchy';
+  import { select as d3Select } from 'd3-selection';
+  import { zoom as d3Zoom, zoomIdentity, ZoomTransform } from 'd3-zoom';
   import partial from 'lodash/partial';
+  import { onMount } from 'svelte';
+  import ZoomIn from '../../../assets/svg/monochrome/zoom-in.svg';
+  import ZoomOut from '../../../assets/svg/monochrome/zoom-out.svg';
+  import { isAncestorOf } from '../../lib/node';
+  import type {
+    HierarchyTreeNode,
+    TreeNode as TreeNodeType,
+  } from '../../stores';
   import {
-    primaryLoc,
     hierarchy,
     navigateTo,
     overviewTransform,
+    primaryLoc,
   } from '../../stores';
-  import { isAncestorOf } from '../../lib/node';
-  import TreeNode from './TreeNode.svelte';
-  import TreeLink from './TreeLink.svelte';
-  import { select as d3Select } from 'd3-selection';
-  import { zoom as d3Zoom, zoomIdentity, ZoomTransform } from 'd3-zoom';
-  import { tree as D3Tree, HierarchyPointNode } from 'd3-hierarchy';
-  import type {
-    TreeNode as TreeNodeType,
-    HierarchyTreeNode,
-  } from '../../stores';
-  import ZoomIn from '../../../assets/svg/monochrome/zoom-in.svg';
-  import ZoomOut from '../../../assets/svg/monochrome/zoom-out.svg';
   import ViewControls from '../ViewControls.svelte';
+  import TreeLink from './TreeLink.svelte';
+  import TreeNode from './TreeNode.svelte';
   let width = 1;
   let height = 1;
   let margin = 0.95;
@@ -152,8 +152,7 @@
   class="relative bg-gray-75 w-full h-full overflow-hidden z-0 pt-4 sm:pt-0"
   bind:clientWidth={width}
   bind:clientHeight={height}>
-  <div
-    class=" absolute p-4 grid justify-items-center bg-gray-75 left-[20%] sm:left-[50%]">
+  <div class=" absolute p-4 justify-center bg-gray-75 w-full flex">
     <ViewControls inInspect={false} inOverview={true} />
   </div>
   <svg bind:this={svg} {width} {height} view-box={`0 0 ${width} ${height}`}>

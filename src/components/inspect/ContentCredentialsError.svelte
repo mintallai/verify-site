@@ -21,7 +21,7 @@
   export let isComparing: boolean = false;
 </script>
 
-<div class:comparing={isComparing} class="container">
+<div class:comparing={isComparing} class="cc-container">
   {#if status === 'missing'}
     <Otgp
       width="126"
@@ -48,20 +48,20 @@
 </div>
 
 <style lang="postcss">
-  .container {
+  .cc-container {
     @apply h-full flex flex-col justify-center items-center p-4 mx-auto;
   }
-  .comparing.container {
+  .comparing.cc-container {
     @apply sticky top-0 h-screen;
   }
   @screen lgHeight {
-    .comparing.container {
+    .comparing.cc-container {
       @apply h-auto pt-0;
       top: 150px;
     }
   }
   @screen lg {
-    .comparing.container {
+    .comparing.cc-container {
       @apply relative h-full pt-4;
       top: 0;
     }

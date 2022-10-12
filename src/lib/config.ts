@@ -19,8 +19,9 @@ export const getConfig = memoize<() => Promise<EnvConfig>>(async () => {
   try {
     const res = await fetch('/env.json');
     const data = await res.json();
-    dbg('Retrieved config with environment %s', data.env ?? 'prod', data);
-    return data;
+    const env = data.env ?? 'prod';
+    dbg('Retrieved config with environment %s', env, data);
+    return env;
   } catch (err) {
     dbg('No env file found, defaulting to prod');
     return defaultConfig;

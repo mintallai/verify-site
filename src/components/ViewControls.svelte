@@ -14,20 +14,25 @@
 -->
 <script lang="ts">
   import { goto, params, url } from '@roxi/routify';
-  import { _, locale } from 'svelte-i18n';
-  import OverviewIcon from '../../assets/svg/monochrome/overview.svg';
-  import InspectIcon from '../../assets/svg/monochrome/inspect.svg';
   import { style } from 'd3-selection';
-  let textColor = 'blue';
+  import { locale, _ } from 'svelte-i18n';
+  import InspectIcon from '../../assets/svg/monochrome/inspect.svg';
+  import OverviewIcon from '../../assets/svg/monochrome/overview.svg';
+  import { hierarchy } from '../stores';
   export let inInspect: boolean;
   export let inOverview: boolean;
 </script>
 
 <sp-theme color="lightest" scale="medium">
-  <div class="inline-block">
+  <div class="flex">
     {#if inOverview}
-      <div class="container1Selected inline-block">
-        <sp-button on:click={$goto('/overview')} data-test-id="overview.btn">
+      <div
+        class="container1Selected inline-block "
+        class:disabled={!$hierarchy?.children}>
+        <sp-button
+          disabled={!$hierarchy?.children}
+          on:click={$goto('/overview')}
+          data-test-id="overview.btn">
           <div class="flex">
             <OverviewIcon class="h-4 w-4 mr-2" />
             {$_('comp.topNavigation.overview')}
@@ -35,8 +40,13 @@
         </sp-button>
       </div>
     {:else}
-      <div class="container1 inline-block">
-        <sp-button on:click={$goto('/overview')}>
+      <div
+        class="container1 inline-block"
+        class:disabled={!$hierarchy?.children}>
+        <sp-button
+          disabled={!$hierarchy?.children}
+          on:click={$goto('/overview')}
+          data-test-id="overview.btn">
           <div class="flex">
             <OverviewIcon class="h-4 w-4 mr-2" />
             {$_('comp.topNavigation.overview')}
@@ -67,49 +77,24 @@
 
 <style lang="postcss">
   .container1 > sp-button {
-    border-top-right-radius: 0%;
-    border-bottom-right-radius: 0%;
-    border-top-left-radius: 10%;
-    border-bottom-left-radius: 10%;
-    width: 100px;
-    color: black;
-    background-color: white;
-    border: 2px solid #cacaca;
+    @apply text-gray-900 w-[100px] rounded-tr-none rounded-br-none rounded-tl-lg rounded-bl-lg bg-gray-50 border border-r-0 border-gray-500;
   }
   .container1Selected > sp-button {
-    border-top-right-radius: 0%;
-    border-bottom-right-radius: 0%;
-    border-top-left-radius: 10%;
-    border-bottom-left-radius: 10%;
-    width: 100px;
-    color: #1473e6;
-    background-color: white;
-    border: 2px solid #cacaca;
+    @apply text-white w-[100px] rounded-tr-none rounded-br-none rounded-tl-lg rounded-bl-lg bg-gray-700 border border-r-0 border-gray-400;
   }
   .container1 > sp-button:hover {
-    color: #1473e6;
+    @apply bg-gray-300 text-black;
   }
   .container2 > sp-button:hover {
-    color: #1473e6;
+    @apply bg-gray-300 text-black;
   }
   .container2 > sp-button {
-    border-top-right-radius: 10%;
-    border-bottom-right-radius: 10%;
-    border-top-left-radius: 0%;
-    border-bottom-left-radius: 0%;
-    width: 100px;
-    color: black;
-    background-color: white;
-    border: 2px solid #cacaca;
+    @apply text-gray-900 w-[100px] rounded-tr-lg rounded-br-lg rounded-tl-none rounded-bl-none bg-gray-50 border border-gray-500;
   }
   .container2Selected > sp-button {
-    border-top-right-radius: 10%;
-    border-bottom-right-radius: 10%;
-    border-top-left-radius: 0%;
-    border-bottom-left-radius: 0%;
-    width: 100px;
-    color: #1473e6;
-    background-color: white;
-    border: 2px solid #cacaca;
+    @apply text-white w-[100px] rounded-tr-lg rounded-br-lg rounded-tl-none rounded-bl-none bg-gray-700 border border-gray-700;
+  }
+  .disabled > sp-button {
+    @apply text-gray-500 bg-gray-100 border-gray-200;
   }
 </style>

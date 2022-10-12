@@ -13,12 +13,12 @@
   from Adobe.
 -->
 <script lang="ts">
+  import type { HierarchyPointNode } from 'd3-hierarchy';
   import { _ } from 'svelte-i18n';
+  import { getBadgeProps, getFilename, isAncestorOf } from '../../lib/node';
+  import type { TreeNode } from '../../stores';
   import { primaryLoc } from '../../stores';
   import Thumbnail from '../Thumbnail.svelte';
-  import { getBadgeProps, getFilename, isAncestorOf } from '../../lib/node';
-  import type { HierarchyPointNode } from 'd3-hierarchy';
-  import type { TreeNode } from '../../stores';
 
   export let node: HierarchyPointNode<TreeNode>;
   export let width: number;

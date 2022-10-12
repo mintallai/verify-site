@@ -13,22 +13,22 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { fade } from 'svelte/transition';
   import { _ } from 'svelte-i18n';
+  import { fade } from 'svelte/transition';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
-  import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
-  import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
-  import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import Navigation from '../components/inspect/Navigation.svelte';
+  import Header from '../components/Header.svelte';
   import Comparison from '../components/inspect/Comparison.svelte';
+  import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
+  import Navigation from '../components/inspect/Navigation.svelte';
+  import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import Viewer from '../components/inspect/Viewer.svelte';
-  import { startTour } from '../lib/tour';
-  import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
   import { breakpoints } from '../lib/breakpoints';
+  import { ILoaderParams, loader, setLoaderContext } from '../lib/loader';
+  import { startTour } from '../lib/tour';
   import {
     compareWith,
     hasContent,
@@ -38,8 +38,8 @@
     isMobileViewerShown,
     noMetadata,
     primary,
-    sourceManifestStore,
     secondary,
+    sourceManifestStore,
     urlParams,
   } from '../stores';
 
@@ -92,7 +92,7 @@
 <main
   use:loader={loaderParams}
   use:breakpoints
-  class="theme-light"
+  class="theme-light min-w-[var(--screen-width)] overflow-x-auto overflow-y-hidden"
   class:no-content={!$hasContent}
   class:comparing={$isComparing}>
   {#if $isBurgerMenuShown}
@@ -194,9 +194,9 @@
     --cai-thumbnail-badge-icon-width: 16px;
     --cai-thumbnail-badge-icon-height: 16px;
 
-    @apply grid w-screen min-h-screen h-full font-base;
+    @apply grid w-screen min-h-screen h-screen font-base;
     grid-template-columns: 100%;
-    grid-template-rows: 80px 120px var(--viewer-height) 1fr 70px;
+    grid-template-rows: 60px 114px var(--viewer-height) 1fr 70px;
     grid-template-areas:
       'header'
       'breadcrumb'
@@ -222,7 +222,7 @@
     @apply sticky top-10 justify-center;
   }
   .menu-overlay {
-    @apply fixed inset-0 z-20;
+    @apply fixed inset-0 z-10;
     background-color: rgba(0, 0, 0, 0.2);
   }
   main.comparing {
@@ -243,9 +243,9 @@
   @screen lg {
     main,
     main.comparing {
-      @apply fixed inset-0;
+      /* @apply fixed inset-0; */
       grid-template-columns: 320px 1fr 320px;
-      grid-template-rows: 80px 60px 1fr 55px;
+      grid-template-rows: 60px 114px 1fr 55px;
       grid-template-areas:
         'header header header'
         'breadcrumb breadcrumb breadcrumb'

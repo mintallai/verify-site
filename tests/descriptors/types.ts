@@ -17,6 +17,7 @@ export interface TestImageDescriptor {
   imagePath: string;
   description: string;
   claim?: NestedTestClaimDescriptor;
+  overviewDisabled?: boolean;
 }
 
 export interface NestedTestClaimDescriptor {

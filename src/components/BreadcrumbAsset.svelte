@@ -14,11 +14,11 @@
 -->
 <script lang="ts">
   import { date, time, _ } from 'svelte-i18n';
-  import { resultHierarchies, sourceHierarchy, activeAsset } from '../stores';
-  import { ThumbnailEvent } from '../lib/thumbnail';
   import { getBadgeProps, getFilename, getManifest } from '../lib/node';
-  import Thumbnail from './Thumbnail.svelte';
   import { selectFormattedDate } from '../lib/sdk';
+  import { ThumbnailEvent } from '../lib/thumbnail';
+  import { activeAsset, resultHierarchies, sourceHierarchy } from '../stores';
+  import Thumbnail from './Thumbnail.svelte';
 
   let src = '';
   export let value: number | null;
@@ -48,49 +48,46 @@
   }
 </script>
 
-<sp-theme color="lightest" scale="medium">
-  <div class="container mt-1" class:active={isActive}>
-    <sp-button onclick={handleActiveAsset}
-      ><div class="grid grid-cols-4 gap-3">
-        <Thumbnail {node} {...badgeProps} />
-        <div class="col-span-3 text-left font-regular self-center">
-          {#if filename.length > 24}
-            <cai-tooltip placement="top" class="theme-spectrum self-center">
-              <div slot="trigger" class="max-w-[150px]">
-                <p class="filename truncate">{filename}</p>
-              </div>
-              <div slot="content" class="text-gray-900" style="width: 200px;">
-                {filename}
-              </div>
-            </cai-tooltip>
-          {:else}
-            <p class="filename">{filename}</p>
-          {/if}
+<button
+  on:click={handleActiveAsset}
+  class:active={isActive}
+  class="bc-container"
+  ><div class="grid grid-cols-[min-content_auto] gap-3">
+    <Thumbnail {node} {...badgeProps} />
+    <div class="text-left font-regular self-center">
+      {#if filename.length > 24}
+        <cai-tooltip placement="top" class="theme-spectrum self-center">
+          <div slot="trigger" class="max-w-[140px]">
+            <p class="filename truncate">{filename}</p>
+          </div>
+          <div slot="content" class="text-gray-900" style="width: 200px;">
+            {filename}
+          </div>
+        </cai-tooltip>
+      {:else}
+        <p class="filename">{filename}</p>
+      {/if}
 
-          {#if sigDate}
-            <p class="date">
-              {$date(sigDate, { format: 'medium' })}{' at '}
-              {$time(sigDate, { format: 'short' })}
-            </p>
-          {/if}
-        </div>
-      </div></sp-button>
-  </div>
-</sp-theme>
+      {#if sigDate}
+        <p class="date">
+          {$date(sigDate, { format: 'medium' })}{' at '}
+          {$time(sigDate, { format: 'short' })}
+        </p>
+      {/if}
+    </div>
+  </div></button>
 
 <style lang="postcss">
-  .container {
-    --cai-thumbnail-size: 48px;
-  }
-
-  .container > sp-button {
+  .bc-container {
     width: 207px;
     height: 52px;
     background-color: white;
-
+    border: 2px solid transparent;
+    border-radius: 5px;
     padding: 0;
+    --cai-thumbnail-size: 48px;
   }
-  .container > sp-button:hover {
+  .bc-container:hover {
     background-color: #ecf6ff;
     border: 2px solid #2680eb;
     border-radius: 5px;
@@ -102,7 +99,7 @@
   .date {
     color: #6e6e6e;
   }
-  .active > sp-button {
+  .active {
     background-color: #ecf6ff;
     border: 2px solid #2680eb;
     border-radius: 5px;

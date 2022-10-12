@@ -13,22 +13,22 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { fade } from 'svelte/transition';
-  import { _ } from 'svelte-i18n';
   import { goto, params } from '@roxi/routify';
+  import { onMount } from 'svelte';
+  import { _ } from 'svelte-i18n';
+  import { fade } from 'svelte/transition';
   import About from '../components/About.svelte';
   import Alert from '../components/Alert.svelte';
-  import FileDropper from '../components/FileDropper.svelte';
-  import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import CircleLoader from '../components/CircleLoader.svelte';
-  import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
-  import Header from '../components/Header.svelte';
+  import FileDropper from '../components/FileDropper.svelte';
   import Footer from '../components/Footer.svelte';
+  import Header from '../components/Header.svelte';
+  import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
+  import TopNavigation from '../components/inspect/TopNavigation.svelte';
   import TreeView from '../components/overview/TreeView.svelte';
-  import { startTour } from '../lib/tour';
-  import { loader, setLoaderContext, ILoaderParams } from '../lib/loader';
   import { breakpoints } from '../lib/breakpoints';
+  import { ILoaderParams, loader, setLoaderContext } from '../lib/loader';
+  import { startTour } from '../lib/tour';
   import {
     hasContent,
     isBurgerMenuShown,
@@ -76,11 +76,11 @@
     },
   };
   setLoaderContext(loaderParams);
-  // onMount(() => {
-  //   if (!$hasContent) {
-  //     $goto('/inspect', $params);
-  //   }
-  // });
+  onMount(() => {
+    if (!$hasContent) {
+      $goto('/inspect', $params);
+    }
+  });
 </script>
 
 <svelte:window />
@@ -90,7 +90,7 @@
 <main
   use:loader={loaderParams}
   use:breakpoints
-  class="theme-light"
+  class="theme-light min-w-[var(--screen-width)] overflow-x-auto overflow-y-hidden"
   class:full-width={isUploadMode && !$sourceManifestStore && !error}>
   {#if $isBurgerMenuShown}
     <div
@@ -148,14 +148,15 @@
 
 <style lang="postcss">
   main {
-    --viewer-height: calc(100vh - 400px);
+    --mobile-overview-padding: 400px;
+    --viewer-height: calc(100vh - var(--mobile-overview-padding));
     --cai-thumbnail-size: 48px;
     --cai-thumbnail-badge-icon-width: 16px;
     --cai-thumbnail-badge-icon-height: 16px;
 
-    @apply grid w-screen min-h-screen h-full font-base;
+    @apply grid w-screen min-h-screen h-screen font-base;
     grid-template-columns: 100%;
-    grid-template-rows: 80px 120px var(--viewer-height) 1fr 70px;
+    grid-template-rows: 60px 114px var(--viewer-height) 1fr 70px;
     grid-template-areas:
       'header'
       'breadcrumb'
@@ -174,7 +175,7 @@
     grid-area: right;
   }
   .menu-overlay {
-    @apply fixed inset-0 z-50;
+    @apply fixed inset-0 z-10;
     background-color: rgba(0, 0, 0, 0.2);
   }
   .dragdrop {
@@ -190,9 +191,9 @@
   }
   @screen lg {
     main {
-      @apply fixed inset-0;
+      /* @apply fixed inset-0; */
       grid-template-columns: 1fr 320px;
-      grid-template-rows: 80px 60px 1fr 55px;
+      grid-template-rows: 60px 114px 1fr 55px;
       grid-template-areas:
         'header header'
         'breadcrumb breadcrumb'

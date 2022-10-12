@@ -12,36 +12,46 @@
 // from Adobe.
 
 import { expect } from '@playwright/test';
-import { test } from './test';
 import { allImages } from './descriptors';
-import { flattenTree } from './utils/tree';
-import { aboutHelper } from './helpers/about';
 import CAICAI from './descriptors/images/CAICAI';
-import { data } from 'autoprefixer';
+import { aboutHelper } from './helpers/about';
+import { test } from './test';
+import { testID } from './utils/selectors';
+import { flattenTree } from './utils/tree';
 
 test.describe('overview - UI rendering', () => {
-  for (const { description, imagePath, claim } of allImages) {
+  for (const { description, imagePath, claim, overviewDisabled } of allImages) {
     test(`${description} [${imagePath}]`, async ({ overviewPage }) => {
       await overviewPage.uploadImage(imagePath);
+      if (overviewDisabled) {
+        let isDisabled = await overviewPage.page
+          .locator(testID('overview.btn'))
+          .getAttribute('disabled');
+        await expect(isDisabled).not.toBeNull();
+      } else {
+        await overviewPage.page.locator(testID('overview.btn')).click();
+        await overviewPage.page.waitForSelector(testID('tree-view'));
+        await test.step('tree view', async () => {
+          await overviewPage.uploadImage(imagePath);
 
-      await test.step('tree view', async () => {
-        await overviewPage.uploadImage(imagePath);
+          const nodeData = flattenTree(claim);
 
-        const nodeData = flattenTree(claim);
+          expect(await overviewPage.nodeLocator().count()).toBe(
+            nodeData.length,
+          );
 
-        expect(await overviewPage.nodeLocator().count()).toBe(nodeData.length);
+          for (const { data, locator } of nodeData) {
+            const node = overviewPage.nodeLocator(locator);
 
-        for (const { data, locator } of nodeData) {
-          const node = overviewPage.nodeLocator(locator);
-
-          await expect(node).toContainText(data.fileName);
-          await expect(node).toHaveCAIBadge(data.badge);
-        }
-      });
-      if (claim.data.claimStatus != 'none') {
-        await test.step('about panel', async () => {
-          await aboutHelper(overviewPage.page).expectToMatchClaim(claim);
+            await expect(node).toContainText(data.fileName);
+            await expect(node).toHaveCAIBadge(data.badge);
+          }
         });
+        if (claim.data.claimStatus != 'none') {
+          await test.step('about panel', async () => {
+            await aboutHelper(overviewPage.page).expectToMatchClaim(claim);
+          });
+        }
       }
     });
   }

@@ -38,6 +38,7 @@
 {:else}
   <button
     data-test-id={testId}
+    tabindex="0"
     class="button"
     class:full
     class:secondary
@@ -71,5 +72,8 @@
   .lg .inner {
     position: relative;
     top: -1px;
+  }
+  button:focus-visible {
+    @apply outline-2 outline-blue-500;
   }
 </style>

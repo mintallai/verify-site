@@ -66,7 +66,7 @@
             use:thumbnail={node}
             on:thumbnail={handleImgSrc}
             alt="Thumbnail"
-            class="h-full w-full object-contain pt-24" />
+            class="h-full w-full object-contain" />
         {:else}
           <div class="flex items-center justify-center">
             {#if isError || (!isLoading && !hasThumbnail)}
