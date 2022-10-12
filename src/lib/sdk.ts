@@ -12,6 +12,8 @@
 // from Adobe.
 
 import { createC2pa, Manifest } from 'c2pa';
+import type { ExifTags } from './exif';
+
 declare module 'c2pa' {
   interface ExtendedAssertions {
     'adobe.crypto.addresses': {
@@ -21,6 +23,7 @@ declare module 'c2pa' {
     'adobe.beta': {
       version: string;
     };
+    'stds.exif': ExifTags;
   }
 }
 
@@ -29,6 +32,9 @@ export async function getSdk() {
     return await createC2pa({
       wasmSrc: 'sdk/toolkit_bg.wasm',
       workerSrc: 'sdk/c2pa.worker.min.js',
+      downloaderOptions: {
+        inspectSize: 0,
+      },
     });
   } catch (err) {
     console.error('Could not load SDK:', err);
@@ -38,6 +44,10 @@ export async function getSdk() {
 
 export function selectIsBeta(manifest: Manifest) {
   return !!manifest.assertions.get('adobe.beta')[0]?.data.version;
+}
+
+export function selectEditsAndActivityExists(manifest: Manifest) {
+  return manifest.assertions.get('c2pa.actions')?.length > 0;
 }
 
 export function selectWebsite(manifest: Manifest) {

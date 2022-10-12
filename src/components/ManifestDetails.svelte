@@ -26,6 +26,7 @@
   import { DEFAULT_LOCALE } from '../lib/i18n';
   import { getBadgeProps, getManifest } from '../lib/node';
   import {
+    selectEditsAndActivityExists,
     selectFormattedDate,
     selectFormattedGenerator,
     selectIsBeta,
@@ -57,6 +58,7 @@
   $: socialAccounts = selectSocialAccounts(manifest);
   $: web3Addresses = selectWeb3(manifest);
   $: ratings = selectReviewRatings(manifest);
+  $: hasEditsAndActivity = selectEditsAndActivityExists(manifest);
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
   });
@@ -79,8 +81,6 @@
                 {$date(sigDate, { format: 'long' })}{' at '}
                 {$time(sigDate, { format: 'short' })}
               </div>
-            {:else}
-              {$_('comp.about.signedOn.notAvailable')}
             {/if}
           </div>
         </div>
@@ -172,40 +172,42 @@
     </AboutSection>
   </dl>
 </div>
-<AboutSection
-  title={$_('comp.about.editsActivity.header')}
-  helper={$_('comp.about.editsActivity.helpText')}>
-  {#await selectEditsAndActivity(manifest, currentLocale) then categories}
-    {#if categories}
-      <div>
-        <dl>
-          {#if ratings.hasUnknownActions || ratings.wasPossiblyModified}
-            <dd data-test-id="about.unknownActionsAlert" class="flex mt-1">
-              <div class="relative top-0.5">
-                <AlertOutlineIcon width="16px" height="16px" class="mr-2" />
-              </div>
-              <div class="italic text-gray-900">
-                <span>{$_('comp.contentCredentialsError.unknownActions')}</span>
-                <a href={$learnMoreUrl} target="_blank" class="link"
-                  >{$_('comp.contentCredentialsError.learnMore')}</a>
-              </div>
+{#if hasEditsAndActivity}
+  <AboutSection
+    title={$_('comp.about.editsActivity.header')}
+    helper={$_('comp.about.editsActivity.helpText')}>
+    {#await selectEditsAndActivity(manifest, currentLocale) then categories}
+      {#if categories}
+        <div>
+          <dl>
+            {#if ratings.hasUnknownActions || ratings.wasPossiblyModified}
+              <dd data-test-id="about.unknownActionsAlert" class="flex mt-1">
+                <div class="relative top-0.5">
+                  <AlertOutlineIcon width="16px" height="16px" class="mr-2" />
+                </div>
+                <div class="italic text-gray-900">
+                  <span
+                    >{$_('comp.contentCredentialsError.unknownActions')}</span>
+                  <a href={$learnMoreUrl} target="_blank" class="link"
+                    >{$_('comp.contentCredentialsError.learnMore')}</a>
+                </div>
+              </dd>
+            {/if}
+            <dd class="mt-2" data-test-id="about.edits-and-activity">
+              <cai-panel-edits-activity
+                {categories}
+                stringmap={editsActivityStrings}
+                hidedescriptions={isMobileViewer && isComparing ? true : null}
+                class="theme-spectrum" />
             </dd>
-          {/if}
-          <dd class="mt-2" data-test-id="about.edits-and-activity">
-            <cai-panel-edits-activity
-              {categories}
-              stringmap={editsActivityStrings}
-              hidedescriptions={isMobileViewer && isComparing ? true : null}
-              class="theme-spectrum" />
-          </dd>
-        </dl>
-      </div>
-    {:else}
-      <div>{$_('comp.about.editsActivity.none')}</div>
-    {/if}
-  {/await}
-</AboutSection>
-
+          </dl>
+        </div>
+      {:else}
+        <div>{$_('comp.about.editsActivity.none')}</div>
+      {/if}
+    {/await}
+  </AboutSection>
+{/if}
 {#if !isOriginal}
   <AboutSection
     title={$_('comp.about.assets.header')}

@@ -13,23 +13,25 @@
   from Adobe.
 -->
 <script lang="ts">
-  import AdobeLogo from '../../../assets/svg/color/logos/adobe.svg';
   import AdobeStockLogo from '../../../assets/svg/color/logos/adobe-stock.svg';
+  import AdobeLogo from '../../../assets/svg/color/logos/adobe.svg';
   import BehanceLogo from '../../../assets/svg/color/logos/behance.svg';
   import FacebookLogo from '../../../assets/svg/color/logos/facebook.svg';
   import InstagramLogo from '../../../assets/svg/color/logos/instagram.svg';
+  import LeicaLogo from '../../../assets/svg/color/logos/leica_logo.svg';
+  import NikonLogo from '../../../assets/svg/color/logos/nikon.svg';
   import PhotoshopLogo from '../../../assets/svg/color/logos/photoshop.svg';
+  import PinterestLogo from '../../../assets/svg/color/logos/pinterest.svg';
   import TruepicLogo from '../../../assets/svg/color/logos/truepic.svg';
   import TwitterLogo from '../../../assets/svg/color/logos/twitter.svg';
-  import LeicaLogo from '../../../assets/svg/color/logos/leica_logo.svg';
-  import PinterestLogo from '../../../assets/svg/color/logos/pinterest.svg';
-  import YoutubeLogo from '../../../assets/svg/color/logos/YT.svg';
   import VimeoLogo from '../../../assets/svg/color/logos/vimeo.svg';
+  import YoutubeLogo from '../../../assets/svg/color/logos/YT.svg';
 
   export let provider: string;
   let className: string = '';
 
   const matchers = [
+    { pattern: /nikon/i, icon: NikonLogo },
     { pattern: /photoshop/i, icon: PhotoshopLogo },
     { pattern: /adobe\sstock/i, icon: AdobeStockLogo },
     { pattern: /adobe/i, icon: AdobeLogo },

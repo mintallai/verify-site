@@ -13,30 +13,27 @@
   from Adobe.
 -->
 <script lang="ts">
-  import CollapsibleSection from '../CollapsibleSection.svelte';
-  export let collapsible = true; // `boolean` is inferred
-  export let title: string;
-  export let helper: string;
+  export let title: string | null = null;
+  export let helper: string | null = null;
 </script>
 
-{#if collapsible}
-  <div>
-    <CollapsibleSection headerText={title} {helper}>
-      <slot />
-    </CollapsibleSection>
-  </div>
-{:else}
-  <div>
-    <div class="flex justify-between">
-      <div class="flex font-bold text-75 uppercase text-gray-700">{title}</div>
+<div>
+  <div class="flex justify-between items-center mb-2">
+    {#if title}
+      <div
+        class="flex-grow flex-shrink-0 font-bold text-75 uppercase text-gray-700">
+        {title}
+      </div>
+    {/if}
+    {#if helper}
       <cai-tooltip placement="right" class="theme-spectrum justify-end">
         <div slot="content" class="text-gray-900" style="width: 200px;">
           {helper}
         </div>
       </cai-tooltip>
-    </div>
-    <div class="relative top-2">
-      <slot />
-    </div>
+    {/if}
   </div>
-{/if}
+  <div>
+    <slot />
+  </div>
+</div>

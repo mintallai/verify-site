@@ -4,6 +4,8 @@ import memoize from 'lodash/memoize';
 const dbg = debug('config');
 
 export const SITE_VERSION = process.env.GIT_REVISION;
+export const MAPBOX_TOKEN =
+  'pk.eyJ1IjoiZGtvem1hLWFkb2JlIiwiYSI6ImNsOTV1aHFxYTJoOXM0MG14cTlzbTdxYmEifQ.xR4EY81HcCeRRF-zycgsMw';
 
 interface EnvConfig {
   env: 'dev' | 'stage' | 'prod';

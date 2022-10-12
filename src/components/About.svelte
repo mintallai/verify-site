@@ -19,9 +19,12 @@
   import debug from 'debug';
   import cssVars from 'svelte-css-vars';
   import { _ } from 'svelte-i18n';
+  import { selectExif } from '../lib/exif';
   import { getBadgeProps, getFilename, getManifest } from '../lib/node';
   import { selectIsOriginal } from '../lib/sdk';
   import type { HierarchyTreeNode } from '../stores';
+  import CollapsibleSection from './CollapsibleSection.svelte';
+  import Exif from './Exif.svelte';
   import AboutSection from './inspect/AboutSection.svelte';
   import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ManifestDetails from './ManifestDetails.svelte';
@@ -35,57 +38,70 @@
 
   let colWidth: number;
 
-  $: isOriginal = selectIsOriginal(getManifest(node));
+  $: manifest = getManifest(node);
+  $: isOriginal = selectIsOriginal(manifest);
+  $: exif = selectExif(manifest);
   $: filename = getFilename(node);
   $: badgeProps = getBadgeProps(node);
   $: showDetails = badgeProps?.badgeType === 'info';
 </script>
 
-<div data-test-id="about" class="w-full flex justify-center">
-  <div class="about-info w-full max-w-xs">
-    <div class="hidden lg:block">
-      <dl>
-        <AboutSection
-          title={$_('comp.about.contentCredentials.header')}
-          helper={$_('comp.about.contentCredentials.helpText')}
-          collapsible={false}>
-          <dd
-            class="flex space-x-2 items-center mt-1"
-            data-test-id="about.file-name">
-            <div class="w-12 h-12">
-              <Thumbnail {node} {...badgeProps} />
-            </div>
-            <div>
-              <h6>{$_('comp.about.fileName')}</h6>
-              <div>{filename}</div>
-            </div>
-          </dd>
-          {#if isOriginal}
-            <div class="mt-4">
-              <OriginalCreation type="original" {node} />
-            </div>
-          {/if}
-        </AboutSection>
-      </dl>
-    </div>
-    <div bind:clientWidth={colWidth} class="lg:hidden w-full overflow-x-hidden">
-      <div use:cssVars={{ 'cai-thumbnail-size': `${colWidth}px` }}>
-        <Thumbnail {node} />
-        <div class="thumbnail-title">{filename}</div>
-      </div>
-    </div>
-    {#if showDetails}
-      <ManifestDetails {node} {isComparing} {isMobileViewer} />
-    {:else}
-      <div class="py-4">
-        {#if badgeProps?.badgeHelpText}
-          {$_(badgeProps.badgeHelpText)}
+<div class="w-full">
+  <CollapsibleSection headerText={$_('comp.about.contentCredentials.header')}>
+    <div data-test-id="about" class="w-full flex justify-center">
+      <div class="about-info w-full max-w-xs">
+        <div class="hidden lg:block">
+          <dl>
+            {#if isOriginal}
+              <div class="mb-2">
+                <OriginalCreation type="original" {node} />
+              </div>
+            {/if}
+            <AboutSection>
+              <dd
+                class="flex space-x-2 items-center mt-1"
+                data-test-id="about.file-name">
+                <div class="w-12 h-12">
+                  <Thumbnail {node} {...badgeProps} />
+                </div>
+                <div>{filename}</div>
+              </dd>
+            </AboutSection>
+          </dl>
+        </div>
+        <div
+          bind:clientWidth={colWidth}
+          class="lg:hidden w-full overflow-x-hidden">
+          <div use:cssVars={{ 'cai-thumbnail-size': `${colWidth}px` }}>
+            <Thumbnail {node} />
+            <div class="thumbnail-title">{filename}</div>
+          </div>
+        </div>
+        {#if showDetails}
+          <ManifestDetails {node} {isComparing} {isMobileViewer} />
         {:else}
-          {$_('comp.contentCredentialsError.noneForFile')}
+          <div class="py-4">
+            {#if badgeProps?.badgeHelpText}
+              {$_(badgeProps.badgeHelpText)}
+            {:else}
+              {$_('comp.contentCredentialsError.noneForFile')}
+            {/if}
+          </div>
         {/if}
       </div>
-    {/if}
-  </div>
+    </div>
+  </CollapsibleSection>
+  {#if exif}
+    <div class="border-t border-gray-300 pt-4">
+      <CollapsibleSection
+        headerText={$_('comp.about.exif.header')}
+        helper={$_('comp.about.exif.helpText')}>
+        <div class="about-info">
+          <Exif data={exif} />
+        </div>
+      </CollapsibleSection>
+    </div>
+  {/if}
 </div>
 
 <style lang="postcss">

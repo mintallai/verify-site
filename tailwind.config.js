@@ -61,6 +61,9 @@ module.exports = merge(spectrumConfig, {
         transparent: 'rgba(255, 255, 255, 0)',
         white: '#fff',
       },
+      letterSpacing: {
+        wide: '0.1px',
+      },
     },
   },
   variants: {
