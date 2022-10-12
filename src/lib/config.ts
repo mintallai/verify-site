@@ -1,5 +1,5 @@
-import memoize from 'lodash/memoize';
 import debug from 'debug';
+import memoize from 'lodash/memoize';
 
 const dbg = debug('config');
 
@@ -19,9 +19,12 @@ export const getConfig = memoize<() => Promise<EnvConfig>>(async () => {
   try {
     const res = await fetch('/env.json');
     const data = await res.json();
-    const env = data.env ?? 'prod';
-    dbg('Retrieved config with environment %s', env, data);
-    return env;
+    dbg(
+      'Retrieved config with environment %s',
+      data?.env ?? defaultConfig.env,
+      data,
+    );
+    return data ?? defaultConfig;
   } catch (err) {
     dbg('No env file found, defaulting to prod');
     return defaultConfig;
