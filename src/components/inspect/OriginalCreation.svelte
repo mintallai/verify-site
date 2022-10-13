@@ -27,16 +27,13 @@
 
 <Alert severity="info">
   <div class="text-base flex-grow" data-test-id="original-creation">
-    <div class="font-bold text-gray-900 mb-3">
+    <div class="font-bold text-gray-900 tracking-wide mb-3">
       {$_('comp.originalCreation.title')}
     </div>
     <div>
       {#if type === 'original'}
-        {$_('comp.originalCreation.generator', {
-          values: {
-            product,
-          },
-        })}
+        <span>{$_('comp.originalCreation.generator')}</span>
+        <strong>{product}</strong><span>.</span>
       {:else if type === 'secureCapture'}
         <div>
           {$_('comp.originalCreation.secureCapture')}

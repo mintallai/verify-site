@@ -105,7 +105,7 @@ export function aboutHelper(root: Locator | Page) {
 
       if (data.isOriginalCreation) {
         await expect(panel.originalCreation).toContainText(
-          `Original creation This image was first produced in ${data.producedWith}.`,
+          `Verified origin This image was first produced with ${data.producedWith}.`,
         );
       } else {
         await expect(panel.originalCreation).toHaveCount(0);

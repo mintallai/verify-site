@@ -2,15 +2,12 @@ import debug from 'debug';
 import pLimit from 'p-limit';
 import { get } from 'svelte/store';
 import { getConfig } from '../lib/config';
-import { getSdk, getSdk } from '../lib/sdk';
+import { getSdk } from '../lib/sdk';
 import {
   forceProductionServices,
   OTGP_ERROR_CODE,
-  OTGP_ERROR_CODE,
   searchError,
   sourceManifestStore,
-  sourceManifestStore,
-  searchError,
 } from '../stores';
 
 const RESIZE_MAX_SIZE = 512;

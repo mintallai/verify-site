@@ -17,29 +17,34 @@
   // Inclusive Components by Heydon Pickering https://inclusive-components.design/collapsible-sections/
   import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
   export let headerText: string;
-  export let helper: string;
-  let expanded = true;
+  export let helper: string | null = null;
+  export let expanded = true;
 </script>
 
-<div>
-  <h3 class="flex justify-between">
-    <button
-      class="flex font-bold text-75 uppercase text-gray-700"
-      on:click={() => (expanded = !expanded)}>
-      <DownArrow
-        class="h-4 w-4 text-gray-500 mr-1 transform {expanded
-          ? 'rotate-0'
-          : '-rotate-90'}" />
-      {headerText}
-    </button>
-    <cai-tooltip placement="left" class="theme-spectrum">
-      <div slot="content" class="text-gray-900" style="width: 200px;">
-        {helper}
-      </div>
-    </cai-tooltip>
-  </h3>
+<div class="w-full" class:mb-4={!expanded}>
+  <button
+    class="flex w-full justify-between items-center"
+    on:click={() => (expanded = !expanded)}>
+    <div
+      class="flex items-center space-x-1.5 text-left text-smd font-bold tracking-wide text-black flex-grow">
+      <div class="flex-shrink whitespace-nowrap">{headerText}</div>
+      {#if helper}
+        <cai-tooltip
+          placement="left"
+          class="theme-spectrum flex-shrink flex-grow-0">
+          <div slot="content" class="text-gray-900" style="width: 200px;">
+            {helper}
+          </div>
+        </cai-tooltip>
+      {/if}
+    </div>
+    <DownArrow
+      class="h-3 w-3 flex-shrink flex-grow-0 text-black mr-1 transform duration-100 {expanded
+        ? 'rotate-0'
+        : '-rotate-90'}" />
+  </button>
 
-  <div hidden={!expanded} class="relative top-1.5">
+  <div hidden={!expanded} class:mt-4={expanded}>
     <slot />
   </div>
 </div>

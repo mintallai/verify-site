@@ -20,6 +20,11 @@ module.exports = {
         thicker: 'var(--border-size-thicker)',
         thickest: 'var(--border-size-thickest)',
       },
+      letterSpacing: {
+        none: 'var(--letter-spacing-none)',
+        small: 'var(--letter-spacing-small)',
+        medium: 'var(--letter-spacing-medium)',
+      },
       transitionTimingFunction: {
         'in-out': 'var(--ease-in-out)',
         in: 'var(--ease-in)',
@@ -40,11 +45,6 @@ module.exports = {
       bold: 'var(--weight-bold)',
       'extra-bold': 'var(--weight-extra-bold)',
       black: 'var(--weight-black)',
-    },
-    letterSpacing: {
-      none: 'var(--letter-spacing-none)',
-      small: 'var(--letter-spacing-small)',
-      medium: 'var(--letter-spacing-medium)',
     },
     lineHeight: {
       large: 'var(--line-height-large)',
