@@ -17,7 +17,12 @@
   import { getBadgeProps, getFilename, getManifest } from '../lib/node';
   import { selectFormattedDate } from '../lib/sdk';
   import { ThumbnailEvent } from '../lib/thumbnail';
-  import { activeAsset, resultHierarchies, sourceHierarchy } from '../stores';
+  import {
+    activeAsset,
+    resultHierarchies,
+    setActiveAsset,
+    sourceHierarchy,
+  } from '../stores';
   import Thumbnail from './Thumbnail.svelte';
 
   let src = '';
@@ -40,11 +45,7 @@
   }
 
   function handleActiveAsset() {
-    if (value != null) {
-      activeAsset.set(['r', value]);
-    } else {
-      activeAsset.set(['s']);
-    }
+    setActiveAsset(value);
   }
 </script>
 

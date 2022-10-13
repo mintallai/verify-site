@@ -171,7 +171,14 @@ export function navigateTo(id: string, logEvent = true): void {
     window.newrelic?.addPageAction('navigateTo', { id });
   }
 }
-
+export function setActiveAsset(value: number | null = null) {
+  primaryLoc.set(ROOT_LOC);
+  if (value != null) {
+    activeAsset.set(['r', value]);
+  } else {
+    activeAsset.set(['s']);
+  }
+}
 export function navigateToChild(id: string, logEvent = true): void {
   navigateTo(id, logEvent);
 }
@@ -459,16 +466,16 @@ export const primary = derived<
  * Convenience accessor for the claim/ingredient data that's linked to the `secondaryLoc`.
  */
 export const secondary = derived<
-  [typeof sourceHierarchy, typeof secondaryLoc],
+  [typeof hierarchy, typeof secondaryLoc],
   HierarchyTreeNode | undefined
->([sourceHierarchy, secondaryLoc], ([$hierarchy, $secondaryLoc]) => {
+>([hierarchy, secondaryLoc], ([$hierarchy, $secondaryLoc]) => {
   return $hierarchy?.find((node) => node.data.loc === $secondaryLoc);
 });
 
 export const ancestors = derived<
-  [typeof primaryLoc, typeof sourceHierarchy],
+  [typeof primaryLoc, typeof hierarchy],
   HierarchyTreeNode[] | null
->([primaryLoc, sourceHierarchy], ([$primaryLoc, $hierarchy]) => {
+>([primaryLoc, hierarchy], ([$primaryLoc, $hierarchy]) => {
   if ($primaryLoc) {
     return $hierarchy
       ?.find((node) => node.data.loc === $primaryLoc)
