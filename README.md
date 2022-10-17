@@ -2,7 +2,11 @@
 
 This project generates the CAI verify site front end.
 
-## Get started
+## Deployment
+
+This site is managed by [moonbeam](https://moonbeam.ethos.corp.adobe.com/cai/verify-site). All PRs should be merged through moonbeam, **NOT** via the GitHub interface.
+
+## Get Started
 
 To run, check out this project and run:
 
