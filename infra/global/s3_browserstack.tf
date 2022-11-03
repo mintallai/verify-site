@@ -1,5 +1,5 @@
 module "s3_browserstack" {
-  source = "git@git.corp.adobe.com:cai/shared-infra.git//modules/s3-bucket"
+  source = "git@git.corp.adobe.com:cai/shared-infra.git//modules/s3-bucket?ref=s3-bucket-1.1.1"
 
   shortname = "browserstack"
   service   = "verify-site"
