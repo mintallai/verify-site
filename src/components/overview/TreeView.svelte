@@ -31,6 +31,7 @@
     overviewTransform,
     primaryLoc,
   } from '../../stores';
+  import CollapsibleSection from '../CollapsibleSection.svelte';
   import ViewControls from '../ViewControls.svelte';
   import TreeLink from './TreeLink.svelte';
   import TreeNode from './TreeNode.svelte';
@@ -83,10 +84,10 @@
       zoom.transform,
       zoomIdentity
         .translate(width / 2, height / 2)
-        .scale(minScale)
+        .scale(minScaleZoom)
         .translate(
           -(bbox.x * 2 + bbox.width) / 2,
-          -(bbox.y * 2 + bbox.height) / 2,
+          -(bbox.y * 6 + bbox.height) / 2,
         ),
     );
   }
@@ -140,6 +141,7 @@
     });
   $: descendants = tree?.descendants() ?? [];
 
+  $: minScaleZoom = getMinScale(width, height / 2);
   $: minScale = getMinScale(width, height);
   $: {
     // Set the proper scaleExtent whenever the width/height changes
@@ -149,10 +151,10 @@
 
 <div
   data-test-id="tree-view"
-  class="relative bg-gray-75 w-full h-full overflow-hidden z-0 pt-4 sm:pt-0"
+  class="relative bg-gray-75 w-full h-full min-h-[var(--min-screen-height)] overflow-y-auto overflow-x-hidden pt-4 sm:pt-0"
   bind:clientWidth={width}
   bind:clientHeight={height}>
-  <div class=" absolute p-4 justify-center bg-gray-75 w-full flex">
+  <div class="absolute p-4 justify-center w-full flex">
     <ViewControls inInspect={false} inOverview={true} />
   </div>
   <svg bind:this={svg} {width} {height} view-box={`0 0 ${width} ${height}`}>

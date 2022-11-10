@@ -20,8 +20,8 @@ const claim: TestImageDescriptor = {
     data: {
       fileName: 'CAIXCI.jpg',
       badge: 'info',
-      signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
-      signedOn: 'August 1, 2022 at  6:48 PM',
+      signedBy: 'C2PA Test Signing Cert Aug 1, 2022 at  6:48 PM EDT',
+      signedOn: 'Aug 1, 2022 at  6:48 PM EDT',
       producedWith: 'make test images 0.11.1',
       editsAndActivity: [
         {
@@ -49,7 +49,7 @@ const claim: TestImageDescriptor = {
           fileName: 'CA.jpg',
           badge: 'info',
           signedBy: 'Adobe, Inc.',
-          signedOn: 'April 20, 2022 at  6:44 PM',
+          signedOn: 'Apr 20, 2022 at  6:44 PM EDT',
           producedWith: 'make test images 0.7.0',
           editsAndActivity: [
             {
@@ -83,8 +83,8 @@ const claim: TestImageDescriptor = {
             data: {
               fileName: 'CI.jpg',
               badge: 'info',
-              signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
-              signedOn: 'August 1, 2022 at  6:48 PM',
+              signedBy: 'C2PA Test Signing Cert Aug 1, 2022 at  6:48 PM EDT',
+              signedOn: 'Aug 1, 2022 at  6:48 PM EDT',
               producedWith: 'make test images 0.7.0',
               editsAndActivity: [
                 {

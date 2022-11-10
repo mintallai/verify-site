@@ -25,6 +25,7 @@
   import Header from '../components/Header.svelte';
   import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
   import TopNavigation from '../components/inspect/TopNavigation.svelte';
+  import Viewer from '../components/inspect/Viewer.svelte';
   import TreeView from '../components/overview/TreeView.svelte';
   import { breakpoints } from '../lib/breakpoints';
   import { ILoaderParams, loader, setLoaderContext } from '../lib/loader';
@@ -45,6 +46,7 @@
   let tour: ReturnType<typeof startTour>;
 
   $: isUploadMode = !$hasContent || isDragging;
+
   $: {
     // Cancel the tour if the overlay is showing
     if (tour && tour.isActive() && $isMobileViewerShown) {
@@ -90,7 +92,8 @@
 <main
   use:loader={loaderParams}
   use:breakpoints
-  class="theme-light min-w-[var(--screen-width)] overflow-x-auto overflow-y-hidden"
+  class="theme-light min-w-[var(--screen-width)] overflow-x-auto"
+  class:no-content={!$hasContent}
   class:full-width={isUploadMode && !$sourceManifestStore && !error}>
   {#if $isBurgerMenuShown}
     <div
@@ -99,27 +102,20 @@
       on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
   {/if}
   <Header />
-  {#if $hasContent || error}
+  {#if $hasContent}
     <TopNavigation
       node={$primary}
       noMetadata={$noMetadata}
       currentPage="overview" />
+  {:else if error}
+    <Viewer {isDragging} isError={!!error} />
   {/if}
-  <div class="dragdrop">
-    <FileDropper {isUploadMode} {isDragging} isError={!!error} />
-    {#if isUploadMode && !error}
-      <div
-        class="upload-bg"
-        class:dragging={isDragging}
-        in:fade={{ duration: 150 }} />
-    {/if}
-  </div>
   {#if $hasContent || error}
     {#if $isLoading}
       <div class="w-full h-full bg-gray-75 flex items-center justify-center">
         <CircleLoader />
       </div>
-    {:else}
+    {:else if !error}
       <TreeView />
     {/if}
     <section
@@ -164,6 +160,9 @@
       'right'
       'footer';
   }
+  main.no-content {
+    grid-template-rows: 80px 0 1fr 55px;
+  }
   section {
     @apply col-span-1 border-gray-200 max-h-full;
   }
@@ -178,17 +177,7 @@
     @apply fixed inset-0 z-10;
     background-color: rgba(0, 0, 0, 0.2);
   }
-  .dragdrop {
-    @apply contents relative w-full h-full overflow-hidden;
-  }
-  .upload-bg {
-    @apply bg-gray-75 absolute inset-0 z-10;
-  }
-  .upload-bg.dragging {
-    @apply text-blue-500;
-    background: linear-gradient(var(--drag-bg-color), var(--drag-bg-color)),
-      linear-gradient(var(--white), var(--white));
-  }
+
   @screen lg {
     main {
       /* @apply fixed inset-0; */
@@ -200,6 +189,7 @@
         'viewer right'
         'footer footer';
     }
+
     main.full-width {
       grid-template-columns: 1fr;
       grid-template-areas:
