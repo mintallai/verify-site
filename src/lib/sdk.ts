@@ -130,7 +130,7 @@ export function selectReviewRatings(manifest: Manifest) {
 }
 
 export function selectFormattedDate(manifest: Manifest) {
-  return manifest?.signatureInfo.time
+  return manifest?.signatureInfo?.time
     ? new Date(manifest.signatureInfo.time)
     : null;
 }

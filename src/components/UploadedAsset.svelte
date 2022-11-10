@@ -36,7 +36,7 @@
       <div class="mr-4 cols-span-4 self-center w-[207px]">
         <BreadcrumbAsset value={null} />
       </div>
-      <div class="self-center ml-[175px] pt-2">
+      <div class="self-center ml-[210px] pt-2">
         <PopoverManifestRecov {placement} />
       </div>
     </div>

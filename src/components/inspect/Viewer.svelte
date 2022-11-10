@@ -46,9 +46,9 @@
   $: hasThumbnail = node?.data?.thumbnail;
 </script>
 
-<div class="viewer-wrapper">
+<div class="viewer-wrapper min-h-[var(--min-screen-height)] overflow-y-hidden">
   <div
-    class="viewer"
+    class="viewer z-0"
     class:no-source={!$sourceManifestStore && !isLoading}
     class:upload={isUploadMode}
     class:dragging={isDragging}

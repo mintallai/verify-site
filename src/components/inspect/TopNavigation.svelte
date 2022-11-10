@@ -98,7 +98,7 @@
 
 <div
   id="breadcrumb-bar"
-  class="nav-container"
+  class="nav-container z-10"
   class:menu-view={$isMobileViewerShown}>
   <sp-theme color="lightest" scale="medium" class="w-full">
     <!-- Only display Top Nav if there is an active asset -->
@@ -158,25 +158,6 @@
               <ChevronRight width="16px" height="16px" class="text-gray-700" />
             </div>
           {/if}
-          <!-- <div class="grid grid-rows-2">
-            <div><UploadedAsset /></div>
-
-            <div class="flex">
-              {#if $resultsManifestStore || loadingMatches || $searchError}
-                <div>
-                  <ResultManifestsDisplay
-                    {loadingMatches}
-                    {handleButtonClick} />
-                </div>
-              {:else}
-                <div class="self-center ">
-                  <Button secondary size="s" on:click={handleButtonClick}>
-                    {$_('comp.topNavigation.matches')}
-                  </Button>
-                </div>
-              {/if}
-            </div>
-          </div> -->
           <div class="flex w-full">
             <div>
               <UploadedAsset />
@@ -200,14 +181,14 @@
         </div>
       {:else}
         <div class="flex w-full">
-          <div><UploadedAsset /></div>
+          <div class="pr-12"><UploadedAsset /></div>
           {#if $resultsManifestStore || loadingMatches || $searchError}
-            <div class="flex-auto">
+            <div class="flex-auto ">
               <ResultManifestsDisplay {loadingMatches} {handleButtonClick} />
             </div>
           {:else}
             <div class="flex pt-6">
-              <div class="self-center ml-4 inline-block">
+              <div class="self-center inline-block">
                 <Button secondary size="s" on:click={handleButtonClick}>
                   {$_('comp.topNavigation.matches')}
                 </Button>

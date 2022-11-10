@@ -92,9 +92,10 @@
 <main
   use:loader={loaderParams}
   use:breakpoints
-  class="theme-light min-w-[var(--screen-width)] overflow-x-auto overflow-y-hidden"
+  class="theme-light min-w-[var(--screen-width)] overflow-x-auto "
   class:no-content={!$hasContent}
-  class:comparing={$isComparing}>
+  class:comparing={$isComparing}
+  class:error>
   {#if $isBurgerMenuShown}
     <div
       transition:fade={{ duration: 200 }}
@@ -235,6 +236,15 @@
       'left right'
       'footer footer';
   }
+  main.error {
+    grid-template-columns: 1fr 320px;
+    grid-template-rows: 60px 114px 1fr 55px;
+    grid-template-areas:
+      'header header'
+      'breadcrumb breadcrumb'
+      'viewer right'
+      'footer footer';
+  }
 
   main.comparing section.left-col {
     @apply w-full h-full flex align-middle justify-center;
@@ -252,6 +262,7 @@
         'left viewer right'
         'footer footer footer';
     }
+
     main.no-content {
       grid-template-rows: 80px 0 1fr 55px;
     }

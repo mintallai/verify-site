@@ -20,8 +20,8 @@ const claim: TestImageDescriptor = {
     data: {
       fileName: 'CIE-sig-CA.jpg',
       badge: 'info',
-      signedBy: 'C2PA Test Signing Cert August 1, 2022 at  6:48 PM',
-      signedOn: 'August 1, 2022 at  6:48 PM',
+      signedBy: 'C2PA Test Signing Cert Aug 1, 2022 at  6:48 PM EDT',
+      signedOn: 'Aug 1, 2022 at  6:48 PM EDT',
       producedWith: 'make test images 0.11.1',
       editsAndActivity: [
         {

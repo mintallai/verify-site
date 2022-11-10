@@ -37,6 +37,7 @@
   } from '../lib/sdk';
   import type { HierarchyTreeNode } from '../stores';
   import { learnMoreUrl, navigateToChild } from '../stores';
+  import FormattedDateTime from './FormattedDateTime.svelte';
   import AboutSection from './inspect/AboutSection.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
   import Thumbnail from './Thumbnail.svelte';
@@ -76,11 +77,8 @@
         <div>
           {issuer ?? ''}
           <div data-test-id="about.signed-on">
-            {#if sigDate && sigDate.toString() !== 'Invalid Date'}
-              <div class="text-gray-700 -top-1.5">
-                {$date(sigDate, { format: 'long' })}{' at '}
-                {$time(sigDate, { format: 'short' })}
-              </div>
+            {#if sigDate}
+              <FormattedDateTime {sigDate} />
             {/if}
           </div>
         </div>

@@ -23,6 +23,7 @@
     setActiveAsset,
     sourceHierarchy,
   } from '../stores';
+  import FormattedDateTime from './FormattedDateTime.svelte';
   import Thumbnail from './Thumbnail.svelte';
 
   let src = '';
@@ -68,19 +69,15 @@
       {:else}
         <p class="filename">{filename}</p>
       {/if}
-
       {#if sigDate}
-        <p class="date">
-          {$date(sigDate, { format: 'medium' })}{' at '}
-          {$time(sigDate, { format: 'short' })}
-        </p>
+        <FormattedDateTime {sigDate} />
       {/if}
     </div>
   </div></button>
 
 <style lang="postcss">
   .bc-container {
-    width: 207px;
+    width: 247px;
     height: 52px;
     background-color: white;
     border: 2px solid transparent;
@@ -97,9 +94,7 @@
   .filename {
     color: #2c2c2c;
   }
-  .date {
-    color: #6e6e6e;
-  }
+
   .active {
     background-color: #ecf6ff;
     border: 2px solid #2680eb;

@@ -22,7 +22,7 @@ const claim: TestImageDescriptor = {
       fileName: '24 edit in 23.png',
       badge: 'info',
       signedBy: 'Adobe Inc.',
-      signedOn: 'September 30, 2022 at 4:38 PM',
+      signedOn: 'Sep 30, 2022 at 4:38 PM EDT',
       producedWith: 'Adobe Photoshop 24.0.0',
       isBeta: false,
       isOriginalCreation: false,
