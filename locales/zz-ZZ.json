@@ -44,6 +44,7 @@
   "comp.contentCredentialsError.noneForFile": "[BK] _üNo content credentials for this file",
   "comp.contentCredentialsError.noneText": "[d] _üThis asset doesn’t have a content record attached.",
   "comp.contentCredentialsError.unknownActions": "[BL] _üSome edits, activity, or asset actions may be missing from this content.",
+  "comp.date.invalid": "[CI] _üInvalid date",
   "comp.exif.approximateLocation": "[B9] _üApproximate location",
   "comp.exif.captureDate": "[B+] _üCapture date",
   "comp.exif.captureDetails": "[B/] _üCapture details",

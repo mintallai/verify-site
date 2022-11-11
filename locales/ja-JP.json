@@ -44,6 +44,7 @@
   "comp.contentCredentialsError.noneForFile": "このファイルのコンテンツ認証情報はありません",
   "comp.contentCredentialsError.noneText": "このアセットにはコンテンツレコードが添付されていません。",
   "comp.contentCredentialsError.unknownActions": "一部の編集、アクティビティ、またはアセットアクションがこのコンテンツから欠落している可能性があります。",
+  "comp.date.invalid": "Invalid date",
   "comp.exif.approximateLocation": "おおよその位置",
   "comp.exif.captureDate": "撮影日",
   "comp.exif.captureDetails": "撮影の詳細",
