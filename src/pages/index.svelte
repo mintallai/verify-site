@@ -9,6 +9,7 @@
   import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
   import Footer from '../components/Footer.svelte';
   import Header from '../components/Header.svelte';
+  import L2Image from '../components/L2Image.svelte';
   import { breakpoints } from '../lib/breakpoints';
 
   function upload(evt: Event) {
@@ -73,10 +74,11 @@
       </div>
     </div>
   </section>
-  <section id="section1" class="min-w-[var(--screen-width)]">
+  <section id="section1" class="min-w-[var(--screen-width)] mb-20">
     <div class="section-grid">
-      <div class="content order-1">
+      <div class="content order-1 relative">
         <img id="section1Img" src={section1} alt="Icy lake at dusk" />
+        <L2Image sourceImage={section1} placement={3} />
       </div>
       <div class="content-body order-2">
         <div>
@@ -110,10 +112,11 @@
       </div>
     </div>
   </section>
-  <section id="section2" class="min-w-[var(--screen-width)]">
+  <section id="section2" class="min-w-[var(--screen-width)] mb-20">
     <div class="section-grid">
-      <div class="content lg:order-2">
+      <div class="content lg:order-2 relative">
         <img id="section2Img" src={section2} alt="Yellow vector art" />
+        <L2Image sourceImage={section2} placement={2} />
       </div>
       <div class="content-body lg:order-1">
         <div>
@@ -147,10 +150,11 @@
       </div>
     </div>
   </section>
-  <section id="section3" class="min-w-[var(--screen-width)]">
+  <section id="section3" class="min-w-[var(--screen-width)] mb-20">
     <div class="section-grid">
-      <div class="content order-1">
+      <div class="content order-1 relative">
         <img id="section3Img" src={section3} alt="Kaleidescope vector art" />
+        <L2Image sourceImage={section3} placement={1} />
       </div>
       <div class="content-body order-2">
         <div>
@@ -212,9 +216,7 @@
   }
 
   section {
-    position: relative;
-    overflow: hidden;
-    max-width: 1680px;
+    @apply relative max-w-[1680px];
   }
 
   .section-grid {
