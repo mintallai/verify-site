@@ -13,7 +13,7 @@
   "comp.about.producedBy": "制作元",
   "comp.about.producedBy.helpText": "このコンテンツを書き出したユーザーの選択された名前",
   "comp.about.producedWith": "制作ツール",
-  "comp.about.producedWith.contentCredentialsBeta": "コンテンツ認証情報 (ベータ版) ",
+  "comp.about.producedWith.contentCredentialsBeta": "コンテンツ認証情報 (Beta) ",
   "comp.about.producedWith.helpText": "このコンテンツの作成に使用されたソフトウェア",
   "comp.about.signedBy": "署名者",
   "comp.about.signedBy.helpText": "コンテンツ資格情報および書き出された日付を記録したエンティティ",
