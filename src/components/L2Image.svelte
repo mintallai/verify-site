@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createL2Manifest, generateVerifyUrl } from 'c2pa';
+  import { createL2ManifestStore, generateVerifyUrl } from 'c2pa';
   import { onMount } from 'svelte';
   import { getSdk } from '../lib/sdk';
   export let sourceImage;
@@ -9,12 +9,17 @@
   async function getManifest(img) {
     const sdk = await getSdk();
     const res = await sdk.read(img);
-    return createL2Manifest(res.manifestStore.activeManifest);
+    console.log('res', res);
+    return createL2ManifestStore(res.manifestStore);
   }
   onMount(async () => {
     manifest = await getManifest(sourceImage);
-    manifest = manifest.manifest;
+    manifest = manifest.manifestStore;
   });
+
+  function setManifest(node, manifestStore) {
+    node.manifestStore = manifestStore;
+  }
 </script>
 
 {#if manifest}
@@ -22,7 +27,7 @@
     <cai-popover interactive class="theme-spectrum" style:z-index={placement}>
       <cai-indicator slot="trigger" />
       <cai-manifest-summary
-        {manifest}
+        use:setManifest={manifest}
         view-more-url={viewMoreURL}
         slot="content" />
     </cai-popover>
