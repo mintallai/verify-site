@@ -2043,7 +2043,7 @@ c2pa-wc@^0.9.0:
     lodash "^4.17.21"
     webpack "~5.72.0"
 
-c2pa@0.12.0, c2pa@~0.12.0:
+c2pa@0.12.0, c2pa@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.12.0.tgz#f708350ac1b4cefc65730219049bf9652679c8d0"
   integrity sha512-RaaWw8oR5T8Wjk3pdnG/QXeVnd5vdEKpVtGRi4qq4DrpQx6PdNc5gAZRk++eKwkRIHy2vL25e6hZwfSWhSlO8w==
