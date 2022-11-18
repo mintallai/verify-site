@@ -9,7 +9,6 @@
   async function getManifest(img) {
     const sdk = await getSdk();
     const res = await sdk.read(img);
-    console.log('res', res);
     return createL2ManifestStore(res.manifestStore);
   }
   onMount(async () => {
