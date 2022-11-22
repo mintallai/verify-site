@@ -191,7 +191,7 @@
                 </div>
               </dd>
             {/if}
-            <dl
+            <dd
               class="edits-and-activity-list"
               data-test-id="about.edits-and-activity">
               {#each categories as category}
@@ -215,7 +215,7 @@
                   </dd>
                 </div>
               {/each}
-            </dl>
+            </dd>
           </dl>
         </div>
       {:else}

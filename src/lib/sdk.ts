@@ -42,6 +42,7 @@ async function createSdk() {
   }
 }
 export const getSdk = pMemoize(createSdk);
+
 export function selectIsBeta(manifest: Manifest) {
   return !!manifest.assertions.get('adobe.beta')[0]?.data.version;
 }
