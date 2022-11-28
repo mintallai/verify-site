@@ -33,6 +33,7 @@ import 'c2pa-wc/dist/components/Icon';
 import 'c2pa-wc/dist/components/Indicator';
 import 'c2pa-wc/dist/components/ManifestSummary';
 import 'c2pa-wc/dist/components/Popover';
+import 'c2pa-wc/dist/icons/monochrome/broken-image';
 import App from './App.svelte';
 import { getConfig } from './lib/config';
 import { initI18n } from './lib/i18n';
