@@ -31,7 +31,7 @@ import '@spectrum-web-components/theme/theme-lightest.js';
 import 'c2pa-wc';
 import 'c2pa-wc/dist/components/Icon';
 import 'c2pa-wc/dist/components/Indicator';
-import 'c2pa-wc/dist/components/panels/ManifestSummary';
+import 'c2pa-wc/dist/components/ManifestSummary';
 import 'c2pa-wc/dist/components/Popover';
 import App from './App.svelte';
 import { getConfig } from './lib/config';

@@ -22,7 +22,6 @@ declare module 'svelte-css-vars';
 
 declare module '@intl/adobe-locales';
 
-declare module '@contentauth/web-components/*';
 declare module '@contentauth/sdk/dist/*';
 
 declare module '*.svg';

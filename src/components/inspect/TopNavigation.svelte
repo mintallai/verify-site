@@ -16,14 +16,10 @@
   import { goto, params, url } from '@roxi/routify';
   import { createEventDispatcher } from 'svelte';
   import { locale, _ } from 'svelte-i18n';
-  import { recoverManifests } from '../../lib/manifest-recovery';
-
-  import '@contentauth/web-components/dist/components/Thumbnail';
-  import '@contentauth/web-components/dist/components/Tooltip';
-  import '@contentauth/web-components/dist/icons/monochrome/cai';
   import BreadcrumbDropdown from '../../../assets/svg/monochrome/breadcrumb-dropdown.svg';
   import ChevronRight from '../../../assets/svg/monochrome/chevron-right.svg';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg';
+  import { recoverManifests } from '../../lib/manifest-recovery';
   import { getFilename } from '../../lib/node';
   import type { HierarchyTreeNode } from '../../stores';
   import {
