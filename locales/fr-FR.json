@@ -44,6 +44,7 @@
   "comp.contentCredentialsError.noneForFile": "Aucune information de traçabilité du contenu pour ce fichier",
   "comp.contentCredentialsError.noneText": "Cette ressource n’est associée à aucun enregistrement de contenu.",
   "comp.contentCredentialsError.unknownActions": "Il se peut que certaines modifications, activités ou actions d’actifs soient manquantes dans ce contenu.",
+  "comp.date.invalid": "Date non valide",
   "comp.exif.approximateLocation": "Emplacement approximatif",
   "comp.exif.captureDate": "Date de la capture",
   "comp.exif.captureDetails": "Détails de la capture",
