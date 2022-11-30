@@ -13,9 +13,6 @@
   from Adobe.
 -->
 <script lang="ts">
-  import '@contentauth/web-components/dist/components/panels/EditsActivity';
-  import '@contentauth/web-components/dist/components/Tooltip';
-  import '@contentauth/web-components/dist/themes/spectrum';
   import {
     selectEditsAndActivity,
     selectProducer,
@@ -191,12 +188,30 @@
                 </div>
               </dd>
             {/if}
-            <dd class="mt-2" data-test-id="about.edits-and-activity">
-              <cai-panel-edits-activity
-                {categories}
-                stringmap={editsActivityStrings}
-                hidedescriptions={isMobileViewer && isComparing ? true : null}
-                class="theme-spectrum" />
+            <dd
+              class="edits-and-activity-list"
+              data-test-id="about.edits-and-activity">
+              {#each categories as category}
+                <div class="theme-spectrum mb-2">
+                  <dt class="flex items-center">
+                    {#if category.icon}
+                      <img
+                        src={category.icon}
+                        alt={category.label}
+                        class="mr-2 w-4" />
+                    {/if}
+                    <span class="edits-and-activity-label">
+                      {category.label}
+                    </span>
+                  </dt>
+                  <dd
+                    class={category.icon
+                      ? ' text-gray-700 text-[13px] ml-6'
+                      : ' text-gray-700 text-[13px] ml-0'}>
+                    {category.description}
+                  </dd>
+                </div>
+              {/each}
             </dd>
           </dl>
         </div>
@@ -243,5 +258,15 @@
     .about-info {
       @apply min-h-0;
     }
+  }
+
+  .edits-and-activity-list {
+    @apply flex flex-col p-0 m-0 overflow-hidden gap-[6px];
+    list-style: none;
+  }
+
+  .edits-and-activity-label {
+    @apply overflow-hidden whitespace-nowrap text-[15px] text-gray-900;
+    text-overflow: ellipsis;
   }
 </style>

@@ -13,9 +13,6 @@
   from Adobe.
 -->
 <script lang="ts">
-  import '@contentauth/web-components/dist/components/panels/EditsActivity';
-  import '@contentauth/web-components/dist/components/Tooltip';
-  import '@contentauth/web-components/dist/themes/spectrum';
   import debug from 'debug';
   import cssVars from 'svelte-css-vars';
   import { _ } from 'svelte-i18n';
