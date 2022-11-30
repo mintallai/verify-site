@@ -2027,10 +2027,10 @@ bytes@3.1.2:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa-wc@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/c2pa-wc/-/c2pa-wc-0.9.0.tgz#920be7c38e47fe26780a85acae9529880d74ed26"
-  integrity sha512-9XNQ2OJ2hMAVZStCoSrtlPBlI1NO9mZWXmEYh7XnDHwqOK/RW2xzzgJ0PrrEJw2huD8fmAZ4Ew0fuGYMXtEheQ==
+c2pa-wc@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/c2pa-wc/-/c2pa-wc-0.9.1.tgz#39c72d5332182f383515693e016e1168d3513d99"
+  integrity sha512-KOrUDtLNUWkyndVFS4Jzc0mImcDZPVv8mQfu+ipeLiddx35+LMYWGEiYGWvgZs6lraBXedyhtI70ITH4lFttXQ==
   dependencies:
     "@floating-ui/dom" "~0.5.3"
     "@lit-labs/motion" "~1.0.2"
