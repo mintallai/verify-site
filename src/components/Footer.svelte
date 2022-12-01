@@ -86,7 +86,7 @@
           )}
           target="_blank">{$_('comp.footer.termsOfUse')}</a>
         <a href="https://www.adobe.com/privacy/us-rights.html" target="_blank">
-          {$_('comp.footer.privacy')}
+          {$_('comp.footer.rights')}
         </a>
         {#if languageMenu}
           <button
