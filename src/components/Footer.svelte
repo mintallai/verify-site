@@ -85,8 +85,8 @@
             $locale,
           )}
           target="_blank">{$_('comp.footer.termsOfUse')}</a>
-        <a href="https://contentauthenticity.org/contact" target="_blank">
-          {$_('comp.footer.contactUs')}
+        <a href="https://www.adobe.com/privacy/us-rights.html" target="_blank">
+          {$_('comp.footer.rights')}
         </a>
         {#if languageMenu}
           <button
