@@ -32,8 +32,10 @@
     </div>
     <div class="message-text">
       {$_('comp.contentCredentialsError.missingText')}
-      <a class="link" href="https://contentauthenticity.org/faq" target="_blank"
-        >{$_('comp.contentCredentialsError.learnMore')}</a>
+      <a
+        class="link"
+        href="https://contentauthenticity.org/faq#:~:text=Why%20is%20there%20a%20gap%20in%20an%20image%E2%80%99s%20CAI%20data%3F"
+        target="_blank">{$_('comp.contentCredentialsError.learnMore')}</a>
     </div>
   {:else if status === 'none'}
     <NoCredentials
