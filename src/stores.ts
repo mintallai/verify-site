@@ -58,7 +58,7 @@ export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
 /**
  * An accessor to the "learn more" URL
  */
-export const UnknownlearnMoreUrl = readable<string>(DATA_PRIVACY_URL, () => {});
+export const unknownLearnMoreUrl = readable<string>(DATA_PRIVACY_URL, () => {});
 
 /**
  * Stores the list of universal IDs (claim/parent/ingredient) that represents
