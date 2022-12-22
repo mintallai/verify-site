@@ -33,7 +33,7 @@
     selectWebsite,
   } from '../lib/sdk';
   import type { HierarchyTreeNode } from '../stores';
-  import { navigateToChild, UnknownlearnMoreUrl } from '../stores';
+  import { navigateToChild, unknownLearnMoreUrl } from '../stores';
   import FormattedDateTime from './FormattedDateTime.svelte';
   import AboutSection from './inspect/AboutSection.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
@@ -183,7 +183,7 @@
                 <div class="italic text-gray-900">
                   <span
                     >{$_('comp.contentCredentialsError.unknownActions')}</span>
-                  <a href={$UnknownlearnMoreUrl} target="_blank" class="link"
+                  <a href={$unknownLearnMoreUrl} target="_blank" class="link"
                     >{$_('comp.contentCredentialsError.learnMore')}</a>
                 </div>
               </dd>
