@@ -52,7 +52,7 @@ export function aboutHelper(root: Locator | Page) {
       // error displays
       if (data.claimStatus === 'error') {
         await expect(panelLocator).toContainText(
-          'These content credentials are unavailable',
+          'Content Credentials unavailable or invalid',
         );
         return;
       }

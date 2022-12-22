@@ -27,6 +27,8 @@ import debug from 'debug';
 
 const dbg = debug('store');
 
+const DATA_PRIVACY_URL =
+  'https://contentauthenticity.org/faq#:~:text=Why%20is%20there%20a%20gap%20in%20an%20image%E2%80%99s%20CAI%20data%3F';
 const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 export const FAQ_URL = 'https://contentauthenticity.org/faq';
 const FAQ_VERIFY_SECTION_ID = 'block-yui_3_17_2_1_1606953206758_44130';
@@ -52,6 +54,11 @@ export const urlParams = readable<IUrlParams>(null, (set) => {
  * An accessor to the "learn more" URL
  */
 export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
+
+/**
+ * An accessor to the "learn more" URL
+ */
+export const unknownLearnMoreUrl = readable<string>(DATA_PRIVACY_URL, () => {});
 
 /**
  * Stores the list of universal IDs (claim/parent/ingredient) that represents
