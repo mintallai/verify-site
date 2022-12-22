@@ -25,20 +25,21 @@ const claim: TestImageDescriptor = {
       producedWith: 'make test images 0.11.1',
       editsAndActivity: [
         {
-          name: 'Secure creation',
-          label: "The asset was first created, usually the asset's origin",
+          name: 'Created',
+          label: 'Created a new file or content',
         },
         {
-          name: 'Paint tools',
-          label: 'Edited with brushes or eraser tools',
+          name: 'Drawing edits',
+          label:
+            'Used tools like pencils, brushes, erasers, or shape, path, or pen tools',
         },
         {
-          name: 'Imported assets',
-          label: 'Added images, videos, etc.',
+          name: 'Imported',
+          label: 'Added pre-existing content to this file',
         },
         {
-          name: 'Size adjustments',
-          label: 'Changed asset dimensions',
+          name: 'Resizing edits',
+          label: 'Changed dimensions or file size',
         },
       ],
       producedBy: 'Gavin Peacock',
@@ -57,9 +58,8 @@ const claim: TestImageDescriptor = {
               label: 'Changed tone, saturation, etc.',
             },
             {
-              name: 'File opened',
-              label:
-                'An existing file containing one or more assets was opened and used as the starting point for editing',
+              name: 'Opened',
+              label: 'Opened a pre-existing file',
             },
           ],
           producedBy: 'Gavin Peacock',
@@ -88,21 +88,21 @@ const claim: TestImageDescriptor = {
               producedWith: 'make test images 0.7.0',
               editsAndActivity: [
                 {
-                  name: 'Secure creation',
+                  name: 'Created',
+                  label: 'Created a new file or content',
+                },
+                {
+                  name: 'Drawing edits',
                   label:
-                    "The asset was first created, usually the asset's origin",
+                    'Used tools like pencils, brushes, erasers, or shape, path, or pen tools',
                 },
                 {
-                  name: 'Paint tools',
-                  label: 'Edited with brushes or eraser tools',
+                  name: 'Imported',
+                  label: 'Added pre-existing content to this file',
                 },
                 {
-                  name: 'Imported assets',
-                  label: 'Added images, videos, etc.',
-                },
-                {
-                  name: 'Size adjustments',
-                  label: 'Changed asset dimensions',
+                  name: 'Resizing edits',
+                  label: 'Changed dimensions or file size',
                 },
               ],
               producedBy: 'Gavin Peacock',
