@@ -26,6 +26,7 @@ const claim: TestImageDescriptor = {
       producedWith: 'Adobe Photoshop 24.0.0',
       isBeta: false,
       isOriginalCreation: false,
+      // This has a adobe.dictionary assertion which is why we are using the old text
       editsAndActivity: [
         {
           name: 'Imported assets',
