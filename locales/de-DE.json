@@ -45,7 +45,7 @@
   "comp.contentCredentialsError.noneText": "An dieses Asset ist kein Inhaltsdatensatz angehängt.",
   "comp.contentCredentialsError.unknownActions": "Bei diesem Inhalt fehlen möglicherweise einige Bearbeitungen, Aktivitäten oder Asset-Aktionen.",
   "comp.date.invalid": "Ungültiges Datum",
-  "comp.exif.approximateLocation": "Ungefähre Position",
+  "comp.exif.approximateLocation": "Ungefährer Ort",
   "comp.exif.captureDate": "Aufnahmedatum",
   "comp.exif.captureDetails": "Aufnahmedetails",
   "comp.exif.captureDetails.cameraMake": "Kamerahersteller",
