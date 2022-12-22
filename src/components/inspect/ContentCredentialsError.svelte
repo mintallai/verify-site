@@ -16,7 +16,7 @@
   import { _ } from 'svelte-i18n';
   import NoCredentials from '../../../assets/svg/monochrome/no-credentials.svg';
   import Otgp from '../../../assets/svg/monochrome/otgp.svg';
-
+  import { unknownLearnMoreUrl } from '../../stores';
   export let status: 'missing' | 'none' = 'none';
   export let isComparing: boolean = false;
 </script>
@@ -32,10 +32,8 @@
     </div>
     <div class="message-text">
       {$_('comp.contentCredentialsError.missingText')}
-      <a
-        class="link"
-        href="https://contentauthenticity.org/faq#:~:text=Why%20is%20there%20a%20gap%20in%20an%20image%E2%80%99s%20CAI%20data%3F"
-        target="_blank">{$_('comp.contentCredentialsError.learnMore')}</a>
+      <a class="link" href={$unknownLearnMoreUrl} target="_blank"
+        >{$_('comp.contentCredentialsError.learnMore')}</a>
     </div>
   {:else if status === 'none'}
     <NoCredentials
