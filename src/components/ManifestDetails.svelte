@@ -60,7 +60,6 @@
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
   });
-  console.log('hasEditsAndActivity', hasEditsAndActivity);
 </script>
 
 <div>
