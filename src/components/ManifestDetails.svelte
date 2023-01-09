@@ -60,6 +60,7 @@
   $: editsActivityStrings = JSON.stringify({
     NO_EDITS: $_('comp.about.editsActivity.none'),
   });
+  console.log('hasEditsAndActivity', hasEditsAndActivity);
 </script>
 
 <div>
@@ -172,7 +173,7 @@
     title={$_('comp.about.editsActivity.header')}
     helper={$_('comp.about.editsActivity.helpText')}>
     {#await selectEditsAndActivity(manifest, currentLocale) then categories}
-      {#if categories}
+      {#if categories.length > 0}
         <div>
           <dl>
             {#if ratings.hasUnknownActions || ratings.wasPossiblyModified}
