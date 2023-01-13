@@ -300,6 +300,12 @@ function hasErrorStatus(validationStatus: any[] = []) {
   );
 }
 
+function getChildrenFromIngredients(ingredients, loc) {
+  return ingredients?.map((ingredient, idx) =>
+    parseProvenance(ingredient, `${loc}.${idx}`),
+  );
+}
+
 /**
  * This function takes the provenance structure of the toolkit and returns a
  * TreeNode that is used in our D3 hierarchy tree that serves as our main
@@ -332,17 +338,24 @@ function parseProvenance(
   const isIngredient = toolkitNode.hasOwnProperty('manifest');
   const ingredients =
     toolkitNode.manifest?.ingredients ?? toolkitNode.ingredients;
-  let children = ingredients?.map((ingredient, idx) =>
-    parseProvenance(ingredient, `${loc}.${idx}`),
-  );
+  let children = [];
+
   if (isIngredient) {
     const manifest = toolkitNode.manifest;
     const statuses = toolkitNode?.validationStatus ?? [];
     const isOtgp = hasOtgpStatus(statuses);
     const hasError = hasErrorStatus(statuses);
-    if (isOtgp) {
-      children = manifest ? [parseProvenance(manifest, `${loc}.0`)] : [];
+
+    // Hide claims beyond an error state since they cannot be trusted
+    // see https://c2pa.org/specifications/specifications/1.0/ux/UX_Recommendations.html#_validation_states_2
+    if (!hasError) {
+      if (isOtgp) {
+        children = manifest ? [parseProvenance(manifest, `${loc}.0`)] : [];
+      } else {
+        children = getChildrenFromIngredients(ingredients, loc);
+      }
     }
+
     return {
       loc,
       type: 'ingredient',
@@ -353,9 +366,7 @@ function parseProvenance(
       statuses,
       isOtgp,
       hasError,
-      // Hide claims beyond an error state since they cannot be trusted
-      // see https://c2pa.org/specifications/specifications/1.0/ux/UX_Recommendations.html#_validation_states_2
-      children: hasError ? [] : children,
+      children,
     };
   } else {
     // If this is the active manifest (in a non-top-level OTGP scenario)
@@ -365,6 +376,12 @@ function parseProvenance(
     const errors = isActiveManifest ? validationStatus : [];
     const hasError = hasErrorStatus(errors);
 
+    // Hide claims beyond an error state since they cannot be trusted
+    // see https://c2pa.org/specifications/specifications/1.0/ux/UX_Recommendations.html#_validation_states_2
+    if (!hasError) {
+      children = getChildrenFromIngredients(ingredients, loc);
+    }
+
     return {
       loc,
       type: 'manifest',
@@ -373,9 +390,7 @@ function parseProvenance(
       thumbnail: toolkitNode.thumbnail,
       node: toolkitNode,
       errors,
-      // Hide claims beyond an error state since they cannot be trusted
-      // see https://c2pa.org/specifications/specifications/1.0/ux/UX_Recommendations.html#_validation_states_2
-      children: hasError ? [] : children,
+      children,
       isOtgp: hasOtgpStatus(errors),
       hasError,
     };
