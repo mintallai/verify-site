@@ -27,12 +27,13 @@ const claim: TestImageDescriptor = {
       isOriginalCreation: true,
       editsAndActivity: [
         {
-          name: 'Secure creation',
-          label: "The asset was first created, usually the asset's origin",
+          name: 'Created',
+          label: 'Created a new file or content',
         },
         {
-          name: 'Paint tools',
-          label: 'Edited with brushes or eraser tools',
+          name: 'Drawing edits',
+          label:
+            'Used tools like pencils, brushes, erasers, or shape, path, or pen tools',
         },
       ],
       producedBy: 'Gavin Peacock',

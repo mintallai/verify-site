@@ -13,7 +13,6 @@
   from Adobe.
 -->
 <script lang="ts">
-  import '@contentauth/web-components/dist/icons/monochrome/broken-image';
   import cssVars from 'svelte-css-vars';
   import { _ } from 'svelte-i18n';
   import { handleImgSrc, thumbnail } from '../../lib/thumbnail';

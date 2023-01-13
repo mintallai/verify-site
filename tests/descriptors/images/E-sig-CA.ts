@@ -32,7 +32,7 @@ const claim: TestImageDescriptor = {
         },
         {
           name: 'Imported assets',
-          label: 'Added images, videos, etc.',
+          label: 'Added pre-existing content to this file',
         },
       ],
       producedBy: 'Gavin Peacock',

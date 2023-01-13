@@ -34,7 +34,7 @@ const claim: TestImageDescriptor = {
         },
       ],
       unknownActionsAlert:
-        'Some edits, activity, or asset actions may be missing from this content.',
+        'Some edits or activity may not have been recorded. Learn more ',
       producedBy: 'Santosh Varma',
       socialMedia: [
         {

@@ -31,7 +31,7 @@ export function aboutHelper(root: Locator | Page) {
     producedBy: panelLocator.locator(testID('about.produced-by')),
     originalCreation: panelLocator.locator(testID('original-creation')),
     editsAndActivityItems: panelLocator.locator(
-      `${testID('about.edits-and-activity')} .item-text`,
+      `${testID('about.edits-and-activity')} div`,
     ),
     unknownActionsAlert: panelLocator.locator(
       `${testID('about.unknownActionsAlert')}`,
@@ -52,7 +52,7 @@ export function aboutHelper(root: Locator | Page) {
       // error displays
       if (data.claimStatus === 'error') {
         await expect(panelLocator).toContainText(
-          'These content credentials are unavailable',
+          'Content Credentials unavailable or invalid',
         );
         return;
       }
