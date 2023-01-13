@@ -172,7 +172,7 @@
     title={$_('comp.about.editsActivity.header')}
     helper={$_('comp.about.editsActivity.helpText')}>
     {#await selectEditsAndActivity(manifest, currentLocale) then categories}
-      {#if categories.length > 0}
+      {#if categories?.length > 0}
         <div>
           <dl>
             {#if ratings.hasUnknownActions || ratings.wasPossiblyModified}
