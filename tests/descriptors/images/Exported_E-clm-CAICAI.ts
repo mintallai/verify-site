@@ -1,5 +1,5 @@
 // ADOBE CONFIDENTIAL
-// Copyright 2021 Adobe
+// Copyright 2023 Adobe
 // All Rights Reserved.
 //
 // NOTICE: All information contained herein is, and remains
@@ -14,42 +14,39 @@
 import { TestImageDescriptor } from '../types';
 
 const claim: TestImageDescriptor = {
-  imagePath: 'CIE-sig-CA.jpg',
-  description: 'nested error',
+  imagePath: 'Exported_E-clm-CAICAI.jpg',
+  description: 'exported error',
   claim: {
     data: {
-      fileName: 'CIE-sig-CA.jpg',
+      fileName: 'Exported_E-clm-CAICAI.jpg',
       badge: 'info',
-      signedBy: 'C2PA Test Signing Cert Aug 1, 2022 at  6:48 PM EDT',
-      signedOn: 'Aug 1, 2022 at  6:48 PM EDT',
-      producedWith: 'make test images 0.11.1',
+      signedBy: 'Adobe Inc.',
+      signedOn: 'Jan 11, 2023 at 6:51 PM EST',
+      producedWith: 'Adobe Photoshop 24.2.0',
       editsAndActivity: [
         {
-          name: 'Created',
-          label: 'Created a new file or content',
-        },
-        {
-          name: 'Drawing edits',
-          label:
-            'Used tools like pencils, brushes, erasers, or shape, path, or pen tools',
-        },
-        {
-          name: 'Imported',
-          label: 'Added pre-existing content to this file',
-        },
-        {
-          name: 'Resizing edits',
-          label: 'Changed dimensions or file size',
+          name: 'Opened',
+          label: 'Opened a pre-existing file',
         },
       ],
-      producedBy: 'Gavin Peacock',
+      producedBy: 'Shruti Kangokar',
+      socialMedia: [
+        {
+          username: '@Shruti Kangokar',
+          url: 'https://www.behance.net/shrutikangokar',
+        },
+        {
+          username: '@testshruti1234',
+          url: 'https://www.instagram.com/testshruti1234',
+        },
+      ],
     },
     ingredients: [
       {
         data: {
-          fileName: 'E-sig-CA.jpg',
+          fileName: 'E-clm-CAICAI.jpg',
           badge: 'alert',
-          claimStatus: 'otgp',
+          claimStatus: 'error',
         },
         ingredients: [],
       },
