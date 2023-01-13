@@ -13,6 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
+  import Tooltip from '../Tooltip.svelte';
   export let title: string | null = null;
   export let helper: string | null = null;
 </script>
@@ -25,11 +26,10 @@
       </div>
     {/if}
     {#if helper}
-      <cai-tooltip placement="right" class="theme-spectrum w-[16px]">
+      <Tooltip placement="right">
         <div slot="content" class="text-gray-900" style="width: 200px;">
           {helper}
-        </div>
-      </cai-tooltip>
+        </div></Tooltip>
     {/if}
   </div>
   <div>

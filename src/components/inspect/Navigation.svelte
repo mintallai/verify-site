@@ -18,6 +18,7 @@
   import type { HierarchyTreeNode } from '../../stores';
   import { hierarchy, isCompareSelectMode } from '../../stores';
   import Button from '../Button.svelte';
+  import Tooltip from '../Tooltip.svelte';
   import HierarchyNode from './HierarchyNode.svelte';
   import OriginalCreation from './OriginalCreation.svelte';
 
@@ -33,11 +34,10 @@
     <dl class="attributes">
       <dt>
         <div>{$_('comp.navigation.title')}</div>
-        <cai-tooltip placement="left" class="theme-spectrum">
+        <Tooltip placement="left">
           <div slot="content" class="text-gray-900" style="width: 200px;">
             {$_('comp.navigation.helpText')}
-          </div>
-        </cai-tooltip>
+          </div></Tooltip>
       </dt>
       <dd>
         <div class="mb-4 text-100 leading-small text-gray-700">
