@@ -16,6 +16,7 @@ import { TestImageDescriptor } from '../types';
 const claim: TestImageDescriptor = {
   imagePath: 'E-sig-CA.jpg',
   description: 'top-level error',
+  overviewDisabled: true,
   claim: {
     data: {
       fileName: 'CA.jpg',
@@ -37,13 +38,7 @@ const claim: TestImageDescriptor = {
       ],
       producedBy: 'Gavin Peacock',
     },
-    ingredients: [
-      {
-        data: {
-          fileName: 'A.jpg',
-        },
-      },
-    ],
+    ingredients: [],
   },
 };
 

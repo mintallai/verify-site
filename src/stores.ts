@@ -339,6 +339,7 @@ function parseProvenance(
     const manifest = toolkitNode.manifest;
     const statuses = toolkitNode?.validationStatus ?? [];
     const isOtgp = hasOtgpStatus(statuses);
+    const hasError = hasErrorStatus(statuses);
     if (isOtgp) {
       children = manifest ? [parseProvenance(manifest, `${loc}.0`)] : [];
     }
@@ -351,8 +352,10 @@ function parseProvenance(
       node: toolkitNode,
       statuses,
       isOtgp,
-      hasError: hasErrorStatus(statuses),
-      children,
+      hasError,
+      // Hide claims beyond an error state since they cannot be trusted
+      // see https://c2pa.org/specifications/specifications/1.0/ux/UX_Recommendations.html#_validation_states_2
+      children: hasError ? [] : children,
     };
   } else {
     // If this is the active manifest (in a non-top-level OTGP scenario)
@@ -360,6 +363,7 @@ function parseProvenance(
     // is a top-level OTGP, we do not show errors since these are shown
     // on the source (root) asset (and this would be the first child).
     const errors = isActiveManifest ? validationStatus : [];
+    const hasError = hasErrorStatus(errors);
 
     return {
       loc,
@@ -369,9 +373,11 @@ function parseProvenance(
       thumbnail: toolkitNode.thumbnail,
       node: toolkitNode,
       errors,
-      children,
+      // Hide claims beyond an error state since they cannot be trusted
+      // see https://c2pa.org/specifications/specifications/1.0/ux/UX_Recommendations.html#_validation_states_2
+      children: hasError ? [] : children,
       isOtgp: hasOtgpStatus(errors),
-      hasError: hasErrorStatus(errors),
+      hasError,
     };
   }
 }
