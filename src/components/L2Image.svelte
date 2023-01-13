@@ -23,7 +23,11 @@
 
 {#if manifest}
   <div class="wrapper">
-    <cai-popover interactive class="theme-spectrum" style:z-index={placement}>
+    <cai-popover
+      interactive
+      class="theme-spectrum"
+      placement="left-start"
+      style:z-index={placement}>
       <cai-indicator slot="trigger" />
       <cai-manifest-summary
         use:setManifest={manifest}
