@@ -2027,10 +2027,11 @@ bytes@3.1.2:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa-wc@^0.9.2:
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/c2pa-wc/-/c2pa-wc-0.9.2.tgz#e887fce14825bc81992f2be9fb80239115a79dde"
-  integrity sha512-ZZ1r37fz3VuPGqFTCMV2ADgsMZT2LBT7ouritRPscl0sew/pI0SXRu/Ua7xHVTqxWgl0jcAgtnoR3DfUS8WQfg==
+c2pa-wc@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/c2pa-wc/-/c2pa-wc-0.10.0.tgz#944222ad0955d7c739b3a62c5ae94fab5c79bb31"
+  integrity sha512-VPgogtQT/dZblgePRCP9t/kk4qV+f1djZf7NX0FE+KSsBTHf5nIvGbp/HQulehoZwYonqYz4y2QXToS4ftFfVQ==
+
   dependencies:
     "@floating-ui/dom" "~0.5.3"
     "@lit-labs/motion" "~1.0.2"
@@ -2043,10 +2044,9 @@ c2pa-wc@^0.9.2:
     lodash "^4.17.21"
     webpack "~5.72.0"
 
-c2pa@0.12.0, c2pa@^0.12.0:
+c2pa@0.12.0, "c2pa@file:./etc/c2pa-js/preview/c2pa-0.12.0.tgz":
   version "0.12.0"
-  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.12.0.tgz#f708350ac1b4cefc65730219049bf9652679c8d0"
-  integrity sha512-RaaWw8oR5T8Wjk3pdnG/QXeVnd5vdEKpVtGRi4qq4DrpQx6PdNc5gAZRk++eKwkRIHy2vL25e6hZwfSWhSlO8w==
+  resolved "file:./etc/c2pa-js/preview/c2pa-0.12.0.tgz#fced2d4a0c9cfb52d87f42dd42a79d00b29a1a4b"
   dependencies:
     "@contentauth/detector" "0.3.3"
     "@contentauth/toolkit" "0.9.4"

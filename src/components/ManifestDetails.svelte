@@ -33,7 +33,7 @@
     selectWebsite,
   } from '../lib/sdk';
   import type { HierarchyTreeNode } from '../stores';
-  import { learnMoreUrl, navigateToChild } from '../stores';
+  import { navigateToChild, unknownLearnMoreUrl } from '../stores';
   import FormattedDateTime from './FormattedDateTime.svelte';
   import AboutSection from './inspect/AboutSection.svelte';
   import ProviderIcon from './inspect/ProviderIcon.svelte';
@@ -172,7 +172,7 @@
     title={$_('comp.about.editsActivity.header')}
     helper={$_('comp.about.editsActivity.helpText')}>
     {#await selectEditsAndActivity(manifest, currentLocale) then categories}
-      {#if categories}
+      {#if categories?.length > 0}
         <div>
           <dl>
             {#if ratings.hasUnknownActions || ratings.wasPossiblyModified}
@@ -183,7 +183,7 @@
                 <div class="italic text-gray-900">
                   <span
                     >{$_('comp.contentCredentialsError.unknownActions')}</span>
-                  <a href={$learnMoreUrl} target="_blank" class="link"
+                  <a href={$unknownLearnMoreUrl} target="_blank" class="link"
                     >{$_('comp.contentCredentialsError.learnMore')}</a>
                 </div>
               </dd>

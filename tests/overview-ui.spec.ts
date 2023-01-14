@@ -63,7 +63,7 @@ test.describe('invalid file format', () => {
     await overviewPage.goto('source=foobydoobydoo');
 
     await expect(overviewPage.rightColumn()).toContainText(
-      'Chosen file type isn’t supported',
+      "That file type isn't supported. Try again with a JPG or PNG.",
     );
   });
 });

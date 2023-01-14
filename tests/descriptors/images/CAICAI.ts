@@ -25,21 +25,21 @@ const claim: TestImageDescriptor = {
       producedWith: 'make test images 0.11.1',
       editsAndActivity: [
         {
-          name: 'Color adjustments',
-          label: 'Changed tone, saturation, etc.',
-        },
-        {
-          name: 'File opened',
+          name: 'Color or exposure edits',
           label:
-            'An existing file containing one or more assets was opened and used as the starting point for editing',
+            'Adjusted properties like tone, saturation, curves, shadows, or highlights',
         },
         {
-          name: 'Imported assets',
-          label: 'Added images, videos, etc.',
+          name: 'Imported',
+          label: 'Added pre-existing content to this file',
         },
         {
-          name: 'Size adjustments',
-          label: 'Changed asset dimensions',
+          name: 'Opened',
+          label: 'Opened a pre-existing file',
+        },
+        {
+          name: 'Resizing edits',
+          label: 'Changed dimensions or file size',
         },
       ],
       producedBy: 'Gavin Peacock',
@@ -60,21 +60,21 @@ const claim: TestImageDescriptor = {
           producedWith: 'make test images 0.11.1',
           editsAndActivity: [
             {
-              name: 'Color adjustments',
-              label: 'Changed tone, saturation, etc.',
-            },
-            {
-              name: 'File opened',
+              name: 'Color or exposure edits',
               label:
-                'An existing file containing one or more assets was opened and used as the starting point for editing',
+                'Adjusted properties like tone, saturation, curves, shadows, or highlights',
             },
             {
-              name: 'Imported assets',
-              label: 'Added images, videos, etc.',
+              name: 'Imported',
+              label: 'Added pre-existing content to this file',
             },
             {
-              name: 'Size adjustments',
-              label: 'Changed asset dimensions',
+              name: 'Opened',
+              label: 'Opened a pre-existing file',
+            },
+            {
+              name: 'Resizing edits',
+              label: 'Changed dimensions or file size',
             },
           ],
         },
