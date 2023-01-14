@@ -2,20 +2,22 @@
   import { onMount } from 'svelte';
   import type { Placement, Props as TippyProps } from 'tippy.js';
   import tippy from 'tippy.js';
+
+  export let placement: Placement = 'auto-start';
   let triggerElement: HTMLElement;
   let contentElement: HTMLElement;
-  export let placement: Placement = 'auto-start';
+
   const defaultProps: Partial<TippyProps> = {
     allowHTML: true,
     theme: 'cai',
   };
+
   onMount(() => {
     const tippyInstance = tippy(triggerElement, {
       content: contentElement,
       placement,
       ...defaultProps,
     });
-    console.log('tippyInstance', tippyInstance);
     return () => {
       tippyInstance.destroy();
     };
@@ -31,11 +33,11 @@
   <div bind:this={contentElement} class="content"><slot name="content" /></div>
 </div>
 
-<style>
+<style lang="postcss">
   .trigger {
+    @apply cursor-pointer;
     --cai-icon-width: 16px;
     --cai-icon-height: 16px;
     --cai-icon-fill: #a8a8a8;
-    cursor: pointer;
   }
 </style>
