@@ -7,17 +7,14 @@
   let triggerElement: HTMLElement;
   let contentElement: HTMLElement;
 
-  const defaultProps: Partial<TippyProps> = {
-    allowHTML: true,
-    theme: 'cai',
-  };
-
   onMount(() => {
-    const tippyInstance = tippy(triggerElement, {
+    const tippyProps: Partial<TippyProps> = {
       content: contentElement,
       placement,
-      ...defaultProps,
-    });
+      allowHTML: true,
+      theme: 'cai',
+    };
+    const tippyInstance = tippy(triggerElement, tippyProps);
 
     return () => {
       tippyInstance.destroy();
@@ -26,7 +23,7 @@
 </script>
 
 <div>
-  <div bind:this={triggerElement} class="trigger">
+  <div bind:this={triggerElement} class="trigger" tabindex="0">
     <slot name="trigger">
       <cai-icon-help />
     </slot>
@@ -36,7 +33,7 @@
 
 <style lang="postcss">
   .trigger {
-    @apply cursor-pointer;
+    @apply cursor-default;
     --cai-icon-width: 16px;
     --cai-icon-height: 16px;
     --cai-icon-fill: #a8a8a8;
