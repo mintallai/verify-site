@@ -194,8 +194,7 @@
                 <Tooltip placement="right">
                   <div
                     slot="content"
-                    class="text-gray-900 z-50 text-sm justify-around"
-                    style="width: 220px;">
+                    class="text-gray-900 z-50 text-sm justify-around w-[200px]">
                     {$_('comp.topNavigation.tooltip')}
                   </div></Tooltip>
               </div>

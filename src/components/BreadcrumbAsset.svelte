@@ -63,7 +63,7 @@
           <div slot="trigger" class="max-w-[140px] ">
             <p class="filename truncate">{filename}</p>
           </div>
-          <div slot="content" class="text-gray-900" style="width: 200px;">
+          <div slot="content" class="text-gray-900 w-[200px]">
             {filename}
           </div>
         </Tooltip>

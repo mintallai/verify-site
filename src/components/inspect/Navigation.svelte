@@ -35,7 +35,7 @@
       <dt>
         <div>{$_('comp.navigation.title')}</div>
         <Tooltip placement="left">
-          <div slot="content" class="text-gray-900" style="width: 200px;">
+          <div slot="content" class="text-gray-900 w-[200px]">
             {$_('comp.navigation.helpText')}
           </div></Tooltip>
       </dt>

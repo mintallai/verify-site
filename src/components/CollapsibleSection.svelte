@@ -31,7 +31,7 @@
       <div class="flex-shrink whitespace-nowrap">{headerText}</div>
       {#if helper}
         <Tooltip placement="left"
-          ><div slot="content" class="text-gray-900" style="width: 200px;">
+          ><div slot="content" class="text-gray-900 w-[200px]">
             {helper}
           </div></Tooltip>
       {/if}

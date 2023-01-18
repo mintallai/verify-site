@@ -18,19 +18,20 @@
       placement,
       ...defaultProps,
     });
+
     return () => {
       tippyInstance.destroy();
     };
   });
 </script>
 
-<div class="trigger">
-  <div bind:this={triggerElement}>
+<div>
+  <div bind:this={triggerElement} class="trigger">
     <slot name="trigger">
       <cai-icon-help />
     </slot>
   </div>
-  <div bind:this={contentElement} class="content"><slot name="content" /></div>
+  <div bind:this={contentElement}><slot name="content" /></div>
 </div>
 
 <style lang="postcss">

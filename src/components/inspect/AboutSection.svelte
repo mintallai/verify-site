@@ -27,7 +27,7 @@
     {/if}
     {#if helper}
       <Tooltip placement="right">
-        <div slot="content" class="text-gray-900" style="width: 200px;">
+        <div slot="content" class="text-gray-900 w-[200px]">
           {helper}
         </div></Tooltip>
     {/if}

@@ -65,8 +65,7 @@
           <Tooltip placement="bottom">
             <div
               slot="content"
-              class="text-gray-900 z-auto text-sm justify-around "
-              style="width: 220px;">
+              class="text-gray-900 z-auto text-sm justify-around w-[220px]">
               {$_('comp.topNavigation.tooltip')}
             </div></Tooltip>
         </div>
