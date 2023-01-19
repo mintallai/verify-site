@@ -135,6 +135,9 @@
     "vanilla-hamburger": "^0.2.3",
     "yarn": "^1.22.10"
   },
+  "resolutions": {
+    "lit-html": "1.4.1"
+  },
   "routify": {
     "extensions": "svelte,html,svx,md",
     "dynamicImports": true,
