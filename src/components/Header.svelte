@@ -13,7 +13,6 @@
   from Adobe.
 -->
 <script lang="ts">
-  import '@contentauth/web-components/dist/icons/color/logos/adobe';
   import { _ } from 'svelte-i18n';
   import { slide } from 'svelte/transition';
   import 'vanilla-hamburger/fade-burger';

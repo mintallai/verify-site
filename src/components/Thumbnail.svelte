@@ -35,5 +35,5 @@
   {src}
   selected={isSelected}
   badge={badgeType}
-  badgehelptext={badgeHelpText ? $_(badgeHelpText) : null}
+  badge-help-text={badgeHelpText ? $_(badgeHelpText) : null}
   class="theme-spectrum" />

@@ -16,7 +16,7 @@
   import { _ } from 'svelte-i18n';
   import NoCredentials from '../../../assets/svg/monochrome/no-credentials.svg';
   import Otgp from '../../../assets/svg/monochrome/otgp.svg';
-
+  import { unknownLearnMoreUrl } from '../../stores';
   export let status: 'missing' | 'none' = 'none';
   export let isComparing: boolean = false;
 </script>
@@ -32,7 +32,7 @@
     </div>
     <div class="message-text">
       {$_('comp.contentCredentialsError.missingText')}
-      <a class="link" href="https://contentauthenticity.org/faq" target="_blank"
+      <a class="link" href={$unknownLearnMoreUrl} target="_blank"
         >{$_('comp.contentCredentialsError.learnMore')}</a>
     </div>
   {:else if status === 'none'}

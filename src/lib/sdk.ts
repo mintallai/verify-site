@@ -12,8 +12,8 @@
 // from Adobe.
 
 import { createC2pa, Manifest } from 'c2pa';
+import pMemoize from 'p-memoize';
 import type { ExifTags } from './exif';
-
 declare module 'c2pa' {
   interface ExtendedAssertions {
     'adobe.crypto.addresses': {
@@ -27,7 +27,7 @@ declare module 'c2pa' {
   }
 }
 
-export async function getSdk() {
+async function createSdk() {
   try {
     return await createC2pa({
       wasmSrc: 'sdk/toolkit_bg.wasm',
@@ -41,6 +41,7 @@ export async function getSdk() {
     window.newrelic?.noticeError(err);
   }
 }
+export const getSdk = pMemoize(createSdk);
 
 export function selectIsBeta(manifest: Manifest) {
   return !!manifest.assertions.get('adobe.beta')[0]?.data.version;

@@ -12,11 +12,11 @@
 // from Adobe.
 
 import { expect } from '@playwright/test';
-import { test } from './test';
 import { allImages } from './descriptors';
-import { flattenTree } from './utils/tree';
-import { aboutHelper } from './helpers/about';
 import CAICAI from './descriptors/images/CAICAI';
+import { aboutHelper } from './helpers/about';
+import { test } from './test';
+import { flattenTree } from './utils/tree';
 
 test.describe('inspect - UI rendering', () => {
   for (const { description, imagePath, claim } of allImages) {
@@ -40,10 +40,10 @@ test.describe('inspect - UI rendering', () => {
         if (claim.data.claimStatus === 'none') {
           const rightColumn = await inspectPage.rightColumn();
           await expect(rightColumn).toContainText(
-            'No content credentials for this asset',
+            'No Content Credentials attached',
           );
           await expect(rightColumn).toContainText(
-            'This asset doesn’t have a content record attached.',
+            'No Content Credentials attached',
           );
           return;
         }
@@ -60,7 +60,7 @@ test.describe('invalid file format', () => {
     await inspectPage.goto('source=foobydoobydoo');
 
     await expect(inspectPage.rightColumn()).toContainText(
-      'Chosen file type isn’t supported',
+      "That file type isn't supported. Try again with a JPG or PNG.",
     );
   });
 });

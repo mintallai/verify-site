@@ -14,7 +14,6 @@
 -->
 <script lang="ts">
   import AlertIcon from '../../assets/svg/monochrome/alert.svg';
-  import '@contentauth/web-components/dist/icons/color/info-blue';
 
   type Severity = 'info' | 'error';
 

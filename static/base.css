@@ -49,11 +49,10 @@ a.link {
 }
 
 dl.attributes {
-  @apply grid gap-y-1;
+  @apply grid gap-y-1.5;
 
   dt {
     @apply flex justify-between font-bold text-75 uppercase text-gray-700;
-    line-height: 1.8;
     & cai-tooltip {
       @apply normal-case font-regular w-4 h-4;
     }
