@@ -157,7 +157,6 @@
   <div class="absolute p-4 justify-center w-full flex z-20">
     <ViewControls inInspect={false} inOverview={true} />
   </div>
-
   <svg bind:this={svg} {width} {height} view-box={`0 0 ${width} ${height}`}>
     <g bind:this={bounds} transform={gTransform}>
       {#each links as { link, idx, ancestor }, _i (idx)}
@@ -180,7 +179,6 @@
       {/each}
     </g>
   </svg>
-
   <!-- We have to layer the HTML nodes over the SVG paths and sync the transformations
   since Safari has a bug with foreignObject elements in SVG where you cannot use relative
   positioning. This stops us from layering the badge over the thumbnail, so we had to remove
