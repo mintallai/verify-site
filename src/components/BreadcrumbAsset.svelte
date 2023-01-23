@@ -25,6 +25,7 @@
   } from '../stores';
   import FormattedDateTime from './FormattedDateTime.svelte';
   import Thumbnail from './Thumbnail.svelte';
+  import Tooltip from './Tooltip.svelte';
 
   let src = '';
   export let value: number | null;
@@ -58,14 +59,14 @@
     <Thumbnail {node} {...badgeProps} />
     <div class="text-left font-regular self-center">
       {#if filename.length > 24}
-        <cai-tooltip placement="top" class="theme-spectrum self-center">
-          <div slot="trigger" class="max-w-[140px]">
+        <Tooltip placement="top">
+          <div slot="trigger" class="max-w-[140px] ">
             <p class="filename truncate">{filename}</p>
           </div>
-          <div slot="content" class="text-gray-900" style="width: 200px;">
+          <div slot="content" class="text-gray-900 w-[200px]">
             {filename}
           </div>
-        </cai-tooltip>
+        </Tooltip>
       {:else}
         <p class="filename">{filename}</p>
       {/if}

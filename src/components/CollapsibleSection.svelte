@@ -16,6 +16,7 @@
   // based on suggestions from:
   // Inclusive Components by Heydon Pickering https://inclusive-components.design/collapsible-sections/
   import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
+  import Tooltip from './Tooltip.svelte';
   export let headerText: string;
   export let helper: string | null = null;
   export let expanded = true;
@@ -29,13 +30,10 @@
       class="flex items-center space-x-1.5 text-left text-smd font-bold tracking-wide text-black flex-grow">
       <div class="flex-shrink whitespace-nowrap">{headerText}</div>
       {#if helper}
-        <cai-tooltip
-          placement="left"
-          class="theme-spectrum flex-shrink flex-grow-0">
-          <div slot="content" class="text-gray-900" style="width: 200px;">
+        <Tooltip placement="left"
+          ><div slot="content" class="text-gray-900 w-[200px]">
             {helper}
-          </div>
-        </cai-tooltip>
+          </div></Tooltip>
       {/if}
     </div>
     <DownArrow
