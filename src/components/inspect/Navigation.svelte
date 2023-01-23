@@ -15,16 +15,10 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import { _ } from 'svelte-i18n';
-  import type { HierarchyTreeNode } from '../../stores';
   import { hierarchy, isCompareSelectMode } from '../../stores';
   import Button from '../Button.svelte';
   import Tooltip from '../Tooltip.svelte';
   import HierarchyNode from './HierarchyNode.svelte';
-  import OriginalCreation from './OriginalCreation.svelte';
-
-  export let node: HierarchyTreeNode;
-  let container: any;
-  let secureCapture: false;
 
   onDestroy(() => isCompareSelectMode.set(false));
 </script>
@@ -47,7 +41,7 @@
     </dl>
   </div>
   <div data-test-id="navigation.hierarchy" class="relative pl-4">
-    <div bind:this={container} class="grid space-y-4 pt-2">
+    <div class="grid space-y-4 pt-2">
       {#if $hierarchy}
         <HierarchyNode node={$hierarchy} />
       {/if}

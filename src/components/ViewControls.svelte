@@ -13,12 +13,14 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { goto, params, url } from '@roxi/routify';
-  import { style } from 'd3-selection';
-  import { locale, _ } from 'svelte-i18n';
-  import InspectIcon from '../../assets/svg/monochrome/inspect.svg';
-  import OverviewIcon from '../../assets/svg/monochrome/overview.svg';
+  import { _ } from 'svelte-i18n';
+  import { goto } from '$app/navigation';
+  import InspectIcon from '../../assets/svg/monochrome/inspect.svg?component';
+  import OverviewIcon from '../../assets/svg/monochrome/overview.svg?component';
   import { hierarchy } from '../stores';
+
+  import '@spectrum-web-components/button/sp-button.js';
+
   export let inInspect: boolean;
   export let inOverview: boolean;
 </script>
@@ -31,7 +33,7 @@
         class:disabled={!$hierarchy?.children}>
         <sp-button
           disabled={!$hierarchy?.children}
-          on:click={$goto('/overview')}
+          onclick={() => goto('/overview')}
           data-test-id="overview.btn">
           <div class="flex">
             <OverviewIcon class="h-4 w-4 mr-2" />
@@ -45,7 +47,7 @@
         class:disabled={!$hierarchy?.children}>
         <sp-button
           disabled={!$hierarchy?.children}
-          on:click={$goto('/overview')}
+          onclick={() => goto('/overview')}
           data-test-id="overview.btn">
           <div class="flex">
             <OverviewIcon class="h-4 w-4 mr-2" />
@@ -56,7 +58,7 @@
     {/if}
     {#if inInspect}
       <div class="container2Selected inline-block">
-        <sp-button on:click={$goto('/inspect')}>
+        <sp-button onclick={() => goto('inspect')}>
           <div class="flex">
             <InspectIcon class="h-4 w-4 mr-2" />
             {$_('comp.topNavigation.inspect')}
@@ -65,7 +67,7 @@
       </div>
     {:else}
       <div class="container2 inline-block">
-        <sp-button on:click={$goto('/inspect')}>
+        <sp-button onclick={() => goto('inspect')}>
           <div class="flex">
             <InspectIcon class="h-4 w-4 mr-2" />
             {$_('comp.topNavigation.inspect')}

@@ -11,8 +11,9 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { Locator, expect } from '@playwright/test';
-import { BadgeType } from '../../src/lib/node';
+import { expect } from '@playwright/test';
+import type { Locator } from '@playwright/test';
+import type { BadgeType } from '../../src/lib/node';
 
 const BADGE_TYPE_TO_SELECTOR_MAP: Partial<Record<BadgeType, string>> = {
   alert: 'cai-icon-alert',

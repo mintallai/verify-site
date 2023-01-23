@@ -1,6 +1,6 @@
 <!--
   ADOBE CONFIDENTIAL
-  Copyright 2020 Adobe
+  Copyright 2023 Adobe
   All Rights Reserved.
 
   NOTICE: All information contained herein is, and remains
@@ -14,34 +14,28 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { fade } from 'svelte/transition';
-  import About from '../components/About.svelte';
-  import Alert from '../components/Alert.svelte';
-  import CircleLoader from '../components/CircleLoader.svelte';
-  import Footer from '../components/Footer.svelte';
-  import Header from '../components/Header.svelte';
-  import Comparison from '../components/inspect/Comparison.svelte';
-  import CompareLatestButton from '../components/inspect/comparison/CompareLatestButton.svelte';
-  import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
-  import Navigation from '../components/inspect/Navigation.svelte';
-  import TopNavigation from '../components/inspect/TopNavigation.svelte';
-  import Viewer from '../components/inspect/Viewer.svelte';
-  import { breakpoints } from '../lib/breakpoints';
-  import { ILoaderParams, loader, setLoaderContext } from '../lib/loader';
-  import { startTour } from '../lib/tour';
+  import About from '../../components/About.svelte';
+  import Alert from '../../components/Alert.svelte';
+  import CircleLoader from '../../components/CircleLoader.svelte';
+  import Footer from '../../components/Footer.svelte';
+  import Header from '../../components/Header.svelte';
+  import Comparison from '../../components/inspect/Comparison.svelte';
+  import ContentCredentialsError from '../../components/inspect/ContentCredentialsError.svelte';
+  import Navigation from '../../components/inspect/Navigation.svelte';
+  import TopNavigation from '../../components/inspect/TopNavigation.svelte';
+  import Viewer from '../../components/inspect/Viewer.svelte';
+  import { loader, setLoaderContext } from '$lib/loader';
+  import type { ILoaderParams } from '$lib/loader';
   import {
     compareWith,
     hasContent,
-    isBurgerMenuShown,
     isComparing,
     isLoading,
-    isMobileViewerShown,
     noMetadata,
     primary,
     secondary,
     sourceManifestStore,
-    urlParams,
-  } from '../stores';
+  } from '../../stores';
 
   function handleClose() {
     compareWith(null);
@@ -49,7 +43,6 @@
 
   let isDragging = false;
   let error = null;
-  let tour: ReturnType<typeof startTour>;
 
   const loaderParams: ILoaderParams = {
     onError(_err, message) {
@@ -57,14 +50,6 @@
     },
     onLoaded() {
       error = null;
-      const { tourFlag, forceTourFlag } = $urlParams;
-      if ($isMobileViewerShown === false) {
-        // tour = startTour({
-        //   provenance: $provenance,
-        //   start: tourFlag,
-        //   force: forceTourFlag,
-        // });
-      }
     },
     onDragStateChange(newState: boolean) {
       isDragging = newState;
@@ -74,10 +59,6 @@
   setLoaderContext(loaderParams);
 
   $: {
-    // Cancel the tour if the overlay is showing
-    if (tour && tour.isActive() && $isMobileViewerShown) {
-      tour.cancel();
-    }
     // Clear errors if the store report has changed
     if ($sourceManifestStore !== undefined) {
       error = null;
@@ -91,25 +72,13 @@
 </svelte:head>
 <main
   use:loader={loaderParams}
-  use:breakpoints
   class="theme-light min-w-[var(--screen-width)] overflow-x-auto "
   class:no-content={!$hasContent}
   class:comparing={$isComparing}
   class:error>
-  {#if $isBurgerMenuShown}
-    <div
-      transition:fade={{ duration: 200 }}
-      class="menu-overlay"
-      on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
-  {/if}
   <Header />
   {#if $hasContent}
-    <TopNavigation
-      isComparing={$isComparing}
-      noMetadata={$noMetadata}
-      node={$primary}
-      currentPage="inspect"
-      on:back={handleClose} />
+    <TopNavigation isComparing={$isComparing} on:back={handleClose} />
     {#if $isLoading}
       <!-- Asset/provenance data is loading -->
       <section class="left-col" class:loading={$isLoading}>
@@ -124,7 +93,7 @@
       </section>
     {:else if $noMetadata}
       <section class="left-col">
-        <Navigation node={$primary} />
+        <Navigation />
       </section>
       <Viewer node={$primary} {isDragging} />
       <section data-test-id="inspect.right-col" class="right-col p-4">
@@ -136,13 +105,10 @@
       <section class="left-col">
         {#if $isComparing}
           <div class="w-full p-4">
-            <About
-              node={$primary}
-              isComparing={$isComparing}
-              isMobileViewer={$isMobileViewerShown} />
+            <About node={$primary} />
           </div>
         {:else}
-          <Navigation node={$primary} />
+          <Navigation />
         {/if}
       </section>
       <!-- Main area (viewer) -->
@@ -156,19 +122,10 @@
         data-test-id="inspect.right-col"
         class="right-col p-4 pt-0 md:pt-4">
         {#if $isComparing}
-          <About
-            node={$secondary}
-            isComparing={$isComparing}
-            isMobileViewer={$isMobileViewerShown} />
+          <About node={$secondary} />
         {:else}
           <div class="wrapper">
-            <About
-              node={$primary}
-              isComparing={$isComparing}
-              isMobileViewer={$isMobileViewerShown} />
-            {#if $isMobileViewerShown}
-              <CompareLatestButton node={$primary} isComparing={$isComparing} />
-            {/if}
+            <About node={$primary} />
           </div>
         {/if}
       </section>
@@ -221,10 +178,6 @@
   }
   main.comparing section.right-col > .wrapper {
     @apply sticky top-10 justify-center;
-  }
-  .menu-overlay {
-    @apply fixed inset-0 z-10;
-    background-color: rgba(0, 0, 0, 0.2);
   }
   main.comparing {
     grid-template-columns: 1fr 1fr;

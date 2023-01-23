@@ -11,7 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { resolve } from 'path';
 import { testID } from '../utils/selectors';
 

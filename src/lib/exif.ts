@@ -11,7 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import mapbox from '@mapbox/mapbox-sdk';
+import mapbox from '@mapbox/mapbox-sdk/lib/classes/mapi-client';
 import mapboxStatic from '@mapbox/mapbox-sdk/services/static';
 import type { Manifest } from 'c2pa';
 import circleToPolygon from 'circle-to-polygon';
@@ -40,16 +40,16 @@ function findExifValue(exif: ExifTags, locations: string[]) {
 }
 
 function getExposureDetails(exif: ExifTags) {
-  let exposure = [];
+  const exposure = [];
   // TODO: Convert this to a fraction if not
-  let exposureTime = exif['exif:ExposureTime'];
-  let fNumber = exif['exif:FNumber'];
-  let isoValue = findExifValue(exif, [
+  const exposureTime = exif['exif:ExposureTime'];
+  const fNumber = exif['exif:FNumber'];
+  const isoValue = findExifValue(exif, [
     'exifEX:PhotographicSensitivity',
     'exif:ISOSpeed',
     'exif:ISOSpeedRatings',
   ]);
-  let iso = Array.isArray(isoValue) ? isoValue[0] : isoValue;
+  const iso = Array.isArray(isoValue) ? isoValue[0] : isoValue;
 
   if (exposureTime) exposure.push(`${exposureTime} sec`);
   if (fNumber) exposure.push(`f/${fNumber}`);
@@ -83,13 +83,18 @@ function getCaptureDetails(exif: ExifTags) {
   ].filter(({ value }) => !!value);
 }
 
-function getApproximateLocation(exif: ExifTags) {
-  let long = exif['exif:GPSLongitude'];
-  let lat = exif['exif:GPSLatitude'];
+interface ApproximateLocation {
+  long: number;
+  lat: number;
+}
+
+function getApproximateLocation(exif: ExifTags): ApproximateLocation {
+  const long = exif['exif:GPSLongitude'];
+  const lat = exif['exif:GPSLatitude'];
 
   if (lat && long) {
     try {
-      let approx = convertGeo([lat, long].join(' '), LOCATION_PRECISION);
+      const approx = convertGeo([lat, long].join(' '), LOCATION_PRECISION);
       dbg('Got approximate location', approx);
       return {
         long: approx.decimalLongitude,
@@ -105,10 +110,10 @@ function getApproximateLocation(exif: ExifTags) {
 }
 
 export function selectExif(manifest: Manifest) {
-  let exif = manifest?.assertions?.get('stds.exif')[0]?.data;
+  const exif = manifest?.assertions?.get('stds.exif')[0]?.data;
 
   if (exif) {
-    let captureDate = exif['exif:DateTimeOriginal'];
+    const captureDate = exif['exif:DateTimeOriginal'];
 
     return {
       creator: exif['dc:creator'],
@@ -152,7 +157,7 @@ export function generateMapUrl(
   const loc = exif.location;
   const config = { ...defaultMapConfig, ...overrides };
   const position = {
-    coordinates: [loc.long, loc.lat],
+    coordinates: [loc.long, loc.lat] as [number, number],
     zoom: config.zoom,
   };
 
@@ -177,7 +182,7 @@ export function generateMapUrl(
     },
   };
 
-  const client = mapbox({ accessToken: MAPBOX_TOKEN });
+  const client = new mapbox({ accessToken: MAPBOX_TOKEN });
   const staticService = mapboxStatic(client);
 
   const req = staticService.getStaticImage({

@@ -24,10 +24,10 @@ test.describe('overview - UI rendering', () => {
     test(`${description} [${imagePath}]`, async ({ overviewPage }) => {
       await overviewPage.uploadImage(imagePath);
       if (overviewDisabled) {
-        let isDisabled = await overviewPage.page
+        const isDisabled = await overviewPage.page
           .locator(testID('overview.btn'))
           .getAttribute('disabled');
-        await expect(isDisabled).not.toBeNull();
+        expect(isDisabled).not.toBeNull();
       } else {
         await overviewPage.page.locator(testID('overview.btn')).click();
         await overviewPage.page.waitForSelector(testID('tree-view'));
@@ -91,6 +91,7 @@ test.describe('about panel navigation', () => {
     await overviewPage.nodeLocator('0.1').click({ force: true });
 
     await aboutHelper(overviewPage.page).expectToMatchClaim(
+      // @ts-ignore
       CAIECA.claim.ingredients[1],
     );
   });

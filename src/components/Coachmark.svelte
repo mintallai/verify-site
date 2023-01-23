@@ -12,6 +12,9 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
+<script>
+  import '@spectrum-web-components/coachmark/sp-coachmark.js';
+</script>
 
 <sp-theme color="lightest" scale="medium">
   <sp-coachmark />

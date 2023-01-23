@@ -14,8 +14,8 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { getManifest } from '../../lib/node';
-  import { selectFormattedGenerator } from '../../lib/sdk';
+  import { getManifest } from '$lib/node';
+  import { selectFormattedGenerator } from '$lib/sdk';
   import type { HierarchyTreeNode } from '../../stores';
   import Alert from '../Alert.svelte';
 
@@ -40,7 +40,8 @@
           <a
             href="https://contentauthenticity.org/faq#block-yui_3_17_2_1_1607115018705_17736"
             class="link"
-            target="_blank">{$_('comp.originalCreation.learnMore')}</a>
+            target="_blank"
+            rel="noreferrer">{$_('comp.originalCreation.learnMore')}</a>
         </div>
       {/if}
     </div>

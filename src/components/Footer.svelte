@@ -15,9 +15,12 @@
 <script lang="ts">
   import { getLocalizedURL } from '@intl/adobe-locales';
   import { locale, _ } from 'svelte-i18n';
-  import { DEFAULT_LOCALE, setLanguage } from '../lib/i18n';
-  import type { ReferenceElement, TippyProps } from '../lib/tippy';
-  import { tippy } from '../lib/tippy';
+  import { DEFAULT_LOCALE, setLanguage } from '$lib/i18n';
+  import type { ReferenceElement, TippyProps } from '$lib/tippy';
+  import { tippy } from '$lib/tippy';
+
+  import '@spectrum-web-components/menu/sp-menu-item.js';
+  import '@spectrum-web-components/menu/sp-menu.js';
 
   const mapping = [
     ['en-US', 'English'],
@@ -53,13 +56,15 @@
 <footer class="z-20 bg-white min-w-[var(--screen-width)]">
   <div bind:this={languageMenu}>
     <sp-theme color="lightest" scale="medium" class="w-full">
-      <sp-menu data-test-id="footer.language-menu" value={currentLocale}>
+      <sp-menu
+        data-test-id="footer.language-menu"
+        value={currentLocale}
+        onchange={handleLanguageChange}>
         {#each mapping as [code, label]}
           <sp-menu-item
             data-test-id={`footer.language-option-${code}`}
             value={code}
-            selected={code === currentLocale}
-            on:click={handleLanguageChange}>
+            selected={code === currentLocale}>
             {label}
           </sp-menu-item>
         {/each}
@@ -69,19 +74,26 @@
   <sp-theme color="lightest" scale="medium" class="w-full">
     <div class="flex justify-center items-center text-75">
       <span>
-        {$_('comp.footer.copyright', { values: { year: '__year__' } })}
+        {$_('comp.footer.copyright', {
+          values: { year: new Date().getFullYear() },
+        })}
       </span>
       <div class="flex items-center">
         <a
           href={getLocalizedURL('https://www.adobe.com/privacy.html', $locale)}
-          target="_blank">{$_('comp.footer.privacy')}</a>
+          target="_blank"
+          rel="noreferrer">{$_('comp.footer.privacy')}</a>
         <a
           href={getLocalizedURL(
             'https://www.adobe.com/legal/terms.html',
             $locale,
           )}
-          target="_blank">{$_('comp.footer.termsOfUse')}</a>
-        <a href="https://www.adobe.com/privacy/us-rights.html" target="_blank">
+          target="_blank"
+          rel="noreferrer">{$_('comp.footer.termsOfUse')}</a>
+        <a
+          href="https://www.adobe.com/privacy/us-rights.html"
+          target="_blank"
+          rel="noreferrer">
           {$_('comp.footer.rights')}
         </a>
         {#if languageMenu}
@@ -107,6 +119,7 @@
     @apply flex justify-center items-center border-t-2 border-gray-200;
     grid-area: footer;
     max-width: 100vw;
+    height: 3.5rem;
   }
   footer a {
     @apply underline;

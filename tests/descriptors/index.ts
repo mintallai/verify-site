@@ -21,7 +21,7 @@ import ExportedEClmCAICAI from './images/Exported_E-clm-CAICAI';
 import missingJumbf from './images/missing-jumbf';
 import possiblyMissing from './images/possibly-missing';
 import unknownActions from './images/unknown-actions';
-import { TestImageDescriptor } from './types';
+import type { TestImageDescriptor } from './types';
 
 export const allImages: TestImageDescriptor[] = [
   CAICAI,

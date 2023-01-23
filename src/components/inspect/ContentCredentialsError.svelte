@@ -14,8 +14,8 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import NoCredentials from '../../../assets/svg/monochrome/no-credentials.svg';
-  import Otgp from '../../../assets/svg/monochrome/otgp.svg';
+  import NoCredentials from '../../../assets/svg/monochrome/no-credentials.svg?component';
+  import Otgp from '../../../assets/svg/monochrome/otgp.svg?component';
   import { unknownLearnMoreUrl } from '../../stores';
   export let status: 'missing' | 'none' = 'none';
   export let isComparing: boolean = false;
@@ -32,8 +32,11 @@
     </div>
     <div class="message-text">
       {$_('comp.contentCredentialsError.missingText')}
-      <a class="link" href={$unknownLearnMoreUrl} target="_blank"
-        >{$_('comp.contentCredentialsError.learnMore')}</a>
+      <a
+        class="link"
+        href={$unknownLearnMoreUrl}
+        target="_blank"
+        rel="noreferrer">{$_('comp.contentCredentialsError.learnMore')}</a>
     </div>
   {:else if status === 'none'}
     <NoCredentials

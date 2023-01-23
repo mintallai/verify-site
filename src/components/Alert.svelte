@@ -13,7 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
-  import AlertIcon from '../../assets/svg/monochrome/alert.svg';
+  import AlertIcon from '../../assets/svg/monochrome/alert.svg?component';
 
   type Severity = 'info' | 'error';
 

@@ -13,7 +13,8 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { path as d3Path, Path } from 'd3-path';
+  import { path as d3Path } from 'd3-path';
+  import type { Path } from 'd3-path';
   import type { TreeNode } from '../../stores';
   import type { HierarchyPointLink } from 'd3-hierarchy';
 

@@ -12,11 +12,8 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-<script lang="ts" context="module">
-  import '@spectrum-web-components/progress-circle/sp-progress-circle.js';
-</script>
-
 <script lang="ts">
+  import '@spectrum-web-components/progress-circle/sp-progress-circle.js';
   export let size: string = 'large';
 </script>
 

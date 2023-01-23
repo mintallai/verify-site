@@ -13,36 +13,37 @@
 
 declare module 'drag-drop';
 
-declare module 'html-parse-stringify' {
-  function parse(html: string): any;
-  function stringify(ast: any): string;
-}
-
 declare module 'svelte-css-vars';
 
 declare module '@intl/adobe-locales';
 
 declare module '@contentauth/sdk/dist/*';
 
+declare module 'image-blob-reduce';
+
+declare module 'geo-coordinates-parser';
+
+declare module 'circle-to-polygon';
+
+declare module '@ccx-public/ingest';
+
 declare module '*.svg';
 declare module '*.png';
 declare module '*.jpg';
 
-declare var __breakpoints__;
-declare var process;
+declare const __SUPPORTED_LOCALES__: string[];
 
-declare namespace svelte.JSX {
-  interface HTMLAttributes<T> {
-    onthumbnail?: (event: any) => any;
-  }
+declare module '*.svg?component' {
+  import type { ComponentType, SvelteComponentTyped } from 'svelte';
+  import type { SVGAttributes } from 'svelte/elements';
+
+  const content: ComponentType<
+    SvelteComponentTyped<SVGAttributes<SVGSVGElement>>
+  >;
+
+  export default content;
 }
 
-declare interface IUrlParams {
-  source: string;
-  tourFlag: boolean;
-  forceTourFlag: boolean;
-}
-
-declare interface IErrorIdentifierMap {
-  [claimID: string]: IErrorSummary[];
+interface Window {
+  newrelic: any;
 }

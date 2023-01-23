@@ -1,3 +1,15 @@
+/* ADOBE CONFIDENTIAL
+Copyright 2023 Adobe
+All Rights Reserved.
+
+NOTICE: All information contained herein is, and remains
+the property of Adobe and its suppliers, if any. The intellectual
+and technical concepts contained herein are proprietary to Adobe
+and its suppliers and are protected by all applicable intellectual
+property laws, including trade secret and copyright laws.
+Dissemination of this information or reproduction of this material
+is strictly forbidden unless prior written permission is obtained
+from Adobe. */
 :root {
   --black: rgb(44, 44, 44);
   --blue: rgb(20, 115, 230);
@@ -46,7 +58,7 @@
     'Lucida Grande', sans-serif;
   --family-code: 'Source Code Pro', Monaco, monospace;
   --family-serif: adobe-clean-serif, 'Source Serif Pro', Georgia, serif;
-  --family-home: 'acumin-pro-wide', sans-serif,
+  --family-home: 'acumin-pro-wide', sans-serif;
   --font-family-ar: myriad-arabic, adobe-clean, 'Source Sans Pro', -apple-system,
     BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Trebuchet MS',
     'Lucida Grande', sans-serif;

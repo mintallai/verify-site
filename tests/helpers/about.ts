@@ -11,11 +11,9 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { expect, Locator, Page } from '@playwright/test';
-import {
-  NestedTestClaimDescriptor,
-  TestClaimDescriptor,
-} from '../descriptors/types';
+import { expect } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
+import type { NestedTestClaimDescriptor } from '../descriptors/types';
 import { testID } from '../utils/selectors';
 
 const ABOUT_SELECTOR = testID('about');
@@ -179,7 +177,7 @@ export function aboutHelper(root: Locator | Page) {
           data.cryptoAddress.length,
         );
 
-        let cryptoAddressIdx = 0;
+        const cryptoAddressIdx = 0;
         for (const { address } of data.cryptoAddress) {
           const addressItem = panel.cryptoAddresses.nth(cryptoAddressIdx);
 

@@ -24,7 +24,7 @@ test.skip('Image reviews', () => {
   }) => {
     await inspectPage.uploadImage('CAICAI.jpg');
     const locator = inspectPage.page.locator(REVIEW_ALERT_SEL);
-    await expect(await locator.count()).toEqual(0);
+    expect(await locator.count()).toEqual(0);
   });
 
   test(`a file with a smart object should show an alert`, async ({
@@ -32,7 +32,7 @@ test.skip('Image reviews', () => {
   }) => {
     await inspectPage.uploadImage('smart-object.jpg');
     const locator = inspectPage.page.locator(REVIEW_ALERT_SEL);
-    await expect(await locator.count()).toEqual(1);
+    expect(await locator.count()).toEqual(1);
     await expect(locator).toContainText(
       translations['comp.contentCredentialsError.unknownActions'],
     );
@@ -43,7 +43,7 @@ test.skip('Image reviews', () => {
   }) => {
     await inspectPage.uploadImage('script.jpg');
     const locator = inspectPage.page.locator(REVIEW_ALERT_SEL);
-    await expect(await locator.count()).toEqual(1);
+    expect(await locator.count()).toEqual(1);
     await expect(locator).toContainText(
       translations['comp.contentCredentialsError.unknownActions'],
     );
@@ -54,7 +54,7 @@ test.skip('Image reviews', () => {
   }) => {
     await inspectPage.uploadImage('smart-object-script.jpg');
     const locator = inspectPage.page.locator(REVIEW_ALERT_SEL);
-    await expect(await locator.count()).toEqual(1);
+    expect(await locator.count()).toEqual(1);
     await expect(locator).toContainText(
       translations['comp.contentCredentialsError.unknownActions'],
     );

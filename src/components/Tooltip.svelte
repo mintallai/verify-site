@@ -23,6 +23,7 @@
 </script>
 
 <div>
+  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
   <div bind:this={triggerElement} class="trigger" tabindex="0">
     <slot name="trigger">
       <cai-icon-help />

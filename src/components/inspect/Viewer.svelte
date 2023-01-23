@@ -15,9 +15,9 @@
 <script lang="ts">
   import cssVars from 'svelte-css-vars';
   import { _ } from 'svelte-i18n';
-  import { handleImgSrc, thumbnail } from '../../lib/thumbnail';
+  import { handleImgSrc, thumbnail } from '$lib/thumbnail';
   import type { HierarchyTreeNode } from '../../stores';
-  import { isMobileViewerShown, sourceManifestStore } from '../../stores';
+  import { sourceManifestStore } from '../../stores';
   import CircleLoader from '../CircleLoader.svelte';
   import FileDropper from '../FileDropper.svelte';
   import ViewControls from '../ViewControls.svelte';
@@ -31,7 +31,7 @@
   let side = `0px`;
 
   $: {
-    const padding = $isMobileViewerShown ? 0 : 20;
+    const padding = 20;
     side =
       height > padding * 2
         ? `${Math.min(width, height) - padding * 2}px`

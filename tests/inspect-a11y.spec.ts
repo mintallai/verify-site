@@ -12,7 +12,8 @@
 // from Adobe.
 
 import { test } from './test';
-import { injectAxe, checkA11y, Options as AxeOptions } from 'axe-playwright';
+import { injectAxe, checkA11y } from 'axe-playwright';
+import type { AxeOptions } from 'axe-playwright/dist/types';
 
 test.describe('Inspect page - accessibility check', () => {
   const config: AxeOptions = {

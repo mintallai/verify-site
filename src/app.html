@@ -6,17 +6,16 @@
 
     <title>Verify</title>
 
-    __NEW_RELIC__
+    %newrelic%
 
-    <link rel="icon" type="image/png" href="favicon.png?v=__GIT_REVISION__" />
+    <link rel="icon" href="%sveltekit.assets%/favicon.png" />
     <link rel="stylesheet" href="https://use.typekit.net/dnb4eqs.css" />
     <link rel="stylesheet" href="https://use.typekit.net/pxo7ebs.css" />
-    <link rel="stylesheet" href="build/bundle.css?v=__GIT_REVISION__" />
 
-    __SCRIPT__
+    %sveltekit.head%
   </head>
-
-  <body>
+  <body data-sveltekit-prefetch>
     <noscript>Please enable Javascript to use this site.</noscript>
+    <div style="display: contents">%sveltekit.body%</div>
   </body>
 </html>

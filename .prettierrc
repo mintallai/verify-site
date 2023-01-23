@@ -5,13 +5,7 @@
   "bracketSameLine": true,
   "tabWidth": 2,
   "trailingComma": "all",
-  "overrides": [
-    {
-      "files": "*.config.js",
-      "options": {
-        "quoteProps": "preserve"
-      }
-    }
-  ],
-  "plugins": ["prettier-plugin-svelte"]
+  "overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }],
+  "plugins": ["prettier-plugin-svelte"],
+  "pluginSearchDirs": ["."]
 }

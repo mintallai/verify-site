@@ -1,6 +1,6 @@
 <!--
   ADOBE CONFIDENTIAL
-  Copyright 2021 Adobe
+  Copyright 2023 Adobe
   All Rights Reserved.
 
   NOTICE: All information contained herein is, and remains
@@ -13,45 +13,34 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { goto, params } from '@roxi/routify';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
-  import { fade } from 'svelte/transition';
-  import About from '../components/About.svelte';
-  import Alert from '../components/Alert.svelte';
-  import CircleLoader from '../components/CircleLoader.svelte';
-  import FileDropper from '../components/FileDropper.svelte';
-  import Footer from '../components/Footer.svelte';
-  import Header from '../components/Header.svelte';
-  import ContentCredentialsError from '../components/inspect/ContentCredentialsError.svelte';
-  import TopNavigation from '../components/inspect/TopNavigation.svelte';
-  import Viewer from '../components/inspect/Viewer.svelte';
-  import TreeView from '../components/overview/TreeView.svelte';
-  import { breakpoints } from '../lib/breakpoints';
-  import { ILoaderParams, loader, setLoaderContext } from '../lib/loader';
-  import { startTour } from '../lib/tour';
+  import About from '../../components/About.svelte';
+  import Alert from '../../components/Alert.svelte';
+  import CircleLoader from '../../components/CircleLoader.svelte';
+  import Footer from '../../components/Footer.svelte';
+  import Header from '../../components/Header.svelte';
+  import ContentCredentialsError from '../../components/inspect/ContentCredentialsError.svelte';
+  import TopNavigation from '../../components/inspect/TopNavigation.svelte';
+  import Viewer from '../../components/inspect/Viewer.svelte';
+  import TreeView from '../../components/overview/TreeView.svelte';
+  import { loader, setLoaderContext } from '$lib/loader';
+  import type { ILoaderParams } from '$lib/loader';
   import {
     hasContent,
-    isBurgerMenuShown,
     isLoading,
-    isMobileViewerShown,
     noMetadata,
     primary,
     sourceManifestStore,
-    urlParams,
-  } from '../stores';
+  } from '../../stores';
+  import { goto } from '$app/navigation';
 
   let isDragging = false;
   let error = null;
-  let tour: ReturnType<typeof startTour>;
 
   $: isUploadMode = !$hasContent || isDragging;
 
   $: {
-    // Cancel the tour if the overlay is showing
-    if (tour && tour.isActive() && $isMobileViewerShown) {
-      tour.cancel();
-    }
     // Clear errors if the store report has changed
     if ($sourceManifestStore !== undefined) {
       error = null;
@@ -64,14 +53,6 @@
     },
     onLoaded() {
       error = null;
-      const { tourFlag, forceTourFlag } = $urlParams;
-      if ($isMobileViewerShown === false) {
-        // tour = startTour({
-        //   provenance: $provenance,
-        //   start: tourFlag,
-        //   force: forceTourFlag,
-        // });
-      }
     },
     onDragStateChange(newState: boolean) {
       isDragging = newState;
@@ -80,7 +61,7 @@
   setLoaderContext(loaderParams);
   onMount(() => {
     if (!$hasContent) {
-      $goto('/inspect', $params);
+      goto(`/inspect${location.search}`);
     }
   });
 </script>
@@ -91,22 +72,12 @@
 </svelte:head>
 <main
   use:loader={loaderParams}
-  use:breakpoints
   class="theme-light min-w-[var(--screen-width)] overflow-x-auto"
   class:no-content={!$hasContent}
   class:full-width={isUploadMode && !$sourceManifestStore && !error}>
-  {#if $isBurgerMenuShown}
-    <div
-      transition:fade={{ duration: 200 }}
-      class="menu-overlay"
-      on:click={() => isBurgerMenuShown.update((shown) => !shown)} />
-  {/if}
   <Header />
   {#if $hasContent}
-    <TopNavigation
-      node={$primary}
-      noMetadata={$noMetadata}
-      currentPage="overview" />
+    <TopNavigation />
   {:else if error}
     <Viewer {isDragging} isError={!!error} />
   {/if}
@@ -130,7 +101,7 @@
         {:else if $noMetadata}
           <ContentCredentialsError isComparing={false} />
         {:else if $primary}
-          <About node={$primary} isMobileViewer={$isMobileViewerShown} />
+          <About node={$primary} />
         {:else if $isLoading}
           <div class="flex items-center justify-center">
             <CircleLoader />
@@ -173,10 +144,6 @@
     @apply max-h-full;
     grid-area: right;
   }
-  .menu-overlay {
-    @apply fixed inset-0 z-10;
-    background-color: rgba(0, 0, 0, 0.2);
-  }
 
   @screen lg {
     main {
@@ -198,16 +165,15 @@
         'viewer viewer'
         'footer footer';
     }
+
     section {
       @apply overflow-auto;
     }
-    section.left-col {
-      @apply border-r-2 flex;
-    }
+
     section.right-col {
       @apply border-l-2;
     }
-    main.comparing section.right-col > .wrapper,
+
     section.right-col > .wrapper {
       @apply w-full h-full flex align-middle justify-center;
     }

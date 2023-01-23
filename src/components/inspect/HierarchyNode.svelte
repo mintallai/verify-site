@@ -14,8 +14,8 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import ExpandHierarchy from '../../../assets/svg/monochrome/expand-hierarchy.svg';
-  import { getBadgeProps, getFilename } from '../../lib/node';
+  import ExpandHierarchy from '../../../assets/svg/monochrome/expand-hierarchy.svg?component';
+  import { getBadgeProps, getFilename } from '$lib/node';
   import type { HierarchyTreeNode } from '../../stores';
   import {
     collapsedBranches,
@@ -58,7 +58,7 @@
     data-item-id={data.loc}>
     {#if !isSingle}
       <div class="callout" class:compare />
-      <div
+      <button
         class="flex items-center justify-center h-full"
         class:cursor-pointer={hasChildren}
         on:click={() => hasChildren && toggleBranch(data.loc)}>
@@ -67,7 +67,7 @@
             <ExpandHierarchy width="11" height="6" class="text-black" />
           </div>
         {/if}
-      </div>
+      </button>
     {/if}
     <button
       aria-labelledby={getFilename(node)}
@@ -77,10 +77,13 @@
       on:click={handleClick}>
       <Thumbnail {node} {isSelected} {...badgeProps} />
     </button>
-    <div class="pl-3" class:cursor-pointer={!isSelected} on:click={handleClick}>
+    <button
+      class="pl-3 text-start"
+      class:cursor-pointer={!isSelected}
+      on:click={handleClick}>
       <h6>{$_('comp.asset.fileName')}</h6>
       <div>{getFilename(node)}</div>
-    </div>
+    </button>
   </div>
   <div class="pl-6 space-y-5" class:hidden={!isExpanded}>
     {#each children as childNode}

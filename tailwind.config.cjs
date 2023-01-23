@@ -12,10 +12,10 @@
 // from Adobe.
 
 const merge = require('lodash/merge');
-const spectrumConfig = require('./tailwind.config.spectrum');
+const spectrumConfig = require('./tailwind.config.spectrum.cjs');
 
 module.exports = merge(spectrumConfig, {
-  content: ['./src/**/*.{svelte,js,ts}'],
+  content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     screens: {
       sm: '10px',
@@ -24,7 +24,7 @@ module.exports = merge(spectrumConfig, {
       xl: '1280px',
       '2xl': '1536px',
       '3xl': '1680px',
-      lgHeight: { 'raw': '(min-height: 480px)' },
+      lgHeight: { raw: '(min-height: 480px)' },
     },
     extend: {
       boxShadow: {
@@ -55,7 +55,7 @@ module.exports = merge(spectrumConfig, {
         home: 'var(--family-home)',
       },
       opacity: {
-        '0': '0',
+        0: '0',
       },
       gradientColorStops: {
         transparent: 'rgba(255, 255, 255, 0)',

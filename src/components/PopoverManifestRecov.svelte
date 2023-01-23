@@ -14,9 +14,14 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import Dots from '../../assets/svg/monochrome/dots.svg';
-  import { handleUrl } from '../lib/util/handlers';
+  import Dots from '../../assets/svg/monochrome/dots.svg?component';
+  import { handleUrl } from '$lib/util/handlers';
   import { FAQ_URL } from '../stores';
+
+  import '@spectrum-web-components/popover/sp-popover.js';
+  import '@spectrum-web-components/dialog/sp-dialog.js';
+  import '@spectrum-web-components/button/sp-button.js';
+
   let open: boolean = true;
   export let placement: string = 'right-start';
   const onCancel = () => {

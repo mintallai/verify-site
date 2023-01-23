@@ -1,8 +1,11 @@
 import { optimize } from 'svgo';
-import { flow, camelCase, upperFirst } from 'lodash/fp';
+import lodash from 'lodash/fp';
 import path from 'path';
-import svelte from 'svelte/compiler';
+import { compile } from 'svelte/compiler';
 import { createFilter } from '@rollup/pluginutils';
+import { readFile } from 'fs/promises';
+
+const { flow, camelCase, upperFirst } = lodash;
 
 const classCase = flow([camelCase, upperFirst]);
 
@@ -47,7 +50,7 @@ const monochromeOverrides = [
   },
 ];
 
-function renderElement({ isMonochrome, name, svg }) {
+function renderElement({ isMonochrome, name, svg, id, ssr }) {
   const className = classCase(name);
   const code = `
     <script lang="ts">
@@ -71,7 +74,12 @@ function renderElement({ isMonochrome, name, svg }) {
       }
     </style>
   `;
-  const { js } = svelte.compile(code, { name: className });
+  const { js } = compile(code, {
+    name: className,
+    generate: ssr ? 'ssr' : 'dom',
+    hydratable: true,
+    filename: id,
+  });
   return js;
 }
 
@@ -80,23 +88,30 @@ export default function rollupSvelteSvg(options = {}) {
 
   return {
     name: 'rollup-svelte-svg',
-    transform(svg, id) {
-      if (!filter(id) || path.extname(id) !== '.svg') {
+    async transform(svg, id, opts) {
+      const ssr = !!opts?.ssr;
+
+      if (!filter(id) || path.extname(id) !== '.svg?component') {
         return null;
       }
 
       try {
         const { name, dir } = path.parse(id);
         const isMonochrome = dir.split(path.sep).includes('monochrome');
+
+        const filename = id.replace(/\.svg(\?.*)$/, '.svg');
+        const svgFile = await readFile(filename, { encoding: 'utf-8' });
+
         const overrides = isMonochrome ? monochromeOverrides : colorOverrides;
         const config = { path: id, plugins: overrides };
-        const optimized = optimize(svg.trim(), config);
+        const optimized = optimize(svgFile, config);
         const { code, map } = renderElement({
           name,
           isMonochrome,
           svg: optimized.data,
+          id,
+          ssr,
         });
-
         return { code, map };
       } catch (err) {
         const message = 'Could not process SVG file';

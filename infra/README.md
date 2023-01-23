@@ -1,6 +1,6 @@
 # Infra Deployment
 
-Terraform definitions for service infrastructure is maintained here. 
+Terraform definitions for service infrastructure is maintained here.
 
 ## Folder Structure
 

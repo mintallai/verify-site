@@ -16,7 +16,7 @@
   import Split from './comparison/Split.svelte';
   import Slider from './comparison/Slider.svelte';
   import CircleLoader from '../CircleLoader.svelte';
-  import { compareMode, CompareMode, isMobileViewerShown } from '../../stores';
+  import { compareMode, CompareMode } from '../../stores';
   import type { HierarchyTreeNode } from '../../stores';
   import { _ } from 'svelte-i18n';
 
@@ -31,7 +31,7 @@
   export let isLoading: boolean = false;
 
   $: {
-    const padding = $isMobileViewerShown ? 0 : 20;
+    const padding = 20;
     side = Math.max(
       MIN_SIDE_PX,
       Math.min(width, height) - padding * 2 - selectorHeight,

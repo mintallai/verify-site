@@ -1,4 +1,4 @@
-import { Manifest } from 'c2pa';
+import type { Manifest } from 'c2pa';
 import { selectFormattedGenerator } from '../../src/lib/sdk';
 
 const createManifestGeneratorObject = (claimGenerator: string): Manifest =>

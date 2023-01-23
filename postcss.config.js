@@ -1,13 +1,17 @@
-const production = !process.env.ROLLUP_WATCH;
-const autoprefixer = require('autoprefixer');
-const cssnano = require('cssnano')({ preset: 'default' });
+import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
+import postcssImport from 'postcss-import';
+import tailwindcss from 'tailwindcss';
+import tailwindNesting from 'tailwindcss/nesting/index.js';
 
-module.exports = {
+const production = !process.env.ROLLUP_WATCH;
+
+export default {
   plugins: [
-    require('postcss-import'),
-    require('tailwindcss'),
-    require('postcss-nested'),
+    postcssImport,
+    tailwindNesting,
+    tailwindcss,
     autoprefixer,
-    ...(production ? [cssnano] : []),
+    ...(production ? [cssnano({ preset: 'default' })] : []),
   ],
 };

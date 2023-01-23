@@ -1,12 +1,7 @@
 {
-  "extends": "@tsconfig/svelte/tsconfig.json",
+  "extends": "./.svelte-kit/tsconfig.json",
   "compilerOptions": {
-    "module": "esnext",
-    "experimentalDecorators": true,
-    "importsNotUsedAsValues": "remove",
-    "noEmitOnError": false,
-    "types": ["svelte"]
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules/*", "static/*", "rollup/*", "assets/*"]
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
+  }
 }
