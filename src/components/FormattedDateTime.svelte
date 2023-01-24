@@ -15,11 +15,19 @@
 <script lang="ts">
   import { date, time, _ } from 'svelte-i18n';
   export let sigDate;
+  export let noTime: boolean = false;
 </script>
 
 <p class="text-gray-700">
   {#if sigDate.toString() === 'Invalid Date'}
     {$_('comp.date.invalid')}
-  {:else}{$date(sigDate, { format: 'medium' })}
+  {:else if noTime}
+    {$date(sigDate, { format: 'medium' })}
+  {:else}{$date(sigDate, { format: 'medium' })}{' at '}
+    {$time(sigDate, {
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZoneName: 'short',
+    })}
   {/if}
 </p>
