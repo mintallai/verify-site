@@ -161,7 +161,7 @@
       'footer';
   }
   main.no-content {
-    grid-template-rows: 80px 0 1fr 55px;
+    grid-template-rows: 80px 0 1fr auto;
   }
   section {
     @apply col-span-1 border-gray-200 max-h-full;
@@ -182,7 +182,7 @@
     main {
       /* @apply fixed inset-0; */
       grid-template-columns: 1fr 320px;
-      grid-template-rows: 60px 114px 1fr 55px;
+      grid-template-rows: 60px 114px 1fr auto;
       grid-template-areas:
         'header header'
         'breadcrumb breadcrumb'
