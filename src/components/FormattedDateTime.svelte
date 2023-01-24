@@ -20,11 +20,6 @@
 <p class="text-gray-700">
   {#if sigDate.toString() === 'Invalid Date'}
     {$_('comp.date.invalid')}
-  {:else}{$date(sigDate, { format: 'medium' })}{' at '}
-    {$time(sigDate, {
-      hour: 'numeric',
-      minute: 'numeric',
-      timeZoneName: 'short',
-    })}
+  {:else}{$date(sigDate, { format: 'medium' })}
   {/if}
 </p>
