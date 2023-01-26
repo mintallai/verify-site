@@ -18,6 +18,7 @@ import CAIXCI from './images/CAIXCI';
 import CIEsigCA from './images/CIE-sig-CA';
 import EsigCA from './images/E-sig-CA';
 import ExportedEClmCAICAI from './images/Exported_E-clm-CAICAI';
+import missingJumbf from './images/missing-jumbf';
 import possiblyMissing from './images/possibly-missing';
 import unknownActions from './images/unknown-actions';
 import { TestImageDescriptor } from './types';
@@ -31,5 +32,6 @@ export const allImages: TestImageDescriptor[] = [
   CIEsigCA,
   ExportedEClmCAICAI,
   possiblyMissing,
+  missingJumbf,
   unknownActions,
 ];
