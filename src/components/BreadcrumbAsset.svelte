@@ -71,7 +71,7 @@
         <p class="filename">{filename}</p>
       {/if}
       {#if sigDate}
-        <FormattedDateTime {sigDate} />
+        <FormattedDateTime {sigDate} noTime={true} />
       {/if}
     </div>
   </div></button>
