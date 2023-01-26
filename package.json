@@ -87,7 +87,6 @@
   },
   "dependencies": {
     "@ccx-public/ingest": "^4.3.0",
-    "@contentauth/toolkit": "^0.8.1",
     "@intl/adobe-locales": "^2.17.7",
     "@mapbox/mapbox-sdk": "^0.13.5",
     "@roxi/routify": "^2.18.3",
@@ -102,8 +101,8 @@
     "@spectrum-web-components/progress-circle": "0.2.8",
     "@spectrum-web-components/tabs": "0.6.10",
     "@spectrum-web-components/theme": "0.8.14",
-    "c2pa": "^0.12.1",
-    "c2pa-wc": "^0.10.2",
+    "c2pa": "^0.12.2",
+    "c2pa-wc": "^0.10.3",
     "circle-to-polygon": "^2.2.0",
     "d3-hierarchy": "^2.0.0",
     "d3-path": "^2.0.0",
