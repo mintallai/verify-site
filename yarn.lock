@@ -310,6 +310,11 @@
   resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.9.5.tgz#2138c3ebf210cef6829e2ffb28dc25b14276d17c"
   integrity sha512-S+GUoX++0QzGckxWNwdyo2FS4q1z4sQVjwxPMuJYprW5r3ewukCduX5BTF5U4UbS3CgQCqYMHktijhBbkyRo/w==
 
+"@contentauth/toolkit@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.8.1.tgz#e7e5362186ce19bf2a530a7d206de4eb09e36a45"
+  integrity sha512-6nnKaj+/4yPtodJNvkBMYHW1nZZzLYrJaKZ5DoovUI5cUKcXTusU6LciKa8EMYxJ2/aQs5djv04Ud1iciisvDw==
+
 "@floating-ui/core@^0.7.3":
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-0.7.3.tgz#d274116678ffae87f6b60e90f88cc4083eefab86"
@@ -2024,10 +2029,10 @@ bytes@3.1.2:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa-wc@^0.10.3:
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/c2pa-wc/-/c2pa-wc-0.10.3.tgz#75ab3dde98e82d8eb3c1ec555277b42860fc0b62"
-  integrity sha512-L3t35jdheA8yJzswYVc0H+phIKx5HWuJXmXNWPOsB0Q5wrQlceecEb8SCca8/y6627Cb3+nN4yOenJTLKpV3iw==
+c2pa-wc@^0.10.4:
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/c2pa-wc/-/c2pa-wc-0.10.4.tgz#1db9c40783bfe06c6f1d26ea7eeb550f7fa06900"
+  integrity sha512-i37pIttPhcvxi8vWPhe3ttiD1w4lHaP1AARsx9bqVgrI+/PGbPeKXPYN6vaRkL+lfm9e2vYiXb0TUYoMkVkbjQ==
   dependencies:
     "@floating-ui/dom" "~0.5.3"
     "@lit-labs/motion" "~1.0.2"
