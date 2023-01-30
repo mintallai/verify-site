@@ -87,7 +87,6 @@
   },
   "dependencies": {
     "@ccx-public/ingest": "^4.3.0",
-    "@contentauth/toolkit": "^0.8.1",
     "@intl/adobe-locales": "^2.17.7",
     "@mapbox/mapbox-sdk": "^0.13.5",
     "@roxi/routify": "^2.18.3",
