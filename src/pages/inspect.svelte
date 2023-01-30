@@ -228,7 +228,7 @@
   }
   main.comparing {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 80px 60px var(--viewer-height) 1fr 55px;
+    grid-template-rows: 80px 60px var(--viewer-height) 1fr auto;
     grid-template-areas:
       'header header'
       'breadcrumb breadcrumb'
@@ -238,7 +238,7 @@
   }
   main.error {
     grid-template-columns: 1fr 320px;
-    grid-template-rows: 60px 114px 1fr 55px;
+    grid-template-rows: 60px 114px 1fr auto;
     grid-template-areas:
       'header header'
       'breadcrumb breadcrumb'
@@ -255,7 +255,7 @@
     main.comparing {
       /* @apply fixed inset-0; */
       grid-template-columns: 320px 1fr 320px;
-      grid-template-rows: 60px 114px 1fr 55px;
+      grid-template-rows: 60px 114px 1fr auto;
       grid-template-areas:
         'header header header'
         'breadcrumb breadcrumb breadcrumb'
@@ -264,7 +264,7 @@
     }
 
     main.no-content {
-      grid-template-rows: 80px 0 1fr 55px;
+      grid-template-rows: 80px 0 1fr auto;
     }
     section {
       @apply overflow-auto;
