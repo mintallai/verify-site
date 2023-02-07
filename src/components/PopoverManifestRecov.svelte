@@ -31,6 +31,8 @@
   <button
     slot="trigger"
     on:click={onConfirm}
+    aria-label="About possible content credentials matches"
+    aria-haspopup="dialog"
     class="w-4 flex items-center justify-center">
     <Dots class="w-1" /></button>
   <sp-popover slot="click-content" class="max-w-[420px]">
