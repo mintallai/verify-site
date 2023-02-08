@@ -31,7 +31,7 @@
   <button
     slot="trigger"
     on:click={onConfirm}
-    aria-label="About possible content credentials matches"
+    aria-label={$_('dialog.manifestRecovery.headline')}
     aria-haspopup="dialog"
     class="w-4 flex items-center justify-center">
     <Dots class="w-1" /></button>
