@@ -21,6 +21,7 @@
   } from '../stores';
   import BreadcrumbAsset from './BreadcrumbAsset.svelte';
   import CircleLoader from './CircleLoader.svelte';
+  import Tooltip from './Tooltip.svelte';
   import UploadedAsset from './UploadedAsset.svelte';
   export let loadingMatches: boolean = false;
   export let handleButtonClick;
@@ -61,14 +62,12 @@
           {$_('comp.topNavigation.possibleMatches')}
         </div>
         <div class="self-center ml-2 inline-block">
-          <cai-tooltip placement="bottom" class="theme-spectrum">
+          <Tooltip placement="bottom">
             <div
               slot="content"
-              class="text-gray-900 z-auto text-sm justify-around "
-              style="width: 220px;">
+              class="text-gray-900 z-auto text-sm justify-around w-[220px]">
               {$_('comp.topNavigation.tooltip')}
-            </div>
-          </cai-tooltip>
+            </div></Tooltip>
         </div>
       </div>
       {#if $resultsManifestStore.length == 0}

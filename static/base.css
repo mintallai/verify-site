@@ -68,7 +68,7 @@ dl.attributes {
 
 .tippy-box[data-theme~='cai'] {
   @apply font-base text-sm leading-small text-black bg-white p-0;
-  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.3));
 
   &[data-placement^='top'] > .tippy-arrow::before {
     border-top-color: white;
@@ -87,7 +87,7 @@ dl.attributes {
   }
 
   > .tippy-content {
-    @apply p-0;
+    @apply p-2;
   }
 
   > .tippy-backdrop {
