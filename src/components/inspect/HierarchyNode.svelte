@@ -70,6 +70,8 @@
       </div>
     {/if}
     <button
+      aria-labelledby={getFilename(node)}
+      aria-selected={isSelected}
       class="w-12 h-12"
       class:cursor-pointer={!isSelected}
       on:click={handleClick}>
