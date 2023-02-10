@@ -15,6 +15,7 @@
 <script lang="ts">
   import { getLocalizedURL } from '@intl/adobe-locales';
   import { locale, _ } from 'svelte-i18n';
+  import App from '../App.svelte';
   import { DEFAULT_LOCALE, setLanguage } from '../lib/i18n';
   import type { ReferenceElement, TippyProps } from '../lib/tippy';
   import { tippy } from '../lib/tippy';
@@ -28,17 +29,13 @@
 
   let languageTrigger: HTMLButtonElement & ReferenceElement;
   let languageMenu: HTMLElement;
-  let menuShown = false;
 
   const tippyOpts: Partial<TippyProps> = {
     interactive: true,
     trigger: 'click',
     appendTo: document.body,
-    onShow() {
-      menuShown = true;
-    },
-    onHide() {
-      menuShown = false;
+    onShown() {
+      languageMenu.querySelectorAll('sp-menu-item')?.[0].focus();
     },
   };
 
@@ -55,7 +52,7 @@
 </script>
 
 <footer class="z-20 bg-white min-w-[var(--screen-width)]">
-  <div bind:this={languageMenu}>
+  <div bind:this={languageMenu} class="menu">
     <sp-theme color="lightest" scale="medium" class="w-full">
       <sp-menu data-test-id="footer.language-menu" value={currentLocale}>
         {#each mapping as [code, label]}
@@ -94,8 +91,8 @@
             use:tippy={{ content: languageMenu, ...tippyOpts }}
             data-test-id="footer.language-picker"
             slot="trigger"
-            aria-haspopup="true"
-            aria-controls="popover">
+            aria-expanded="false"
+            aria-controls="menu-list">
             <div class="inline-flex items-center space-x-0.5 -mr-0.5">
               <span class="underline">{currentLangString}</span>
             </div>
