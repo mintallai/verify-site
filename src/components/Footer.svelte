@@ -34,7 +34,7 @@
     trigger: 'click',
     appendTo: document.body,
     onShown() {
-      languageMenu.querySelectorAll('sp-menu-item')?.[0].focus();
+      languageMenu.querySelectorAll('sp-menu-item')?.[0]?.focus();
     },
   };
 
