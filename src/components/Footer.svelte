@@ -28,17 +28,13 @@
 
   let languageTrigger: HTMLButtonElement & ReferenceElement;
   let languageMenu: HTMLElement;
-  let menuShown = false;
 
   const tippyOpts: Partial<TippyProps> = {
     interactive: true,
     trigger: 'click',
     appendTo: document.body,
-    onShow() {
-      menuShown = true;
-    },
-    onHide() {
-      menuShown = false;
+    onShown() {
+      languageMenu.querySelectorAll('sp-menu-item')?.[0]?.focus();
     },
   };
 
