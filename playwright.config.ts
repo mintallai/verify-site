@@ -11,10 +11,11 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { expect, PlaywrightTestConfig } from '@playwright/test';
-import { toHaveCAIBadge } from './tests/matchers/toHaveCAIBadge';
+import { expect } from '@playwright/test';
+import type { PlaywrightTestConfig } from '@playwright/test';
+import { toHaveCAIBadge } from './tests/matchers/toHaveCAIBadge.js';
 
-const port = 8081;
+const port = 4173;
 const base = process.env.BASE_URL;
 const baseURL = `${base ?? `http://localhost`}:${port}/`;
 
@@ -30,13 +31,8 @@ const config: PlaywrightTestConfig = {
     ignoreHTTPSErrors: true,
   },
   webServer: {
-    command: 'npm run test:server',
-    port,
-    timeout: 120 * 1000,
-    reuseExistingServer: true,
-    env: {
-      PORT: port.toString(),
-    },
+    command: 'npm run build && npm run preview',
+    port: port,
   },
 };
 

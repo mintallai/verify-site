@@ -11,7 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { test } from './test';
+import { test } from './test.js';
 import { injectAxe, checkA11y } from 'axe-playwright';
 import type { AxeOptions } from 'axe-playwright/dist/types';
 

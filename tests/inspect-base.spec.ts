@@ -12,7 +12,7 @@
 // from Adobe.
 
 import { expect } from '@playwright/test';
-import { test } from './test';
+import { test } from './test.js';
 
 test.describe('Inspect page - base functionality', () => {
   test('drag and drop appears on load', async ({ inspectPage }) => {

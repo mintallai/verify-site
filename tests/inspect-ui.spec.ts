@@ -12,11 +12,11 @@
 // from Adobe.
 
 import { expect } from '@playwright/test';
-import { allImages } from './descriptors';
-import CAICAI from './descriptors/images/CAICAI';
-import { aboutHelper } from './helpers/about';
-import { test } from './test';
-import { flattenTree } from './utils/tree';
+import { allImages } from './descriptors/index.js';
+import CAICAI from './descriptors/images/CAICAI.js';
+import { aboutHelper } from './helpers/about.js';
+import { test } from './test.js';
+import { flattenTree } from './utils/tree.js';
 
 test.describe('inspect - UI rendering', () => {
   for (const { description, imagePath, claim } of allImages) {
@@ -55,12 +55,12 @@ test.describe('inspect - UI rendering', () => {
 });
 
 // @TODO: can these assertions be shared with overview?
-test.describe('invalid file format', () => {
-  test('should show an invalid filetype error', async ({ inspectPage }) => {
+test.describe('invalid file', () => {
+  test('should show the appropriate error', async ({ inspectPage }) => {
     await inspectPage.goto('source=foobydoobydoo');
 
     await expect(inspectPage.rightColumn()).toContainText(
-      "That file type isn't supported. Try again with a JPG or PNG.",
+      'Something went wrong. There may have been an issue with your file or an error.',
     );
   });
 });

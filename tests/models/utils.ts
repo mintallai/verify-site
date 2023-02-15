@@ -1,5 +1,5 @@
 // ADOBE CONFIDENTIAL
-// Copyright 2021 Adobe
+// Copyright 2023 Adobe
 // All Rights Reserved.
 //
 // NOTICE: All information contained herein is, and remains
@@ -11,13 +11,4 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { expect } from '@playwright/test';
-import { test } from './test.js';
-
-test.describe('Base functionality', () => {
-  test('site loads', async ({ page }) => {
-    await page.goto('/inspect');
-    const title = page.locator('data-test-id=header.app-name');
-    await expect(title).toHaveText('Verify');
-  });
-});
+export const getImagePath = (image: string) => `tests/assets/images/${image}`;

@@ -12,11 +12,8 @@
 // from Adobe.
 
 import type { Page } from '@playwright/test';
-import { resolve } from 'path';
-import { testID } from '../utils/selectors';
-
-const imageBase = resolve(__dirname, '../assets/images');
-const defaultImage = 'CAICAI.jpg';
+import { testID } from '../utils/selectors.js';
+import { getImagePath } from './utils.js';
 
 export class OverviewPage {
   readonly page: Page;
@@ -41,11 +38,11 @@ export class OverviewPage {
     return this.page.locator('div[data-node-idx]');
   }
 
-  async uploadImage(imageRelPath: string = defaultImage) {
+  async uploadImage(image: string) {
     await this.goto();
     await this.page.setInputFiles(
       'data-test-id=viewer.fileInput',
-      resolve(imageBase, imageRelPath),
+      getImagePath(image),
     );
     await this.page.waitForSelector(OverviewPage.THUMBNAIL_SEL);
   }

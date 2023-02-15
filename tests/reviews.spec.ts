@@ -12,8 +12,8 @@
 // from Adobe.
 
 import { expect } from '@playwright/test';
-import { test } from './test';
-import translations from '../locales/en-US.json';
+import { test } from './test.js';
+import translations from '../locales/en-US.json' assert { type: 'json' };
 
 const REVIEW_ALERT_SEL = 'data-test-id=about.unknownActionsAlert';
 

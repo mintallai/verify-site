@@ -14,7 +14,7 @@
 import { expect } from '@playwright/test';
 import type { Locator, Page } from '@playwright/test';
 import type { NestedTestClaimDescriptor } from '../descriptors/types';
-import { testID } from '../utils/selectors';
+import { testID } from '../utils/selectors.js';
 
 const ABOUT_SELECTOR = testID('about');
 

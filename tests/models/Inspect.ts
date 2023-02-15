@@ -12,10 +12,8 @@
 // from Adobe.
 
 import type { Page } from '@playwright/test';
-import { resolve } from 'path';
-import { testID } from '../utils/selectors';
-
-const imageBase = resolve(__dirname, '../assets/images');
+import { testID } from '../utils/selectors.js';
+import { getImagePath } from './utils.js';
 
 export class InspectPage {
   readonly page: Page;
@@ -62,11 +60,11 @@ export class InspectPage {
     return this.page.locator('div[data-node-idx]');
   }
 
-  async uploadImage(imageRelPath: string) {
+  async uploadImage(image: string) {
     await this.goto();
     await this.page.setInputFiles(
       'data-test-id=viewer.fileInput',
-      resolve(imageBase, imageRelPath),
+      getImagePath(image),
     );
     await this.getThumbnailElement();
   }
