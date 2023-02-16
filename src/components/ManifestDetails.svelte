@@ -18,10 +18,10 @@
     selectProducer,
     selectSocialAccounts,
   } from 'c2pa';
-  import { date, locale, time, _ } from 'svelte-i18n';
-  import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg';
-  import { DEFAULT_LOCALE } from '../lib/i18n';
-  import { getBadgeProps, getManifest } from '../lib/node';
+  import { locale, _ } from 'svelte-i18n';
+  import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg?component';
+  import { DEFAULT_LOCALE } from '$lib/i18n';
+  import { getBadgeProps, getManifest } from '$lib/node';
   import {
     selectEditsAndActivityExists,
     selectFormattedDate,
@@ -31,7 +31,7 @@
     selectReviewRatings,
     selectWeb3,
     selectWebsite,
-  } from '../lib/sdk';
+  } from '$lib/sdk';
   import type { HierarchyTreeNode } from '../stores';
   import { navigateToChild, unknownLearnMoreUrl } from '../stores';
   import FormattedDateTime from './FormattedDateTime.svelte';
@@ -41,8 +41,6 @@
   import Web3Address from './Web3Address.svelte';
 
   export let node: HierarchyTreeNode;
-  export let isComparing: boolean = false;
-  export let isMobileViewer: boolean = false;
 
   $: currentLocale = $locale || DEFAULT_LOCALE;
   $: manifest = getManifest(node);
@@ -57,9 +55,6 @@
   $: web3Addresses = selectWeb3(manifest);
   $: ratings = selectReviewRatings(manifest);
   $: hasEditsAndActivity = selectEditsAndActivityExists(manifest);
-  $: editsActivityStrings = JSON.stringify({
-    NO_EDITS: $_('comp.about.editsActivity.none'),
-  });
 </script>
 
 <div>
@@ -103,7 +98,8 @@
       helper={$_('comp.about.website.helpText')}>
       <dl>
         <dd class="truncate">
-          <a href={website} target="_blank" class="link">{website}</a>
+          <a href={website} target="_blank" rel="noreferrer" class="link"
+            >{website}</a>
         </dd>
       </dl>
     </AboutSection>
@@ -124,6 +120,7 @@
               <a
                 href={account['@id']}
                 target="_blank"
+                rel="noreferrer"
                 class="link"
                 data-test-id="about.social-accounts.link">@{account.name}</a>
             {/each}
@@ -183,7 +180,11 @@
                 <div class="italic text-gray-900">
                   <span
                     >{$_('comp.contentCredentialsError.unknownActions')}</span>
-                  <a href={$unknownLearnMoreUrl} target="_blank" class="link"
+                  <a
+                    href={$unknownLearnMoreUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="link"
                     >{$_('comp.contentCredentialsError.learnMore')}</a>
                 </div>
               </dd>
@@ -253,11 +254,6 @@
   .accounts {
     @apply grid gap-x-2 gap-y-1 items-center;
     grid-template-columns: 16px auto;
-  }
-  @screen md {
-    .about-info {
-      @apply min-h-0;
-    }
   }
 
   .edits-and-activity-list {

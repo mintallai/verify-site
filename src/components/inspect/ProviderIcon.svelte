@@ -13,19 +13,19 @@
   from Adobe.
 -->
 <script lang="ts">
-  import AdobeStockLogo from '../../../assets/svg/color/logos/adobe-stock.svg';
-  import AdobeLogo from '../../../assets/svg/color/logos/adobe.svg';
-  import BehanceLogo from '../../../assets/svg/color/logos/behance.svg';
-  import FacebookLogo from '../../../assets/svg/color/logos/facebook.svg';
-  import InstagramLogo from '../../../assets/svg/color/logos/instagram.svg';
-  import LeicaLogo from '../../../assets/svg/color/logos/leica_logo.svg';
-  import NikonLogo from '../../../assets/svg/color/logos/nikon.svg';
-  import PhotoshopLogo from '../../../assets/svg/color/logos/photoshop.svg';
-  import PinterestLogo from '../../../assets/svg/color/logos/pinterest.svg';
-  import TruepicLogo from '../../../assets/svg/color/logos/truepic.svg';
-  import TwitterLogo from '../../../assets/svg/color/logos/twitter.svg';
-  import VimeoLogo from '../../../assets/svg/color/logos/vimeo.svg';
-  import YoutubeLogo from '../../../assets/svg/color/logos/YT.svg';
+  import AdobeStockLogo from '../../../assets/svg/color/logos/adobe-stock.svg?component';
+  import AdobeLogo from '../../../assets/svg/color/logos/adobe.svg?component';
+  import BehanceLogo from '../../../assets/svg/color/logos/behance.svg?component';
+  import FacebookLogo from '../../../assets/svg/color/logos/facebook.svg?component';
+  import InstagramLogo from '../../../assets/svg/color/logos/instagram.svg?component';
+  import LeicaLogo from '../../../assets/svg/color/logos/leica_logo.svg?component';
+  import NikonLogo from '../../../assets/svg/color/logos/nikon.svg?component';
+  import PhotoshopLogo from '../../../assets/svg/color/logos/photoshop.svg?component';
+  import PinterestLogo from '../../../assets/svg/color/logos/pinterest.svg?component';
+  import TruepicLogo from '../../../assets/svg/color/logos/truepic.svg?component';
+  import TwitterLogo from '../../../assets/svg/color/logos/twitter.svg?component';
+  import VimeoLogo from '../../../assets/svg/color/logos/vimeo.svg?component';
+  import YoutubeLogo from '../../../assets/svg/color/logos/YT.svg?component';
 
   export let provider: string;
   let className: string = '';

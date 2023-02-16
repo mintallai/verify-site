@@ -12,7 +12,7 @@
 // from Adobe.
 
 import { expect } from '@playwright/test';
-import { test } from './test';
+import { test } from './test.js';
 
 test.describe.parallel('i18n - translations', () => {
   test(`the site should default to English`, async ({ inspectPage }) => {

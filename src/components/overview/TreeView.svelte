@@ -13,14 +13,16 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { HierarchyPointNode, tree as D3Tree } from 'd3-hierarchy';
+  import { tree as D3Tree } from 'd3-hierarchy';
+  import type { HierarchyPointNode } from 'd3-hierarchy';
   import { select as d3Select } from 'd3-selection';
-  import { zoom as d3Zoom, zoomIdentity, ZoomTransform } from 'd3-zoom';
+  import { zoom as d3Zoom, zoomIdentity } from 'd3-zoom';
+  import type { ZoomTransform } from 'd3-zoom';
   import partial from 'lodash/partial';
   import { onMount } from 'svelte';
-  import ZoomIn from '../../../assets/svg/monochrome/zoom-in.svg';
-  import ZoomOut from '../../../assets/svg/monochrome/zoom-out.svg';
-  import { isAncestorOf } from '../../lib/node';
+  import ZoomIn from '../../../assets/svg/monochrome/zoom-in.svg?component';
+  import ZoomOut from '../../../assets/svg/monochrome/zoom-out.svg?component';
+  import { isAncestorOf } from '$lib/node';
   import type {
     HierarchyTreeNode,
     TreeNode as TreeNodeType,
@@ -31,7 +33,6 @@
     overviewTransform,
     primaryLoc,
   } from '../../stores';
-  import CollapsibleSection from '../CollapsibleSection.svelte';
   import ViewControls from '../ViewControls.svelte';
   import TreeLink from './TreeLink.svelte';
   import TreeNode from './TreeNode.svelte';
@@ -166,6 +167,7 @@
       {/each}
       {#each descendants as node, key (key)}
         <g transform={`translate(${node.x}, ${node.y})`}>
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <rect
             on:click={partial(handleNodeClick, node)}
             height={nodeHeight}
@@ -193,18 +195,18 @@
     </div>
   </div>
   <div class="controls">
-    <div
+    <button
       class="in"
       class:disabled={boundsTransform?.k === 1}
       on:click={handleZoomIn}>
       <ZoomIn width="20px" height="20px" class="text-gray-700" />
-    </div>
-    <div
+    </button>
+    <button
       class="out"
       class:disabled={boundsTransform?.k === minScale}
       on:click={handleZoomOut}>
       <ZoomOut width="20px" height="3px" class="text-gray-700" />
-    </div>
+    </button>
   </div>
 </div>
 
@@ -214,7 +216,7 @@
     width: 44px;
     height: 88px;
   }
-  .controls > div {
+  .controls > button {
     @apply flex items-center justify-center mx-1.5 cursor-pointer transition-opacity;
   }
   .controls .in {

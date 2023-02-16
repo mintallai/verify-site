@@ -19,7 +19,7 @@ const limit = pLimit(PROCESS_CONCURRENCY);
 const apiKey = 'cai-verify-site';
 const baseParams = { api_key: apiKey };
 
-const uploadToS3 = async (url, sourceImage) => {
+const uploadToS3 = async (url: string, sourceImage: Blob) => {
   const body = sourceImage;
   const headers = { 'Content-Type': sourceImage.type };
   try {
@@ -33,7 +33,7 @@ const uploadToS3 = async (url, sourceImage) => {
   }
 };
 
-const getUploadUrlAndFilename = async (sourceImage, baseUrl) => {
+const getUploadUrlAndFilename = async (sourceImage: Blob, baseUrl: string) => {
   const body = JSON.stringify({ content_type: sourceImage.type });
   const headers = { 'Content-Type': 'application/json' };
   const params = new URLSearchParams(baseParams);
@@ -76,7 +76,7 @@ const exportCanvas: (canvas: HTMLCanvasElement) => Promise<Blob> = async (
 /**
  * Resizes image uploads to a smaller size for image search
  */
-const resizeImage = async (sourceImage) => {
+const resizeImage = async (sourceImage: Blob) => {
   const imageReducerModule = await import('image-blob-reduce');
   const imageReducer = imageReducerModule?.default?.();
 
@@ -97,7 +97,7 @@ const resizeImage = async (sourceImage) => {
   return sourceImage;
 };
 
-const fetchManifests = async (filename: string, baseUrl) => {
+const fetchManifests = async (filename: string, baseUrl: string) => {
   const params = new URLSearchParams({
     ...baseParams,
     filename: filename,

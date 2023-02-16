@@ -1,3 +1,23 @@
+/* ADOBE CONFIDENTIAL
+Copyright 2023 Adobe
+All Rights Reserved.
+
+NOTICE: All information contained herein is, and remains
+the property of Adobe and its suppliers, if any. The intellectual
+and technical concepts contained herein are proprietary to Adobe
+and its suppliers and are protected by all applicable intellectual
+property laws, including trade secret and copyright laws.
+Dissemination of this information or reproduction of this material
+is strictly forbidden unless prior written permission is obtained
+from Adobe. */
+
+@import 'tippy.js/dist/tippy.css';
+@import './spectrum-vars.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* purgecss start ignore */
 :root {
   --drag-bg-color: rgba(20, 115, 230, 0.1);
@@ -49,10 +69,11 @@ a.link {
 }
 
 dl.attributes {
-  @apply grid gap-y-1.5;
+  @apply grid gap-y-1;
 
   dt {
     @apply flex justify-between font-bold text-75 uppercase text-gray-700;
+    line-height: 1.8;
     & cai-tooltip {
       @apply normal-case font-regular w-4 h-4;
     }

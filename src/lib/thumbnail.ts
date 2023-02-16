@@ -21,8 +21,9 @@ export interface ThumbnailEvent {
 }
 
 async function generateThumbnail(node: Node, asset: Thumbnail) {
-  const result = await asset?.getUrl();
-
+  const result = asset?.getUrl();
+  // @TODO this breaks without an async step - why?
+  await Promise.resolve();
   if (result) {
     node.dispatchEvent(
       new CustomEvent<ThumbnailEvent>('thumbnail', {
@@ -39,7 +40,9 @@ export function thumbnail(node: Node, treeNode: HierarchyTreeNode) {
   let currThumbnail: ReturnType<Thumbnail['getUrl']>;
   const asset = getThumbnail(treeNode);
   if (asset) {
-    generateThumbnail(node, asset).then((result) => (currThumbnail = result));
+    generateThumbnail(node, asset).then((result) => {
+      currThumbnail = result;
+    });
   }
 
   return {

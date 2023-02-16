@@ -13,12 +13,11 @@
   from Adobe.
 -->
 <script lang="ts">
-  import debug from 'debug';
   import cssVars from 'svelte-css-vars';
   import { _ } from 'svelte-i18n';
-  import { selectExif } from '../lib/exif';
-  import { getBadgeProps, getFilename, getManifest } from '../lib/node';
-  import { selectIsOriginal } from '../lib/sdk';
+  import { selectExif } from '$lib/exif';
+  import { getBadgeProps, getFilename, getManifest } from '$lib/node';
+  import { selectIsOriginal } from '$lib/sdk';
   import type { HierarchyTreeNode } from '../stores';
   import CollapsibleSection from './CollapsibleSection.svelte';
   import Exif from './Exif.svelte';
@@ -27,11 +26,7 @@
   import ManifestDetails from './ManifestDetails.svelte';
   import Thumbnail from './Thumbnail.svelte';
 
-  const dbg = debug('about');
-
   export let node: HierarchyTreeNode;
-  export let isComparing = false;
-  export let isMobileViewer = false;
 
   let colWidth: number;
 
@@ -75,7 +70,7 @@
           </div>
         </div>
         {#if showDetails}
-          <ManifestDetails {node} {isComparing} {isMobileViewer} />
+          <ManifestDetails {node} />
         {:else}
           <div class="py-4">
             {#if badgeProps?.badgeHelpText}
@@ -119,11 +114,6 @@
   @screen md {
     .about-info {
       @apply min-h-0;
-    }
-  }
-  @screen lg {
-    .file-name .value {
-      @apply max-w-full;
     }
   }
 </style>

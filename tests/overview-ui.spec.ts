@@ -12,22 +12,22 @@
 // from Adobe.
 
 import { expect } from '@playwright/test';
-import { allImages } from './descriptors';
-import CAICAI from './descriptors/images/CAICAI';
-import { aboutHelper } from './helpers/about';
-import { test } from './test';
-import { testID } from './utils/selectors';
-import { flattenTree } from './utils/tree';
+import { allImages } from './descriptors/index.js';
+import CAICAI from './descriptors/images/CAICAI.js';
+import { aboutHelper } from './helpers/about.js';
+import { test } from './test.js';
+import { testID } from './utils/selectors.js';
+import { flattenTree } from './utils/tree.js';
 
 test.describe('overview - UI rendering', () => {
   for (const { description, imagePath, claim, overviewDisabled } of allImages) {
     test(`${description} [${imagePath}]`, async ({ overviewPage }) => {
       await overviewPage.uploadImage(imagePath);
       if (overviewDisabled) {
-        let isDisabled = await overviewPage.page
+        const isDisabled = await overviewPage.page
           .locator(testID('overview.btn'))
           .getAttribute('disabled');
-        await expect(isDisabled).not.toBeNull();
+        expect(isDisabled).not.toBeNull();
       } else {
         await overviewPage.page.locator(testID('overview.btn')).click();
         await overviewPage.page.waitForSelector(testID('tree-view'));
@@ -58,12 +58,12 @@ test.describe('overview - UI rendering', () => {
 });
 
 // @TODO: can these assertions be shared with inspect?
-test.describe('invalid file format', () => {
-  test('should show an invalid filetype error', async ({ overviewPage }) => {
+test.describe('invalid file', () => {
+  test('should show the appropriate error', async ({ overviewPage }) => {
     await overviewPage.goto('source=foobydoobydoo');
 
     await expect(overviewPage.rightColumn()).toContainText(
-      "That file type isn't supported. Try again with a JPG or PNG.",
+      'Something went wrong. There may have been an issue with your file or an error.',
     );
   });
 });
@@ -91,6 +91,7 @@ test.describe('about panel navigation', () => {
     await overviewPage.nodeLocator('0.1').click({ force: true });
 
     await aboutHelper(overviewPage.page).expectToMatchClaim(
+      // @ts-ignore
       CAIECA.claim.ingredients[1],
     );
   });

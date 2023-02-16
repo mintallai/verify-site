@@ -1,4 +1,4 @@
-FROM docker-asr-release.dr.corp.adobe.com/asr/static_builder_node_v14:3.2.3
+FROM docker-asr-release.dr.corp.adobe.com/asr/static_builder_nodejs_v16:1.6.0
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 

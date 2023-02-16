@@ -17,8 +17,8 @@
   import { onMount, getContext } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { sourceManifestStore } from '../stores';
-  import { CONTEXT_KEY } from '../lib/loader';
-  import DropFile from '../../assets/svg/monochrome/drop-file.svg';
+  import { CONTEXT_KEY } from '$lib/loader';
+  import DropFile from '../../assets/svg/monochrome/drop-file.svg?component';
   export let isUploadMode: boolean = false;
   export let isDragging: boolean = false;
   export let isError: boolean = false;

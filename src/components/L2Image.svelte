@@ -1,27 +1,38 @@
 <script lang="ts">
-  import { createL2ManifestStore, generateVerifyUrl } from 'c2pa';
-  import { onMount } from 'svelte';
+  import {
+    createL2ManifestStore,
+    generateVerifyUrl,
+    type DisposableL2ManifestStore,
+  } from 'c2pa';
+  import { onDestroy, onMount } from 'svelte';
   import { getSdk } from '../lib/sdk';
-  export let sourceImage;
-  export let placement;
-  let manifest;
+
+  export let sourceImage: string;
+  export let placement: number;
+  let result: DisposableL2ManifestStore;
   let viewMoreURL = generateVerifyUrl(sourceImage);
-  async function getManifest(img) {
+
+  async function getManifest(img: string) {
     const sdk = await getSdk();
     const res = await sdk.read(img);
     return createL2ManifestStore(res.manifestStore);
   }
+
   onMount(async () => {
-    manifest = await getManifest(sourceImage);
-    manifest = manifest.manifestStore;
+    result = await getManifest(sourceImage);
   });
 
-  function setManifest(node, manifestStore) {
-    node.manifestStore = manifestStore;
+  onDestroy(() => result?.dispose?.());
+
+  function setManifestStore(
+    node: HTMLElement,
+    manifestStore: DisposableL2ManifestStore,
+  ) {
+    (node as any).manifestStore = result.manifestStore;
   }
 </script>
 
-{#if manifest}
+{#if result}
   <div class="wrapper">
     <cai-popover
       interactive
@@ -30,7 +41,7 @@
       style:z-index={placement}>
       <cai-indicator slot="trigger" />
       <cai-manifest-summary
-        use:setManifest={manifest}
+        use:setManifestStore={result}
         view-more-url={viewMoreURL}
         slot="content" />
     </cai-popover>

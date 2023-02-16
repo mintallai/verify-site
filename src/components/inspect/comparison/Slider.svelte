@@ -17,12 +17,12 @@
   import cssVars from 'svelte-css-vars';
   import interact from 'interactjs';
   import type { DragEvent } from '@interactjs/types';
-  import ChevronLeft from '../../../../assets/svg/monochrome/chevron-left.svg';
-  import ChevronRight from '../../../../assets/svg/monochrome/chevron-right.svg';
-  import type { TippyProps } from '../../../lib/tippy';
-  import { tippy } from '../../../lib/tippy';
-  import { thumbnail, handleImgSrc } from '../../../lib/thumbnail';
-  import { getFilename } from '../../../lib/node';
+  import ChevronLeft from '../../../../assets/svg/monochrome/chevron-left.svg?component';
+  import ChevronRight from '../../../../assets/svg/monochrome/chevron-right.svg?component';
+  import type { TippyProps } from '$lib/tippy';
+  import { tippy } from '$lib/tippy';
+  import { thumbnail, handleImgSrc } from '$lib/thumbnail';
+  import { getFilename } from '$lib/node';
   import type { HierarchyTreeNode } from '../../../stores';
 
   export let side = 0;

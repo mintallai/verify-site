@@ -14,7 +14,7 @@
 -->
 <script lang="ts">
   import { date, time, _ } from 'svelte-i18n';
-  export let sigDate;
+  export let sigDate: number | Date;
   export let noTime: boolean = false;
 </script>
 

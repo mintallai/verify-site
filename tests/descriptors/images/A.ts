@@ -11,7 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { TestImageDescriptor } from '../types';
+import type { TestImageDescriptor } from '../types';
 
 const claim: TestImageDescriptor = {
   imagePath: 'A.jpg',

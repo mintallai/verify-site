@@ -14,9 +14,14 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import Dots from '../../assets/svg/monochrome/dots.svg';
-  import { handleUrl } from '../lib/util/handlers';
+  import Dots from '../../assets/svg/monochrome/dots.svg?component';
+  import { handleUrl } from '$lib/util/handlers';
   import { FAQ_URL } from '../stores';
+
+  import '@spectrum-web-components/popover/sp-popover.js';
+  import '@spectrum-web-components/dialog/sp-dialog.js';
+  import '@spectrum-web-components/button/sp-button.js';
+
   let open: boolean = true;
   export let placement: string = 'right-start';
   const onCancel = () => {
@@ -31,6 +36,8 @@
   <button
     slot="trigger"
     on:click={onConfirm}
+    aria-label={$_('dialog.manifestRecovery.headline')}
+    aria-haspopup="dialog"
     class="w-4 flex items-center justify-center">
     <Dots class="w-1" /></button>
   <sp-popover slot="click-content" class="max-w-[420px]">

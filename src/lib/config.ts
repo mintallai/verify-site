@@ -1,9 +1,10 @@
 import debug from 'debug';
 import memoize from 'lodash/memoize';
+import { version } from '$app/environment';
 
 const dbg = debug('config');
 
-export const SITE_VERSION = process.env.GIT_REVISION;
+export const SITE_VERSION = version;
 export const MAPBOX_TOKEN =
   'pk.eyJ1IjoiZGtvem1hLWFkb2JlIiwiYSI6ImNsOTV1aHFxYTJoOXM0MG14cTlzbTdxYmEifQ.xR4EY81HcCeRRF-zycgsMw';
 

@@ -14,9 +14,10 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { tippy, TippyProps } from '../lib/tippy';
-  import EthereumLogo from '../../assets/svg/color/logos/crypto-eth.svg';
-  import SolanaLogo from '../../assets/svg/color/logos/crypto-sol.svg';
+  import { tippy } from '$lib/tippy';
+  import type { TippyProps } from '$lib/tippy';
+  import EthereumLogo from '../../assets/svg/color/logos/crypto-eth.svg?component';
+  import SolanaLogo from '../../assets/svg/color/logos/crypto-sol.svg?component';
 
   export let type: string;
   export let address: string;
@@ -47,7 +48,7 @@
       <SolanaLogo width="16px" height="16px" />
     {/if}
   </div>
-  <div
+  <button
     use:tippy={{
       content: $_('web3Address.copiedPopover'),
       ...tippyOpts,
@@ -55,5 +56,5 @@
     class="break-all bg-gray-200 rounded-full px-2 cursor-pointer"
     on:click={() => handleClick(address)}>
     {truncatedAddress}
-  </div>
+  </button>
 </dd>

@@ -14,10 +14,6 @@
 import startsWith from 'lodash/startsWith';
 import type { HierarchyTreeNode } from '../stores';
 
-const DELIVERED_ACTION = 'adobe.delivered';
-const PARENS_REGEX = /\([^\)]*\)/g;
-const SPACE_VERSION_REGEX = /\s+\d+\.\d(\.\d)*\s+/;
-
 export type BadgeType = 'none' | 'info' | 'missing' | 'alert';
 
 export interface BadgeProps {

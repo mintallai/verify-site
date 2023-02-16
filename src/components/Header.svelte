@@ -14,37 +14,18 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { slide } from 'svelte/transition';
-  import 'vanilla-hamburger/fade-burger';
-  import { IngestPayload, postEvent } from '../lib/analytics';
-  import { handleUrl } from '../lib/util/handlers';
-  import {
-    forceProductionServices,
-    getFaqUrl,
-    isBurgerMenuShown,
-    learnMoreUrl,
-    setProvenance,
-  } from '../stores';
-  import Button from './Button.svelte';
-
-  function handleBurgerClick() {
-    isBurgerMenuShown.update((shown) => !shown);
-  }
+  import { handleUrl } from '$lib/util/handlers';
+  import { forceProductionServices, getFaqUrl, learnMoreUrl } from '../stores';
 
   function upload(evt: Event) {
-    window.newrelic?.addPageAction('uploadClick');
     window.location.assign('/inspect');
+    window.newrelic?.addPageAction('uploadClick');
     evt.preventDefault();
   }
 
   function goToLanding(evt: Event) {
     window.location.assign('/');
     evt.preventDefault();
-  }
-
-  function chooseImage() {
-    isBurgerMenuShown.update((shown) => !shown);
-    setProvenance(null);
   }
 </script>
 
@@ -65,50 +46,25 @@
     </button>
   </div>
   <div class="links full-menu">
-    <button
+    <a
       data-test-id="header.choose-image"
+      href="inspect"
       on:click={upload}
       class="text-gray-300 font-medium text-sm tracking-tight">
       {$_('comp.header.uploadImage')}
-    </button>
+    </a>
     <a
       href={getFaqUrl()}
       on:click={handleUrl(getFaqUrl(), 'faq')}
       target="_blank"
+      rel="noreferrer"
       class="font-medium text-sm tracking-tight">{$_('comp.header.faq')}</a>
     <button
       data-test-id="header.learn-more"
-      href={$learnMoreUrl}
       on:click={handleUrl($learnMoreUrl, 'learn')}
       class="font-medium text-sm tracking-tight"
       >{$_('comp.header.learnMore')}</button>
   </div>
-
-  <div class="block md:hidden -mr-3">
-    <fade-burger
-      on:pressed-changed={handleBurgerClick}
-      size="24"
-      duration="0.2"
-      class="text-gray-600 close"
-      pressed={$isBurgerMenuShown} />
-  </div>
-  {#if $isBurgerMenuShown}
-    <div transition:slide={{ duration: 300 }} class="burger-menu">
-      <a
-        data-test-id="header.choose-image-mobile"
-        href="/inspect"
-        on:click={chooseImage}>{$_('comp.header.uploadImage')}</a>
-      <a
-        href={getFaqUrl()}
-        on:click={handleUrl(getFaqUrl(), 'faq')}
-        target="_blank">FAQ</a>
-      <a
-        data-test-id="header.learn-more-mobile"
-        href={$learnMoreUrl}
-        on:click={handleUrl($learnMoreUrl, 'learn')}
-        >{$_('comp.header.learnMore')}</a>
-    </div>
-  {/if}
 </header>
 
 <style lang="postcss">
@@ -131,18 +87,6 @@
   .links a,
   .links button {
     @apply ml-4 text-gray-600;
-  }
-  .burger-menu {
-    @apply flex flex-col absolute bg-white px-4 z-30;
-    top: 60px;
-    left: 0;
-    right: 0;
-  }
-  .burger-menu a {
-    @apply inline-block font-bold py-5 border-b border-gray-300;
-  }
-  .burger-menu a:last-of-type {
-    @apply border-none;
   }
   @screen md {
     .full-menu {

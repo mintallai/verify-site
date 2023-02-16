@@ -13,10 +13,9 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { date, time, _ } from 'svelte-i18n';
-  import { getBadgeProps, getFilename, getManifest } from '../lib/node';
-  import { selectFormattedDate } from '../lib/sdk';
-  import { ThumbnailEvent } from '../lib/thumbnail';
+  import { _ } from 'svelte-i18n';
+  import { getBadgeProps, getFilename, getManifest } from '$lib/node';
+  import { selectFormattedDate } from '$lib/sdk';
   import {
     activeAsset,
     resultHierarchies,
@@ -27,7 +26,6 @@
   import Thumbnail from './Thumbnail.svelte';
   import Tooltip from './Tooltip.svelte';
 
-  let src = '';
   export let value: number | null;
 
   $: node =
@@ -41,10 +39,6 @@
   $: isActive =
     (value === null && $activeAsset[0] == 's') ||
     (value != null && $activeAsset[1] === value);
-
-  function handleThumbnail(evt: CustomEvent<ThumbnailEvent>) {
-    src = evt.detail.url;
-  }
 
   function handleActiveAsset() {
     setActiveAsset(value);

@@ -11,9 +11,14 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { createC2pa, Manifest } from 'c2pa';
+import { createC2pa } from 'c2pa';
 import pMemoize from 'p-memoize';
+import type { Manifest } from 'c2pa';
 import type { ExifTags } from './exif';
+
+import wasmSrc from 'c2pa/dist/assets/wasm/toolkit_bg.wasm?url';
+import workerSrc from 'c2pa/dist/c2pa.worker.min.js?url';
+
 declare module 'c2pa' {
   interface ExtendedAssertions {
     'adobe.crypto.addresses': {
@@ -30,8 +35,8 @@ declare module 'c2pa' {
 async function createSdk() {
   try {
     return await createC2pa({
-      wasmSrc: 'sdk/toolkit_bg.wasm',
-      workerSrc: 'sdk/c2pa.worker.min.js',
+      wasmSrc,
+      workerSrc,
       downloaderOptions: {
         inspectSize: 0,
       },
@@ -75,7 +80,7 @@ export function selectWeb3(manifest: Manifest) {
 export function selectFormattedGenerator(manifest: Manifest) {
   const value = manifest.claimGenerator;
   // We are stripping parenthesis so that any version matches in there don't influence the test
-  const withoutParens = value.replace(/\([^\)]*\)/g, '');
+  const withoutParens = value.replace(/\([^)]*\)/g, '');
   if (/\s+\d+\.\d(\.\d)*\s+/.test(withoutParens)) {
     // Old-style (XMP Agent) string (match space + version)
     return value.split('(')[0]?.trim();

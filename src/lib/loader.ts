@@ -14,11 +14,11 @@
 import { setContext } from 'svelte';
 import { get } from 'svelte/store';
 import dragDrop from 'drag-drop';
-import { page } from '@roxi/routify';
-import { postEvent, IngestPayload } from '../lib/analytics';
-import { C2paReadResult } from 'c2pa';
-import { getSdk } from '../lib/sdk';
-import { getConfig } from '../lib/config';
+import { postEvent } from './analytics';
+import type { IngestPayload } from './analytics';
+import type { C2paReadResult } from 'c2pa';
+import { getSdk } from '$lib/sdk';
+import { getConfig } from '$lib/config';
 import {
   urlParams,
   sourceManifestStore,
@@ -27,6 +27,7 @@ import {
   lastUrlSource,
   dialog,
 } from '../stores';
+import { page } from '$app/stores';
 
 export const CONTEXT_KEY = 'loader';
 
@@ -71,7 +72,7 @@ function logSuccess(
   });
 }
 
-function logError(err, type: IngestPayload['ui.view_type']) {
+function logError(err: Error, type: IngestPayload['ui.view_type']) {
   postEvent({
     'event.type': 'error',
     'event.subtype': 'verify',
@@ -93,8 +94,8 @@ function showLegacyCredentialModal(source: File | string) {
         config.env === 'stage'
           ? 'https://verify-beta-stage.contentauthenticity.org'
           : 'https://verify-beta.contentauthenticity.org';
-      const path = get(page)?.path ?? '/';
-      const redirectTo = `${legacyVerifyUrl}${path}`;
+      const { pathname, search } = get(page).url;
+      const redirectTo = `${legacyVerifyUrl}${pathname}${search}`;
       if (typeof source === 'string') {
         logLegacyRedirect('link');
         window.location.assign(`${redirectTo}?source=${source}`);
@@ -108,12 +109,12 @@ function showLegacyCredentialModal(source: File | string) {
 
 async function hasLegacyCredentials(source: File | string) {
   try {
-    const legacySdk = 'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12';
     const wasmSrc =
       'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12/dist/assets/wasm/toolkit_bg.wasm';
     const workerSrc =
       'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12/dist/cai-sdk.worker.min.js';
-    const { ContentAuth } = await import(legacySdk);
+    const sdkSrc = 'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12';
+    const { ContentAuth } = await import(sdkSrc);
     const sdk = new ContentAuth({
       wasmSrc,
       workerSrc,
@@ -142,7 +143,7 @@ async function handleError(
     typeof source === 'string'
       ? { source: 'url' }
       : { source: 'file', type: source.type };
-  let isLegacy;
+  let isLegacy: boolean;
   // C2pa(PrereleaseError) gets triggered when a 0.8 image is supplied
   if (err.name === 'C2pa(PrereleaseError)') {
     isLegacy = await hasLegacyCredentials(source);
@@ -159,7 +160,7 @@ async function handleError(
 }
 
 async function processSourceImage(sourceParam: string, params: ILoaderParams) {
-  const onSuccess = (result) => {
+  const onSuccess = (result: C2paReadResult) => {
     setProvenance(result);
     lastUrlSource.set(sourceParam);
     logSuccess(result, 'link');
@@ -194,7 +195,7 @@ export async function processFiles(
   params: ILoaderParams,
 ) {
   const fileArray = Array.from(files);
-  const onSuccess = (result) => {
+  const onSuccess = (result: C2paReadResult) => {
     setProvenance(result);
     logSuccess(result, 'upload');
   };
@@ -236,7 +237,7 @@ export function setLoaderContext(params: ILoaderParams) {
   });
 }
 
-export function loader(node, params: ILoaderParams) {
+export function loader(node: HTMLElement, params: ILoaderParams) {
   const { onDragStateChange, onError } = params;
   const sourceParam = get(urlParams).source;
   const prov = get(sourceManifestStore);

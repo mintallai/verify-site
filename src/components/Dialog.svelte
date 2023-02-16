@@ -1,8 +1,6 @@
-<script lang="ts" context="module">
-  import '@spectrum-web-components/dialog/sp-dialog-wrapper.js';
-</script>
-
 <script lang="ts">
+  import '@spectrum-web-components/dialog/sp-dialog-wrapper.js';
+
   import { _ } from 'svelte-i18n';
   export let cancelLabelKey = 'dialog.buttons.cancel';
   export let confirmLabelKey = 'dialog.buttons.confirm';

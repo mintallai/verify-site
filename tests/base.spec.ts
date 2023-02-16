@@ -12,7 +12,7 @@
 // from Adobe.
 
 import { expect } from '@playwright/test';
-import { test } from './test';
+import { test } from './test.js';
 
 test.describe('Base functionality', () => {
   test('site loads', async ({ page }) => {

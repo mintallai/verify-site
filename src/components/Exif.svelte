@@ -14,7 +14,8 @@
 -->
 <script lang="ts">
   import { date, time, _ } from 'svelte-i18n';
-  import { ExifSummary, generateMapUrl } from '../lib/exif';
+  import { generateMapUrl } from '$lib/exif';
+  import type { ExifSummary } from '$lib/exif';
   import AboutSection from './inspect/AboutSection.svelte';
 
   export let data: ExifSummary;
@@ -83,6 +84,7 @@
           <dd>
             <img
               src={locationImgSrc}
+              alt={$_('comp.exif.approximateLocation.altText')}
               class="w-full h-[280px] object-cover select-none rounded overflow-hidden" />
           </dd>
         </dl>

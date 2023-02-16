@@ -26,10 +26,8 @@ const dbg = debug('i18n');
 
 export const DEFAULT_LOCALE = 'en-US';
 const LOCALSTORAGE_KEY = 'locale';
-const GIT_REVISION = process.env.GIT_REVISION as string;
 
-export const supportedLocales = process.env.SUPPORTED_LOCALES as string[];
-
+export const supportedLocales = __SUPPORTED_LOCALES__;
 export const supportedLanguages = groupBy(supportedLocales, lang);
 
 function getSupportedLocale(locale: string) {
@@ -47,10 +45,8 @@ function getSupportedLocale(locale: string) {
 export function initI18n() {
   supportedLocales.forEach((locale) => {
     register(locale, async () => {
-      const url = `/locales/${locale}.json?rev=${GIT_REVISION}`;
-      dbg(`Fetching locale information for ${locale} from ${url}`);
-      const res = await fetch(url);
-      const data = await res.json();
+      dbg(`Fetching locale information for ${locale}`);
+      const data = (await import(`../../locales/${locale}.json`)).default;
       dbg(`Received translations for ${locale}`, data);
       return data;
     });

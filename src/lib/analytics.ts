@@ -1,9 +1,9 @@
 import pMemoize from 'p-memoize';
 import merge from 'lodash/merge';
 import difference from 'lodash/difference';
-import Ingest from '@ccx-public/ingest';
 import { customAlphabet } from 'nanoid';
 import { getConfig, SITE_VERSION } from './config';
+import Ingest from '@ccx-public/ingest';
 import debug from 'debug';
 
 const dbg = debug('ingest');
@@ -17,10 +17,10 @@ const nanoid = customAlphabet(NANOID_ALPHABET, NANOID_LENGTH);
 const getIngest = pMemoize(async () => {
   const config = await getConfig();
   const dependencies = {
-    getAccessToken(callback) {
+    getAccessToken(callback: (...args: any[]) => any) {
       callback(null);
     },
-    log(msg) {
+    log(msg: string) {
       dbg(msg);
     },
   };
@@ -68,18 +68,6 @@ export interface IngestPayload {
   'ui.view_type': 'link' | 'upload';
 }
 
-const eventDefaults: Partial<IngestPayload> = {
-  'env.svc.name': 'verify',
-  'env.svc.version': SITE_VERSION,
-  'event.category': 'WEB',
-  'event.subcategory': 'Verify',
-  'event.user_agent': navigator.userAgent,
-  'event.workflow': 'Home',
-  'source.name': 'CAI',
-};
-
-const requiredEvents = ['event.type'];
-
 /**
  * Create visitor ID (mcid_guid) so we can identify unknown users
  * @returns alphanumeric unique ID
@@ -95,6 +83,18 @@ function getMcidGuid() {
 }
 
 export async function postEvent(data: Partial<IngestPayload>) {
+  const eventDefaults: Partial<IngestPayload> = {
+    'env.svc.name': 'verify',
+    'env.svc.version': SITE_VERSION,
+    'event.category': 'WEB',
+    'event.subcategory': 'Verify',
+    'event.user_agent': navigator.userAgent,
+    'event.workflow': 'Home',
+    'source.name': 'CAI',
+  };
+
+  const requiredEvents = ['event.type'];
+
   const ingest = await getIngest();
   const common = {
     'event.dts_end': new Date(),
@@ -113,7 +113,7 @@ export async function postEvent(data: Partial<IngestPayload>) {
     throw new Error(`Attempting to send payload with missing required data`);
   }
 
-  ingest.postEvent(payload, (err) => {
+  ingest.postEvent(payload, (err: Error) => {
     if (err) {
       console.warn('Error posting event to ingest', err);
     }

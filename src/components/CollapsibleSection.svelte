@@ -15,7 +15,7 @@
 <script lang="ts">
   // based on suggestions from:
   // Inclusive Components by Heydon Pickering https://inclusive-components.design/collapsible-sections/
-  import DownArrow from '../../assets/svg/monochrome/down-arrow.svg';
+  import DownArrow from '../../assets/svg/monochrome/down-arrow.svg?component';
   import Tooltip from './Tooltip.svelte';
   export let headerText: string;
   export let helper: string | null = null;

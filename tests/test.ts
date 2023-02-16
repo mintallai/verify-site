@@ -12,8 +12,8 @@
 // from Adobe.
 
 import { test as base } from '@playwright/test';
-import { OverviewPage } from './models/Overview';
-import { InspectPage } from './models/Inspect';
+import { OverviewPage } from './models/Overview.js';
+import { InspectPage } from './models/Inspect.js';
 
 interface TestFixtures {
   inspectPage: InspectPage;

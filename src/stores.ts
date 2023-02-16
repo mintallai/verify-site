@@ -18,8 +18,9 @@ import type {
   Source,
   Thumbnail,
 } from 'c2pa';
-import { hierarchy as d3Hierarchy, HierarchyNode } from 'd3-hierarchy';
-import { ZoomTransform } from 'd3-zoom';
+import { hierarchy as d3Hierarchy } from 'd3-hierarchy';
+import type { HierarchyNode } from 'd3-hierarchy';
+import type { ZoomTransform } from 'd3-zoom';
 import local from 'store2';
 import { derived, get, readable, writable } from 'svelte/store';
 
@@ -36,13 +37,19 @@ const STORAGE_MODE_KEY = 'compareMode';
 export const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
 export const ROOT_LOC = '0';
 
+interface IUrlParams {
+  source: string;
+  tourFlag: boolean;
+  forceTourFlag: boolean;
+}
+
 /**
  * Syncs the URL params to the state
  *
  * This currently happens only on page load
  */
 export const urlParams = readable<IUrlParams>(null, (set) => {
-  const params = new URLSearchParams(window.location.search?.substr(1));
+  const params = new URLSearchParams(window.location.search?.substring(1));
   set({
     source: params.get('source'),
     tourFlag: !!params.get('tour'),
@@ -53,12 +60,12 @@ export const urlParams = readable<IUrlParams>(null, (set) => {
 /**
  * An accessor to the "learn more" URL
  */
-export const learnMoreUrl = readable<string>(LEARN_MORE_URL, () => {});
+export const learnMoreUrl = readable<string>(LEARN_MORE_URL);
 
 /**
  * An accessor to the "learn more" URL
  */
-export const unknownLearnMoreUrl = readable<string>(DATA_PRIVACY_URL, () => {});
+export const unknownLearnMoreUrl = readable<string>(DATA_PRIVACY_URL);
 
 /**
  * Stores the list of universal IDs (claim/parent/ingredient) that represents
@@ -85,8 +92,11 @@ export const overviewTransform = writable<ZoomTransform | null>(null);
  * Option to force usage of production services while testing
  */
 export const forceProductionServices = readable<boolean>(false, (set) => {
-  const value = window.localStorage.getItem('forceProduction');
-  set(!!value);
+  const value =
+    typeof window !== 'undefined'
+      ? !!window.localStorage.getItem('forceProduction')
+      : false;
+  set(value);
 });
 
 /**
@@ -102,10 +112,6 @@ export const primaryLoc = writable<string>('');
 export const secondaryLoc = writable<string>('');
 
 export const isLoading = writable<boolean>(false);
-
-export const isBurgerMenuShown = writable<boolean>(false);
-
-export const isMobileViewerShown = writable<boolean>(false);
 
 export const isCompareSelectMode = writable<boolean>(false);
 
@@ -159,14 +165,14 @@ export function getFaqUrl(id: string = FAQ_VERIFY_SECTION_ID): string {
   return `${FAQ_URL}#${id}`;
 }
 
-export function setIsLoading(loading) {
+export function setIsLoading(loading: boolean) {
   isLoading.set(loading);
 }
 
 /**
  * Navigates the view to a new claim in the manifest. Used when clicking on different content sources.
  *
- * @param path The path to navigate to
+ * @param id The path to navigate to
  * @param logEvent `true` to log this event in New Relic
  */
 export function navigateTo(id: string, logEvent = true): void {
@@ -193,7 +199,7 @@ export function navigateToChild(id: string, logEvent = true): void {
 /**
  * Launches the comparison view between the exsiting `primaryLoc` and the passed in `id`.
  *
- * @param id The claim ID of the claim to compare with
+ * @param loc The claim ID of the claim to compare with
  * @param logEvent `true` to log this event in New Relic
  */
 export function compareWith(loc: string | null, logEvent = true): void {
@@ -214,12 +220,7 @@ export const activeAsset = writable<ActiveAssetType>(['s']);
 /**
  * Contains the SdkResult of the loaded asset.
  */
-export const sourceManifestStore = writable<C2paReadResult | null>(
-  null,
-  (set) => {
-    return () => {};
-  },
-);
+export const sourceManifestStore = writable<C2paReadResult | null>(null);
 
 /**
  * Contains an array of SdkResults of the returned matches
@@ -276,6 +277,8 @@ export type TreeNode = ManifestTreeNode | IngredientTreeNode | SourceTreeNode;
 
 export type HierarchyTreeNode = HierarchyNode<TreeNode>;
 
+type ValidationStatusArray = Ingredient['validationStatus'];
+
 /**
  * Determines if a validation status list contains an OTGP (`assertion.dataHash.mismatch`)
  * status, and therefore, should present with an orange badge.
@@ -283,7 +286,7 @@ export type HierarchyTreeNode = HierarchyNode<TreeNode>;
  * @param validationStatus
  * @returns `true` if we find an OTGP status
  */
-function hasOtgpStatus(validationStatus: any[] = []) {
+function hasOtgpStatus(validationStatus: ValidationStatusArray = []) {
   return validationStatus.some((err) => err.code === OTGP_ERROR_CODE);
 }
 
@@ -294,13 +297,13 @@ function hasOtgpStatus(validationStatus: any[] = []) {
  * @param validationStatus
  * @returns `true` if we find an error
  */
-function hasErrorStatus(validationStatus: any[] = []) {
+function hasErrorStatus(validationStatus: ValidationStatusArray = []) {
   return (
     validationStatus.filter((err) => err.code !== OTGP_ERROR_CODE).length > 0
   );
 }
 
-function getChildrenFromIngredients(ingredients, loc) {
+function getChildrenFromIngredients(ingredients: Ingredient[], loc: string) {
   return ingredients?.map((ingredient, idx) =>
     parseProvenance(ingredient, `${loc}.${idx}`),
   );
@@ -329,18 +332,16 @@ function getChildrenFromIngredients(ingredients, loc) {
  * @returns TreeNode
  */
 function parseProvenance(
-  toolkitNode: any,
+  toolkitNode: Manifest | Ingredient,
   loc = ROOT_LOC,
   validationStatus?: any[],
 ): TreeNode {
   // The active manifest should be at the root location (0)
   const isActiveManifest = loc === ROOT_LOC;
-  const isIngredient = toolkitNode.hasOwnProperty('manifest');
-  const ingredients =
-    toolkitNode.manifest?.ingredients ?? toolkitNode.ingredients;
+
   let children = [];
 
-  if (isIngredient) {
+  if (isIngredient(toolkitNode)) {
     const manifest = toolkitNode.manifest;
     const statuses = toolkitNode?.validationStatus ?? [];
     const isOtgp = hasOtgpStatus(statuses);
@@ -352,7 +353,7 @@ function parseProvenance(
       if (isOtgp) {
         children = manifest ? [parseProvenance(manifest, `${loc}.0`)] : [];
       } else {
-        children = getChildrenFromIngredients(ingredients, loc);
+        children = getChildrenFromIngredients(manifest?.ingredients, loc);
       }
     }
 
@@ -360,7 +361,7 @@ function parseProvenance(
       loc,
       type: 'ingredient',
       title: toolkitNode.title,
-      format: toolkitNode.thumbnail?.format,
+      format: toolkitNode.thumbnail?.contentType,
       thumbnail: toolkitNode.thumbnail,
       node: toolkitNode,
       statuses,
@@ -379,7 +380,7 @@ function parseProvenance(
     // Hide claims beyond an error state since they cannot be trusted
     // see https://c2pa.org/specifications/specifications/1.0/ux/UX_Recommendations.html#_validation_states_2
     if (!hasError) {
-      children = getChildrenFromIngredients(ingredients, loc);
+      children = getChildrenFromIngredients(toolkitNode.ingredients, loc);
     }
 
     return {
@@ -395,6 +396,12 @@ function parseProvenance(
       hasError,
     };
   }
+}
+
+function isIngredient(
+  provenanceSource: Manifest | Ingredient,
+): provenanceSource is Ingredient {
+  return Object.prototype.hasOwnProperty.call(provenanceSource, 'manifest');
 }
 
 export const sourceHierarchy = derived<
@@ -465,7 +472,7 @@ export const resultHierarchies = derived<
  * Automatically gives the correct hierarchy based on if the user selects
  * a source manifest vs a result manifest (for manifest recovery)
  */
-export let hierarchy = derived(
+export const hierarchy = derived(
   [sourceHierarchy, resultHierarchies, activeAsset],
   ([$sourceHierarchy, $resultHierarchies, $activeAsset]) => {
     const [type, resultNumber] = $activeAsset;
