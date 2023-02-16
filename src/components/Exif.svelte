@@ -84,7 +84,7 @@
           <dd>
             <img
               src={locationImgSrc}
-              alt="map showing approximate location"
+              alt={$_('comp.exif.approximateLocation.altText')}
               class="w-full h-[280px] object-cover select-none rounded overflow-hidden" />
           </dd>
         </dl>
