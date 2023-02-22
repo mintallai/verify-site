@@ -46,6 +46,7 @@
   "comp.contentCredentialsError.unknownActions": "一部の編集またはアクティビティは記録されていない可能性があります。",
   "comp.date.invalid": "日付が無効です",
   "comp.exif.approximateLocation": "おおよその位置",
+  "comp.exif.approximateLocation.altText": "Map of approximate location",
   "comp.exif.captureDate": "撮影日",
   "comp.exif.captureDetails": "撮影の詳細",
   "comp.exif.captureDetails.cameraMake": "カメラメーカー",
