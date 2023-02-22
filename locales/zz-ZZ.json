@@ -46,6 +46,7 @@
   "comp.contentCredentialsError.unknownActions": "[BL] _üSome edits or activity may not have been recorded.",
   "comp.date.invalid": "[CI] _üInvalid date",
   "comp.exif.approximateLocation": "[B9] _üApproximate location",
+  "comp.exif.approximateLocation.altText": "[CK] _üMap of approximate location",
   "comp.exif.captureDate": "[B+] _üCapture date",
   "comp.exif.captureDetails": "[B/] _üCapture details",
   "comp.exif.captureDetails.cameraMake": "[CA] _üCamera make",
