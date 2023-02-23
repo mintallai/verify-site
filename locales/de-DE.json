@@ -46,7 +46,7 @@
   "comp.contentCredentialsError.unknownActions": "Einige Bearbeitungen oder Aktivitäten wurden möglicherweise nicht aufgezeichnet.",
   "comp.date.invalid": "Ungültiges Datum",
   "comp.exif.approximateLocation": "Ungefährer Ort",
-  "comp.exif.approximateLocation.altText": "Map of approximate location",
+  "comp.exif.approximateLocation.altText": "Karte mit der ungefähren Lage",
   "comp.exif.captureDate": "Aufnahmedatum",
   "comp.exif.captureDetails": "Aufnahmedetails",
   "comp.exif.captureDetails.cameraMake": "Kamerahersteller",

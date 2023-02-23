@@ -46,7 +46,7 @@
   "comp.contentCredentialsError.unknownActions": "Certaines modifications ou activités n’ont peut être pas été enregistrées.",
   "comp.date.invalid": "Date non valide",
   "comp.exif.approximateLocation": "Emplacement approximatif",
-  "comp.exif.approximateLocation.altText": "Map of approximate location",
+  "comp.exif.approximateLocation.altText": "Carte d’emplacement approximatif",
   "comp.exif.captureDate": "Date de la capture",
   "comp.exif.captureDetails": "Détails de la capture",
   "comp.exif.captureDetails.cameraMake": "Marque de l’appareil photo",
