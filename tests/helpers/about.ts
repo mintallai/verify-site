@@ -27,7 +27,6 @@ export function aboutHelper(root: Locator | Page) {
     signedOn: panelLocator.locator(testID('about.signed-on')),
     producedWith: panelLocator.locator(testID('about.produced-with')),
     producedBy: panelLocator.locator(testID('about.produced-by')),
-    originalCreation: panelLocator.locator(testID('original-creation')),
     editsAndActivityItems: panelLocator.locator(
       `${testID('about.edits-and-activity')} div`,
     ),

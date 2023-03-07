@@ -24,7 +24,6 @@ const claim: TestImageDescriptor = {
       signedBy: 'C2PA Test Signing Cert Aug 1, 2022 at  6:48 PM EDT',
       signedOn: 'Aug 1, 2022 at  6:48 PM EDT',
       producedWith: 'make test images 0.11.1',
-      isOriginalCreation: true,
       editsAndActivity: [
         {
           name: 'Created',

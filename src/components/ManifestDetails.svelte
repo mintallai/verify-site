@@ -59,7 +59,7 @@
   $: ratings = selectReviewRatings(manifest);
   $: hasEditsAndActivity = selectEditsAndActivityExists(manifest);
   $: generativeInfo = selectGenerativeInfo(manifest);
-  $: isGenerated = !!generativeInfo.modelName;
+  $: isGenerated = !!generativeInfo?.modelName;
 </script>
 
 <div>

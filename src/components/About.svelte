@@ -21,7 +21,6 @@
   import CollapsibleSection from './CollapsibleSection.svelte';
   import Exif from './Exif.svelte';
   import AboutSection from './inspect/AboutSection.svelte';
-  import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ManifestDetails from './ManifestDetails.svelte';
   import Thumbnail from './Thumbnail.svelte';
 
