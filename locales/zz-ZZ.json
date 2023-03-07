@@ -1,8 +1,11 @@
 {
+  "comp.about.aiModelUsed": "",
   "comp.about.assets.header": "[C] _üAssets used",
   "comp.about.assets.helpText": "[D] _üAny assets used or added to this content",
   "comp.about.contentCredentials.header": "[5] _üContent Credentials",
   "comp.about.contentCredentials.helpText": "[6] _üAttribution and history data attached to this content",
+  "comp.about.contentSummary": "",
+  "comp.about.contentSummary.createdWithAi": "",
   "comp.about.editsActivity.header": "[E] _üEdits and activity",
   "comp.about.editsActivity.helpText": "[F] _üChanges and actions taken to produce this content",
   "comp.about.editsActivity.none": "[G] _üNone",

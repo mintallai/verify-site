@@ -13,13 +13,6 @@
   from Adobe.
 -->
 <script lang="ts">
-  import {
-    selectEditsAndActivity,
-    selectProducer,
-    selectSocialAccounts,
-  } from 'c2pa';
-  import { locale, _ } from 'svelte-i18n';
-  import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg?component';
   import { DEFAULT_LOCALE } from '$lib/i18n';
   import { getBadgeProps, getManifest } from '$lib/node';
   import {
@@ -32,6 +25,16 @@
     selectWeb3,
     selectWebsite,
   } from '$lib/sdk';
+  import { selectGenerativeInfo } from '$lib/selectGenerativeInfo';
+  import {
+    selectEditsAndActivity,
+    selectProducer,
+    selectSocialAccounts,
+  } from 'c2pa';
+  import { locale, _ } from 'svelte-i18n';
+  import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg?component';
+  import AiModelIcon from '../../assets/svg/monochrome/ai-model.svg?component';
+  import InfoIcon from '../../assets/svg/monochrome/info.svg?component';
   import type { HierarchyTreeNode } from '../stores';
   import { navigateToChild, unknownLearnMoreUrl } from '../stores';
   import FormattedDateTime from './FormattedDateTime.svelte';
@@ -55,6 +58,8 @@
   $: web3Addresses = selectWeb3(manifest);
   $: ratings = selectReviewRatings(manifest);
   $: hasEditsAndActivity = selectEditsAndActivityExists(manifest);
+  $: generativeInfo = selectGenerativeInfo(manifest);
+  $: isGenerated = !!generativeInfo.modelName;
 </script>
 
 <div>
@@ -78,6 +83,37 @@
     </AboutSection>
   </dl>
 </div>
+{#if isGenerated}
+  <div>
+    <dl data-test-id="about.content-summary">
+      <AboutSection title={$_('comp.about.contentSummary')}>
+        <dd class="flex space-x-2">
+          <div class="relative top-0.5">
+            <InfoIcon width="16" height="16" />
+          </div>
+          <div class="break-word">
+            {$_('comp.about.contentSummary.createdWithAi')}
+          </div>
+        </dd>
+      </AboutSection>
+    </dl>
+  </div>
+  <div>
+    <dl data-test-id="about.ai-model-used">
+      <AboutSection title={$_('comp.about.aiModelUsed')}>
+        <dd class="flex space-x-2">
+          <div class="relative top-0.5">
+            <AiModelIcon width="16" height="16" />
+          </div>
+          <div class="break-word">
+            {generativeInfo.modelName}
+            {generativeInfo.modelVersion}
+          </div>
+        </dd>
+      </AboutSection>
+    </dl>
+  </div>
+{/if}
 {#if producer}
   <div>
     <dl>

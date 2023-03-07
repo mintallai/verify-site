@@ -1,8 +1,11 @@
 {
+  "comp.about.aiModelUsed": "AI model used",
   "comp.about.assets.header": "Assets used",
   "comp.about.assets.helpText": "Any assets used or added to this content",
   "comp.about.contentCredentials.header": "Content Credentials",
   "comp.about.contentCredentials.helpText": "Attribution and history data attached to this content",
+  "comp.about.contentSummary": "Content summary",
+  "comp.about.contentSummary.createdWithAi": "This content was created using an AI tool.",
   "comp.about.editsActivity.header": "Edits and activity",
   "comp.about.editsActivity.helpText": "Changes and actions taken to produce this content",
   "comp.about.editsActivity.none": "None",
