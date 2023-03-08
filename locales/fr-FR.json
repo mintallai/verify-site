@@ -1,8 +1,11 @@
 {
+  "comp.about.aiModelUsed": "",
   "comp.about.assets.header": "Ressources utilisées",
   "comp.about.assets.helpText": "Tout actif utilisé ou ajouté à ce contenu",
   "comp.about.contentCredentials.header": "Informations de traçabilité du contenu",
   "comp.about.contentCredentials.helpText": "Données d’attribution et d’historique associées à ce contenu",
+  "comp.about.contentSummary": "",
+  "comp.about.contentSummary.createdWithAi": "",
   "comp.about.editsActivity.header": "Modifications et activité",
   "comp.about.editsActivity.helpText": "Modifications et actions entreprises pour produire ce contenu",
   "comp.about.editsActivity.none": "Aucun(e)",

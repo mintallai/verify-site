@@ -1,8 +1,11 @@
 {
+  "comp.about.aiModelUsed": "",
   "comp.about.assets.header": "Verwendete Assets",
   "comp.about.assets.helpText": "In diesem Inhalt verwendete oder diesem hinzugefügt Assets",
   "comp.about.contentCredentials.header": "Inhaltsurhebernachweise",
   "comp.about.contentCredentials.helpText": "Mit diesem Inhalt verknüpfte Namensnennungs- und Verlaufsdaten",
+  "comp.about.contentSummary": "",
+  "comp.about.contentSummary.createdWithAi": "",
   "comp.about.editsActivity.header": "Änderungen und Aktivitäten",
   "comp.about.editsActivity.helpText": "Zum Erstellen dieses Inhalts vorgenommene Änderungen oder ausgeführte Aktionen",
   "comp.about.editsActivity.none": "Keine",

@@ -25,7 +25,6 @@ const claim: TestImageDescriptor = {
       signedOn: 'Jul 29, 2022 at 5:43 AM EDT',
       producedWith: 'Adobe Photoshop 23.5.0',
       isBeta: true,
-      isOriginalCreation: true,
       editsAndActivity: [
         {
           name: 'Other changes',

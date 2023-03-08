@@ -33,7 +33,6 @@ export interface TestClaimDescriptor {
   signedOn?: string;
   producedWith?: string;
   isBeta?: boolean;
-  isOriginalCreation?: boolean;
   editsAndActivity?: EditsAndActivityItem[];
   unknownActionsAlert?: string;
   producedBy?: string;

@@ -1,8 +1,11 @@
 {
+  "comp.about.aiModelUsed": "",
   "comp.about.assets.header": "使用されたアセット",
   "comp.about.assets.helpText": "このコンテンツで使用または追加されたアセット",
   "comp.about.contentCredentials.header": "コンテンツ認証情報",
   "comp.about.contentCredentials.helpText": "このコンテンツに添付されているアトリビューションと履歴データ",
+  "comp.about.contentSummary": "",
+  "comp.about.contentSummary.createdWithAi": "",
   "comp.about.editsActivity.header": "編集とアクティビティ",
   "comp.about.editsActivity.helpText": "このコンテンツを作成するために行われた変更とアクション",
   "comp.about.editsActivity.none": "なし",

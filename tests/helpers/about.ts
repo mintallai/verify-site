@@ -11,8 +11,8 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { expect } from '@playwright/test';
 import type { Locator, Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import type { NestedTestClaimDescriptor } from '../descriptors/types';
 import { testID } from '../utils/selectors.js';
 
@@ -27,7 +27,6 @@ export function aboutHelper(root: Locator | Page) {
     signedOn: panelLocator.locator(testID('about.signed-on')),
     producedWith: panelLocator.locator(testID('about.produced-with')),
     producedBy: panelLocator.locator(testID('about.produced-by')),
-    originalCreation: panelLocator.locator(testID('original-creation')),
     editsAndActivityItems: panelLocator.locator(
       `${testID('about.edits-and-activity')} div`,
     ),
@@ -99,14 +98,6 @@ export function aboutHelper(root: Locator | Page) {
         }
       } else {
         await expect(panel.producedWith).toHaveCount(0);
-      }
-
-      if (data.isOriginalCreation) {
-        await expect(panel.originalCreation).toContainText(
-          `Verified origin This image was first produced with ${data.producedWith}.`,
-        );
-      } else {
-        await expect(panel.originalCreation).toHaveCount(0);
       }
 
       // edits & activity

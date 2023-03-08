@@ -13,8 +13,8 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _ } from 'svelte-i18n';
   import { handleUrl } from '$lib/util/handlers';
+  import { _ } from 'svelte-i18n';
   import { forceProductionServices, getFaqUrl, learnMoreUrl } from '../stores';
 
   function upload(evt: Event) {
@@ -48,7 +48,7 @@
   <div class="links full-menu">
     <a
       data-test-id="header.choose-image"
-      href="inspect"
+      href="/inspect"
       on:click={upload}
       class="text-gray-300 font-medium text-sm tracking-tight">
       {$_('comp.header.uploadImage')}
