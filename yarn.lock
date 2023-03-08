@@ -306,10 +306,10 @@
   resolved "https://registry.yarnpkg.com/@contentauth/detector/-/detector-0.3.3.tgz#652c25836b074888ab61fe9ceafff59244b63e20"
   integrity sha512-pUCkFJuTMmBDdO9wv/TEKK59Z3eeIG9hrGRyMOxOhrnBMCoMAz3LGwIvijzVGJfnnfAMtR38AnbtJgWjrtX72g==
 
-"@contentauth/toolkit@0.9.7":
-  version "0.9.7"
-  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.9.7.tgz#e938f0689caf907f53ee4641384c0a483df50347"
-  integrity sha512-H4NonpyFmDvivFyh6NDVJxSakGGC/h+lgioXzto3Y3LE3wMvuET2yZ9zf4ktuzAwXvUnNZNEsIQJryNb7HL5hQ==
+"@contentauth/toolkit@0.9.8":
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/@contentauth/toolkit/-/toolkit-0.9.8.tgz#8535f46a71df2c3b42df1c8228eab62948d3501a"
+  integrity sha512-MzNDSVt4LFIHHy5Rq+lYldlnnHqg2CK6Zi48jJwcpd1unxe0cJLEjTF6Q8t3OskgmH9VK5rJfLXVd5vEgAw/Dw==
 
 "@esbuild/android-arm64@0.16.17":
   version "0.16.17"
@@ -2286,14 +2286,14 @@ bytes@3.1.2:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa-wc@^0.10.9-rc.0:
-  version "0.10.9-rc.0"
-  resolved "https://registry.yarnpkg.com/c2pa-wc/-/c2pa-wc-0.10.9-rc.0.tgz#f1710fb55b40ece3f11f8dcd6ac4d198c31c473b"
-  integrity sha512-ytchMiPRL4Nf6JnFwJULyya7mGXQGClxX48KFjiQEGRk29Naf2mOkFp96NUCSAOW2FOiy8IU5Q/hSOxq082ctw==
+c2pa-wc@^0.10.9:
+  version "0.10.9"
+  resolved "https://registry.yarnpkg.com/c2pa-wc/-/c2pa-wc-0.10.9.tgz#2ebe5b1cdadc336b79cc5ad75a56f6c93cdc9de5"
+  integrity sha512-ZgCUNrR8wiYVFUHrVOpt5uq8erCrwGQdTB8kOKlESg5EM6fGXCIZdhXslbLkDnnYzUrgGeSovT+Fa6MngdBu/Q==
   dependencies:
     "@floating-ui/dom" "~0.5.3"
     "@lit-labs/motion" "~1.0.2"
-    c2pa "0.14.0-rc.0"
+    c2pa "0.13.4"
     date-fns "^2.24.0"
     debug "~4.3.4"
     fast-deep-equal "^3.1.3"
@@ -2302,17 +2302,18 @@ c2pa-wc@^0.10.9-rc.0:
     lodash "^4.17.21"
     webpack "~5.72.0"
 
-c2pa@0.14.0-rc.0, c2pa@^0.14.0-rc.0:
-  version "0.14.0-rc.0"
-  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.14.0-rc.0.tgz#2b595e66268d4049774a7796aac755bec7dccb73"
-  integrity sha512-oCZ9Bfm1s3MZjfyDr3PrFiS+F9gkqxgpNp3MdY9SZtwLS5IrbYFpGQNcJhCpi/87AWRPBbvz5Du4rLYur5Maww==
+c2pa@0.13.4, c2pa@^0.13.4:
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.13.4.tgz#66c044d497103e15f14bdec03bd49643e29a0b3b"
+  integrity sha512-GlErwPG+oMctQzehD8QBxVadFad2EUe76f6S7HCNXAX3R9Fx86oJcAVYfx5IFkldu4VdgyikVfStL4CeI3GHww==
   dependencies:
     "@contentauth/detector" "0.3.3"
-    "@contentauth/toolkit" "0.9.7"
+    "@contentauth/toolkit" "0.9.8"
     debug "~4.3.4"
     lodash "^4.17.21"
     make-error "^1.3.6"
     p-props "^5.0.0"
+    workerpool "^6.1.5"
 
 cac@^6.7.14:
   version "6.7.14"
@@ -7989,6 +7990,11 @@ word-wrap@^1.2.3, word-wrap@~1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
+
+workerpool@^6.1.5:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/workerpool/-/workerpool-6.4.0.tgz#f8d5cfb45fde32fa3b7af72ad617c3369567a462"
+  integrity sha512-i3KR1mQMNwY2wx20ozq2EjISGtQWDIfV56We+yGJ5yDs8jTwQiLLaqHlkBHITlCuJnYlVRmXegxFxZg7gqI++A==
 
 wrap-ansi@^6.2.0:
   version "6.2.0"
