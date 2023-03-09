@@ -2286,10 +2286,9 @@ bytes@3.1.2:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-c2pa-wc@^0.10.9:
+"c2pa-wc@file:./etc/c2pa-prerelease/c2pa-wc-0.10.9.tgz":
   version "0.10.9"
-  resolved "https://registry.yarnpkg.com/c2pa-wc/-/c2pa-wc-0.10.9.tgz#2ebe5b1cdadc336b79cc5ad75a56f6c93cdc9de5"
-  integrity sha512-ZgCUNrR8wiYVFUHrVOpt5uq8erCrwGQdTB8kOKlESg5EM6fGXCIZdhXslbLkDnnYzUrgGeSovT+Fa6MngdBu/Q==
+  resolved "file:./etc/c2pa-prerelease/c2pa-wc-0.10.9.tgz#9fbc15465c28d1198fc5ab81e323f735640aa8bd"
   dependencies:
     "@floating-ui/dom" "~0.5.3"
     "@lit-labs/motion" "~1.0.2"
@@ -2302,10 +2301,9 @@ c2pa-wc@^0.10.9:
     lodash "^4.17.21"
     webpack "~5.72.0"
 
-c2pa@0.13.4, c2pa@^0.13.4:
+c2pa@0.13.4, "c2pa@file:./etc/c2pa-prerelease/c2pa-0.13.4.tgz":
   version "0.13.4"
-  resolved "https://registry.yarnpkg.com/c2pa/-/c2pa-0.13.4.tgz#66c044d497103e15f14bdec03bd49643e29a0b3b"
-  integrity sha512-GlErwPG+oMctQzehD8QBxVadFad2EUe76f6S7HCNXAX3R9Fx86oJcAVYfx5IFkldu4VdgyikVfStL4CeI3GHww==
+  resolved "file:./etc/c2pa-prerelease/c2pa-0.13.4.tgz#b3f10410cd8a2bec43b84cea66935c89d84b5cac"
   dependencies:
     "@contentauth/detector" "0.3.3"
     "@contentauth/toolkit" "0.9.8"
@@ -2313,7 +2311,6 @@ c2pa@0.13.4, c2pa@^0.13.4:
     lodash "^4.17.21"
     make-error "^1.3.6"
     p-props "^5.0.0"
-    workerpool "^6.1.5"
 
 cac@^6.7.14:
   version "6.7.14"
@@ -7990,11 +7987,6 @@ word-wrap@^1.2.3, word-wrap@~1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
-
-workerpool@^6.1.5:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/workerpool/-/workerpool-6.4.0.tgz#f8d5cfb45fde32fa3b7af72ad617c3369567a462"
-  integrity sha512-i3KR1mQMNwY2wx20ozq2EjISGtQWDIfV56We+yGJ5yDs8jTwQiLLaqHlkBHITlCuJnYlVRmXegxFxZg7gqI++A==
 
 wrap-ansi@^6.2.0:
   version "6.2.0"
