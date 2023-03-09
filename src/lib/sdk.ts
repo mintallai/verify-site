@@ -11,9 +11,9 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+import type { Manifest } from 'c2pa';
 import { createC2pa } from 'c2pa';
 import pMemoize from 'p-memoize';
-import type { Manifest } from 'c2pa';
 import type { ExifTags } from './exif';
 
 import wasmSrc from 'c2pa/dist/assets/wasm/toolkit_bg.wasm?url';
@@ -57,8 +57,10 @@ export function selectEditsAndActivityExists(manifest: Manifest) {
 }
 
 export function selectWebsite(manifest: Manifest) {
-  const site = manifest.assertions.get('stds.schema-org.CreativeWork')[0]?.data
-    .url;
+  const site =
+    manifest.assertions.get('stds.schema-org.CreativeWork')[0]?.data.url ||
+    manifest.assertions.get('c2pa.asset-ref')[0]?.data.resources[0]?.reference
+      .uri;
 
   if (site) {
     const url = new URL(site);
