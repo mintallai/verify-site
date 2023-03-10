@@ -20,6 +20,13 @@ import wasmSrc from 'c2pa/dist/assets/wasm/toolkit_bg.wasm?url';
 import workerSrc from 'c2pa/dist/c2pa.worker.min.js?url';
 
 declare module 'c2pa' {
+  interface Reference {
+    uri: string;
+  }
+
+  interface Resource {
+    reference: Reference;
+  }
   interface ExtendedAssertions {
     'adobe.crypto.addresses': {
       ethereum?: string[];
@@ -29,6 +36,9 @@ declare module 'c2pa' {
       version: string;
     };
     'stds.exif': ExifTags;
+    'c2pa.asset-ref': {
+      resources: Resource[];
+    };
   }
 }
 
