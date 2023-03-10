@@ -23,7 +23,6 @@ declare module 'c2pa' {
   interface Reference {
     uri: string;
   }
-
   interface Resource {
     reference: Reference;
   }
