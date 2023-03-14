@@ -61,12 +61,6 @@
   $: hasEditsAndActivity = selectEditsAndActivityExists(manifest);
   $: generativeInfo = selectGenerativeInfo(manifest);
   $: isGenerated = !!generativeInfo?.modelName;
-
-  // onMount(async () => {
-  //   let res = await getManifest(node);
-  //   let model = await selectGenerativeInfo(res);
-  //   console.log('model', model);
-  // });
 </script>
 
 <div>
