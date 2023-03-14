@@ -31,6 +31,7 @@
     selectProducer,
     selectSocialAccounts,
   } from 'c2pa';
+  import { onMount } from 'svelte';
   import { locale, _ } from 'svelte-i18n';
   import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg?component';
   import AiModelIcon from '../../assets/svg/monochrome/ai-model.svg?component';
@@ -60,6 +61,12 @@
   $: hasEditsAndActivity = selectEditsAndActivityExists(manifest);
   $: generativeInfo = selectGenerativeInfo(manifest);
   $: isGenerated = !!generativeInfo?.modelName;
+
+  // onMount(async () => {
+  //   let res = await getManifest(node);
+  //   let model = await selectGenerativeInfo(res);
+  //   console.log('model', model);
+  // });
 </script>
 
 <div>
@@ -103,7 +110,11 @@
       <AboutSection title={$_('comp.about.aiModelUsed')}>
         <dd class="flex space-x-2">
           <div class="relative top-0.5">
-            <AiModelIcon width="16" height="16" />
+            {#if generativeInfo.modelName === 'Adobe Firefly'}
+              <ProviderIcon provider={generativeInfo.modelName} />
+            {:else}
+              <AiModelIcon width="16" height="16" />
+            {/if}
           </div>
           <div class="break-word">
             {generativeInfo.modelName}
