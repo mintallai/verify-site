@@ -31,7 +31,6 @@
     selectProducer,
     selectSocialAccounts,
   } from 'c2pa';
-  import { onMount } from 'svelte';
   import { locale, _ } from 'svelte-i18n';
   import AlertOutlineIcon from '../../assets/svg/color/alert-outline.svg?component';
   import AiModelIcon from '../../assets/svg/monochrome/ai-model.svg?component';
