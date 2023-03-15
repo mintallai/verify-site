@@ -89,7 +89,7 @@
       <AboutSection title={$_('comp.about.contentSummary')}>
         <dd class="flex space-x-2">
           <div class="relative top-0.5">
-            <InfoIcon width="16" height="16" />
+            <InfoIcon width="16px" height="16px" />
           </div>
           <div class="break-word">
             {$_('comp.about.contentSummary.createdWithAi')}
@@ -103,7 +103,7 @@
       <AboutSection title={$_('comp.about.aiModelUsed')}>
         <dd class="flex space-x-2">
           <div class="relative top-0.5">
-            <AiModelIcon width="16" height="16" />
+            <AiModelIcon width="16px" height="16px" />
           </div>
           <div class="break-word">
             {generativeInfo.modelName}
