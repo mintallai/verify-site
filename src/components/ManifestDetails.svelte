@@ -103,11 +103,9 @@
       <AboutSection title={$_('comp.about.aiModelUsed')}>
         <dd class="flex space-x-2">
           <div class="relative top-0.5">
-            {#if generativeInfo.modelName === 'Adobe Firefly'}
-              <ProviderIcon provider={generativeInfo.modelName} />
-            {:else}
-              <AiModelIcon width="16" height="16" />
-            {/if}
+            <ProviderIcon
+              provider={generativeInfo.modelName}
+              fallbackIcon={AiModelIcon} />
           </div>
           <div class="break-word">
             {generativeInfo.modelName}
