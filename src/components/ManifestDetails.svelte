@@ -103,7 +103,9 @@
       <AboutSection title={$_('comp.about.aiModelUsed')}>
         <dd class="flex space-x-2">
           <div class="relative top-0.5">
-            <AiModelIcon width="16" height="16" />
+            <ProviderIcon
+              provider={generativeInfo.modelName}
+              fallbackIcon={AiModelIcon} />
           </div>
           <div class="break-word">
             {generativeInfo.modelName}
