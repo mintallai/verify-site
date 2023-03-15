@@ -19,7 +19,7 @@
   "comp.about.producedWith.contentCredentialsBeta": "Content Credentials (Beta)",
   "comp.about.producedWith.helpText": "Software used to make this content",
   "comp.about.signedBy": "Signed by",
-  "comp.about.signedBy.helpText": "The entity that recorded the content credentials and the date it was exported",
+  "comp.about.signedBy.helpText": "The entity that recorded these Content Credentials and the date they were issued",
   "comp.about.signedOn": "Signed on",
   "comp.about.signedOn.helpText": "Date this content was exported with content credentials",
   "comp.about.signedOn.notAvailable": "No date available",

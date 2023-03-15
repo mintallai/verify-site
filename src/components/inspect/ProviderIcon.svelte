@@ -28,6 +28,7 @@
   import YoutubeLogo from '../../../assets/svg/color/logos/YT.svg?component';
 
   export let provider: string;
+  export let fallbackIcon = null;
   let className: string = '';
 
   const matchers = [
@@ -51,7 +52,7 @@
 
   $: iconComponent =
     matchers.find(({ pattern }) => pattern.test(provider?.toString() ?? ''))
-      ?.icon ?? null;
+      ?.icon ?? fallbackIcon;
 
   export { className as class };
 </script>
