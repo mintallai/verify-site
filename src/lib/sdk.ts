@@ -67,9 +67,9 @@ export function selectEditsAndActivityExists(manifest: Manifest) {
 
 export function selectWebsite(manifest: Manifest) {
   const site =
-    manifest.assertions.get('stds.schema-org.CreativeWork')[0]?.data.url ||
     manifest.assertions.get('c2pa.asset-ref')[0]?.data.resources[0]?.reference
-      .uri;
+      .uri ??
+    manifest.assertions.get('stds.schema-org.CreativeWork')[0]?.data.url;
 
   if (site) {
     const url = new URL(site);
