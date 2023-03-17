@@ -13,9 +13,9 @@
   from Adobe.
 -->
 <script lang="ts">
+  import { recoverManifests } from '$lib/manifest-recovery';
   import { createEventDispatcher } from 'svelte';
   import { locale, _ } from 'svelte-i18n';
-  import { recoverManifests } from '$lib/manifest-recovery';
   import LeftArrow from '../../../assets/svg/monochrome/left-arrow.svg?component';
   import {
     compareMode,
@@ -98,13 +98,13 @@
               <ResultManifestsDisplay {loadingMatches} {handleButtonClick} />
             </div>
           {:else}
-            <div class="flex pt-6">
-              <div class="self-center inline-block">
+            <div class="flex">
+              <div class="self-center inline-block pt-[0.85rem]">
                 <Button secondary size="s" on:click={handleButtonClick}>
                   {$_('comp.topNavigation.matches')}
                 </Button>
               </div>
-              <div class="self-center ml-5 inline-block">
+              <div class="self-center ml-5 inline-block pt-6">
                 <Tooltip placement="right">
                   <div
                     slot="content"
