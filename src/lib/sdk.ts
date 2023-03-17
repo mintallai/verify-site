@@ -11,15 +11,21 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+import type { Manifest } from 'c2pa';
 import { createC2pa } from 'c2pa';
 import pMemoize from 'p-memoize';
-import type { Manifest } from 'c2pa';
 import type { ExifTags } from './exif';
 
 import wasmSrc from 'c2pa/dist/assets/wasm/toolkit_bg.wasm?url';
 import workerSrc from 'c2pa/dist/c2pa.worker.min.js?url';
 
 declare module 'c2pa' {
+  interface Reference {
+    uri: string;
+  }
+  interface Resource {
+    reference: Reference;
+  }
   interface ExtendedAssertions {
     'adobe.crypto.addresses': {
       ethereum?: string[];
@@ -29,6 +35,9 @@ declare module 'c2pa' {
       version: string;
     };
     'stds.exif': ExifTags;
+    'c2pa.asset-ref': {
+      resources: Resource[];
+    };
   }
 }
 
@@ -57,8 +66,10 @@ export function selectEditsAndActivityExists(manifest: Manifest) {
 }
 
 export function selectWebsite(manifest: Manifest) {
-  const site = manifest.assertions.get('stds.schema-org.CreativeWork')[0]?.data
-    .url;
+  const site =
+    manifest.assertions.get('c2pa.asset-ref')[0]?.data.resources[0]?.reference
+      .uri ??
+    manifest.assertions.get('stds.schema-org.CreativeWork')[0]?.data.url;
 
   if (site) {
     const url = new URL(site);
