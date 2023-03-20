@@ -13,6 +13,8 @@
   from Adobe.
 -->
 <script lang="ts">
+  import type { ILoaderParams } from '$lib/loader';
+  import { loader, setLoaderContext } from '$lib/loader';
   import { _ } from 'svelte-i18n';
   import About from '../../components/About.svelte';
   import Alert from '../../components/Alert.svelte';
@@ -24,8 +26,6 @@
   import Navigation from '../../components/inspect/Navigation.svelte';
   import TopNavigation from '../../components/inspect/TopNavigation.svelte';
   import Viewer from '../../components/inspect/Viewer.svelte';
-  import { loader, setLoaderContext } from '$lib/loader';
-  import type { ILoaderParams } from '$lib/loader';
   import {
     compareWith,
     hasContent,
@@ -72,7 +72,7 @@
 </svelte:head>
 <main
   use:loader={loaderParams}
-  class="theme-light min-w-[var(--screen-width)] overflow-x-auto "
+  class="theme-light min-w-[var(--screen-width)] overflow-x-auto"
   class:no-content={!$hasContent}
   class:comparing={$isComparing}
   class:error>

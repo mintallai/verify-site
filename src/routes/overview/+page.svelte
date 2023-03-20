@@ -13,6 +13,9 @@
   from Adobe.
 -->
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import type { ILoaderParams } from '$lib/loader';
+  import { loader, setLoaderContext } from '$lib/loader';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import About from '../../components/About.svelte';
@@ -24,8 +27,6 @@
   import TopNavigation from '../../components/inspect/TopNavigation.svelte';
   import Viewer from '../../components/inspect/Viewer.svelte';
   import TreeView from '../../components/overview/TreeView.svelte';
-  import { loader, setLoaderContext } from '$lib/loader';
-  import type { ILoaderParams } from '$lib/loader';
   import {
     hasContent,
     isLoading,
@@ -33,7 +34,6 @@
     primary,
     sourceManifestStore,
   } from '../../stores';
-  import { goto } from '$app/navigation';
 
   let isDragging = false;
   let error = null;
@@ -72,7 +72,7 @@
 </svelte:head>
 <main
   use:loader={loaderParams}
-  class="theme-light min-w-[var(--screen-width)] overflow-x-auto"
+  class="theme-light min-w-[var(--screen-width)] overflow-auto max-h-screen"
   class:no-content={!$hasContent}
   class:full-width={isUploadMode && !$sourceManifestStore && !error}>
   <Header />
