@@ -72,7 +72,7 @@
 </svelte:head>
 <main
   use:loader={loaderParams}
-  class="theme-light min-w-[var(--screen-width)] overflow-auto max-h-screen"
+  class="theme-light max-h-screen overflow-x-auto"
   class:no-content={!$hasContent}
   class:full-width={isUploadMode && !$sourceManifestStore && !error}>
   <Header />

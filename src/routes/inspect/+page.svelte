@@ -72,7 +72,7 @@
 </svelte:head>
 <main
   use:loader={loaderParams}
-  class="theme-light min-w-[var(--screen-width)] overflow-x-auto"
+  class="theme-light overflow-x-auto"
   class:no-content={!$hasContent}
   class:comparing={$isComparing}
   class:error>

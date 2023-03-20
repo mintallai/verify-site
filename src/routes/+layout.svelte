@@ -43,7 +43,9 @@
   });
 </script>
 
-<slot />
+<div class="theme-light min-w-[var(--screen-width)] overflow-auto max-h-screen">
+  <slot />
+</div>
 
 <Dialog {...$dialog} />
 
