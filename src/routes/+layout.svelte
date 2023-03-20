@@ -2,15 +2,15 @@
   import { afterNavigate } from '$app/navigation';
   import { postEvent } from '$lib/analytics';
   import { SITE_VERSION } from '$lib/config';
+  import { lang } from '@intl/adobe-locales';
+  import debug from 'debug';
+  import { onMount } from 'svelte';
+  import { locale } from 'svelte-i18n';
   import Dialog from '../components/Dialog.svelte';
   import { dialog } from '../stores';
-  import debug from 'debug';
-  import { lang } from '@intl/adobe-locales';
-  import { locale } from 'svelte-i18n';
-  import { onMount } from 'svelte';
 
-  import '../globalWebComponents';
   import '../app.css';
+  import '../globalWebComponents';
 
   afterNavigate(() => {
     let duration: number;
