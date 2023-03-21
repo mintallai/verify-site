@@ -13,16 +13,14 @@
   from Adobe.
 -->
 <script lang="ts">
-  import cssVars from 'svelte-css-vars';
-  import { _ } from 'svelte-i18n';
   import { selectExif } from '$lib/exif';
   import { getBadgeProps, getFilename, getManifest } from '$lib/node';
-  import { selectIsOriginal } from '$lib/sdk';
+  import cssVars from 'svelte-css-vars';
+  import { _ } from 'svelte-i18n';
   import type { HierarchyTreeNode } from '../stores';
   import CollapsibleSection from './CollapsibleSection.svelte';
   import Exif from './Exif.svelte';
   import AboutSection from './inspect/AboutSection.svelte';
-  import OriginalCreation from './inspect/OriginalCreation.svelte';
   import ManifestDetails from './ManifestDetails.svelte';
   import Thumbnail from './Thumbnail.svelte';
 
@@ -31,7 +29,6 @@
   let colWidth: number;
 
   $: manifest = getManifest(node);
-  $: isOriginal = selectIsOriginal(manifest);
   $: exif = selectExif(manifest);
   $: filename = getFilename(node);
   $: badgeProps = getBadgeProps(node);
@@ -44,11 +41,6 @@
       <div class="about-info w-full max-w-xs">
         <div class="hidden lg:block">
           <dl>
-            {#if isOriginal}
-              <div class="mb-2">
-                <OriginalCreation type="original" {node} />
-              </div>
-            {/if}
             <AboutSection>
               <dd
                 class="flex space-x-2 items-center mt-1"

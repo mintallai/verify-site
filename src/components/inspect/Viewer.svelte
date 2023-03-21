@@ -13,9 +13,9 @@
   from Adobe.
 -->
 <script lang="ts">
+  import { handleImgSrc, thumbnail } from '$lib/thumbnail';
   import cssVars from 'svelte-css-vars';
   import { _ } from 'svelte-i18n';
-  import { handleImgSrc, thumbnail } from '$lib/thumbnail';
   import type { HierarchyTreeNode } from '../../stores';
   import { sourceManifestStore } from '../../stores';
   import CircleLoader from '../CircleLoader.svelte';

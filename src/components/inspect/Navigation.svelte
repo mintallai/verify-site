@@ -47,11 +47,6 @@
       {/if}
     </div>
   </div>
-  <!-- {#if secureCapture}
-    <div class="mx-4">
-      <OriginalCreation type="secureCapture" {claim} />
-    </div>
-  {/if} -->
   {#if $hierarchy?.children}
     <div
       class="sticky nav-width bottom-0 left-0 right-0 pb-4 pt-8 pointer-events-none flex justify-center w-full bg-gradient-to-t from-white via-white to-transparent">
