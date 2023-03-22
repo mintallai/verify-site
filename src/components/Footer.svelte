@@ -13,11 +13,11 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { getLocalizedURL } from '@intl/adobe-locales';
-  import { locale, _ } from 'svelte-i18n';
   import { DEFAULT_LOCALE, setLanguage } from '$lib/i18n';
   import type { ReferenceElement, TippyProps } from '$lib/tippy';
   import { tippy } from '$lib/tippy';
+  import { getLocalizedURL } from '@intl/adobe-locales';
+  import { locale, _ } from 'svelte-i18n';
 
   import '@spectrum-web-components/menu/sp-menu-item.js';
   import '@spectrum-web-components/menu/sp-menu.js';
@@ -45,7 +45,7 @@
   $: currentLocaleMapping = mapping.find(
     ([mapLang]) => mapLang === currentLocale,
   );
-  $: currentLangString = currentLocaleMapping[1];
+  $: currentLangString = currentLocaleMapping?.[1];
 
   function handleLanguageChange(evt: any) {
     setLanguage(evt.target.value);
