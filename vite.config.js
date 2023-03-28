@@ -21,6 +21,8 @@ const config = {
     terserOptions: {
       // Added since error names were being mangled, resulting in incorrect error handling (CAI-3792)
       keep_classnames: true,
+      // image-blob-reduce breaks unless this is disabled
+      compress: { evaluate: false },
     },
   },
   plugins: [
