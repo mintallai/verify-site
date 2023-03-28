@@ -11,23 +11,23 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+import { page } from '$app/stores';
+import { getConfig } from '$lib/config';
+import { getSdk } from '$lib/sdk';
+import type { C2paReadResult } from 'c2pa';
+import dragDrop from 'drag-drop';
 import { setContext } from 'svelte';
 import { get } from 'svelte/store';
-import dragDrop from 'drag-drop';
-import { postEvent } from './analytics';
-import type { IngestPayload } from './analytics';
-import type { C2paReadResult } from 'c2pa';
-import { getSdk } from '$lib/sdk';
-import { getConfig } from '$lib/config';
 import {
-  urlParams,
-  sourceManifestStore,
-  setProvenance,
-  setIsLoading,
-  lastUrlSource,
   dialog,
+  lastUrlSource,
+  setIsLoading,
+  setProvenance,
+  sourceManifestStore,
+  urlParams,
 } from '../stores';
-import { page } from '$app/stores';
+import type { IngestPayload } from './analytics';
+import { postEvent } from './analytics';
 
 export const CONTEXT_KEY = 'loader';
 
@@ -114,7 +114,8 @@ async function hasLegacyCredentials(source: File | string) {
     const workerSrc =
       'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12/dist/cai-sdk.worker.min.js';
     const sdkSrc = 'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12';
-    const { ContentAuth } = await import(sdkSrc);
+    // Suppressing dynamic import warning about not being able to be analyzed by Vite, which is expected
+    const { ContentAuth } = await import(/* @vite-ignore */ sdkSrc);
     const sdk = new ContentAuth({
       wasmSrc,
       workerSrc,

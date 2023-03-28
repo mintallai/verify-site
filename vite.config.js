@@ -1,8 +1,8 @@
-import { replaceCodePlugin } from 'vite-plugin-replace';
 import { sveltekit } from '@sveltejs/kit/vite';
-import svelteSvg from './etc/rollup/plugins/svelte-svg';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+import { replaceCodePlugin } from 'vite-plugin-replace';
+import svelteSvg from './etc/rollup/plugins/svelte-svg';
 
 function getSupportedLocales() {
   const dictPath = path.resolve(__dirname, './locales/');
@@ -14,6 +14,15 @@ const config = {
   server: {
     fs: {
       allow: ['assets', 'locales'],
+    },
+  },
+  build: {
+    minify: 'terser',
+    terserOptions: {
+      // Added since error names were being mangled, resulting in incorrect error handling (CAI-3792)
+      keep_classnames: true,
+      // image-blob-reduce breaks unless this is disabled
+      compress: { evaluate: false },
     },
   },
   plugins: [
