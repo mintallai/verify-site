@@ -1,3 +1,18 @@
+<!--
+  ADOBE CONFIDENTIAL
+  Copyright 2023 Adobe
+  All Rights Reserved.
+
+  NOTICE: All information contained herein is, and remains
+  the property of Adobe and its suppliers, if any. The intellectual
+  and technical concepts contained herein are proprietary to Adobe
+  and its suppliers and are protected by all applicable intellectual
+  property laws, including trade secret and copyright laws.
+  Dissemination of this information or reproduction of this material
+  is strictly forbidden unless prior written permission is obtained
+  from Adobe.
+-->
+
 <script lang="ts">
   import { afterNavigate } from '$app/navigation';
   import { postEvent } from '$lib/analytics';
@@ -6,29 +21,32 @@
   import debug from 'debug';
   import { onMount } from 'svelte';
   import { locale } from 'svelte-i18n';
-  import Dialog from '../components/Dialog.svelte';
-  import { dialog } from '../stores';
+  import Footer from '../components/Footer/Footer.svelte';
+  import Menu from '../components/Menu/Menu.svelte';
+  import { menu } from '../store';
 
   import '../app.css';
   import '../globalWebComponents';
 
   afterNavigate(() => {
-    let duration: number;
+    let duration: number | null = null;
+
     if ('getEntriesByType' in window.performance) {
       const navPerf = window.performance?.getEntriesByType('navigation')?.[0];
       duration = navPerf?.duration;
     }
+
     postEvent({
       'event.type': 'render',
       'event.subtype': 'page',
-      'event.value': duration,
+      ...(duration ? { 'event.value': duration } : {}),
     });
+
     return true;
   });
 
   onMount(() => {
     // @TODO: can't import serverside - look into this
-    import('c2pa-wc');
     console.debug(`Verify site running revision ${SITE_VERSION}`);
 
     const unsubscribe = locale.subscribe((loc) => {
@@ -43,11 +61,12 @@
   });
 </script>
 
-<div class="theme-light min-w-[var(--screen-width)] overflow-auto max-h-screen">
-  <slot />
+<div class="font-base">
+  <div class="flex h-screen flex-col justify-between">
+    <slot />
+
+    <Footer />
+  </div>
+
+  <Menu open={$menu} />
 </div>
-
-<Dialog {...$dialog} />
-
-<style>
-</style>

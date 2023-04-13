@@ -11,19 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-declare module 'drag-drop';
-
-declare module 'svelte-css-vars';
-
 declare module '@intl/adobe-locales';
-
-declare module '@contentauth/sdk/dist/*';
-
-declare module 'image-blob-reduce';
-
-declare module 'geo-coordinates-parser';
-
-declare module 'circle-to-polygon';
 
 declare module '@ccx-public/ingest';
 
@@ -42,8 +30,4 @@ declare module '*.svg?component' {
   >;
 
   export default content;
-}
-
-interface Window {
-  newrelic: any;
 }

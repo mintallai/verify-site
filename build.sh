@@ -35,13 +35,13 @@ fi
 # Artifactory, it will be stored in the "dist-pub" folder.
 rm -rf dist dist-pub node_modules
 
-yarn install
-yarn build
+pnpm install
+pnpm build
 
 # Report dependencies to TESSA
 if [ -n "$TESSA2_API_KEY" ]; then
     echo "TESSA2_API_KEY found. Reporting dependencies to TESSA"
-    yarn run report-dependencies-tessa
+    pnpm run report-dependencies-tessa
 fi
 
 # Publish an NPM package if $PUSH_ARTIFACTS is non-empty and the "dist-pub"
@@ -85,7 +85,7 @@ EOF
     version_found=`npm view $package_name versions | grep "$package_version"` || true
     if [ -z "$version_found" ]; then
         echo "Publishing $package_name@$package_version"
-        yarn publish
+        pnpm publish
         echo "Package published: $package_name@$package_version"
     else
         echo "The package $package_name@$package_version is already in the artifactory. Skipping publishing"

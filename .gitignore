@@ -12,7 +12,6 @@ pkg/
 test-results
 .yarn/
 .yarnrc.yml
-.npmrc
 *.terraform*
 .dccache
 # Local Netlify folder

@@ -11,16 +11,16 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+import { lang } from '@intl/adobe-locales';
+import debug from 'debug';
+import groupBy from 'lodash/groupBy';
 import {
-  register,
+  getLocaleFromNavigator,
+  getLocaleFromQueryString,
   init,
   locale,
-  getLocaleFromQueryString,
-  getLocaleFromNavigator,
+  register,
 } from 'svelte-i18n';
-import { lang } from '@intl/adobe-locales';
-import groupBy from 'lodash/groupBy';
-import debug from 'debug';
 
 const dbg = debug('i18n');
 
@@ -30,15 +30,22 @@ const LOCALSTORAGE_KEY = 'locale';
 export const supportedLocales = __SUPPORTED_LOCALES__;
 export const supportedLanguages = groupBy(supportedLocales, lang);
 
-function getSupportedLocale(locale: string) {
+function getSupportedLocale(locale: string | null) {
+  if (!locale) {
+    return DEFAULT_LOCALE;
+  }
+
   const prefix = locale.split('-')[0];
   const matchingLocales: string[] = supportedLanguages[prefix] ?? [];
+
   if (matchingLocales.includes(locale)) {
     return locale;
   }
+
   if (matchingLocales.length) {
     return matchingLocales[0];
   }
+
   return DEFAULT_LOCALE;
 }
 

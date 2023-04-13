@@ -1,10 +1,23 @@
-import pMemoize from 'p-memoize';
-import merge from 'lodash/merge';
-import difference from 'lodash/difference';
-import { customAlphabet } from 'nanoid';
-import { getConfig, SITE_VERSION } from './config';
+// ADOBE CONFIDENTIAL
+// Copyright 2023 Adobe
+// All Rights Reserved.
+//
+// NOTICE: All information contained herein is, and remains
+// the property of Adobe and its suppliers, if any. The intellectual
+// and technical concepts contained herein are proprietary to Adobe
+// and its suppliers and are protected by all applicable intellectual
+// property laws, including trade secret and copyright laws.
+// Dissemination of this information or reproduction of this material
+// is strictly forbidden unless prior written permission is obtained
+// from Adobe.
+
 import Ingest from '@ccx-public/ingest';
 import debug from 'debug';
+import difference from 'lodash/difference';
+import merge from 'lodash/merge';
+import { customAlphabet } from 'nanoid';
+import pMemoize from 'p-memoize';
+import { getConfig, SITE_VERSION } from './config';
 
 const dbg = debug('ingest');
 
@@ -17,7 +30,7 @@ const nanoid = customAlphabet(NANOID_ALPHABET, NANOID_LENGTH);
 const getIngest = pMemoize(async () => {
   const config = await getConfig();
   const dependencies = {
-    getAccessToken(callback: (...args: any[]) => any) {
+    getAccessToken(callback: (arg: null) => void) {
       callback(null);
     },
     log(msg: string) {

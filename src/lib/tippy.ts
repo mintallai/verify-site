@@ -47,4 +47,4 @@ export function tippy(
   });
 }
 
-export type { Props as TippyProps, ReferenceElement } from 'tippy.js';
+export type { ReferenceElement, Props as TippyProps } from 'tippy.js';

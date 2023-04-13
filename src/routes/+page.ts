@@ -1,7 +1,7 @@
 // ADOBE CONFIDENTIAL
 // Copyright 2023 Adobe
 // All Rights Reserved.
-
+//
 // NOTICE: All information contained herein is, and remains
 // the property of Adobe and its suppliers, if any. The intellectual
 // and technical concepts contained herein are proprietary to Adobe
@@ -13,4 +13,5 @@
 
 // since there's no dynamic data here, we can prerender
 // it so that it gets served as a static asset in production
+
 export const prerender = true;

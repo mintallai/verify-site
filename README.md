@@ -11,8 +11,8 @@ This site is managed by [moonbeam](https://moonbeam.ethos.corp.adobe.com/cai/ver
 To run, check out this project and run:
 
 ```
-yarn install
-yarn dev
+pnpm install
+pnpm dev
 ```
 
 ## Debugging
@@ -41,9 +41,9 @@ Then, to run the tests, you can run:
 
 ```shell
 # Build the site from the current code
-yarn build
+pnpm build
 # Run the test suite
-yarn test
+pnpm test
 ```
 
 ### Running tests for development
@@ -51,16 +51,16 @@ yarn test
 If you don't need to make any code changes to the site and just want to add or modify tests, you can run:
 
 ```shell
-yarn run test:watch
+pnpm test:watch:unit
 ```
 
 If you want to edit tests _and_ edit the site, you can run:
 
 ```shell
 # in terminal window #1
-yarn dev
+pnpm dev
 # in terminal window #2
-yarn test:watch:local
+pnpm test:watch:unit
 ```
 
 ### Testing in Docker/CI

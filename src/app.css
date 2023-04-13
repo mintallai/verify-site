@@ -12,83 +12,15 @@ is strictly forbidden unless prior written permission is obtained
 from Adobe. */
 
 @import 'tippy.js/dist/tippy.css';
-@import './spectrum-vars.css';
+@import './vars.css';
+/* @import './spectrum-vars.css'; */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* purgecss start ignore */
-:root {
-  --drag-bg-color: rgba(20, 115, 230, 0.1);
-  --screen-width: 1024px;
-  --min-screen-height: 600px;
-}
-
-body {
-  @apply text-100 lg:overflow-hidden;
-}
-
-h2 {
-  @apply font-bold text-75 text-gray-700 uppercase my-4 flex items-center;
-}
-h2 .icon {
-  @apply relative ml-2;
-  top: 2px;
-}
-
-h6 {
-  @apply font-bold text-75 uppercase text-gray-700;
-}
-
-a.link {
-  @apply text-blue-500 underline;
-}
-
-.viewer-wrapper {
-  @apply w-full h-full flex items-stretch p-4 lg:p-0;
-  grid-area: viewer;
-}
-
-.message-heading {
-  @apply font-light text-400 text-gray-700 leading-small mb-2 text-center;
-}
-.message-text {
-  @apply text-200 text-gray-700 text-center;
-}
-.message-text .link {
-  @apply text-blue-500 cursor-pointer underline;
-}
-@screen lg {
-  .message-heading {
-    @apply text-700;
-  }
-  .message-text {
-    @apply text-75;
-  }
-}
-
-dl.attributes {
-  @apply grid gap-y-1;
-
-  dt {
-    @apply flex justify-between font-bold text-75 uppercase text-gray-700;
-    line-height: 1.8;
-    & cai-tooltip {
-      @apply normal-case font-regular w-4 h-4;
-    }
-  }
-
-  dd {
-    @apply text-150 justify-start text-gray-900 mb-2;
-    &:last-child {
-      @apply mb-0;
-    }
-  }
-}
-
 .tippy-box[data-theme~='cai'] {
-  @apply font-base text-sm leading-small text-black bg-white p-0;
+  @apply bg-white p-0 text-body text-gray-900;
   filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.3));
 
   &[data-placement^='top'] > .tippy-arrow::before {
@@ -119,4 +51,3 @@ dl.attributes {
     fill: #fff;
   }
 }
-/* purgecss end ignore */

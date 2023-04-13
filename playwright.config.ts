@@ -11,17 +11,14 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { expect } from '@playwright/test';
 import type { PlaywrightTestConfig } from '@playwright/test';
-import { toHaveCAIBadge } from './tests/matchers/toHaveCAIBadge.js';
 
 const port = 4173;
 const base = process.env.BASE_URL;
 const baseURL = `${base ?? `http://localhost`}:${port}/`;
 
 const config: PlaywrightTestConfig = {
-  testDir: 'tests',
-  testIgnore: '**/unit/**/*.test.ts',
+  testDir: 'e2e',
   use: {
     baseURL,
     headless: true,
@@ -35,9 +32,5 @@ const config: PlaywrightTestConfig = {
     port: port,
   },
 };
-
-expect.extend({
-  toHaveCAIBadge,
-});
 
 export default config;
