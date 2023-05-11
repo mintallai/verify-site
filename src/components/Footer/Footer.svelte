@@ -119,7 +119,7 @@
 
 <style lang="postcss">
   footer {
-    @apply flex items-center justify-center border-t-2 border-gray-50;
+    @apply flex items-center justify-center border-t-2;
     grid-area: footer;
     max-width: 100vw;
     height: 3.5rem;

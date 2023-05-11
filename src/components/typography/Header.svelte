@@ -1,4 +1,3 @@
-<span class="text-header text-gray-900"><slot /></span>
 <!--
   ADOBE CONFIDENTIAL
   Copyright 2023 Adobe
