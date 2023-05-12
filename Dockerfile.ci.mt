@@ -3,5 +3,5 @@ WORKDIR /build
 ADD . .
 RUN npm install -g pnpm
 RUN pnpm install
-RUN pnpx playwright install
+RUN pnpm exec playwright install
 ENTRYPOINT /bin/bash -e ci.sh
