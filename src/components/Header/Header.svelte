@@ -15,22 +15,21 @@
 
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { menu } from '../../store';
+  import { sidebarMenuState } from '../../features/SidebarMenu';
   import Hamburger from '../Hamburger/Hamburger.svelte';
   import LargeTitle from '../typography/LargeTitle.svelte';
 
   function handleBurgerClick() {
-    menu.toggle();
+    sidebarMenuState.toggle();
   }
+
+  export let burgerOpen = false;
 </script>
 
-<header class="flex h-14 items-center justify-between px-5">
+<header class="flex h-14 items-center px-2">
+  <Hamburger on:click={handleBurgerClick} open={burgerOpen} />
   <LargeTitle><slot>{$_('page.home.title')}</slot></LargeTitle>
-
-  <Hamburger
-    on:click={handleBurgerClick}
-    open={$menu}
-    --layer-width="1.25rem"
-    --layer-height="0.125rem"
-    --layer-spacing="0.25rem" />
+  <div class="ms-auto hidden md:block">
+    <slot name="links" />
+  </div>
 </header>

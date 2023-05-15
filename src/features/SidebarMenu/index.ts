@@ -11,6 +11,5 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { createMenu } from './menu/Menu';
-
-export const menu = createMenu();
+export { default as SidebarMenu } from './SidebarMenu.svelte';
+export { sidebarMenuState } from './store/sidebarMenuState';

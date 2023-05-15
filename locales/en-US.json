@@ -7,5 +7,17 @@
   "footer.copyright": "Copyright © {year} Adobe. All rights reserved.",
   "footer.privacy": "Privacy",
   "footer.rights": "Do not sell or share my personal information",
-  "footer.termsOfUse": "Terms of use"
+  "footer.termsOfUse": "Terms of use",
+  "menu.section.overview": "Overview",
+  "menu.section.overview.what": "What are Content Credentials?",
+  "menu.section.features": "Features",
+  "menu.section.features.verify": "Verify Content Credentials",
+  "menu.section.features.apply": "Apply Content Credentials",
+  "menu.section.features.embed": "Embed Content Credentials",
+  "menu.section.getInvolved": "Get involved",
+  "menu.section.getInvolved.CAI": "Content Authenticity Initiative",
+  "menu.section.getInvolved.OSS": "Open-source tools",
+  "menu.section.getInvolved.discord": "Discord",
+  "menu.section.getInvolved.github": "Github",
+  "menu.home": "Home"
 }

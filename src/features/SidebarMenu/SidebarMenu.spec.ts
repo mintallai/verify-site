@@ -14,19 +14,20 @@
 import { fireEvent, render } from '@testing-library/svelte';
 import { get } from 'svelte/store';
 import { describe, expect, it } from 'vitest';
-import { sidebarMenuState } from '../../features/SidebarMenu';
-import Header from './Header.svelte';
+import SidebarMenu from './SidebarMenu.svelte';
+import { sidebarMenuState } from './store/sidebarMenuState';
 
-describe('components/Header', () => {
-  it('should set the menu state to true when the button is clicked', () => {
-    const { getByRole } = render(Header);
+describe('components/SidebarMenu', () => {
+  it('should set the menu state to false when a MenuItem is clicked', async () => {
+    const { getByText } = render(SidebarMenu);
 
-    const button = getByRole('button');
+    sidebarMenuState.setOpen();
+    expect(get(sidebarMenuState)).toBe(true);
 
-    expect(get(sidebarMenuState)).toBe(false);
+    const button = getByText('menu.home');
 
     fireEvent.click(button);
 
-    expect(get(sidebarMenuState)).toBe(true);
+    expect(get(sidebarMenuState)).toBe(false);
   });
 });

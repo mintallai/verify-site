@@ -13,17 +13,17 @@
 
 import { get } from 'svelte/store';
 import { describe, expect, it } from 'vitest';
-import { createMenu } from './Menu';
+import { createSidebarMenuState } from './sidebarMenuState';
 
-describe('store/menu', () => {
+describe('store/sidebarMenu', () => {
   it('should default to false', () => {
-    const store = createMenu();
+    const store = createSidebarMenuState();
 
     expect(get(store)).toBe(false);
   });
 
   it('should switch state when toggle is called', () => {
-    const store = createMenu();
+    const store = createSidebarMenuState();
 
     store.toggle();
 
@@ -35,17 +35,17 @@ describe('store/menu', () => {
   });
 
   it('should set to true when open is called', () => {
-    const store = createMenu();
+    const store = createSidebarMenuState();
 
-    store.open();
+    store.setOpen();
 
     expect(get(store)).toBe(true);
   });
 
   it('should set to false when close is called', () => {
-    const store = createMenu();
+    const store = createSidebarMenuState();
 
-    store.close();
+    store.setClosed();
 
     expect(get(store)).toBe(false);
   });

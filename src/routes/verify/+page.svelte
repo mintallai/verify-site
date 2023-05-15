@@ -15,7 +15,7 @@
 
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import SidebarLayout from '../../components/SidebarLayout/SidebarLayout.svelte';
+  import SidebarLayout from '../../features/SidebarLayout/SidebarLayout.svelte';
 </script>
 
 <SidebarLayout>

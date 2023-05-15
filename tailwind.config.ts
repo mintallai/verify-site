@@ -85,10 +85,17 @@ export default {
       'gray-700': 'var(--gray-700)',
       'gray-800': 'var(--gray-800)',
       'gray-900': 'var(--gray-900)',
+      'blue-100': 'var(--blue-100)',
       'blue-600': 'var(--blue-600)',
+    },
+    boxShadow: {
+      DEFAULT: '0px 4px 20px rgba(0, 0, 0, 0.3)',
     },
 
     extend: {
+      spacing: {
+        sidebar: '20rem',
+      },
       borderColor: ({ theme }) => ({
         DEFAULT: theme('colors.gray-50'),
       }),

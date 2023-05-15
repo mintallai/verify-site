@@ -14,31 +14,10 @@
 -->
 
 <script lang="ts">
-  export let open = false;
+  export let title: undefined | string = undefined;
 </script>
 
-<button on:click class="flex flex-col gap-1 p-4" class:open>
-  <span class="burger-line top" />
-  <span class="burger-line middle" />
-  <span class="burger-line bottom" />
-</button>
-
-<style lang="postcss">
-  .burger-line {
-    @apply h-[0.125rem] w-5 bg-gray-900;
-  }
-
-  .open {
-    .top {
-      @apply translate-y-[0.375rem] -rotate-45;
-    }
-
-    .middle {
-      @apply invisible;
-    }
-
-    .bottom {
-      @apply -translate-y-[0.375rem] rotate-45;
-    }
-  }
-</style>
+{#if title}
+  <div class="px-7 pb-2.5 text-header text-gray-500">{title}</div>
+{/if}
+<div class="pb-7"><slot /></div>

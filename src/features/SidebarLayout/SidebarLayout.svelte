@@ -14,17 +14,21 @@
 -->
 
 <script>
-  import Header from '../Header/Header.svelte';
+  import Header from '../../components/Header/Header.svelte';
+  import { sidebarLayoutPageState } from './store/sidebarLayoutPageState';
 </script>
 
-<div class="flex grow">
-  <div class="basis-80 border-e-2">
+<div
+  class="grid h-screen grid-cols-[100vw_100vw] overflow-x-hidden lg:grid-cols-[theme(spacing.sidebar)_auto]">
+  <div class="lg:border-e-2">
     <Header><slot name="header" /></Header>
     <div class="border-t-2">
       <slot name="sidebar" />
     </div>
   </div>
-  <div class="grow">
+  <div
+    class="h-full lg:transform-none"
+    class:-translate-x-full={$sidebarLayoutPageState === 1}>
     <slot name="content" />
   </div>
 </div>
