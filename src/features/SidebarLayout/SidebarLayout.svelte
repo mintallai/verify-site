@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script>
   import Header from '../../components/Header/Header.svelte';
   import { sidebarLayoutPageState } from './store/sidebarLayoutPageState';

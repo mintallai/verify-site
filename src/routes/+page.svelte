@@ -11,7 +11,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import Footer from '../components/Footer/Footer.svelte';

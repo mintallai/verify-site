@@ -13,4 +13,4 @@
   from Adobe.
 -->
 
-<span class="text-large-title text-gray-900"><slot /></span>
+<span class="text-large-title text-gray-800"><slot /></span>

@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import Title from '../../components/typography/Title.svelte';
   import { sidebarMenuState } from './store/sidebarMenuState';

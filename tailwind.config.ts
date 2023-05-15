@@ -61,7 +61,7 @@ export default {
         '0.8125rem',
         {
           lineHeight: '1rem',
-          fontWeight: '800',
+          fontWeight: '400',
         },
       ],
       label: [
@@ -73,7 +73,7 @@ export default {
       ],
     },
     colors: {
-      white: 'var(--white)',
+      white: 'var(--gray-50)',
       'gray-50': 'var(--gray-50)',
       'gray-75': 'var(--gray-75)',
       'gray-100': 'var(--gray-100)',
@@ -86,7 +86,18 @@ export default {
       'gray-800': 'var(--gray-800)',
       'gray-900': 'var(--gray-900)',
       'blue-100': 'var(--blue-100)',
+      'blue-200': 'var(--blue-200)',
+      'blue-300': 'var(--blue-300)',
+      'blue-400': 'var(--blue-400)',
+      'blue-500': 'var(--blue-500)',
       'blue-600': 'var(--blue-600)',
+      'blue-700': 'var(--blue-700)',
+      'blue-800': 'var(--blue-900)',
+      'blue-900': 'var(--blue-900)',
+      'blue-1000': 'var(--blue-1000)',
+      'blue-1100': 'var(--blue-1100)',
+      'blue-1200': 'var(--blue-1200)',
+      'blue-1300': 'var(--blue-1300)',
     },
     boxShadow: {
       DEFAULT: '0px 4px 20px rgba(0, 0, 0, 0.3)',
@@ -97,7 +108,7 @@ export default {
         sidebar: '20rem',
       },
       borderColor: ({ theme }) => ({
-        DEFAULT: theme('colors.gray-50'),
+        DEFAULT: theme('colors.gray-200'),
       }),
     },
   },

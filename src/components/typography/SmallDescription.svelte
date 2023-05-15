@@ -13,4 +13,4 @@
   from Adobe.
 -->
 
-<span class="text-small-description text-gray-500"><slot /></span>
+<span class="text-small-description text-gray-600"><slot /></span>
