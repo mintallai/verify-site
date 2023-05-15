@@ -11,15 +11,23 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
+  import Footer from '../components/Footer/Footer.svelte';
   import Header from '../components/Header/Header.svelte';
+  import HeaderLink from '../components/Header/HeaderLink.svelte';
 </script>
 
-<Header />
-<div class="flex grow items-center justify-center">
+<Header>
+  <div slot="links">
+    <HeaderLink href="/verify">Verify</HeaderLink>
+    <HeaderLink href="/apply">Apply</HeaderLink>
+    <HeaderLink href="/">Embed</HeaderLink>
+  </div>
+</Header>
+<div class="flex h-screen items-center justify-center">
   <h1 class="w-[47.5rem] text-center text-[5rem]/tight font-black">
     {$_('page.home.cta')}
   </h1>
 </div>
+<Footer />

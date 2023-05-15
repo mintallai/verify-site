@@ -13,31 +13,9 @@
   from Adobe.
 -->
 <script lang="ts">
-  export let open = false;
+  import Title from '../typography/Title.svelte';
+
+  export let href = '/';
 </script>
 
-<button on:click class="flex flex-col gap-1 p-4" class:open>
-  <span class="burger-line top" />
-  <span class="burger-line middle" />
-  <span class="burger-line bottom" />
-</button>
-
-<style lang="postcss">
-  .burger-line {
-    @apply h-0.5 w-5 bg-gray-900;
-  }
-
-  .open {
-    .top {
-      @apply translate-y-1.5 -rotate-45;
-    }
-
-    .middle {
-      @apply invisible;
-    }
-
-    .bottom {
-      @apply -translate-y-1.5 rotate-45;
-    }
-  }
-</style>
+<a class="px-5" {href}><Title><slot /></Title></a>

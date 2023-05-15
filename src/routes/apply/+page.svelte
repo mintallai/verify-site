@@ -12,10 +12,12 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import SidebarLayout from '../../components/SidebarLayout/SidebarLayout.svelte';
+  import {
+    SidebarLayout,
+    sidebarLayoutPageState,
+  } from '../../features/SidebarLayout';
   import CounterButton from './components/CounterButton/CounterButton.svelte';
   import { count } from './store';
 </script>
@@ -24,6 +26,14 @@
   <div slot="header">{$_('page.apply.title')}</div>
   <div slot="sidebar">
     <CounterButton />
+    <button
+      class="m-2 bg-blue-600 p-2 text-white lg:hidden"
+      on:click={() => sidebarLayoutPageState.next()}>Next</button>
   </div>
-  <div slot="content">Count is {$count}</div>
+  <div slot="content" class="h-full bg-gray-300">
+    Count is {$count}
+    <button
+      class="m-2 bg-blue-600 p-2 text-white lg:hidden"
+      on:click={() => sidebarLayoutPageState.back()}>Back</button>
+  </div>
 </SidebarLayout>

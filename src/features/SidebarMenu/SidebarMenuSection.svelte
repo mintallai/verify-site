@@ -12,11 +12,11 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
-  export let href = '';
+  export let title: undefined | string = undefined;
 </script>
 
-<a {href} on:click class="text-lg/6 block border-t-2 p-5 font-extrabold">
-  <slot />
-</a>
+{#if title}
+  <div class="px-7 pb-2.5 text-header text-gray-500">{title}</div>
+{/if}
+<div class="pb-7"><slot /></div>

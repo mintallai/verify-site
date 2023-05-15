@@ -12,19 +12,20 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
+<script lang="ts">
+  import Title from '../../components/typography/Title.svelte';
+  import { sidebarMenuState } from './store/sidebarMenuState';
 
-<script>
-  import Header from '../Header/Header.svelte';
+  export let href = '';
+
+  function handleClick() {
+    sidebarMenuState.setClosed();
+  }
 </script>
 
-<div class="flex grow">
-  <div class="basis-80 border-e-2">
-    <Header><slot name="header" /></Header>
-    <div class="border-t-2">
-      <slot name="sidebar" />
-    </div>
-  </div>
-  <div class="grow">
-    <slot name="content" />
-  </div>
-</div>
+<a
+  {href}
+  on:click={handleClick}
+  class="text-lg/6 block px-7 py-2.5 font-extrabold hover:bg-blue-100 focus:bg-blue-100">
+  <Title><slot /></Title>
+</a>

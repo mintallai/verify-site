@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script lang="ts">
   import { afterNavigate } from '$app/navigation';
   import { postEvent } from '$lib/analytics';
@@ -21,9 +20,7 @@
   import debug from 'debug';
   import { onMount } from 'svelte';
   import { locale } from 'svelte-i18n';
-  import Footer from '../components/Footer/Footer.svelte';
-  import Menu from '../components/Menu/Menu.svelte';
-  import { menu } from '../store';
+  import SidebarMenu from '../features/SidebarMenu/SidebarMenu.svelte';
 
   import '../app.css';
   import '../globalWebComponents';
@@ -62,11 +59,7 @@
 </script>
 
 <div class="font-base">
-  <div class="flex h-screen flex-col justify-between">
-    <slot />
+  <slot />
 
-    <Footer />
-  </div>
-
-  <Menu open={$menu} />
+  <SidebarMenu />
 </div>

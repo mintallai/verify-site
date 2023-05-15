@@ -13,13 +13,16 @@
 
 import { writable } from 'svelte/store';
 
-export function createMenu() {
-  const { subscribe, set, update } = writable(false);
+const NUM_PAGES = 2;
+
+export function createSidebarLayoutPageState() {
+  const { subscribe, update } = writable(0);
 
   return {
     subscribe,
-    toggle: () => update((value) => !value),
-    open: () => set(true),
-    close: () => set(false),
+    next: () => update((value) => Math.min(NUM_PAGES - 1, value + 1)),
+    back: () => update((value) => Math.max(0, value - 1)),
   };
 }
+
+export const sidebarLayoutPageState = createSidebarLayoutPageState();

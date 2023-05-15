@@ -99,8 +99,14 @@ export default {
       'blue-1200': 'var(--blue-1200)',
       'blue-1300': 'var(--blue-1300)',
     },
+    boxShadow: {
+      DEFAULT: '0px 4px 20px rgba(0, 0, 0, 0.3)',
+    },
 
     extend: {
+      spacing: {
+        sidebar: '20rem',
+      },
       borderColor: ({ theme }) => ({
         DEFAULT: theme('colors.gray-200'),
       }),

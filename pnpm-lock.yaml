@@ -138,9 +138,6 @@ devDependencies:
   svelte-check:
     specifier: ^3.2.0
     version: 3.2.0(@babel/core@7.21.8)(postcss-load-config@2.1.0)(postcss@8.4.20)(svelte@3.54.0)
-  svelte-hamburgers:
-    specifier: ^4.0.1
-    version: 4.0.1
   svgo:
     specifier: ^3.0.2
     version: 3.0.2
@@ -7078,10 +7075,6 @@ packages:
       - sass
       - stylus
       - sugarss
-    dev: true
-
-  /svelte-hamburgers@4.0.1:
-    resolution: {integrity: sha512-5xm430w5XNukmxyJ4tW2ln7oSA9qQ4TiKiIfbaDmwmUuCpnW6GD4cDSTG5U/2PwerI7AFNhIhB5iNwnzE2RQXA==}
     dev: true
 
   /svelte-hmr@0.15.1(svelte@3.54.0):
