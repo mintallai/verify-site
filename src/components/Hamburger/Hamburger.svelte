@@ -25,12 +25,12 @@
 
 <style lang="postcss">
   .burger-line {
-    @apply h-[0.125rem] w-5 bg-gray-900;
+    @apply h-0.5 w-5 bg-gray-900;
   }
 
   .open {
     .top {
-      @apply translate-y-[0.375rem] -rotate-45;
+      @apply translate-y-1.5 -rotate-45;
     }
 
     .middle {
@@ -38,7 +38,7 @@
     }
 
     .bottom {
-      @apply -translate-y-[0.375rem] rotate-45;
+      @apply -translate-y-1.5 rotate-45;
     }
   }
 </style>
