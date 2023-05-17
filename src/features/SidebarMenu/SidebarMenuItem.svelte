@@ -13,6 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
+  import { base } from '$app/paths';
   import Title from '../../components/typography/Title.svelte';
   import { sidebarMenuState } from './store/sidebarMenuState';
 
@@ -24,7 +25,7 @@
 </script>
 
 <a
-  {href}
+  href={`${base}${href}`}
   on:click={handleClick}
   class="text-lg/6 block px-7 py-2.5 font-extrabold hover:bg-blue-100 focus:bg-blue-100">
   <Title><slot /></Title>

@@ -50,7 +50,6 @@
   $: currentLangString = currentLocaleMapping?.[1];
 
   function handleLanguageChange(evt: Event) {
-    console.log('evt', evt);
     setLanguage((evt.target as MenuItem).value);
     languageTrigger._tippy?.hide();
   }

@@ -24,8 +24,15 @@ ci:
 		-e PUSH_ARTIFACTS \
 		-e ARTIFACTORY_API_TOKEN \
 		-e ARTIFACTORY_USER \
-		-e CI_PULL_REQUEST=$(ghprbPullId) \
 		-e TESSA2_API_KEY \
+		-e ci_aws_access_key_id \
+		-e ci_aws_secret_access_key \
+		-e remote \
+		-e repo \
+		-e sha \
+		-e pr_numbers \
+		-e moonbeam_user \
+		-e moonbeam_token \
 		--ipc=host \
 		$(CI_TAG)
 

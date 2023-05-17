@@ -15,6 +15,12 @@ import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 import childProcess from 'child_process';
 
+const BASE_PATH = process.env.BASE_PATH || '';
+
+if (BASE_PATH) {
+  console.log(`Svelte config using base path: ${BASE_PATH}`);
+}
+
 const gitRevision = childProcess
   .execSync('git rev-parse --short HEAD')
   .toString()
@@ -32,6 +38,9 @@ const config = {
       precompress: false,
       strict: true,
     }),
+    paths: {
+      base: BASE_PATH,
+    },
     version: { name: gitRevision },
   },
 };

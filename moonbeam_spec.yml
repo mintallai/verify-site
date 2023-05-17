@@ -15,21 +15,32 @@ services:
           field: moonbeam_token
           path: dme_cai/caivrfy
       - name: ssh_private_key
-        global: 'true'
+        global: true
         secret_data:
           field: ssh_private_key
           path: dme_cai/caivrfy
       - name: artifactory_corp_credentials
-        global: 'true'
+        global: true
         secret_data:
           field: artifactory_corp_credentials
           path: dme_cai/caivrfy
-      - name: Tessa_API_Key
+      - name: ci_aws_access_key_id
+        global: "true"
+        secret_data:
+          field: ci_aws_access_key_id
+          path: dme_cai/caivrfy
+      - name: ci_aws_secret_access_key
+        global: "true"
+        secret_data:
+          field: ci_aws_secret_access_key
+          path: dme_cai/caivrfy
+      - name: Tessa_API_Key_custom
+        global: "true"
         secret_data:
           field: tessa2_api_key
           path: dme_cai/caivrfy
       - name: PUBLIC_GITHUB_PACKAGE_TOKEN
-        global: 'true'
+        global: true
         secret_data:
           field: public_github_package_token
           path: dme_cai/caivrfy
@@ -79,11 +90,11 @@ services:
                 hidden: false
               - name: enableTessaAnalysis
                 param_type: string
-                default: 'true'
+                default: "true"
                 hidden: false
               - name: pushPageObjects
                 param_type: string
-                default: 'true'
+                default: "true"
                 hidden: false
               - name: ARTIFACTORY_DOCKER_REGISTRY
                 param_type: string
@@ -126,7 +137,7 @@ services:
                 hidden: false
               - name: SUPPORT_ROLLBACK_CLEANUP
                 param_type: string
-                default: 'true'
+                default: "true"
                 hidden: false
               - name: ENVIRONMENT_NAME
                 param_type: string
@@ -181,7 +192,7 @@ services:
                 hidden: false
               - name: SUPPORT_ROLLBACK_CLEANUP
                 param_type: string
-                default: 'true'
+                default: "true"
                 hidden: false
               - name: ENVIRONMENT_NAME
                 param_type: string
@@ -236,7 +247,7 @@ services:
                 hidden: false
               - name: SUPPORT_ROLLBACK_CLEANUP
                 param_type: string
-                default: 'true'
+                default: "true"
                 hidden: false
               - name: ENVIRONMENT_NAME
                 param_type: string

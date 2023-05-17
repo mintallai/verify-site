@@ -14,6 +14,7 @@
 -->
 
 <script>
+  import { base } from '$app/paths';
   import { page } from '$app/stores';
 </script>
 
@@ -21,7 +22,7 @@
   <div class="huge">{$page.status}</div>
   <div class="big">
     {$page.error.message}.
-    <a href="/">Go back</a>
+    <a href={`${base}/`}>Go back</a>
   </div>
 </div>
 

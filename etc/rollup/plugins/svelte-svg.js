@@ -11,12 +11,12 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { optimize } from 'svgo';
+import { createFilter } from '@rollup/pluginutils';
+import { readFile } from 'fs/promises';
 import lodash from 'lodash/fp';
 import path from 'path';
 import { compile } from 'svelte/compiler';
-import { createFilter } from '@rollup/pluginutils';
-import { readFile } from 'fs/promises';
+import { optimize } from 'svgo';
 
 const { flow, camelCase, upperFirst } = lodash;
 
