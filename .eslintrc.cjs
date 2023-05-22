@@ -1,6 +1,9 @@
 const header = [
   ' ADOBE CONFIDENTIAL',
-  { pattern: 'Copyright \\d{4} Adobe' },
+  {
+    pattern: 'Copyright \\d{4} Adobe',
+    template: ` Copyright ${new Date().getFullYear()} Adobe`,
+  },
   ' All Rights Reserved.',
   '',
   ' NOTICE: All information contained herein is, and remains',
@@ -20,6 +23,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
+    'plugin:storybook/recommended',
   ],
   plugins: ['svelte3', '@typescript-eslint', 'header'],
   ignorePatterns: ['*.cjs'],

@@ -35,16 +35,26 @@ async function deploy({ prNumber }) {
       BASE_PATH: path,
     },
   });
+  console.log(`Building Storybook`);
+  await exec(`pnpm run build-storybook -o ./dist/storybook`);
   console.log(`Deploying site to S3`);
   await exec(
     `aws s3 sync ./dist s3://adobe-cai-verify-dev/dist/verify-site${path}`,
   );
   return {
     deployUrl: `https://verify-dev.contentauthenticity.org${path}`,
+    storybookUrl: `https://verify-dev.contentauthenticity.org${path}/storybook/index.html`,
   };
 }
 
-async function postComment({ owner, repo, prNumber, deployUrl, sha }) {
+async function postComment({
+  owner,
+  repo,
+  prNumber,
+  deployUrl,
+  storybookUrl,
+  sha,
+}) {
   const pr = await octokit.request(
     `GET /repos/{owner}/{repo}/issues/{pull_number}/comments`,
     {
@@ -54,7 +64,8 @@ async function postComment({ owner, repo, prNumber, deployUrl, sha }) {
     },
   );
   const commentText = `<div id="moonbeam-deploy-info">
-    <strong>✅ Deployed to <a href="${deployUrl}">${deployUrl}</a></strong><br/><br/>
+    <strong>✅ Deployed to <a href="${deployUrl}">${deployUrl}</a></strong><br/>
+    📖 Storybook deployed to <a href="${storybookUrl}">${storybookUrl}</a><br/><br/>
     Deployed commit: <code>${sha}</code>
   </div>`;
   const existingComment = pr.data.find((comment) =>
@@ -86,8 +97,8 @@ async function postComment({ owner, repo, prNumber, deployUrl, sha }) {
 async function ciHandler({ prNumber, repoPath, sha }) {
   const [owner, repo] = repoPath.split('/');
   if (isValidPr(prNumber)) {
-    const { deployUrl } = await deploy({ prNumber });
-    await postComment({ owner, repo, prNumber, deployUrl, sha });
+    const { deployUrl, storybookUrl } = await deploy({ prNumber });
+    await postComment({ owner, repo, prNumber, deployUrl, storybookUrl, sha });
   } else {
     console.log(`Invalid PR number received: ${prNumber}, skipping deploy`);
   }

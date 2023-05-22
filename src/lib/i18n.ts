@@ -49,7 +49,7 @@ function getSupportedLocale(locale: string | null) {
   return DEFAULT_LOCALE;
 }
 
-export function initI18n() {
+export function registerLocales() {
   supportedLocales.forEach((locale) => {
     register(locale, async () => {
       dbg(`Fetching locale information for ${locale}`);
@@ -58,6 +58,10 @@ export function initI18n() {
       return data;
     });
   });
+}
+
+export async function initI18n() {
+  registerLocales();
 
   const prevLocale = window.localStorage.getItem(LOCALSTORAGE_KEY);
   const requestedLocale =
