@@ -13,7 +13,9 @@
   from Adobe.
 -->
 <script>
+  import ChevronLeft from '../../../assets/svg/monochrome/chevron-left.svg?component';
   import Header from '../../components/Header/Header.svelte';
+  import Title from '../../components/typography/Title.svelte';
   import { sidebarLayoutPageState } from './store/sidebarLayoutPageState';
 </script>
 
@@ -26,8 +28,19 @@
     </div>
   </div>
   <div
-    class="h-full lg:transform-none"
+    class="h-screen overflow-hidden transition-transform lg:transform-none"
     class:-translate-x-full={$sidebarLayoutPageState === 1}>
-    <slot name="content" />
+    <div class="flex h-header items-center bg-gray-50 px-6 lg:hidden">
+      <button
+        class="flex items-center"
+        on:click={() => sidebarLayoutPageState.back()}>
+        <ChevronLeft class="pe-3" />
+        <Title><slot name="back-bar" /></Title>
+      </button>
+    </div>
+
+    <div class="h-full border-t-2 bg-gray-100 lg:border-none">
+      <slot name="content" />
+    </div>
   </div>
 </div>

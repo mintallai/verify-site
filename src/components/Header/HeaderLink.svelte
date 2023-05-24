@@ -13,10 +13,10 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { base } from '$app/paths';
+  import BaseLink from '../BaseLink/BaseLink.svelte';
   import Title from '../typography/Title.svelte';
 
   export let href = `/`;
 </script>
 
-<a class="px-5" href={`${base}${href}`}><Title><slot /></Title></a>
+<BaseLink class="px-5" {href}><Title><slot /></Title></BaseLink>

@@ -36,4 +36,6 @@
       class="m-2 bg-blue-600 p-2 text-white lg:hidden"
       on:click={() => sidebarLayoutPageState.back()}>Back</button>
   </div>
+  <svelte:fragment slot="back-bar"
+    >{$_('page.apply.backToSettings')}</svelte:fragment>
 </SidebarLayout>

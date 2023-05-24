@@ -25,7 +25,7 @@
   export let burgerOpen = false;
 </script>
 
-<header class="flex h-14 items-center px-2">
+<header class="flex h-header items-center px-2">
   <Hamburger on:click={handleBurgerClick} open={burgerOpen} />
   <LargeTitle><slot>{$_('page.home.title')}</slot></LargeTitle>
   <div class="ms-auto hidden md:block">

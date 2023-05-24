@@ -13,28 +13,15 @@
   from Adobe.
 -->
 
-<script>
-  import { page } from '$app/stores';
-  import BaseLink from '../components/BaseLink/BaseLink.svelte';
+<script lang="ts">
+  import { base } from '$app/paths';
+  import type { HTMLAnchorAttributes } from 'svelte/elements';
+
+  interface $$Props extends HTMLAnchorAttributes {
+    href: string;
+  }
+
+  export let href = '';
 </script>
 
-<div class="error">
-  <div class="huge">{$page.status}</div>
-  <div class="big">
-    {$page.error.message}.
-    <BaseLink href="/">Go back</BaseLink>
-  </div>
-</div>
-
-<style>
-  .huge {
-    font-size: 12rem;
-  }
-  .error {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-</style>
+<a on:click href={`${base}${href}`} {...$$restProps}><slot /></a>

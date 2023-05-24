@@ -102,10 +102,10 @@ export default {
     boxShadow: {
       DEFAULT: '0px 4px 20px rgba(0, 0, 0, 0.3)',
     },
-
     extend: {
       spacing: {
         sidebar: '20rem',
+        header: '3.5rem',
       },
       borderColor: ({ theme }) => ({
         DEFAULT: theme('colors.gray-200'),
