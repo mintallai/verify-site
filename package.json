@@ -96,9 +96,5 @@
     "svelte": "^3.54.0",
     "svelte-i18n": "^3.6.0",
     "tippy.js": "^6.2.6"
-  },
-  "lint-staged": {
-    "*.{js,ts,css,md,svelte}": "prettier --write",
-    "*.svelte": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings"
   }
 }
