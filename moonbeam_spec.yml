@@ -34,6 +34,11 @@ services:
         secret_data:
           field: ci_aws_secret_access_key
           path: dme_cai/caivrfy
+      - name: chromatic_project_token
+        global: "true"
+        secret_data:
+          field: chromatic_project_token
+          path: dme_cai/caivrfy
       - name: Tessa_API_Key_custom
         global: "true"
         secret_data:
