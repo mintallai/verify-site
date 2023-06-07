@@ -13,14 +13,14 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { base } from '$app/paths';
-  import type { HTMLAnchorAttributes } from 'svelte/elements';
-
-  interface $$Props extends HTMLAnchorAttributes {
-    href: string;
-  }
-
-  export let href = '';
+  import '@spectrum-web-components/button/sp-button.js';
+  export let size: string;
+  export let variant = 'accent';
+  export let treatment = 'fill';
 </script>
 
-<a on:click href={`${base}${href}`} {...$$restProps}><slot /></a>
+<sp-theme color="lightest" scale="medium">
+  <sp-button {size} {variant} {treatment}>
+    <slot />
+  </sp-button>
+</sp-theme>

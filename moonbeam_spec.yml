@@ -25,22 +25,22 @@ services:
           field: artifactory_corp_credentials
           path: dme_cai/caivrfy
       - name: ci_aws_access_key_id
-        global: "true"
+        global: 'true'
         secret_data:
           field: ci_aws_access_key_id
           path: dme_cai/caivrfy
       - name: ci_aws_secret_access_key
-        global: "true"
+        global: 'true'
         secret_data:
           field: ci_aws_secret_access_key
           path: dme_cai/caivrfy
       - name: chromatic_project_token
-        global: "true"
+        global: 'true'
         secret_data:
           field: chromatic_project_token
           path: dme_cai/caivrfy
       - name: Tessa_API_Key_custom
-        global: "true"
+        global: 'true'
         secret_data:
           field: tessa2_api_key
           path: dme_cai/caivrfy
@@ -95,11 +95,11 @@ services:
                 hidden: false
               - name: enableTessaAnalysis
                 param_type: string
-                default: "true"
+                default: 'true'
                 hidden: false
               - name: pushPageObjects
                 param_type: string
-                default: "true"
+                default: 'true'
                 hidden: false
               - name: ARTIFACTORY_DOCKER_REGISTRY
                 param_type: string
@@ -142,7 +142,7 @@ services:
                 hidden: false
               - name: SUPPORT_ROLLBACK_CLEANUP
                 param_type: string
-                default: "true"
+                default: 'true'
                 hidden: false
               - name: ENVIRONMENT_NAME
                 param_type: string
@@ -197,7 +197,7 @@ services:
                 hidden: false
               - name: SUPPORT_ROLLBACK_CLEANUP
                 param_type: string
-                default: "true"
+                default: 'true'
                 hidden: false
               - name: ENVIRONMENT_NAME
                 param_type: string
@@ -252,7 +252,7 @@ services:
                 hidden: false
               - name: SUPPORT_ROLLBACK_CLEANUP
                 param_type: string
-                default: "true"
+                default: 'true'
                 hidden: false
               - name: ENVIRONMENT_NAME
                 param_type: string

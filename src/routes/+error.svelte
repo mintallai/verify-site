@@ -12,7 +12,6 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-
 <script>
   import { page } from '$app/stores';
   import BaseLink from '../components/BaseLink/BaseLink.svelte';

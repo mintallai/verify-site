@@ -13,14 +13,14 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { base } from '$app/paths';
-  import type { HTMLAnchorAttributes } from 'svelte/elements';
-
-  interface $$Props extends HTMLAnchorAttributes {
-    href: string;
-  }
-
-  export let href = '';
+  export let expanded = true;
 </script>
 
-<a on:click href={`${base}${href}`} {...$$restProps}><slot /></a>
+<div class="px-5 pt-5">
+  <div class="border-b pb-5">
+    <slot name="headerSection" />
+    <div class:hidden={!expanded} class="pt-2">
+      <slot name="content" />
+    </div>
+  </div>
+</div>

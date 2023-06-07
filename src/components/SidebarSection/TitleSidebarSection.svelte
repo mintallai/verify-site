@@ -13,14 +13,12 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { base } from '$app/paths';
-  import type { HTMLAnchorAttributes } from 'svelte/elements';
-
-  interface $$Props extends HTMLAnchorAttributes {
-    href: string;
-  }
-
-  export let href = '';
+  import Title from '../typography/Title.svelte';
+  import SidebarSectionBase from './SidebarSectionBase.svelte';
 </script>
 
-<a on:click href={`${base}${href}`} {...$$restProps}><slot /></a>
+<SidebarSectionBase>
+  <div slot="headerSection">
+    <Title><slot name="title" /></Title>
+  </div>
+  <slot name="content" slot="content" /></SidebarSectionBase>

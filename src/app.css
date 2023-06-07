@@ -13,6 +13,7 @@ from Adobe. */
 
 @import 'tippy.js/dist/tippy.css';
 @import './vars.css';
+@import './preflight.css';
 /* @import './spectrum-vars.css'; */
 
 @tailwind base;

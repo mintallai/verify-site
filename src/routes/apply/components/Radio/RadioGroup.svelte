@@ -13,14 +13,14 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { base } from '$app/paths';
-  import type { HTMLAnchorAttributes } from 'svelte/elements';
+  import '@spectrum-web-components/radio/sp-radio-group.js';
 
-  interface $$Props extends HTMLAnchorAttributes {
-    href: string;
-  }
-
-  export let href = '';
+  export let selected: string;
+  export let name: string;
 </script>
 
-<a on:click href={`${base}${href}`} {...$$restProps}><slot /></a>
+<sp-theme color="lightest" scale="medium" class="w-full">
+  <sp-radio-group {selected} {name}>
+    <slot />
+  </sp-radio-group>
+</sp-theme>
