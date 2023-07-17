@@ -41,5 +41,6 @@
   "menu.section.getInvolved.OSS": "Open-source tools",
   "menu.section.getInvolved.discord": "Discord",
   "menu.section.getInvolved.github": "Github",
-  "menu.home": "Home"
+  "menu.home": "Home",
+  "error.generic": "Something went wrong. Please try again later."
 }

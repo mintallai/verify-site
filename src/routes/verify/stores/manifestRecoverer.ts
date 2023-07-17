@@ -1,0 +1,94 @@
+// ADOBE CONFIDENTIAL
+// Copyright 2023 Adobe
+// All Rights Reserved.
+//
+// NOTICE: All information contained herein is, and remains
+// the property of Adobe and its suppliers, if any. The intellectual
+// and technical concepts contained herein are proprietary to Adobe
+// and its suppliers and are protected by all applicable intellectual
+// property laws, including trade secret and copyright laws.
+// Dissemination of this information or reproduction of this material
+// is strictly forbidden unless prior written permission is obtained
+// from Adobe.
+
+// ADOBE CONFIDENTIAL
+// Copyright 2023 Adobe
+// All Rights Reserved.
+//
+// NOTICE: All information contained herein is, and remains
+// the property of Adobe and its suppliers, if any. The intellectual
+// and technical concepts contained herein are proprietary to Adobe
+// and its suppliers and are protected by all applicable intellectual
+// property laws, including trade secret and copyright laws.
+// Dissemination of this information or reproduction of this material
+// is strictly forbidden unless prior written permission is obtained
+// from Adobe.
+
+import { recoverManifests } from '$lib/manifestRecovery';
+import type { Loadable } from '$lib/types';
+import type { Source } from 'c2pa';
+import { writable, type Readable, type Writable } from 'svelte/store';
+import { createGenericError, error } from '../../../features/errors';
+import {
+  createRecoveredManifest,
+  type ReadableRecoveredManifestStore,
+} from './recoveredManifest';
+import type { SelectedSource } from './verifyStore';
+
+interface RecoveredManifestData {
+  manifests: ReadableRecoveredManifestStore[];
+}
+
+type ManifestRecoveryState = Loadable<RecoveredManifestData>;
+
+export interface ManifestRecovererStore
+  extends Readable<ManifestRecoveryState> {
+  recover: (source: Source) => Promise<void>;
+}
+
+/**
+ * Creates a store encapsulating the manifest recovery logic.
+ *
+ * @param selectedSource Selected source store - used to update the selected source when a recovered manifest is selected
+ * @param selectedAssetId Store representing the ID of the currently selected asset
+ */
+export function createManifestRecoverer(
+  selectedSource: Writable<SelectedSource>,
+  selectedAssetId: Writable<string>,
+): ManifestRecovererStore {
+  const manifestRecoveryState = writable<ManifestRecoveryState>({
+    state: 'none',
+  });
+
+  return {
+    subscribe: manifestRecoveryState.subscribe,
+    recover: async ({ blob }: Source) => {
+      manifestRecoveryState.set({ state: 'loading' });
+
+      try {
+        if (!blob) {
+          return manifestRecoveryState.set({ state: 'none' });
+        }
+
+        const recoveredManifests = await recoverManifests(blob);
+
+        manifestRecoveryState.set({
+          state: 'success',
+          manifests: recoveredManifests.map((recoveredManifest, idx) =>
+            createRecoveredManifest(
+              recoveredManifest,
+              idx,
+              selectedSource,
+              selectedAssetId,
+            ),
+          ),
+        });
+      } catch (e) {
+        console.error(e);
+        error.trigger(createGenericError());
+        // error. .show('generic-error');
+        manifestRecoveryState.set({ state: 'none' });
+      }
+    },
+  };
+}
