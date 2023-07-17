@@ -15,7 +15,7 @@
 <script>
   import ChevronLeft from '../../../assets/svg/monochrome/chevron-left.svg?component';
   import Header from '../../components/Header/Header.svelte';
-  import Title from '../../components/typography/Title.svelte';
+  import HeaderTypo from '../../components/typography/Header.svelte';
   import { sidebarLayoutPageState } from './store/sidebarLayoutPageState';
 </script>
 
@@ -23,7 +23,7 @@
   class="grid h-screen grid-cols-[100vw_100vw] overflow-x-hidden lg:grid-cols-[theme(spacing.sidebar)_auto]">
   <div class="lg:border-e-2">
     <Header><slot name="header" /></Header>
-    <div class="border-t-2">
+    <div class="relative z-0 border-t-2">
       <slot name="sidebar" />
     </div>
   </div>
@@ -35,7 +35,7 @@
         class="flex items-center"
         on:click={() => sidebarLayoutPageState.back()}>
         <ChevronLeft class="pe-3" />
-        <Title><slot name="back-bar" /></Title>
+        <HeaderTypo><slot name="back-bar" /></HeaderTypo>
       </button>
     </div>
 

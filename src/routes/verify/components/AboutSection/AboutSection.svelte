@@ -1,6 +1,6 @@
 <!--
   ADOBE CONFIDENTIAL
-  Copyright 2020 Adobe
+  Copyright 2023 Adobe
   All Rights Reserved.
 
   NOTICE: All information contained herein is, and remains
@@ -14,21 +14,16 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { sidebarMenuState } from '../../features/SidebarMenu';
-  import Hamburger from '../Hamburger/Hamburger.svelte';
-  import Title from '../typography/Title.svelte';
-
-  function handleBurgerClick() {
-    sidebarMenuState.toggle();
-  }
-
-  export let burgerOpen = false;
+  import CollapsibleSection from '../../../../components/SidebarSection/CollapsibleSection.svelte';
+  import IssuedBySection from './IssuedBySection.svelte';
+  import IssuedOnSection from './IssuedOnSection.svelte';
 </script>
 
-<header class="flex h-header items-center px-2">
-  <Hamburger on:click={handleBurgerClick} open={burgerOpen} />
-  <Title><slot>{$_('page.home.title')}</slot></Title>
-  <div class="ms-auto hidden md:block">
-    <slot name="links" />
+<CollapsibleSection>
+  <svelte:fragment slot="header">
+    {$_('sidebar.verify.about')}</svelte:fragment>
+  <div slot="content">
+    <IssuedBySection />
+    <IssuedOnSection />
   </div>
-</header>
+</CollapsibleSection>

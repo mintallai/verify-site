@@ -1,8 +1,9 @@
 <script>
   import { Meta, Story, Template } from '@storybook/addon-svelte-csf';
   import { _ } from 'svelte-i18n';
-  import Description from '../../components/typography/Description.svelte';
-  import TitleSidebarSection from './TitleSidebarSection.svelte';
+  import AdvancedSection from '../../routes/verify/components/AdvancedSection/AdvancedSection.svelte';
+  import Description from '../typography/Description.svelte';
+  import Section from './Section.svelte';
 
   const design = {
     type: 'figma',
@@ -10,20 +11,21 @@
   };
 </script>
 
-<Meta
-  title="Global/TitleSidebarSection"
-  component={TitleSidebarSection}
-  parameters={{ design }} />
+<Meta title="Global/Section" component={Section} parameters={{ design }} />
 
 <Template let:args>
-  <TitleSidebarSection {...args} />
+  <Section {...args} />
 </Template>
 
-<Story name="Custom slot" let:args>
-  <TitleSidebarSection {...args}>
+<Story name="Apply Section" let:args>
+  <Section {...args}>
     <div slot="title">{$_('sidebar.apply.title')}</div>
     <div slot="content">
       <Description>{$_('sidebar.apply.description')}</Description>
     </div>
-  </TitleSidebarSection>
+  </Section>
+</Story>
+
+<Story name="Verified Advanced" let:args>
+  <AdvancedSection />
 </Story>

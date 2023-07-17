@@ -12,11 +12,5 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-<script lang="ts">
-  import BaseLink from '../BaseLink/BaseLink.svelte';
-  import Header from '../typography/Header.svelte';
 
-  export let href = `/`;
-</script>
-
-<BaseLink class="px-5" {href}><Header><slot /></Header></BaseLink>
+<span class="text-bodybold text-gray-800"><slot /></span>

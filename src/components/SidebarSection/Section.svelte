@@ -13,28 +13,12 @@
   from Adobe.
 -->
 <script lang="ts">
-  import DownArrow from '../../../assets/svg/monochrome/down-arrow.svg?component';
   import Header from '../typography/Header.svelte';
-  import SmallDescription from '../typography/SmallDescription.svelte';
   import SidebarSectionBase from './SidebarSectionBase.svelte';
-
-  export let expanded = true;
 </script>
 
-<SidebarSectionBase {expanded}>
+<SidebarSectionBase>
   <div slot="headerSection">
-    <div class="flex justify-between">
-      <Header><slot name="header" /></Header>
-      <button on:click={() => (expanded = !expanded)}>
-        <DownArrow
-          class="h-2 w-3 transform duration-100 {expanded
-            ? 'rotate-0'
-            : '-rotate-90'}" />
-      </button>
-    </div>
-
-    <div class:hidden={!expanded} class="pt-1">
-      <SmallDescription><slot name="description" /></SmallDescription>
-    </div>
+    <Header><slot name="title" /></Header>
   </div>
   <slot name="content" slot="content" /></SidebarSectionBase>

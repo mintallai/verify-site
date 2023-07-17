@@ -13,10 +13,16 @@
   from Adobe.
 -->
 <script lang="ts">
-  import BaseLink from '../BaseLink/BaseLink.svelte';
-  import Header from '../typography/Header.svelte';
-
-  export let href = `/`;
+  import Link from '../typography/Link.svelte';
+  import SmallDescription from '../typography/SmallDescription.svelte';
+  export let link: string;
+  export let username: string;
+  export let appName: string;
 </script>
 
-<BaseLink class="px-5" {href}><Header><slot /></Header></BaseLink>
+<div class="flex flex-col">
+  <Link><a href={link}>{username}</a></Link>
+  <div class="pt-1">
+    <SmallDescription>{appName}</SmallDescription>
+  </div>
+</div>

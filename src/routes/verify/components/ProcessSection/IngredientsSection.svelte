@@ -13,12 +13,17 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Title from '../typography/Title.svelte';
-  import SidebarSectionBase from './SidebarSectionBase.svelte';
+  import { _ } from 'svelte-i18n';
+  import AssetInfo from '../../components/AssetInfo/AssetInfo.svelte';
+  import SubSection from '../../components/SubSection/SubSection.svelte';
+  let date: Date = new Date('2019-01-16');
 </script>
 
-<SidebarSectionBase>
-  <div slot="headerSection">
-    <Title><slot name="title" /></Title>
-  </div>
-  <slot name="content" slot="content" /></SidebarSectionBase>
+<SubSection>
+  <svelte:fragment slot="title">
+    {$_('sidebar.verify.process.ingredients')}</svelte:fragment>
+  <div slot="content">
+    <AssetInfo
+      thumbnail="https://verify.contentauthenticity.org/_app/immutable/assets/fake-news-2ec11861.jpg"
+      {date}><div slot="name">coucou.png</div></AssetInfo>
+  </div></SubSection>

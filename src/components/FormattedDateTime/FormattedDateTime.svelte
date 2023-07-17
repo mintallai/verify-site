@@ -1,8 +1,7 @@
 <!--
   ADOBE CONFIDENTIAL
-  Copyright 2023 Adobe
+  Copyright 2022 Adobe
   All Rights Reserved.
-
   NOTICE: All information contained herein is, and remains
   the property of Adobe and its suppliers, if any. The intellectual
   and technical concepts contained herein are proprietary to Adobe
@@ -13,10 +12,21 @@
   from Adobe.
 -->
 <script lang="ts">
-  import BaseLink from '../BaseLink/BaseLink.svelte';
-  import Header from '../typography/Header.svelte';
-
-  export let href = `/`;
+  import { _, date, time } from 'svelte-i18n';
+  export let sigDate: Date;
+  export let noTime = false;
 </script>
 
-<BaseLink class="px-5" {href}><Header><slot /></Header></BaseLink>
+<p class="text-gray-600">
+  {#if sigDate.toString() === 'Invalid Date'}
+    {$_('comp.date.invalid')}
+  {:else if noTime}
+    {$date(sigDate, { format: 'medium' })}
+  {:else}{$date(sigDate, { format: 'medium' })}{' at '}
+    {$time(sigDate, {
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZoneName: 'short',
+    })}
+  {/if}
+</p>

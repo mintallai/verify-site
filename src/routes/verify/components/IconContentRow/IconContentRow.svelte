@@ -13,10 +13,10 @@
   from Adobe.
 -->
 <script lang="ts">
-  import BaseLink from '../BaseLink/BaseLink.svelte';
-  import Header from '../typography/Header.svelte';
-
-  export let href = `/`;
+  import Body from '../../../../components/typography/Body.svelte';
 </script>
 
-<BaseLink class="px-5" {href}><Header><slot /></Header></BaseLink>
+<div class="flex items-start pt-3">
+  <slot name="icon" />
+  <Body><slot name="content" /></Body>
+</div>

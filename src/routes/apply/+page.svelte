@@ -15,8 +15,8 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import sunIcon from '../../../assets/svg/monochrome/sun.svg';
-  import HeaderSidebarSection from '../../components/SidebarSection/HeaderSidebarSection.svelte';
-  import TitleSidebarSection from '../../components/SidebarSection/TitleSidebarSection.svelte';
+  import CollapsibleSection from '../../components/SidebarSection/CollapsibleSection.svelte';
+  import Section from '../../components/SidebarSection/Section.svelte';
   import Description from '../../components/typography/Description.svelte';
   import Link from '../../components/typography/Link.svelte';
   import {
@@ -36,15 +36,15 @@
 <SidebarLayout>
   <div slot="header">{$_('page.apply.title')}</div>
   <div slot="sidebar">
-    <TitleSidebarSection>
+    <Section>
       <div slot="title">{$_('sidebar.apply.title')}</div>
       <div slot="content">
         <Description>{$_('sidebar.apply.description')}</Description>
       </div>
-    </TitleSidebarSection>
-    <HeaderSidebarSection>
+    </Section>
+    <CollapsibleSection>
       <div slot="header">
-        {$_('sidebar.apply.credit')}
+        {$_('sidebar.credit')}
       </div>
       <div slot="description">
         {$_('sidebar.apply.credit.description')}
@@ -56,10 +56,10 @@
           <Checkbox>{$_('sidebar.apply.credit.AI')}</Checkbox>
         </CheckboxGroup>
       </div>
-    </HeaderSidebarSection>
-    <HeaderSidebarSection>
+    </CollapsibleSection>
+    <CollapsibleSection>
       <div slot="header">
-        {$_('sidebar.apply.process')}
+        {$_('sidebar.process')}
       </div>
       <div slot="description">
         {$_('sidebar.apply.process.description')}
@@ -69,8 +69,8 @@
           <Checkbox>{$_('sidebar.apply.process.ingredients')}</Checkbox>
         </CheckboxGroup>
       </div>
-    </HeaderSidebarSection>
-    <HeaderSidebarSection expanded={false}>
+    </CollapsibleSection>
+    <CollapsibleSection expanded={false}>
       <div slot="header">
         {$_('sidebar.apply.advanced')}
       </div>
@@ -90,7 +90,7 @@
           <Radio value="third">{$_('sidebar.apply.advanced.attach')}</Radio>
         </RadioGroup>
       </div>
-    </HeaderSidebarSection>
+    </CollapsibleSection>
     <div class="flex p-5">
       <img src={sunIcon} alt="" class="self-start pe-2" />
       <p>

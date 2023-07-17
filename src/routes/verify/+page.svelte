@@ -14,16 +14,22 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
+  import Header from '../../components/typography/Header.svelte';
   import {
     SidebarLayout,
     sidebarLayoutPageState,
   } from '../../features/SidebarLayout';
-
+  import AboutSection from './components/AboutSection/AboutSection.svelte';
+  import AdvancedSection from './components/AdvancedSection/AdvancedSection.svelte';
   import AssetInfo from './components/AssetInfo.svelte';
+  import AssetInfoUI from './components/AssetInfo/AssetInfo.svelte';
+  import ContentSummarySection from './components/ContentSummarySection/ContentSummarySection.svelte';
+  import CreditAndUsage from './components/CreditAndUsageSection/CreditAndUsageSection.svelte';
   import ManifestRecoveryItem from './components/ManifestRecoveryItem.svelte';
+  import ProcessSection from './components/ProcessSection/ProcessSection.svelte';
   import TreeView from './components/TreeView.svelte';
   import { verifyStore } from './stores';
-
+  let date: Date = new Date('2019-01-16');
   let showResponsiveInfoPanel = false;
 
   const { hierarchyView, recoveredManifestResults } = verifyStore;
@@ -69,8 +75,20 @@
         on:click={togglePanel}>Reveal</button>
     </div>
     <div
-      class="h-screen overflow-hidden bg-gray-50 transition-transform sm:h-[calc(100vh-theme(spacing.header))] sm:transform-none sm:border-s-2 lg:h-screen"
+      class="h-screen overflow-auto bg-gray-50 transition-transform sm:h-[calc(100vh-theme(spacing.header))] sm:transform-none sm:border-s-2 lg:h-screen"
       class:-translate-y-full={showResponsiveInfoPanel}>
+      <div class="flex h-20 items-center border-b-2 bg-gray-50 px-6 shadow">
+        <AssetInfoUI
+          thumbnail="https://verify.contentauthenticity.org/_app/immutable/assets/fake-news-2ec11861.jpg"
+          {date}
+          largeAssetInfo
+          ><div slot="name"><Header>coucou.png</Header></div></AssetInfoUI>
+      </div>
+      <ContentSummarySection />
+      <CreditAndUsage />
+      <ProcessSection />
+      <AboutSection />
+      <AdvancedSection />
       {#if $hierarchyView.state === 'success'}
         <AssetInfo assetStore={$hierarchyView.selectedAssetStore} />
       {/if}

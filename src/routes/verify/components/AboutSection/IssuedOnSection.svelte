@@ -1,0 +1,33 @@
+<!--
+  ADOBE CONFIDENTIAL
+  Copyright 2023 Adobe
+  All Rights Reserved.
+
+  NOTICE: All information contained herein is, and remains
+  the property of Adobe and its suppliers, if any. The intellectual
+  and technical concepts contained herein are proprietary to Adobe
+  and its suppliers and are protected by all applicable intellectual
+  property laws, including trade secret and copyright laws.
+  Dissemination of this information or reproduction of this material
+  is strictly forbidden unless prior written permission is obtained
+  from Adobe.
+-->
+<script lang="ts">
+  import { _ } from 'svelte-i18n';
+  import signedOn from '../../../../../assets/svg/color/logos/date.svg';
+  import FormattedDateTime from '../../../../components/FormattedDateTime/FormattedDateTime.svelte';
+  import IconContentRow from '../../components/IconContentRow/IconContentRow.svelte';
+  import SubSection from '../../components/SubSection/SubSection.svelte';
+  let date: Date = new Date('2019-01-16');
+</script>
+
+<SubSection>
+  <svelte:fragment slot="title">
+    {$_('sidebar.verify.about.issuedon')}</svelte:fragment>
+  <div slot="content">
+    <IconContentRow>
+      <img slot="icon" src={signedOn} alt={signedOn} class="mr-2 w-4" />``
+      <span slot="content"
+        ><FormattedDateTime sigDate={date} />
+      </span></IconContentRow>
+  </div></SubSection>

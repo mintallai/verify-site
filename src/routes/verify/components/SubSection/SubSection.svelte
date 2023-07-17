@@ -12,5 +12,11 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
+<script lang="ts">
+  import Label from '../../../../components/typography/Label.svelte';
+</script>
 
-<span class="text-large-title text-gray-800"><slot /></span>
+<div class="pt-5 first:pt-3">
+  <Label><span class="uppercase"><slot name="title" /></span></Label>
+  <div><slot name="content" /></div>
+</div>

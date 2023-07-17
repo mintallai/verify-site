@@ -25,21 +25,21 @@ export default {
       base: 'var(--family-base)',
     },
     fontSize: {
-      'large-title': [
+      title: [
         '1.5rem',
         {
           lineHeight: '1.875rem',
           fontWeight: '900',
         },
       ],
-      title: [
+      header: [
         '1.125rem',
         {
           lineHeight: '1.5rem',
-          fontWeight: '800',
+          fontWeight: '700',
         },
       ],
-      header: [
+      bodybold: [
         '0.9375rem',
         {
           lineHeight: '1.25rem',
@@ -101,6 +101,7 @@ export default {
       'blue-1100': 'var(--blue-1100)',
       'blue-1200': 'var(--blue-1200)',
       'blue-1300': 'var(--blue-1300)',
+      transparent: 'transparent',
     },
     boxShadow: {
       DEFAULT: '0px 4px 20px rgba(0, 0, 0, 0.3)',
@@ -113,6 +114,10 @@ export default {
       borderColor: ({ theme }) => ({
         DEFAULT: theme('colors.gray-200'),
       }),
+      gridTemplateColumns: {
+        table: '38% 28% 28% 6%',
+        mobiletable: '67% 22% 10%',
+      },
     },
   },
   plugins: [],

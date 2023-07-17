@@ -1,6 +1,6 @@
 <!--
   ADOBE CONFIDENTIAL
-  Copyright 2020 Adobe
+  Copyright 2023 Adobe
   All Rights Reserved.
 
   NOTICE: All information contained herein is, and remains
@@ -14,21 +14,18 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { sidebarMenuState } from '../../features/SidebarMenu';
-  import Hamburger from '../Hamburger/Hamburger.svelte';
-  import Title from '../typography/Title.svelte';
-
-  function handleBurgerClick() {
-    sidebarMenuState.toggle();
-  }
-
-  export let burgerOpen = false;
+  import AI from '../../../../../assets/svg/color/logos/ai.svg';
+  import IconContentRow from '../IconContentRow/IconContentRow.svelte';
+  import SubSection from '../SubSection/SubSection.svelte';
 </script>
 
-<header class="flex h-header items-center px-2">
-  <Hamburger on:click={handleBurgerClick} open={burgerOpen} />
-  <Title><slot>{$_('page.home.title')}</slot></Title>
-  <div class="ms-auto hidden md:block">
-    <slot name="links" />
-  </div>
-</header>
+<SubSection>
+  <svelte:fragment slot="title">
+    {$_('sidebar.verify.credit.AI')}</svelte:fragment>
+  <div slot="content">
+    <IconContentRow>
+      <img slot="icon" src={AI} alt={AI} class="mr-2 w-4" />
+      <svelte:fragment slot="content">
+        {$_('sidebar.verify.credit.AI.description')}</svelte:fragment>
+    </IconContentRow>
+  </div></SubSection>

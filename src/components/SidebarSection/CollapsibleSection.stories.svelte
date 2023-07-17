@@ -3,7 +3,10 @@
   import { _ } from 'svelte-i18n';
   import Checkbox from '../../routes/apply/components/Checkbox/Checkbox.svelte';
   import CheckboxGroup from '../../routes/apply/components/Checkbox/CheckboxGroup.svelte';
-  import HeaderSidebarSection from './HeaderSidebarSection.svelte';
+  import AboutSection from '../../routes/verify/components/AboutSection/AboutSection.svelte';
+  import CreditAndUsageSection from '../../routes/verify/components/CreditAndUsageSection/CreditAndUsageSection.svelte';
+  import ProcessSection from '../../routes/verify/components/ProcessSection/ProcessSection.svelte';
+  import CollapsibleSection from './CollapsibleSection.svelte';
 
   const design = {
     type: 'figma',
@@ -12,18 +15,18 @@
 </script>
 
 <Meta
-  title="Global/HeaderSidebarSection"
-  component={HeaderSidebarSection}
+  title="Global/CollapsibleSection"
+  component={CollapsibleSection}
   parameters={{ design }} />
 
 <Template let:args>
-  <HeaderSidebarSection {...args} />
+  <CollapsibleSection {...args} />
 </Template>
 
-<Story name="Example" let:args>
-  <HeaderSidebarSection {...args}>
+<Story name="Apply Credit and usage" let:args>
+  <CollapsibleSection {...args}>
     <div slot="header">
-      {$_('sidebar.apply.credit')}
+      {$_('sidebar.credit')}
     </div>
     <div slot="description">
       {$_('sidebar.apply.credit.description')}
@@ -35,5 +38,17 @@
         <Checkbox>{$_('sidebar.apply.credit.AI')}</Checkbox>
       </CheckboxGroup>
     </div>
-  </HeaderSidebarSection>
+  </CollapsibleSection>
+</Story>
+
+<Story name="Verify Credit and usage" let:args>
+  <CreditAndUsageSection />
+</Story>
+
+<Story name="Verify Process" let:args>
+  <ProcessSection />
+</Story>
+
+<Story name="Verify About" let:args>
+  <AboutSection />
 </Story>
