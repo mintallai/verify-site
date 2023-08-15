@@ -14,6 +14,7 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
+  import LegalSection from '../../components/LegalSection/LegalSection.svelte';
   import Header from '../../components/typography/Header.svelte';
   import {
     SidebarLayout,
@@ -50,6 +51,15 @@
 <SidebarLayout>
   <div slot="header">{$_('page.verify.title')}</div>
   <div slot="sidebar">
+    <LegalSection>
+      <svelte:fragment slot="legal-text-visible">
+        <p>{$_('sidebar.verify.legal.part1')}</p>
+      </svelte:fragment>
+      <svelte:fragment slot="legal-text-more">
+        <p class="pt-2">{$_('sidebar.verify.legal.part2')}</p>
+        <p class="pt-2">{$_('sidebar.verify.legal.part3')}</p>
+      </svelte:fragment>
+    </LegalSection>
     <button
       class="m-2 bg-blue-600 p-2 text-white lg:hidden"
       on:click={() => sidebarLayoutPageState.next()}>NEXT</button>

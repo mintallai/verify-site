@@ -14,7 +14,7 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import sunIcon from '../../../assets/svg/monochrome/sun.svg';
+  import LegalSection from '../../components/LegalSection/LegalSection.svelte';
   import CollapsibleSection from '../../components/SidebarSection/CollapsibleSection.svelte';
   import Section from '../../components/SidebarSection/Section.svelte';
   import Description from '../../components/typography/Description.svelte';
@@ -29,8 +29,6 @@
   import Radio from './components/Radio/Radio.svelte';
   import RadioGroup from './components/Radio/RadioGroup.svelte';
   import { count } from './store';
-
-  let readMore = false;
 </script>
 
 <SidebarLayout>
@@ -91,30 +89,14 @@
         </RadioGroup>
       </div>
     </CollapsibleSection>
-    <div class="flex p-5">
-      <img src={sunIcon} alt="" class="self-start pe-2" />
-      <p>
-        <span
-          class="text-small-description {readMore
-            ? `line-clamp-none`
-            : `line-clamp-3`}">{@html $_('sidebar.apply.legal')}</span>
-        {#if readMore}
-          <button
-            on:click={() => (readMore = false)}
-            on:keypress
-            class="text-small-description font-bold underline">
-            {$_('sidebar.apply.legal.less')}
-          </button>
-        {:else}
-          <button
-            on:click={() => (readMore = true)}
-            on:keypress
-            class="text-small-description font-bold underline">
-            {$_('sidebar.apply.legal.more')}
-          </button>
-        {/if}
-      </p>
-    </div>
+    <LegalSection
+      ><svelte:fragment slot="legal-text-visible">
+        <p>{$_('sidebar.apply.legal.part1')}</p>
+      </svelte:fragment>
+      <svelte:fragment slot="legal-text-more">
+        <p class="pt-2">{$_('sidebar.apply.legal.part2')}</p>
+      </svelte:fragment>
+    </LegalSection>
     <div
       class="sticky bottom-0 flex h-14 items-center justify-end border-t-2 bg-white px-5 py-8">
       <div class="mr-5 lg:mr-0">
