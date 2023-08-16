@@ -13,10 +13,17 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Label from '../../../../components/typography/Label.svelte';
+  import { _ } from 'svelte-i18n';
+  import CollapsibleSection from '../../../../../components/SidebarSection/CollapsibleSection.svelte';
+  import IssuedBySection from './IssuedBySection.svelte';
+  import IssuedOnSection from './IssuedOnSection.svelte';
 </script>
 
-<div class="pt-4">
-  <Label><span class="uppercase"><slot name="title" /></span></Label>
-  <div><slot name="content" /></div>
-</div>
+<CollapsibleSection>
+  <svelte:fragment slot="header">
+    {$_('sidebar.verify.about')}</svelte:fragment>
+  <svelte:fragment slot="content">
+    <IssuedBySection />
+    <IssuedOnSection />
+  </svelte:fragment>
+</CollapsibleSection>

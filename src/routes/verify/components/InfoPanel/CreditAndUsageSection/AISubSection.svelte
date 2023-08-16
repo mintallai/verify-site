@@ -14,18 +14,17 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import producer from '../../../../../assets/svg/color/logos/producer.svg';
-  import IconContentRow from '../IconContentRow/IconContentRow.svelte';
-  import SubSection from '../SubSection/SubSection.svelte';
+  import AI from '../../../../../../assets/svg/color/logos/ai.svg';
+  import IconContentRow from '../../IconContentRow/IconContentRow.svelte';
+  import SubSection from '../../SubSection/SubSection.svelte';
 </script>
 
-<SubSection
-  ><div slot="title">
-    {$_('sidebar.verify.credit.producer')}
-  </div>
-  <div slot="content">
-    <IconContentRow>
-      <img slot="icon" src={producer} alt={producer} class="mr-2 w-4" />
-      <svelte:fragment slot="content">Jane Smith</svelte:fragment>
-    </IconContentRow>
-  </div></SubSection>
+<SubSection>
+  <svelte:fragment slot="title">
+    {$_('sidebar.verify.credit.AI')}</svelte:fragment>
+  <IconContentRow slot="content">
+    <img slot="icon" src={AI} alt={AI} class="mr-2 w-4" />
+    <svelte:fragment slot="content">
+      {$_('sidebar.verify.credit.AI.description')}</svelte:fragment>
+  </IconContentRow>
+</SubSection>

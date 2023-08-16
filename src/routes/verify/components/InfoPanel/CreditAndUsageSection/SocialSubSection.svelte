@@ -14,16 +14,16 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import ProviderIcon from '../../../../components/ProviderIcon/ProviderIcon.svelte';
-  import SocialMediaInfo from '../../../../components/SocialMediaInfo/SocialMediaInfo.svelte';
-  import IconContentRow from '../IconContentRow/IconContentRow.svelte';
-  import SubSection from '../SubSection/SubSection.svelte';
+  import ProviderIcon from '../../../../../components/ProviderIcon/ProviderIcon.svelte';
+  import SocialMediaInfo from '../../../../../components/SocialMediaInfo/SocialMediaInfo.svelte';
+  import IconContentRow from '../../IconContentRow/IconContentRow.svelte';
+  import SubSection from '../../SubSection/SubSection.svelte';
 </script>
 
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.credit.social')}</svelte:fragment>
-  <div slot="content">
+  <svelte:fragment slot="content">
     <IconContentRow>
       <div class="pe-2" slot="icon">
         <ProviderIcon provider="behance.net" />
@@ -39,11 +39,10 @@
       <div class="pe-2" slot="icon">
         <ProviderIcon provider="instagram.com" />
       </div>
-      <span slot="content">
-        <SocialMediaInfo
-          link="https://www.instagram.com/"
-          username="@janesmith"
-          appName="Instagram" />
-      </span>
+      <SocialMediaInfo
+        slot="content"
+        link="https://www.instagram.com/"
+        username="@janesmith"
+        appName="Instagram" />
     </IconContentRow>
-  </div></SubSection>
+  </svelte:fragment></SubSection>

@@ -14,65 +14,25 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import LegalSection from '../../components/LegalSection/LegalSection.svelte';
-  import Header from '../../components/typography/Header.svelte';
-  import {
-    SidebarLayout,
-    sidebarLayoutPageState,
-  } from '../../features/SidebarLayout';
-  import AboutSection from './components/AboutSection/AboutSection.svelte';
-  import AdvancedSection from './components/AdvancedSection/AdvancedSection.svelte';
-  import AssetInfo from './components/AssetInfo.svelte';
-  import AssetInfoUI from './components/AssetInfo/AssetInfo.svelte';
-  import ContentSummarySection from './components/ContentSummarySection/ContentSummarySection.svelte';
-  import CreditAndUsage from './components/CreditAndUsageSection/CreditAndUsageSection.svelte';
-  import ManifestRecoveryItem from './components/ManifestRecoveryItem.svelte';
-  import ProcessSection from './components/ProcessSection/ProcessSection.svelte';
+  import { SidebarLayout } from '../../features/SidebarLayout';
+  import InfoPanel from './components/InfoPanel/InfoPanel.svelte';
+  import NavigationPanel from './components/NavigationPanel/NavigationPanel.svelte';
   import TreeView from './components/TreeView.svelte';
   import { verifyStore } from './stores';
-  let date: Date = new Date('2019-01-16');
   let showResponsiveInfoPanel = false;
 
-  const { hierarchyView, recoveredManifestResults } = verifyStore;
+  const { hierarchyView } = verifyStore;
 
   function togglePanel() {
     showResponsiveInfoPanel = !showResponsiveInfoPanel;
   }
-
-  function testAsset(url: string) {
-    verifyStore.readC2paSource(url);
-  }
-
-  async function handleRecovery() {
-    verifyStore.recoverManifests();
-  }
 </script>
 
 <SidebarLayout>
-  <div slot="header">{$_('page.verify.title')}</div>
-  <div slot="sidebar">
-    <LegalSection>
-      <svelte:fragment slot="legal-text-visible">
-        <p>{$_('sidebar.verify.legal.part1')}</p>
-      </svelte:fragment>
-      <svelte:fragment slot="legal-text-more">
-        <p class="pt-2">{$_('sidebar.verify.legal.part2')}</p>
-        <p class="pt-2">{$_('sidebar.verify.legal.part3')}</p>
-      </svelte:fragment>
-    </LegalSection>
-    <button
-      class="m-2 bg-blue-600 p-2 text-white lg:hidden"
-      on:click={() => sidebarLayoutPageState.next()}>NEXT</button>
-    <button class="m-2 bg-blue-600 p-2 text-white" on:click={handleRecovery}
-      >Recover manifests</button>
-    {#if $recoveredManifestResults.state === 'success'}
-      {#each $recoveredManifestResults.manifests as manifest}
-        <ManifestRecoveryItem recoveredManifestStore={manifest} />
-      {/each}
-    {:else if $recoveredManifestResults.state === 'loading'}
-      Loading
-    {/if}
-  </div>
+  <svelte:fragment slot="header">{$_('page.verify.title')}</svelte:fragment>
+  <svelte:fragment slot="sidebar">
+    <NavigationPanel />
+  </svelte:fragment>
   <div
     slot="content"
     class="h-full grid-cols-[auto_theme(spacing.sidebar)] sm:grid">
@@ -84,37 +44,7 @@
         class="m-2 bg-blue-600 p-2 text-white sm:hidden"
         on:click={togglePanel}>Reveal</button>
     </div>
-    <div
-      class="h-screen overflow-auto bg-gray-50 transition-transform sm:h-[calc(100vh-theme(spacing.header))] sm:transform-none sm:border-s-2 lg:h-screen"
-      class:-translate-y-full={showResponsiveInfoPanel}>
-      <div class="flex h-20 items-center border-b-2 bg-gray-50 px-6 shadow">
-        <AssetInfoUI
-          thumbnail="https://verify.contentauthenticity.org/_app/immutable/assets/fake-news-2ec11861.jpg"
-          {date}
-          largeAssetInfo
-          ><div slot="name"><Header>coucou.png</Header></div></AssetInfoUI>
-      </div>
-      <ContentSummarySection />
-      <CreditAndUsage />
-      <ProcessSection />
-      <AboutSection />
-      <AdvancedSection />
-      {#if $hierarchyView.state === 'success'}
-        <AssetInfo assetStore={$hierarchyView.selectedAssetStore} />
-      {/if}
-      <button
-        class="m-2 bg-blue-600 p-2 text-white"
-        on:click={() => testAsset('http://localhost:3000/XCA.jpg')}
-        >Load asset</button>
-      <button
-        class="m-2 bg-blue-600 p-2 text-white"
-        on:click={() => testAsset('http://localhost:3000/CAICAI.jpg')}
-        >Load asset 2</button>
-
-      <button
-        class="m-2 bg-blue-600 p-2 text-white sm:hidden"
-        on:click={togglePanel}>Hide</button>
-    </div>
+    <InfoPanel />
   </div>
   <svelte:fragment slot="back-bar">{$_('page.home.title')}</svelte:fragment>
 </SidebarLayout>

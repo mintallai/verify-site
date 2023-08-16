@@ -14,18 +14,12 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import AI from '../../../../../assets/svg/color/logos/ai.svg';
-  import IconContentRow from '../IconContentRow/IconContentRow.svelte';
-  import SubSection from '../SubSection/SubSection.svelte';
+  import Section from '../../../../../components/SidebarSection/Section.svelte';
+  import BodyBold from '../../../../../components/typography/BodyBold.svelte';
+  import Link from '../../../../../components/typography/Link.svelte';
 </script>
 
-<SubSection>
-  <svelte:fragment slot="title">
-    {$_('sidebar.verify.credit.AI')}</svelte:fragment>
-  <div slot="content">
-    <IconContentRow>
-      <img slot="icon" src={AI} alt={AI} class="mr-2 w-4" />
-      <svelte:fragment slot="content">
-        {$_('sidebar.verify.credit.AI.description')}</svelte:fragment>
-    </IconContentRow>
-  </div></SubSection>
+<Section>
+  <BodyBold slot="title">{$_('sidebar.verify.advanced')}</BodyBold>
+  <Link slot="content">{$_('sidebar.verify.advanced.show')}</Link>
+</Section>

@@ -14,20 +14,19 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import signedOn from '../../../../../assets/svg/color/logos/date.svg';
-  import FormattedDateTime from '../../../../components/FormattedDateTime/FormattedDateTime.svelte';
-  import IconContentRow from '../../components/IconContentRow/IconContentRow.svelte';
-  import SubSection from '../../components/SubSection/SubSection.svelte';
+  import signedOn from '../../../../../../assets/svg/color/logos/date.svg';
+  import FormattedDateTime from '../../../../../components/FormattedDateTime/FormattedDateTime.svelte';
+  import IconContentRow from '../../../components/IconContentRow/IconContentRow.svelte';
+  import SubSection from '../../../components/SubSection/SubSection.svelte';
   let date: Date = new Date('2019-01-16');
 </script>
 
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.about.issuedon')}</svelte:fragment>
-  <div slot="content">
-    <IconContentRow>
-      <img slot="icon" src={signedOn} alt={signedOn} class="mr-2 w-4" />``
-      <span slot="content"
-        ><FormattedDateTime sigDate={date} />
-      </span></IconContentRow>
-  </div></SubSection>
+  <IconContentRow slot="content">
+    <img slot="icon" src={signedOn} alt={signedOn} class="mr-2 w-4" />``
+    <svelte:fragment slot="content"
+      ><FormattedDateTime sigDate={date} />
+    </svelte:fragment></IconContentRow>
+</SubSection>

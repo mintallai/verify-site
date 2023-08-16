@@ -13,10 +13,12 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Label from '../../../../components/typography/Label.svelte';
+  import Section from '../../../../components/SidebarSection/Section.svelte';
+  import BigThumbnail from './BigThumbnail.svelte';
+
+  export let thumbnail: string;
 </script>
 
-<div class="pt-4">
-  <Label><span class="uppercase"><slot name="title" /></span></Label>
-  <div><slot name="content" /></div>
-</div>
+<Section>
+  <BigThumbnail slot="content" {thumbnail} />
+</Section>

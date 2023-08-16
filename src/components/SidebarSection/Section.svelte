@@ -17,8 +17,11 @@
   import SidebarSectionBase from './SidebarSectionBase.svelte';
 </script>
 
-<SidebarSectionBase>
-  <div slot="headerSection">
-    <Header><slot name="title" /></Header>
-  </div>
-  <slot name="content" slot="content" /></SidebarSectionBase>
+<div class="px-5">
+  <SidebarSectionBase>
+    <div class="pb-2" slot="headerSection">
+      <Header><slot name="title" /></Header>
+    </div>
+
+    <slot name="content" slot="content" /></SidebarSectionBase>
+</div>

@@ -13,17 +13,12 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _ } from 'svelte-i18n';
-  import Section from '../../../../components/SidebarSection/Section.svelte';
-  import BodyBold from '../../../../components/typography/BodyBold.svelte';
-  import Description from '../../../../components/typography/Description.svelte';
+  import Header from '../../../../components/typography/Header.svelte';
+  import AssetInfoBase from './AssetInfoBase.svelte';
+  export let thumbnail: string;
+  export let date: Date | null = null;
 </script>
 
-<Section>
-  <div slot="title"><BodyBold>{$_('sidebar.verify.summary')}</BodyBold></div>
-  <div slot="content">
-    <Description
-      >This content was output with digital tools. It has edit or activity
-      history.</Description>
-  </div>
-</Section>
+<AssetInfoBase {thumbnail} {date}>
+  <Header slot="name"><slot name="name" /></Header>
+</AssetInfoBase>

@@ -13,10 +13,12 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Label from '../../../../components/typography/Label.svelte';
+  import Body from '../../../../components/typography/Body.svelte';
+  import AssetInfoBase from './AssetInfoBase.svelte';
+  export let thumbnail: string;
+  export let date: Date | null = null;
 </script>
 
-<div class="pt-4">
-  <Label><span class="uppercase"><slot name="title" /></span></Label>
-  <div><slot name="content" /></div>
-</div>
+<AssetInfoBase {thumbnail} {date}>
+  <Body slot="name"><slot name="name" /></Body>
+</AssetInfoBase>

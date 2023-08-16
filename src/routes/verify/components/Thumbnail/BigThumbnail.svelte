@@ -13,15 +13,10 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _ } from 'svelte-i18n';
-  import Section from '../../../../components/SidebarSection/Section.svelte';
-  import BodyBold from '../../../../components/typography/BodyBold.svelte';
-  import Link from '../../../../components/typography/Link.svelte';
+  export let thumbnail: string;
 </script>
 
-<Section>
-  <div slot="title"><BodyBold>{$_('sidebar.verify.advanced')}</BodyBold></div>
-  <div slot="content">
-    <Link>{$_('sidebar.verify.advanced.show')}</Link>
-  </div>
-</Section>
+<img
+  src={thumbnail}
+  class="bg-gray-20 h-280 w-280 bg-gray-200 object-contain"
+  alt="" />

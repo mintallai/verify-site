@@ -19,11 +19,11 @@
 </script>
 
 <Header>
-  <div slot="links">
+  <svelte:fragment slot="links">
     <HeaderLink href="/verify">Verify</HeaderLink>
     <HeaderLink href="/apply">Apply</HeaderLink>
     <HeaderLink href="/">Embed</HeaderLink>
-  </div>
+  </svelte:fragment>
 </Header>
 <div class="flex h-screen items-center justify-center">
   <h1 class="w-[47.5rem] text-center text-[5rem]/tight font-black">

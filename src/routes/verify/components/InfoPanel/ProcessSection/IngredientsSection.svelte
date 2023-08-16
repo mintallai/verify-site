@@ -14,19 +14,18 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import ProviderIcon from '../../../../components/ProviderIcon/ProviderIcon.svelte';
-  import IconContentRow from '../../components/IconContentRow/IconContentRow.svelte';
-  import SubSection from '../../components/SubSection/SubSection.svelte';
+  import SubSection from '../../../components/SubSection/SubSection.svelte';
+  import SmallAssetInfo from '../../AssetInfo/SmallAssetInfo.svelte';
+  let date: Date = new Date('2019-01-16');
 </script>
 
 <SubSection>
   <svelte:fragment slot="title">
-    {$_('sidebar.verify.process.app')}</svelte:fragment>
-  <div slot="content">
-    <IconContentRow>
-      <div class="pe-2" slot="icon">
-        <ProviderIcon provider="adobe stock" />
-      </div>
-      <svelte:fragment slot="content">Adobe Stock</svelte:fragment>
-    </IconContentRow>
-  </div></SubSection>
+    {$_('sidebar.verify.process.ingredients')}</svelte:fragment>
+  <svelte:fragment slot="content">
+    <SmallAssetInfo
+      thumbnail="https://verify.contentauthenticity.org/_app/immutable/assets/fake-news-2ec11861.jpg"
+      {date}>
+      <svelte:fragment slot="name">couquette.png</svelte:fragment
+      ></SmallAssetInfo>
+  </svelte:fragment></SubSection>

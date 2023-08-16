@@ -16,10 +16,10 @@
   export let expanded = true;
 </script>
 
-<div class="px-5 pt-5">
+<div class="pt-5">
   <div class="border-b pb-5">
     <slot name="headerSection" />
-    <div class:hidden={!expanded} class="pt-2">
+    <div class:hidden={!expanded}>
       <slot name="content" />
     </div>
   </div>

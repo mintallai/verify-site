@@ -13,17 +13,10 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _ } from 'svelte-i18n';
-  import CollapsibleSection from '../../../../components/SidebarSection/CollapsibleSection.svelte';
-  import IssuedBySection from './IssuedBySection.svelte';
-  import IssuedOnSection from './IssuedOnSection.svelte';
+  export let thumbnail: string;
 </script>
 
-<CollapsibleSection>
-  <svelte:fragment slot="header">
-    {$_('sidebar.verify.about')}</svelte:fragment>
-  <div slot="content">
-    <IssuedBySection />
-    <IssuedOnSection />
-  </div>
-</CollapsibleSection>
+<img
+  src={thumbnail}
+  class="bg-gray-20 h-12 w-12 bg-gray-200 object-contain"
+  alt="" />

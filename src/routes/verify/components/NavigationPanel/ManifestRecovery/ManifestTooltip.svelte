@@ -14,19 +14,21 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import ProviderIcon from '../../../../components/ProviderIcon/ProviderIcon.svelte';
-  import IconContentRow from '../../components/IconContentRow/IconContentRow.svelte';
-  import SubSection from '../../components/SubSection/SubSection.svelte';
+  import close from '../../../../../../assets/svg/color/logos/close.svg';
+  import Body from '../../../../../components/typography/Body.svelte';
+
+  export let showTooltip: boolean;
 </script>
 
-<SubSection>
-  <svelte:fragment slot="title">
-    {$_('sidebar.verify.about.issuedby')}</svelte:fragment>
-  <div slot="content">
-    <IconContentRow>
-      <div class="pe-2" slot="icon">
-        <ProviderIcon provider="adobe" />
-      </div>
-      <svelte:fragment slot="content">Adobe Inc</svelte:fragment>
-    </IconContentRow>
-  </div></SubSection>
+<div class="h-30 mt-5 flex w-full justify-between rounded bg-gray-100">
+  <div class="py-5 ps-5">
+    <Body>
+      {$_('sidebar.verify.search.tooltip')}</Body>
+  </div>
+  <button
+    class="box-content h-4 w-4 shrink-0 self-start py-6 pe-5 ps-3"
+    on:click={() => (showTooltip = !showTooltip)}
+    ><img
+      src={close}
+      alt={$_('sidebar.verify.search.tooltip.close')} /></button>
+</div>

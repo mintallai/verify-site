@@ -14,20 +14,18 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import CollapsibleSection from '../../../../components/SidebarSection/CollapsibleSection.svelte';
-  import ActionsSection from './ActionsSection.svelte';
-  import AppDeviceSection from './AppDeviceSection.svelte';
-  import IngredientsSection from './IngredientsSection.svelte';
+  import ProviderIcon from '../../../../../components/ProviderIcon/ProviderIcon.svelte';
+  import IconContentRow from '../../../components/IconContentRow/IconContentRow.svelte';
+  import SubSection from '../../../components/SubSection/SubSection.svelte';
 </script>
 
-<CollapsibleSection>
-  <svelte:fragment slot="header">
-    {$_('sidebar.process')}</svelte:fragment>
-  <svelte:fragment slot="description">
-    {$_('sidebar.verify.process.description')}</svelte:fragment>
-  <div slot="content">
-    <AppDeviceSection />
-    <ActionsSection />
-    <IngredientsSection />
-  </div>
-</CollapsibleSection>
+<SubSection>
+  <svelte:fragment slot="title">
+    {$_('sidebar.verify.process.app')}</svelte:fragment>
+  <IconContentRow slot="content">
+    <div class="pe-2" slot="icon">
+      <ProviderIcon provider="adobe stock" />
+    </div>
+    <svelte:fragment slot="content">Adobe Stock</svelte:fragment>
+  </IconContentRow>
+</SubSection>

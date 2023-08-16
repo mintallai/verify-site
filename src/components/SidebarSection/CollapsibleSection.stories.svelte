@@ -3,9 +3,9 @@
   import { _ } from 'svelte-i18n';
   import Checkbox from '../../routes/apply/components/Checkbox/Checkbox.svelte';
   import CheckboxGroup from '../../routes/apply/components/Checkbox/CheckboxGroup.svelte';
-  import AboutSection from '../../routes/verify/components/AboutSection/AboutSection.svelte';
-  import CreditAndUsageSection from '../../routes/verify/components/CreditAndUsageSection/CreditAndUsageSection.svelte';
-  import ProcessSection from '../../routes/verify/components/ProcessSection/ProcessSection.svelte';
+  import AboutSection from '../../routes/verify/components/InfoPanel/AboutSection/AboutSection.svelte';
+  import CreditAndUsageSection from '../../routes/verify/components/InfoPanel/CreditAndUsageSection/CreditAndUsageSection.svelte';
+  import ProcessSection from '../../routes/verify/components/InfoPanel/ProcessSection/ProcessSection.svelte';
   import CollapsibleSection from './CollapsibleSection.svelte';
 
   const design = {

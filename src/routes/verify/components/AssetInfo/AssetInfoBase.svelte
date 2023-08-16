@@ -14,27 +14,21 @@
 -->
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import L1Icon from '../../../../../assets/svg/color/logos/L1.svg';
-  import L1IconGrey from '../../../../../assets/svg/color/logos/L1Grey.svg';
+  import L1Icon from '../../../../../assets/svg/color/logos/L1Grey.svg';
   import FormattedDateTime from '../../../../components/FormattedDateTime/FormattedDateTime.svelte';
   import Body from '../../../../components/typography/Body.svelte';
+  import SmallThumbnail from '../Thumbnail/SmallThumbnail.svelte';
   export let thumbnail: string;
-  export let largeAssetInfo = false;
   export let date: Date | null = null;
-
-  $: imgSrc = largeAssetInfo ? L1Icon : L1IconGrey;
 </script>
 
 <div class="flex items-center pt-3">
-  <img
-    src={thumbnail}
-    class="bg-gray-20 h-12 w-12 bg-gray-200 object-contain"
-    alt="" />
+  <SmallThumbnail {thumbnail} />
   <div class="ps-2.5">
-    <Body><slot name="name" /></Body>
+    <slot name="name" />
     {#if date}
       <div class="flex">
-        <img src={imgSrc} class="me-2 h-4 w-4" alt={$_('page.apply.hasCC')} />
+        <img src={L1Icon} class="me-2 h-4 w-4" alt={$_('page.apply.hasCC')} />
         <Body><FormattedDateTime sigDate={date} noTime /></Body>
       </div>
     {:else}

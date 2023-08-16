@@ -1,7 +1,7 @@
 <script>
   import { Meta, Story, Template } from '@storybook/addon-svelte-csf';
   import { _ } from 'svelte-i18n';
-  import AdvancedSection from '../../routes/verify/components/AdvancedSection/AdvancedSection.svelte';
+  import AdvancedSection from '../../routes/verify/components/InfoPanel/AdvancedSection/AdvancedSection.svelte';
   import Description from '../typography/Description.svelte';
   import Section from './Section.svelte';
 
