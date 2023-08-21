@@ -10,6 +10,11 @@ aws_secret_access_key = $ci_aws_secret_access_key
 region = us-east-2
 EOF
 
+export PERCY_TOKEN=$percy_token
+export PERCY_COMMIT=$sha
+export PERCY_BRANCH=$branch
+export PERCY_PARALLEL_NONCE=$build_id
+
 echo "Running eslint"
 pnpm lint
 echo "Running prettier"
@@ -21,4 +26,5 @@ pnpm build
 echo "Running Playwright tests"
 pnpm test
 
+node ./etc/scripts/percy-test.js
 node ./etc/scripts/gh-preview.js

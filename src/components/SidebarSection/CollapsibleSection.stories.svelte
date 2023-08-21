@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { Meta, Story, Template } from '@storybook/addon-svelte-csf';
   import { _ } from 'svelte-i18n';
   import Checkbox from '../../routes/apply/components/Checkbox/Checkbox.svelte';

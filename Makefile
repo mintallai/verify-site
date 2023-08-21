@@ -27,9 +27,12 @@ ci:
 		-e TESSA2_API_KEY \
 		-e ci_aws_access_key_id \
 		-e ci_aws_secret_access_key \
+		-e percy_token \
 		-e remote \
 		-e repo \
 		-e sha \
+		-e branch \
+		-e build_id \
 		-e pr_numbers \
 		-e moonbeam_user \
 		-e moonbeam_token \

@@ -33,7 +33,7 @@ const colorOverrides = [
         convertPathData: false,
         convertColors: false,
         removeUselessStrokeAndFill: false,
-        cleanupIDs: false,
+        cleanupIds: false,
       },
     },
   },

@@ -11,11 +11,13 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+import percySnapshot from '@percy/playwright';
 import { expect, test } from '@playwright/test';
 
 test.describe('Base functionality', () => {
   test('site loads', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/Content Credentials/);
+    await percySnapshot(page, 'Home page');
   });
 });
