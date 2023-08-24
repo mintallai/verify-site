@@ -13,10 +13,11 @@
   from Adobe.
 -->
 <script lang="ts">
-  export let thumbnail: string;
+  import ThumbnailImage from './ThumbnailImage.svelte';
+
+  export let thumbnail: string | null;
 </script>
 
-<img
-  src={thumbnail}
-  class="bg-gray-20 h-12 w-12 bg-gray-200 object-contain"
-  alt="" />
+<div class="h-12 w-12 bg-gray-200">
+  <ThumbnailImage {thumbnail} />
+</div>

@@ -13,12 +13,16 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Header from '../../../../components/typography/Header.svelte';
-  import AssetInfoThumbnailBase from './AssetInfoThumbnailBase.svelte';
-  export let thumbnail: string | null = null;
-  export let date: Date | null = null;
+  import { _ } from 'svelte-i18n';
+  import fallback from '../../../../../assets/svg/monochrome/emptyImage.svg';
+  export let thumbnail: string | null;
+
+  $: thumbnailImg = thumbnail ?? fallback;
+  $: thumbnailAltText =
+    thumbnailImg == fallback ? $_('page.verify.emptyThumbnail') : '';
 </script>
 
-<AssetInfoThumbnailBase {date} {thumbnail}>
-  <Header slot="name"><slot name="name" /></Header>
-</AssetInfoThumbnailBase>
+<img
+  src={thumbnailImg}
+  class="h-full w-full object-contain"
+  alt={thumbnailAltText} />

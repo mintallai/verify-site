@@ -13,12 +13,15 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Header from '../../../../components/typography/Header.svelte';
-  import AssetInfoThumbnailBase from './AssetInfoThumbnailBase.svelte';
-  export let thumbnail: string | null = null;
-  export let date: Date | null = null;
+  import type { Thumbnail } from 'c2pa';
+  import ThumbnailImage from './ThumbnailImage.svelte';
+  export let thumbnail: Thumbnail | null = null;
+  let thumbnailImg: string | null;
+  $: thumbnailImg = thumbnail?.blob
+    ? URL.createObjectURL(thumbnail.blob)
+    : null;
 </script>
 
-<AssetInfoThumbnailBase {date} {thumbnail}>
-  <Header slot="name"><slot name="name" /></Header>
-</AssetInfoThumbnailBase>
+<div class="h-[6.15rem] w-full bg-gray-100">
+  <ThumbnailImage thumbnail={thumbnailImg} />
+</div>

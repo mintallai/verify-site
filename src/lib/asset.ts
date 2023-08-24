@@ -30,12 +30,13 @@ import { DEFAULT_LOCALE } from './i18n';
  */
 export interface AssetData {
   title: string;
-  thumbnail: Thumbnail | null;
   id: string;
+  thumbnail?: Thumbnail | null;
   editsAndActivity?: TranslatedDictionaryCategory[];
   socialAccounts?: ReturnType<typeof selectSocialAccounts>;
   producer?: string;
   children?: string[];
+  date?: Date | null;
 }
 
 export type AssetDataMap = Record<string, AssetData>;
@@ -53,7 +54,6 @@ export async function resultToAssetMap({
 }: C2paReadResult): Promise<AssetDataMap> {
   if (!manifestStore) {
     const id = ROOT_ID;
-
     return {
       [id]: {
         // @TODO filename if none present?
@@ -76,7 +76,10 @@ export async function resultToAssetMap({
     const asset = {
       id,
       title: manifest.title,
-      thumbnail: manifest.thumbnail,
+      thumbnail: manifest.thumbnail ?? null,
+      date: manifest.signatureInfo?.time
+        ? new Date(manifest.signatureInfo.time)
+        : null,
       ...(await getAssetDataFromManifest(manifest, id)),
     };
 
@@ -93,7 +96,7 @@ export async function resultToAssetMap({
     const asset = {
       id,
       title: ingredient.title,
-      thumbnail: ingredient.thumbnail,
+      thumbnail: ingredient.thumbnail ?? null,
       ...(await getAssetDataFromManifest(ingredient.manifest, id)),
     };
 

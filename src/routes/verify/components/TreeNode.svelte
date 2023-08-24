@@ -14,15 +14,23 @@
 -->
 
 <script lang="ts">
+  import Body from '../../../components/typography/Body.svelte';
   import type { ReadableAssetStore } from '../stores/asset';
-
+  import AssetInfoBase from './AssetInfo/AssetInfoBase.svelte';
+  import TreeThumbnail from './Thumbnail/TreeThumbnail.svelte';
   export let assetStore: ReadableAssetStore;
 </script>
 
-<button
-  class="m-2 block rounded border-2 bg-white p-2"
-  class:border-blue-900={$assetStore.state === 'selected'}
-  class:border-gray-900={$assetStore.state === 'path'}
-  on:click={$assetStore.select}>
-  {`${$assetStore.id} - ${$assetStore.title}`}
-</button>
+<div class="ps-5 pt-4">
+  <button on:click={$assetStore.select}>
+    <div
+      class="h-[10.25rem] w-[10.25rem] rounded border-2 border-gray-400 bg-white"
+      class:border-blue-900={$assetStore.state === 'selected'}>
+      <TreeThumbnail thumbnail={$assetStore.thumbnail} />
+      <div class="bottom-0 py-2">
+        <AssetInfoBase date={$assetStore.date}>
+          <Body slot="name">{$assetStore.title}</Body>
+        </AssetInfoBase>
+      </div>
+    </div></button>
+</div>

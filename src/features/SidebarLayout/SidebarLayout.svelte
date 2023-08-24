@@ -30,7 +30,8 @@
   <div
     class="h-screen overflow-hidden transition-transform lg:transform-none"
     class:-translate-x-full={$sidebarLayoutPageState === 1}>
-    <div class="flex h-header items-center bg-gray-50 px-6 lg:hidden">
+    <div
+      class="flex h-header items-center border-b bg-gray-50 px-6 sm:border-b-0 lg:hidden">
       <button
         class="flex items-center"
         on:click={() => sidebarLayoutPageState.back()}>

@@ -16,9 +16,11 @@
   import Section from '../../../../components/SidebarSection/Section.svelte';
   import BigThumbnail from './BigThumbnail.svelte';
 
-  export let thumbnail: string;
+  export let thumbnail: string | null;
 </script>
 
-<Section>
-  <BigThumbnail slot="content" {thumbnail} />
-</Section>
+<div class="flex justify-center">
+  <Section>
+    <BigThumbnail slot="content" {thumbnail} />
+  </Section>
+</div>

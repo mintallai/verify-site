@@ -19,13 +19,9 @@
   import NavigationPanel from './components/NavigationPanel/NavigationPanel.svelte';
   import TreeView from './components/TreeView.svelte';
   import { verifyStore } from './stores';
-  let showResponsiveInfoPanel = false;
 
+  let showInfoPanel = false;
   const { hierarchyView } = verifyStore;
-
-  function togglePanel() {
-    showResponsiveInfoPanel = !showResponsiveInfoPanel;
-  }
 </script>
 
 <SidebarLayout>
@@ -42,9 +38,11 @@
       {/if}
       <button
         class="m-2 bg-blue-600 p-2 text-white sm:hidden"
-        on:click={togglePanel}>Reveal</button>
+        on:click={() => (showInfoPanel = !showInfoPanel)}>Reveal</button>
     </div>
-    <InfoPanel />
+    <InfoPanel
+      {showInfoPanel}
+      on:isShown={() => (showInfoPanel = !showInfoPanel)} />
   </div>
   <svelte:fragment slot="back-bar">{$_('page.home.title')}</svelte:fragment>
 </SidebarLayout>

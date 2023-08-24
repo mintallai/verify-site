@@ -14,11 +14,11 @@
 -->
 <script lang="ts">
   import Body from '../../../../components/typography/Body.svelte';
-  import AssetInfoBase from './AssetInfoBase.svelte';
-  export let thumbnail: string;
+  import AssetInfoThumbnailBase from './AssetInfoThumbnailBase.svelte';
+  export let thumbnail: string | null = null;
   export let date: Date | null = null;
 </script>
 
-<AssetInfoBase {thumbnail} {date}>
+<AssetInfoThumbnailBase {date} {thumbnail}>
   <Body slot="name"><slot name="name" /></Body>
-</AssetInfoBase>
+</AssetInfoThumbnailBase>

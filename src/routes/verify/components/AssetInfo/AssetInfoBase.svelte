@@ -17,23 +17,22 @@
   import L1Icon from '../../../../../assets/svg/color/logos/L1Grey.svg';
   import FormattedDateTime from '../../../../components/FormattedDateTime/FormattedDateTime.svelte';
   import Body from '../../../../components/typography/Body.svelte';
-  import SmallThumbnail from '../Thumbnail/SmallThumbnail.svelte';
-  export let thumbnail: string;
+
   export let date: Date | null = null;
 </script>
 
-<div class="flex items-center pt-3">
-  <SmallThumbnail {thumbnail} />
+<div class="flex items-center">
+  <slot name="thumbnail" />
   <div class="ps-2.5">
-    <slot name="name" />
-    {#if date}
-      <div class="flex">
+    <div class="flex"><slot name="name" /></div>
+    <div class="flex">
+      {#if date}
         <img src={L1Icon} class="me-2 h-4 w-4" alt={$_('page.apply.hasCC')} />
         <Body><FormattedDateTime sigDate={date} noTime /></Body>
-      </div>
-    {:else}
-      <Body
-        ><span class="text-gray-600">{$_('sidebar.verify.noCC')}</span></Body>
-    {/if}
+      {:else}
+        <Body
+          ><span class="text-gray-600">{$_('sidebar.verify.noCC')}</span></Body>
+      {/if}
+    </div>
   </div>
 </div>

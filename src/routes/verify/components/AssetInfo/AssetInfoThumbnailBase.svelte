@@ -13,12 +13,13 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Header from '../../../../components/typography/Header.svelte';
-  import AssetInfoThumbnailBase from './AssetInfoThumbnailBase.svelte';
+  import SmallThumbnail from '../Thumbnail/SmallThumbnail.svelte';
+  import AssetInfoBase from './AssetInfoBase.svelte';
   export let thumbnail: string | null = null;
   export let date: Date | null = null;
 </script>
 
-<AssetInfoThumbnailBase {date} {thumbnail}>
-  <Header slot="name"><slot name="name" /></Header>
-</AssetInfoThumbnailBase>
+<AssetInfoBase {date}>
+  <SmallThumbnail {thumbnail} slot="thumbnail" />
+  <slot slot="name" name="name" />
+</AssetInfoBase>
