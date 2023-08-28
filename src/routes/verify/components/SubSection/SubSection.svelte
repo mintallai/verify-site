@@ -13,7 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Label from '../../../../components/typography/Label.svelte';
+  import Label from '$src/components/typography/Label.svelte';
 </script>
 
 <div class="pt-4">

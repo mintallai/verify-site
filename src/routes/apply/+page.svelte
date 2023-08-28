@@ -13,16 +13,16 @@
   from Adobe.
 -->
 <script lang="ts">
-  import { _ } from 'svelte-i18n';
-  import LegalSection from '../../components/LegalSection/LegalSection.svelte';
-  import CollapsibleSection from '../../components/SidebarSection/CollapsibleSection.svelte';
-  import Section from '../../components/SidebarSection/Section.svelte';
-  import Description from '../../components/typography/Description.svelte';
-  import Link from '../../components/typography/Link.svelte';
+  import LegalSection from '$src/components/LegalSection/LegalSection.svelte';
+  import CollapsibleSection from '$src/components/SidebarSection/CollapsibleSection.svelte';
+  import Section from '$src/components/SidebarSection/Section.svelte';
+  import Description from '$src/components/typography/Description.svelte';
+  import Link from '$src/components/typography/Link.svelte';
   import {
     SidebarLayout,
     sidebarLayoutPageState,
-  } from '../../features/SidebarLayout';
+  } from '$src/features/SidebarLayout';
+  import { _ } from 'svelte-i18n';
   import Button from './components/Button/Button.svelte';
   import Checkbox from './components/Checkbox/Checkbox.svelte';
   import CheckboxGroup from './components/Checkbox/CheckboxGroup.svelte';

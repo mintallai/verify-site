@@ -11,7 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import type { AssetData, AssetDataMap } from '$lib/asset';
+import { ROOT_ID, type AssetData, type AssetDataMap } from '$lib/asset';
 import type { Loadable } from '$lib/types';
 import { derived, get, type Readable, type Writable } from 'svelte/store';
 import { createAsset, type ReadableAssetStore } from './asset';
@@ -23,6 +23,8 @@ export type ReadableAssetMap = Record<string, ReadableAssetStore>;
 
 interface HierarchyViewStateData {
   assets: ReadableAssetMap;
+  ingredientsForAssetId(id: string): AssetData[];
+  rootAsset: AssetData;
   selectedAssetStore: Readable<AssetData>;
 }
 
@@ -47,7 +49,7 @@ export function createHierarchyView(
   return derived(
     [selectedSource, c2paReader, manifestRecoverer],
     ([$selectedSource, $c2paReader, $manifestRecoverer]) => {
-      if ($selectedSource.type === 'local') {
+      if (['local', 'external'].includes($selectedSource.type)) {
         if ($c2paReader.state === 'success') {
           return {
             state: 'success' as const,
@@ -86,6 +88,23 @@ function getHierarchyViewData(
 
       return acc;
     }, {} as ReadableAssetMap),
+
+    ingredientsForAssetId(assetId: string) {
+      return (assetMap[assetId]?.children ?? [])
+        .reduce<AssetData[]>((acc, childId) => {
+          const childAsset = assetMap[childId];
+
+          if (childAsset) {
+            return [...acc, childAsset];
+          }
+
+          return acc;
+        }, [])
+        .sort((a, b) => (b.date?.valueOf() ?? 0) - (a.date?.valueOf() ?? 0));
+    },
+
+    rootAsset: assetMap[ROOT_ID],
+
     selectedAssetStore: derived(
       selectedAssetId,
       ($selectedAssetId) => assetMap[$selectedAssetId],

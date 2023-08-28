@@ -15,12 +15,13 @@
 
 <script lang="ts">
   import type { AssetData } from '$lib/asset';
+  import Title from '$src/components/typography/Title.svelte';
+  import { _ } from 'svelte-i18n';
   import type { Readable } from 'svelte/store';
-  import Title from '../../../components/typography/Title.svelte';
 
   export let assetStore: Readable<AssetData>;
 </script>
 
 <div class="flex h-20 items-center border-b-2 bg-gray-50 px-6 shadow">
-  <Title>{$assetStore.title}</Title>
+  <Title>{$assetStore.title ?? $_('asset.defaultTitle')}</Title>
 </div>

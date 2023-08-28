@@ -13,11 +13,14 @@
   from Adobe.
 -->
 <script lang="ts">
+  import ClosedBorderSection from '$src/components/SidebarSection/ClosedBorderSection.svelte';
   import { _ } from 'svelte-i18n';
-  import ClosedBorderSection from '../../../../../components/SidebarSection/ClosedBorderSection.svelte';
   import SmallAssetInfo from '../../AssetInfo/SmallAssetInfo.svelte';
-  import SearchforMatches from './SearchforMatches.svelte';
-  let date: Date = new Date('2019-01-16');
+  import SearchForMatches from './SearchForMatches.svelte';
+
+  export let date: Date | null;
+  export let title: string | null;
+  export let thumbnail: string | null;
 </script>
 
 <ClosedBorderSection>
@@ -25,10 +28,10 @@
     {$_('sidebar.verify.title')}
   </div>
   <svelte:fragment slot="content">
-    <SmallAssetInfo
-      thumbnail="https://verify.contentauthenticity.org/_app/immutable/assets/fake-news-2ec11861.jpg"
-      {date}>
-      <svelte:fragment slot="name">coucou.png</svelte:fragment></SmallAssetInfo>
-    <SearchforMatches />
+    <SmallAssetInfo {thumbnail} {date}>
+      <svelte:fragment slot="name"
+        >{title ?? $_('asset.defaultTitle')}</svelte:fragment
+      ></SmallAssetInfo>
+    <SearchForMatches />
   </svelte:fragment>
 </ClosedBorderSection>

@@ -13,19 +13,19 @@
   from Adobe.
 -->
 <script lang="ts">
+  import ProviderIcon from '$src/components/ProviderIcon/ProviderIcon.svelte';
   import { _ } from 'svelte-i18n';
-  import ProviderIcon from '../../../../../components/ProviderIcon/ProviderIcon.svelte';
   import IconContentRow from '../../../components/IconContentRow/IconContentRow.svelte';
   import SubSection from '../../../components/SubSection/SubSection.svelte';
+
+  export let generator: string;
 </script>
 
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.process.app')}</svelte:fragment>
   <IconContentRow slot="content">
-    <div class="pe-2" slot="icon">
-      <ProviderIcon provider="adobe stock" />
-    </div>
-    <svelte:fragment slot="content">Adobe Stock</svelte:fragment>
+    <ProviderIcon slot="icon" provider={generator} class="pe-2" />
+    <svelte:fragment slot="content">{generator}</svelte:fragment>
   </IconContentRow>
 </SubSection>

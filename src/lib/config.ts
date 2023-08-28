@@ -18,6 +18,9 @@ import memoize from 'lodash/memoize';
 const dbg = debug('config');
 
 export const SITE_VERSION = version;
+export const DATA_PRIVACY_URL =
+  'https://contentauthenticity.org/faq#:~:text=Why%20is%20there%20a%20gap%20in%20an%20image%E2%80%99s%20CAI%20data%3F';
+export const LEARN_MORE_URL = 'https://contentauthenticity.org/';
 
 interface EnvConfig {
   env: 'dev' | 'stage' | 'prod';
@@ -38,9 +41,11 @@ export const getConfig = memoize<() => Promise<EnvConfig>>(async () => {
       data?.env ?? defaultConfig.env,
       data,
     );
+
     return data ?? defaultConfig;
   } catch (err) {
     dbg('No env file found, defaulting to prod');
+
     return defaultConfig;
   }
 });

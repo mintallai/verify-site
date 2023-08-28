@@ -62,6 +62,7 @@ async function postComment(
   const existingComment = pr.data.find((comment) =>
     comment.body.includes('<div id="percy-test-info">'),
   );
+
   if (existingComment) {
     await octokit.request(
       `PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}`,
@@ -109,6 +110,7 @@ async function runTests({ sha, branch, nonce }) {
       const matcher =
         /Finalized build #(\d+): (https:\/\/percy.io\/[a-f0-9]+\/verify-site\/builds\/(\d+))/gi;
       const matches = matcher.exec(data);
+
       if (matches) {
         buildUrl = matches[2];
         buildId = matches[3];
@@ -170,6 +172,7 @@ async function getBuildStatus({ buildId, branch }) {
         FINISHED_STATES.includes(build.attributes.state)
       );
     });
+
     if (finishedFutureBuilds.length > 0) {
       // Take status of next completed build
       state = finishedFutureBuilds[0].attributes.state;
@@ -182,6 +185,7 @@ async function getBuildStatus({ buildId, branch }) {
 async function runTestMonitor(params) {
   const { buildUrl, buildId, branch } = params;
   const status = await getBuildStatus({ buildId, branch });
+
   switch (status) {
     case 'processing':
       await postComment(params, {
@@ -189,6 +193,7 @@ async function runTestMonitor(params) {
         buildUrl,
         buildId,
       });
+
       return { status, done: false };
     case 'failed':
       await postComment(params, {
@@ -196,6 +201,7 @@ async function runTestMonitor(params) {
         buildUrl,
         buildId,
       });
+
       return { status, done: true };
     case 'finished':
       await postComment(params, {
@@ -203,6 +209,7 @@ async function runTestMonitor(params) {
         buildUrl,
         buildId,
       });
+
       return { status, done: true };
     case 'unreviewed':
       await postComment(params, {
@@ -210,6 +217,7 @@ async function runTestMonitor(params) {
         buildUrl,
         buildId,
       });
+
       return { status, done: false };
     case 'changes_requested':
       await postComment(params, {
@@ -217,6 +225,7 @@ async function runTestMonitor(params) {
         buildUrl,
         buildId,
       });
+
       return { status, done: false };
     case 'pending':
       await postComment(params, {
@@ -224,6 +233,7 @@ async function runTestMonitor(params) {
         buildUrl,
         buildId,
       });
+
       return { status, done: false };
     case 'unsaved':
       await postComment(params, {
@@ -231,6 +241,7 @@ async function runTestMonitor(params) {
         buildUrl,
         buildId,
       });
+
       return { status, done: false };
     case 'waiting':
       await postComment(params, {
@@ -238,6 +249,7 @@ async function runTestMonitor(params) {
         buildUrl,
         buildId,
       });
+
       return { status, done: false };
     case undefined:
       return { status, done: false };
@@ -247,6 +259,7 @@ async function runTestMonitor(params) {
         buildUrl,
         buildId,
       });
+
       return { status, done: true };
   }
 }
@@ -266,6 +279,7 @@ async function runPercy(params) {
         buildUrl,
         buildId,
       }));
+
       if (!done) {
         await setTimeout(PERCY_POLL_MS);
       }
@@ -279,6 +293,7 @@ async function runPercy(params) {
 async function percyHandler(params) {
   const { prNumber, repoPath } = params;
   const [owner, repo] = repoPath.split('/');
+
   if (isValidPr(prNumber)) {
     await runPercy({ ...params, owner, repo });
   } else {

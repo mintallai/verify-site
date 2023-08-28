@@ -14,9 +14,10 @@
 import { resultToAssetMap, type AssetDataMap } from '$lib/asset';
 import { getLegacySdk, getSdk } from '$lib/sdk';
 import type { Loadable } from '$lib/types';
+import { createGenericError, error } from '$src/features/errors';
 import type { Source as C2paSource, C2paSourceType } from 'c2pa';
 import { writable, type Readable } from 'svelte/store';
-import { createGenericError, error } from '../../../features/errors';
+
 interface SourceData {
   assetMap: AssetDataMap;
   data: C2paSource;
@@ -36,12 +37,15 @@ export interface C2paReaderStore extends Readable<SourceState> {
  * Creates a store encapsulating the C2PA SDK file reading logic.
  */
 export function createC2paReader(): C2paReaderStore {
+  let dispose: () => void;
   const { subscribe, set } = writable<SourceState>({ state: 'none' });
 
   return {
     subscribe,
     read: async (source: C2paSourceType) => {
       set({ state: 'loading' });
+      dispose?.();
+
       try {
         const sdk = await getSdk();
 
@@ -50,10 +54,14 @@ export function createC2paReader(): C2paReaderStore {
         if (!result.manifestStore && (await hasLegacyCredentials(source))) {
           // @TODO handle legacy credentials
           set({ state: 'none' });
+
           return;
         }
 
-        const assetMap = await resultToAssetMap(result);
+        const { assetMap, dispose: assetMapDisposer } = await resultToAssetMap(
+          result,
+        );
+        dispose = assetMapDisposer;
 
         set({
           state: 'success',
@@ -61,7 +69,7 @@ export function createC2paReader(): C2paReaderStore {
           data: result.source,
         });
       } catch (e) {
-        console.error(e);
+        console.error('createC2paReader.read() error:', e);
         error.trigger(createGenericError());
         set({ state: 'none' });
       }
@@ -72,5 +80,6 @@ export function createC2paReader(): C2paReaderStore {
 async function hasLegacyCredentials(source: C2paSourceType): Promise<boolean> {
   const legacySdk = await getLegacySdk();
   const legacyResult = await legacySdk.processImage(source);
+
   return legacyResult.exists;
 }

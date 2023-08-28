@@ -13,7 +13,7 @@
 
 import type { Source } from 'c2pa';
 import pLimit from 'p-limit';
-import { resultToAssetMap, type AssetDataMap } from './asset';
+import { resultToAssetMap, type DisposableAssetDataMap } from './asset';
 import { getConfig } from './config';
 import {
   CloudManifestError,
@@ -28,16 +28,20 @@ import { getSdk } from './sdk';
 const apiKey = 'cai-verify-site';
 const baseParams = { api_key: apiKey };
 
-const limit = pLimit(navigator.hardwareConcurrency ?? 8);
+const limit = pLimit(Math.min(navigator.hardwareConcurrency ?? 8, 8));
 
-export interface ManifestRecoveryResult {
-  assetMap: AssetDataMap;
+export type DisposableManifestRecoveryResult = DisposableAssetDataMap & {
   source: Source;
-}
+};
+
+export type ManifestRecoveryResult = Omit<
+  DisposableManifestRecoveryResult,
+  'dispose'
+>;
 
 export async function recoverManifests(
   sourceImage: Blob,
-): Promise<ManifestRecoveryResult[]> {
+): Promise<DisposableManifestRecoveryResult[]> {
   // @TODO force-stage functionality?
   const config = await getConfig();
   const baseUrl =
@@ -69,13 +73,13 @@ export async function recoverManifests(
 
         const result = await sdk.read(blob);
 
-        const assetMap = await resultToAssetMap(result);
+        const assetMapResult = await resultToAssetMap(result);
 
         // @TODO add manifest filtering?
         return {
-          assetMap,
+          ...assetMapResult,
           source: result.source,
-        } as ManifestRecoveryResult;
+        } as DisposableManifestRecoveryResult;
       }
 
       return limit(processResult);
@@ -147,5 +151,6 @@ async function fetchManifests(
   }
 
   const manifests = await response.json();
+
   return manifests;
 }

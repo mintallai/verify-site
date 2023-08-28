@@ -14,6 +14,7 @@
 -->
 <script lang="ts">
   import '@spectrum-web-components/button/sp-button.js';
+
   export let size: string;
   export let variant = 'accent';
   export let treatment = 'fill';

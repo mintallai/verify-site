@@ -11,9 +11,11 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+declare module '@ccx-public/ingest';
+
 declare module '@intl/adobe-locales';
 
-declare module '@ccx-public/ingest';
+declare module 'drag-drop';
 
 declare module '*.svg';
 declare module '*.png';

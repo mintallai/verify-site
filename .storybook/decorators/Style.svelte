@@ -1,6 +1,6 @@
 <script lang="ts">
-  import '../../src/app.css';
-  import '../../src/globalWebComponents';
+  import '$src/app.css';
+  import '$src/globalWebComponents';
 </script>
 
-<div class="theme-light"><slot /></div>
+<div class="font-base leading-4"><slot /></div>

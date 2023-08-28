@@ -13,10 +13,10 @@
   from Adobe.
 -->
 <script lang="ts">
+  import Section from '$src/components/SidebarSection/Section.svelte';
+  import BodyBold from '$src/components/typography/BodyBold.svelte';
+  import Link from '$src/components/typography/Link.svelte';
   import { _ } from 'svelte-i18n';
-  import Section from '../../../../../components/SidebarSection/Section.svelte';
-  import BodyBold from '../../../../../components/typography/BodyBold.svelte';
-  import Link from '../../../../../components/typography/Link.svelte';
 </script>
 
 <Section>

@@ -1,11 +1,11 @@
 <script>
+  import Checkbox from '$src/routes/apply/components/Checkbox/Checkbox.svelte';
+  import CheckboxGroup from '$src/routes/apply/components/Checkbox/CheckboxGroup.svelte';
+  import AboutSection from '$src/routes/verify/components/InfoPanel/AboutSection/AboutSection.svelte';
+  import CreditAndUsageSection from '$src/routes/verify/components/InfoPanel/CreditAndUsageSection/CreditAndUsageSection.svelte';
+  import ProcessSection from '$src/routes/verify/components/InfoPanel/ProcessSection/ProcessSection.svelte';
   import { Meta, Story, Template } from '@storybook/addon-svelte-csf';
   import { _ } from 'svelte-i18n';
-  import Checkbox from '../../routes/apply/components/Checkbox/Checkbox.svelte';
-  import CheckboxGroup from '../../routes/apply/components/Checkbox/CheckboxGroup.svelte';
-  import AboutSection from '../../routes/verify/components/InfoPanel/AboutSection/AboutSection.svelte';
-  import CreditAndUsageSection from '../../routes/verify/components/InfoPanel/CreditAndUsageSection/CreditAndUsageSection.svelte';
-  import ProcessSection from '../../routes/verify/components/InfoPanel/ProcessSection/ProcessSection.svelte';
   import CollapsibleSection from './CollapsibleSection.svelte';
 
   const design = {
@@ -41,14 +41,14 @@
   </CollapsibleSection>
 </Story>
 
-<Story name="Verify Credit and usage" let:args>
+<Story name="Verify Credit and usage">
   <CreditAndUsageSection />
 </Story>
 
-<Story name="Verify Process" let:args>
+<Story name="Verify Process">
   <ProcessSection />
 </Story>
 
-<Story name="Verify About" let:args>
+<Story name="Verify About">
   <AboutSection />
 </Story>

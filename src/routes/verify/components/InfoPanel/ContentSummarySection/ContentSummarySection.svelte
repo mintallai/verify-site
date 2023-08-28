@@ -12,20 +12,49 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
+<script lang="ts" context="module">
+  import type { AssetData } from '$src/lib/asset';
+
+  export interface ContentSummarySectionProps {
+    contentSummaryKey?:
+      | 'contentSummary.compositeWithTrainedAlgorithmicMedia'
+      | 'contentSummary.trainedAlgorithmicMedia';
+  }
+
+  export function assetDataToProps(
+    assetData: Partial<AssetData>,
+  ): ContentSummarySectionProps {
+    switch (assetData.generativeInfo?.type) {
+      case 'compositeWithTrainedAlgorithmicMedia':
+        return {
+          contentSummaryKey:
+            'contentSummary.compositeWithTrainedAlgorithmicMedia',
+        };
+      case 'legacy':
+      case 'trainedAlgorithmicMedia':
+        return {
+          contentSummaryKey: 'contentSummary.trainedAlgorithmicMedia',
+        };
+      default:
+        return {};
+    }
+  }
+</script>
+
 <script lang="ts">
+  import info from '$assets/svg/color/logos/info.svg';
+  import Section from '$src/components/SidebarSection/Section.svelte';
+  import BodyBold from '$src/components/typography/BodyBold.svelte';
+  import Description from '$src/components/typography/Description.svelte';
   import { _ } from 'svelte-i18n';
-  import info from '../../../../../../assets/svg/color/logos/info.svg';
-  import Section from '../../../../../components/SidebarSection/Section.svelte';
-  import BodyBold from '../../../../../components/typography/BodyBold.svelte';
-  import Description from '../../../../../components/typography/Description.svelte';
+
+  export let contentSummaryKey: string;
 </script>
 
 <Section>
   <BodyBold slot="title">{$_('sidebar.verify.summary')}</BodyBold>
   <div class="flex" slot="content">
     <img src={info} alt="" class="self-start pe-2" />
-    <Description
-      >This content was output with digital tools. It has edit or activity
-      history.</Description>
+    <Description>{$_(contentSummaryKey)}</Description>
   </div>
 </Section>

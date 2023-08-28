@@ -19,6 +19,7 @@ import svelteSvg from './etc/rollup/plugins/svelte-svg';
 
 function getSupportedLocales() {
   const dictPath = path.resolve(__dirname, './locales/');
+
   return fs.readdirSync(dictPath).map((file) => path.basename(file, '.json'));
 }
 

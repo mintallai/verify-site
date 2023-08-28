@@ -13,21 +13,46 @@
   from Adobe.
 -->
 <script lang="ts">
+  import AlertOutlineIcon from '$assets/svg/color/alert-outline.svg?component';
+  import Link from '$src/components/typography/Link.svelte';
+  import type { AssetData } from '$src/lib/asset';
+  import { DATA_PRIVACY_URL } from '$src/lib/config';
   import { _ } from 'svelte-i18n';
-  import producer from '../../../../../../assets/svg/color/logos/producer.svg';
   import IconContentRow from '../../../components/IconContentRow/IconContentRow.svelte';
   import SubSection from '../../../components/SubSection/SubSection.svelte';
+
+  export let editsAndActivity: NonNullable<AssetData['editsAndActivity']>;
+  export let reviewRatings: AssetData['reviewRatings'];
 </script>
 
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.process.actions')}</svelte:fragment>
-  <IconContentRow slot="content">
-    <img slot="icon" src={producer} alt={producer} class="mr-2 w-4" />
-    <div slot="content" class="flex flex-col">
-      <span>Color or exposure edits</span>
-      <span class="text-gray-600"
-        >Adjusted properties like tone, saturation, curves, shadows or
-        highlights</span>
-    </div></IconContentRow>
+  <svelte:fragment slot="content">
+    {#if reviewRatings?.hasUnknownActions || reviewRatings?.wasPossiblyModified}
+      <IconContentRow>
+        <AlertOutlineIcon
+          slot="icon"
+          width="1rem"
+          height="1rem"
+          class="me-2 flex-shrink-0" />
+        <div slot="content" class="italic text-gray-900">
+          <span>{$_('reviewRatings.unknownActions')}</span>
+          <a href={DATA_PRIVACY_URL} target="_blank" rel="noreferrer"
+            ><Link>{$_('linkText.learnMore')}</Link></a>
+        </div></IconContentRow>
+    {/if}
+    {#each editsAndActivity as category}
+      <IconContentRow>
+        <svelte:fragment slot="icon">
+          {#if category.icon}
+            <img src={category.icon} alt={category.label} class="me-2 w-4" />
+          {/if}
+        </svelte:fragment>
+        <div slot="content" class="flex flex-col">
+          <span>{category.label}</span>
+          <span class="text-gray-600">{category.description}</span>
+        </div></IconContentRow>
+    {/each}
+  </svelte:fragment>
 </SubSection>

@@ -13,6 +13,7 @@
 
 import { ROOT_ID } from '$lib/asset';
 import type { C2paSourceType } from 'c2pa';
+import debug from 'debug';
 import { get, writable } from 'svelte/store';
 import { createC2paReader } from './c2paReader';
 import { createHierarchyView, type HierarchyViewStore } from './hierarchyView';
@@ -21,8 +22,11 @@ import {
   type ManifestRecovererStore,
 } from './manifestRecoverer';
 
+const dbg = debug('stores:verifyStore');
+
 export type SelectedSource =
   | { type: 'local' }
+  | { type: 'external'; url: string }
   | { type: 'recovery'; id: number };
 
 interface VerifyStore {
@@ -55,12 +59,33 @@ export function createVerifyStore(): VerifyStore {
   return {
     hierarchyView: hierarchyView,
     readC2paSource: (source: C2paSourceType) => {
+      const existingSource = get(selectedSource);
+      const incomingSource: SelectedSource =
+        typeof source === 'string'
+          ? {
+              type: 'external',
+              url: source,
+            }
+          : { type: 'local' };
+
+      if (
+        existingSource.type === 'external' &&
+        incomingSource.type === 'external' &&
+        existingSource.url === incomingSource.url
+      ) {
+        // Don't load a URL if it is already loaded
+        return;
+      }
+
+      dbg('Reading C2PA source', source);
       c2paReader.read(source);
-      selectedSource.set({ type: 'local' });
+      dbg('Setting selected source', incomingSource);
+      selectedSource.set(incomingSource);
     },
     recoveredManifestResults: manifestRecoverer,
     recoverManifests: () => {
       const reader = get(c2paReader);
+
       if (reader.state === 'success') {
         manifestRecoverer.recover(reader.data);
       }

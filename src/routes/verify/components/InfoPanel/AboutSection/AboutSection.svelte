@@ -13,17 +13,24 @@
   from Adobe.
 -->
 <script lang="ts">
+  import CollapsibleSection from '$src/components/SidebarSection/CollapsibleSection.svelte';
+  import type { AssetData } from '$src/lib/asset';
   import { _ } from 'svelte-i18n';
-  import CollapsibleSection from '../../../../../components/SidebarSection/CollapsibleSection.svelte';
   import IssuedBySection from './IssuedBySection.svelte';
   import IssuedOnSection from './IssuedOnSection.svelte';
+
+  export let assetData: AssetData;
 </script>
 
 <CollapsibleSection>
   <svelte:fragment slot="header">
     {$_('sidebar.verify.about')}</svelte:fragment>
   <svelte:fragment slot="content">
-    <IssuedBySection />
-    <IssuedOnSection />
+    {#if assetData.signatureInfo?.issuer}
+      <IssuedBySection issuedBy={assetData.signatureInfo?.issuer} />
+    {/if}
+    {#if assetData.date}
+      <IssuedOnSection date={assetData.date} />
+    {/if}
   </svelte:fragment>
 </CollapsibleSection>

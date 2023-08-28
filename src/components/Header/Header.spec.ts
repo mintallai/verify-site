@@ -11,10 +11,10 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+import { sidebarMenuState } from '$src/features/SidebarMenu';
 import { fireEvent, render } from '@testing-library/svelte';
 import { get } from 'svelte/store';
 import { describe, expect, it } from 'vitest';
-import { sidebarMenuState } from '../../features/SidebarMenu';
 import Header from './Header.svelte';
 
 describe('components/Header', () => {

@@ -33,7 +33,7 @@ html {
   -moz-tab-size: 4; /* 3 */
   tab-size: 4; /* 3 */
   font-family: theme(
-    'fontFamily.sans',
+    'fontFamily.base',
     ui-sans-serif,
     system-ui,
     -apple-system,
@@ -50,11 +50,11 @@ html {
     'Noto Color Emoji'
   ); /* 4 */
   font-feature-settings: theme(
-    'fontFamily.sans[1].fontFeatureSettings',
+    'fontFamily.base[1].fontFeatureSettings',
     normal
   ); /* 5 */
   font-variation-settings: theme(
-    'fontFamily.sans[1].fontVariationSettings',
+    'fontFamily.base[1].fontVariationSettings',
     normal
   ); /* 6 */
 }

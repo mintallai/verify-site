@@ -36,6 +36,7 @@ async function createLegacySdk() {
   const sdkSrc = 'https://cdn.jsdelivr.net/npm/@contentauth/sdk@0.8.12';
   // Suppressing dynamic import warning about not being able to be analyzed by Vite, which is expected
   const { ContentAuth } = await import(/* @vite-ignore */ sdkSrc);
+
   return new ContentAuth({
     wasmSrc,
     workerSrc,

@@ -13,8 +13,8 @@
   from Adobe.
 -->
 <script lang="ts">
+  import Header from '$src/components/Header/Header.svelte';
   import { _ } from 'svelte-i18n';
-  import Header from '../../components/Header/Header.svelte';
   import MenuItem from './SidebarMenuItem.svelte';
   import MenuSection from './SidebarMenuSection.svelte';
   import { sidebarMenuState } from './store/sidebarMenuState';

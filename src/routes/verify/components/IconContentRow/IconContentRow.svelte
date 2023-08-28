@@ -13,7 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Body from '../../../../components/typography/Body.svelte';
+  import Body from '$src/components/typography/Body.svelte';
 </script>
 
 <div class="flex items-start pt-3">

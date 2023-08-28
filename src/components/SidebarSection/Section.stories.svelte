@@ -1,7 +1,7 @@
 <script>
+  import AdvancedSection from '$src/routes/verify/components/InfoPanel/AdvancedSection/AdvancedSection.svelte';
   import { Meta, Story, Template } from '@storybook/addon-svelte-csf';
   import { _ } from 'svelte-i18n';
-  import AdvancedSection from '../../routes/verify/components/InfoPanel/AdvancedSection/AdvancedSection.svelte';
   import Description from '../typography/Description.svelte';
   import Section from './Section.svelte';
 
@@ -26,6 +26,6 @@
   </Section>
 </Story>
 
-<Story name="Verified Advanced" let:args>
+<Story name="Verified Advanced">
   <AdvancedSection />
 </Story>

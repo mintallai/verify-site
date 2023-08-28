@@ -13,11 +13,12 @@
   from Adobe.
 -->
 <script lang="ts">
+  import Body from '$src/components/typography/Body.svelte';
   import { createEventDispatcher } from 'svelte';
   import { _ } from 'svelte-i18n';
+  import { fly } from 'svelte/transition';
   import close from '../../../../../assets/svg/color/logos/close.svg';
   import { verifyStore } from '../../stores';
-  import AssetInfo from '../AssetInfo.svelte';
   import BigAssetInfo from '../AssetInfo/BigAssetInfo.svelte';
   import ThumbnailSection from '../Thumbnail/ThumbnailSection.svelte';
   import AboutSection from './AboutSection/AboutSection.svelte';
@@ -26,14 +27,19 @@
   import CreditAndUsage from './CreditAndUsageSection/CreditAndUsageSection.svelte';
   import ProcessSection from './ProcessSection/ProcessSection.svelte';
 
-  let date: Date = new Date('2019-01-16');
   export let showInfoPanel: boolean;
   const dispatch = createEventDispatcher();
   const { hierarchyView } = verifyStore;
 
-  function testAsset(url: string) {
-    verifyStore.readC2paSource(url);
-  }
+  $: assetStore =
+    $hierarchyView.state === 'success'
+      ? $hierarchyView.selectedAssetStore
+      : null;
+  $: id = $assetStore?.id;
+  $: ingredients =
+    $hierarchyView.state === 'success' && id
+      ? $hierarchyView.ingredientsForAssetId(id)
+      : [];
 
   function togglePanel() {
     dispatch('isShown', {
@@ -44,37 +50,32 @@
 
 <div
   class="h-screen overflow-auto bg-gray-50 transition-transform sm:h-[calc(100vh-theme(spacing.header))] sm:transform-none sm:border-s-2 lg:h-screen"
-  class:-translate-y-full={showInfoPanel}>
-  <div
-    class="flex h-20 shrink-0 items-center justify-between border-b-2 bg-gray-50 px-6 shadow">
-    <BigAssetInfo
-      {date}
-      thumbnail="https://verify.contentauthenticity.org/_app/immutable/assets/fake-news-2ec11861.jpg">
-      <svelte:fragment slot="name">coucou.png</svelte:fragment></BigAssetInfo>
-    {#if showInfoPanel}
+  class:-translate-y-full={showInfoPanel}
+  transition:fly={{ duration: 300, opacity: 0, x: 200 }}>
+  {#if $assetStore}
+    <div
+      class="flex h-20 shrink-0 items-center justify-between border-b-2 bg-gray-50 px-6 shadow">
+      <BigAssetInfo date={$assetStore.date} thumbnail={$assetStore.thumbnail}>
+        <svelte:fragment slot="name">{$assetStore.title}</svelte:fragment
+        ></BigAssetInfo>
       <button on:click={togglePanel}>
         <img
           src={close}
           class="h-[1.15rem] w-[1.15rem] md:hidden"
           alt={$_('sidebar.verify.hideInfo')} /></button>
+    </div>
+    <ThumbnailSection thumbnail={$assetStore.thumbnail} />
+    {#if $assetStore.hasManifest}
+      {#if $assetStore.contentSummaryKey}
+        <ContentSummarySection
+          contentSummaryKey={$assetStore.contentSummaryKey} />
+      {/if}
+      <CreditAndUsage assetData={$assetStore} />
+      <ProcessSection assetData={$assetStore} {ingredients} />
+      <AboutSection assetData={$assetStore} />
+      <AdvancedSection />
+    {:else}
+      <div class="p-5"><Body>{$_('sidebar.verify.noCCFile')}</Body></div>
     {/if}
-  </div>
-  <ThumbnailSection
-    thumbnail="https://verify.contentauthenticity.org/_app/immutable/assets/fake-news-2ec11861.jpg" />
-  <ContentSummarySection />
-  <CreditAndUsage />
-  <ProcessSection />
-  <AboutSection />
-  <AdvancedSection />
-  {#if $hierarchyView.state === 'success'}
-    <AssetInfo assetStore={$hierarchyView.selectedAssetStore} />
   {/if}
-  <button
-    class="m-2 bg-blue-600 p-2 text-white"
-    on:click={() => testAsset('http://localhost:3000/XCA.jpg')}
-    >Load asset</button>
-  <button
-    class="m-2 bg-blue-600 p-2 text-white"
-    on:click={() => testAsset('http://localhost:3000/CAICAI.jpg')}
-    >Load asset 2</button>
 </div>

@@ -93,6 +93,7 @@ function renderElement({ isMonochrome, name, svg, id, ssr }) {
     hydratable: true,
     filename: id,
   });
+
   return js;
 }
 
@@ -125,11 +126,13 @@ export default function rollupSvelteSvg(options = {}) {
           id,
           ssr,
         });
+
         return { code, map };
       } catch (err) {
         const message = 'Could not process SVG file';
         const position = parseInt(/[\d]/.exec(err.message)[0], 10);
         this.warn({ message, id, position });
+
         return null;
       }
     },

@@ -14,10 +14,12 @@
 -->
 
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import Body from '../../../components/typography/Body.svelte';
   import type { ReadableAssetStore } from '../stores/asset';
   import AssetInfoBase from './AssetInfo/AssetInfoBase.svelte';
   import TreeThumbnail from './Thumbnail/TreeThumbnail.svelte';
+
   export let assetStore: ReadableAssetStore;
 </script>
 
@@ -29,7 +31,8 @@
       <TreeThumbnail thumbnail={$assetStore.thumbnail} />
       <div class="bottom-0 py-2">
         <AssetInfoBase date={$assetStore.date}>
-          <Body slot="name">{$assetStore.title}</Body>
+          <Body slot="name"
+            >{$assetStore.title ?? $_('asset.defaultTitle')}</Body>
         </AssetInfoBase>
       </div>
     </div></button>

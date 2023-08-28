@@ -11,7 +11,43 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+import css from 'css';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import type { Config } from 'tailwindcss';
+
+/**
+ * Parses a CSS file and attempts to extract CSS variable definitions from it
+ * @param source
+ * @param selector
+ * @returns An object with variable names as keys and variable values as values
+ */
+function getCssVariables(source, selector) {
+  const varsCss = readFileSync(source, 'utf8');
+  const vars = css.parse(varsCss);
+
+  return (
+    (vars.stylesheet?.rules ?? [])
+      .find((x) => x.type === 'rule' && x.selectors.includes(selector))
+      ?.declarations?.reduce((acc, rule) => {
+        if (rule.type === 'declaration') {
+          acc[rule.property.replace(/^--/, '')] = rule.value;
+        }
+
+        return acc;
+      }, {}) ?? {}
+  );
+}
+
+const varsCssPath = resolve(__dirname, 'src', 'vars.css');
+
+// We are extracting the CSS variables from the CSS file instead of referencing the `var(--variable-name)` directly
+// since Tailwind's color functions (e.g. background opacity) won't work properly with the latter.
+const defs = Object.assign(
+  {},
+  getCssVariables(varsCssPath, ':root'),
+  getCssVariables(varsCssPath, '.theme-light'),
+);
 
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -20,9 +56,37 @@ export default {
   },
   theme: {
     fontFamily: {
-      serif: 'var(--family-serif)',
-      home: 'var(--family-home)',
-      base: 'var(--family-base)',
+      home: defs['family-home'],
+      homeWide: defs['family-home-wide'],
+      base: defs['family-base'],
+    },
+    colors: {
+      white: defs['gray-50'],
+      'gray-50': defs['gray-50'],
+      'gray-75': defs['gray-75'],
+      'gray-100': defs['gray-100'],
+      'gray-200': defs['gray-200'],
+      'gray-300': defs['gray-300'],
+      'gray-400': defs['gray-400'],
+      'gray-500': defs['gray-500'],
+      'gray-600': defs['gray-600'],
+      'gray-700': defs['gray-700'],
+      'gray-800': defs['gray-800'],
+      'gray-900': defs['gray-900'],
+      'blue-100': defs['blue-100'],
+      'blue-200': defs['blue-200'],
+      'blue-300': defs['blue-300'],
+      'blue-400': defs['blue-400'],
+      'blue-500': defs['blue-500'],
+      'blue-600': defs['blue-600'],
+      'blue-700': defs['blue-700'],
+      'blue-800': defs['blue-900'],
+      'blue-900': defs['blue-900'],
+      'blue-1000': defs['blue-1000'],
+      'blue-1100': defs['blue-1100'],
+      'blue-1200': defs['blue-1200'],
+      'blue-1300': defs['blue-1300'],
+      transparent: 'transparent',
     },
     fontSize: {
       title: [
@@ -39,7 +103,7 @@ export default {
           fontWeight: '700',
         },
       ],
-      bodybold: [
+      'body-bold': [
         '0.9375rem',
         {
           lineHeight: '1.25rem',
@@ -74,34 +138,6 @@ export default {
           fontWeight: '700',
         },
       ],
-    },
-    colors: {
-      white: 'var(--gray-50)',
-      'gray-50': 'var(--gray-50)',
-      'gray-75': 'var(--gray-75)',
-      'gray-100': 'var(--gray-100)',
-      'gray-200': 'var(--gray-200)',
-      'gray-300': 'var(--gray-300)',
-      'gray-400': 'var(--gray-400)',
-      'gray-500': 'var(--gray-500)',
-      'gray-600': 'var(--gray-600)',
-      'gray-700': 'var(--gray-700)',
-      'gray-800': 'var(--gray-800)',
-      'gray-900': 'var(--gray-900)',
-      'blue-100': 'var(--blue-100)',
-      'blue-200': 'var(--blue-200)',
-      'blue-300': 'var(--blue-300)',
-      'blue-400': 'var(--blue-400)',
-      'blue-500': 'var(--blue-500)',
-      'blue-600': 'var(--blue-600)',
-      'blue-700': 'var(--blue-700)',
-      'blue-800': 'var(--blue-900)',
-      'blue-900': 'var(--blue-900)',
-      'blue-1000': 'var(--blue-1000)',
-      'blue-1100': 'var(--blue-1100)',
-      'blue-1200': 'var(--blue-1200)',
-      'blue-1300': 'var(--blue-1300)',
-      transparent: 'transparent',
     },
     boxShadow: {
       DEFAULT: '0px 4px 20px rgba(0, 0, 0, 0.3)',

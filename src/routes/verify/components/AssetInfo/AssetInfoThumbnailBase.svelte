@@ -15,6 +15,7 @@
 <script lang="ts">
   import SmallThumbnail from '../Thumbnail/SmallThumbnail.svelte';
   import AssetInfoBase from './AssetInfoBase.svelte';
+
   export let thumbnail: string | null = null;
   export let date: Date | null = null;
 </script>

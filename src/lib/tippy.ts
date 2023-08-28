@@ -40,6 +40,7 @@ export function tippy(
     opts.hasPadding && !(content instanceof HTMLElement)
       ? `<div class="p-3">${content}</div>`
       : content;
+
   return tippyjs(node, {
     ...defaultProps,
     ...tippyProps,

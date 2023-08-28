@@ -13,19 +13,26 @@
   from Adobe.
 -->
 <script lang="ts">
+  import LegalSection from '$src/components/LegalSection/LegalSection.svelte';
+  import { sidebarLayoutPageState } from '$src/features/SidebarLayout';
+  import type { AssetData } from '$src/lib/asset';
   import { _ } from 'svelte-i18n';
-  import LegalSection from '../../../../components/LegalSection/LegalSection.svelte';
-  import { sidebarLayoutPageState } from '../../../../features/SidebarLayout';
   import { verifyStore } from '../../stores';
   import ManifestRecoveryItem from '../ManifestRecoveryItem.svelte';
   import ManifestRecoverySection from './ManifestRecovery/ManifestRecoverySection.svelte';
+
   const { recoveredManifestResults } = verifyStore;
+
+  export let asset: AssetData;
+
   async function handleRecovery() {
     verifyStore.recoverManifests();
   }
 </script>
 
-<ManifestRecoverySection />
+{#if asset}
+  <ManifestRecoverySection {...asset} />
+{/if}
 <LegalSection>
   <svelte:fragment slot="legal-text-visible">
     <p>{$_('sidebar.verify.legal.part1')}</p>

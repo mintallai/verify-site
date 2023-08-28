@@ -54,6 +54,7 @@
     const d3hierarchy = d3Hierarchy(assetStoreMap[ROOT_ID], (readableAsset) => {
       const assetData = get(readableAsset);
       const childrenIds = assetData.children;
+
       return childrenIds ? childrenIds.map((id) => assetStoreMap[id]) : [];
     });
 

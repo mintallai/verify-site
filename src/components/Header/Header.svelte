@@ -13,8 +13,8 @@
   from Adobe.
 -->
 <script lang="ts">
+  import { sidebarMenuState } from '$src/features/SidebarMenu';
   import { _ } from 'svelte-i18n';
-  import { sidebarMenuState } from '../../features/SidebarMenu';
   import Hamburger from '../Hamburger/Hamburger.svelte';
   import Title from '../typography/Title.svelte';
 

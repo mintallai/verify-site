@@ -13,8 +13,8 @@
   from Adobe.
 -->
 <script lang="ts">
-  import BaseLink from '../../components/BaseLink/BaseLink.svelte';
-  import Header from '../../components/typography/Header.svelte';
+  import BaseLink from '$src/components/BaseLink/BaseLink.svelte';
+  import Header from '$src/components/typography/Header.svelte';
   import { sidebarMenuState } from './store/sidebarMenuState';
 
   export let href = '';

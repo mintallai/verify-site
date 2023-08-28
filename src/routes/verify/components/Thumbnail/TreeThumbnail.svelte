@@ -13,15 +13,11 @@
   from Adobe.
 -->
 <script lang="ts">
-  import type { Thumbnail } from 'c2pa';
   import ThumbnailImage from './ThumbnailImage.svelte';
-  export let thumbnail: Thumbnail | null = null;
-  let thumbnailImg: string | null;
-  $: thumbnailImg = thumbnail?.blob
-    ? URL.createObjectURL(thumbnail.blob)
-    : null;
+
+  export let thumbnail: string | null = null;
 </script>
 
 <div class="h-[6.15rem] w-full bg-gray-100">
-  <ThumbnailImage thumbnail={thumbnailImg} />
+  <ThumbnailImage {thumbnail} />
 </div>

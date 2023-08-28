@@ -26,9 +26,9 @@
 
 import { recoverManifests } from '$lib/manifestRecovery';
 import type { Loadable } from '$lib/types';
+import { createGenericError, error } from '$src/features/errors';
 import type { Source } from 'c2pa';
 import { writable, type Readable, type Writable } from 'svelte/store';
-import { createGenericError, error } from '../../../features/errors';
 import {
   createRecoveredManifest,
   type ReadableRecoveredManifestStore,
@@ -56,6 +56,7 @@ export function createManifestRecoverer(
   selectedSource: Writable<SelectedSource>,
   selectedAssetId: Writable<string>,
 ): ManifestRecovererStore {
+  let disposers: (() => void)[];
   const manifestRecoveryState = writable<ManifestRecoveryState>({
     state: 'none',
   });
@@ -64,6 +65,10 @@ export function createManifestRecoverer(
     subscribe: manifestRecoveryState.subscribe,
     recover: async ({ blob }: Source) => {
       manifestRecoveryState.set({ state: 'loading' });
+
+      while (disposers.length) {
+        disposers.pop()?.();
+      }
 
       try {
         if (!blob) {
@@ -74,13 +79,17 @@ export function createManifestRecoverer(
 
         manifestRecoveryState.set({
           state: 'success',
-          manifests: recoveredManifests.map((recoveredManifest, idx) =>
-            createRecoveredManifest(
-              recoveredManifest,
-              idx,
-              selectedSource,
-              selectedAssetId,
-            ),
+          manifests: recoveredManifests.map(
+            ({ dispose, ...recoveredManifest }, idx) => {
+              disposers.push(dispose);
+
+              return createRecoveredManifest(
+                recoveredManifest,
+                idx,
+                selectedSource,
+                selectedAssetId,
+              );
+            },
           ),
         });
       } catch (e) {

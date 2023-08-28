@@ -15,6 +15,7 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import fallback from '../../../../../assets/svg/monochrome/emptyImage.svg';
+
   export let thumbnail: string | null;
 
   $: thumbnailImg = thumbnail ?? fallback;

@@ -13,10 +13,11 @@
   from Adobe.
 -->
 <script lang="ts">
+  import help from '$assets/svg/color/logos/help.svg';
+  import Link from '$src/components/typography/Link.svelte';
   import { _ } from 'svelte-i18n';
-  import help from '../../../../../../assets/svg/color/logos/help.svg';
-  import Link from '../../../../../components/typography/Link.svelte';
   import ManifestTooltip from './ManifestTooltip.svelte';
+
   let showTooltip = false;
 </script>
 

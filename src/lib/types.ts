@@ -11,6 +11,11 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
+export type Disposable<T> = {
+  // Disposer function that should be called when this resource is no longer being used
+  dispose: () => void;
+} & T;
+
 type LoadableStateNone = {
   state: 'none';
 };

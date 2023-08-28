@@ -13,10 +13,10 @@
   from Adobe.
 -->
 <script lang="ts">
+  import L1Icon from '$assets/svg/color/logos/L1Grey.svg';
+  import FormattedDateTime from '$src/components/FormattedDateTime/FormattedDateTime.svelte';
+  import Body from '$src/components/typography/Body.svelte';
   import { _ } from 'svelte-i18n';
-  import L1Icon from '../../../../../assets/svg/color/logos/L1Grey.svg';
-  import FormattedDateTime from '../../../../components/FormattedDateTime/FormattedDateTime.svelte';
-  import Body from '../../../../components/typography/Body.svelte';
 
   export let date: Date | null = null;
 </script>

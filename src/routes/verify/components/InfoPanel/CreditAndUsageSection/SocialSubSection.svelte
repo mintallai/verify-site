@@ -13,36 +13,34 @@
   from Adobe.
 -->
 <script lang="ts">
+  import { providerInfoFromSocialId } from '$lib/providers';
+  import ProviderIcon from '$src/components/ProviderIcon/ProviderIcon.svelte';
+  import SocialMediaInfo from '$src/components/SocialMediaInfo/SocialMediaInfo.svelte';
+  import type { AssetData } from '$src/lib/asset';
   import { _ } from 'svelte-i18n';
-  import ProviderIcon from '../../../../../components/ProviderIcon/ProviderIcon.svelte';
-  import SocialMediaInfo from '../../../../../components/SocialMediaInfo/SocialMediaInfo.svelte';
   import IconContentRow from '../../IconContentRow/IconContentRow.svelte';
   import SubSection from '../../SubSection/SubSection.svelte';
+
+  export let socialAccounts: NonNullable<AssetData['socialAccounts']>;
 </script>
 
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.credit.social')}</svelte:fragment>
   <svelte:fragment slot="content">
-    <IconContentRow>
-      <div class="pe-2" slot="icon">
-        <ProviderIcon provider="behance.net" />
-      </div>
-      <span slot="content">
-        <SocialMediaInfo
-          link="https://www.behance.net/"
-          username="@janesmith"
-          appName="behance" />
-      </span>
-    </IconContentRow>
-    <IconContentRow>
-      <div class="pe-2" slot="icon">
-        <ProviderIcon provider="instagram.com" />
-      </div>
-      <SocialMediaInfo
-        slot="content"
-        link="https://www.instagram.com/"
-        username="@janesmith"
-        appName="Instagram" />
-    </IconContentRow>
-  </svelte:fragment></SubSection>
+    {#each socialAccounts as account (account['@id'])}
+      <IconContentRow>
+        <div class="pe-2" slot="icon">
+          <ProviderIcon provider={account['@id'] ?? ''} />
+        </div>
+        <span slot="content">
+          <SocialMediaInfo
+            link={account['@id'] ?? ''}
+            username={account['name']}
+            appName={providerInfoFromSocialId(account['@id'] ?? '')?.name ??
+              ''} />
+        </span>
+      </IconContentRow>
+    {/each}
+  </svelte:fragment>
+</SubSection>

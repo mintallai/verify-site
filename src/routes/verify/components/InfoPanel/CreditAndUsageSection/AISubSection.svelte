@@ -13,18 +13,29 @@
   from Adobe.
 -->
 <script lang="ts">
+  import AiModelIcon from '$assets/svg/monochrome/ai-model.svg?component';
+  import ProviderIcon from '$src/components/ProviderIcon/ProviderIcon.svelte';
   import { _ } from 'svelte-i18n';
-  import AI from '../../../../../../assets/svg/color/logos/ai.svg';
   import IconContentRow from '../../IconContentRow/IconContentRow.svelte';
   import SubSection from '../../SubSection/SubSection.svelte';
+
+  export let softwareAgents: string[];
 </script>
 
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.credit.AI')}</svelte:fragment>
-  <IconContentRow slot="content">
-    <img slot="icon" src={AI} alt={AI} class="mr-2 w-4" />
-    <svelte:fragment slot="content">
-      {$_('sidebar.verify.credit.AI.description')}</svelte:fragment>
-  </IconContentRow>
+  <svelte:fragment slot="content">
+    {#each softwareAgents as softwareAgent}
+      <IconContentRow>
+        <ProviderIcon
+          slot="icon"
+          provider={softwareAgent}
+          fallbackIcon={AiModelIcon}
+          class="me-2" />
+        <svelte:fragment slot="content">
+          {softwareAgent}</svelte:fragment>
+      </IconContentRow>
+    {/each}
+  </svelte:fragment>
 </SubSection>

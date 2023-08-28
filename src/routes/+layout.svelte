@@ -58,7 +58,7 @@
   });
 </script>
 
-<div class="font-base">
+<div class="font-base leading-4">
   <slot />
 
   <SidebarMenu />

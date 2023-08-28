@@ -13,8 +13,9 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Header from '../../../../components/typography/Header.svelte';
+  import Header from '$src/components/typography/Header.svelte';
   import AssetInfoThumbnailBase from './AssetInfoThumbnailBase.svelte';
+
   export let thumbnail: string | null = null;
   export let date: Date | null = null;
 </script>

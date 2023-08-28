@@ -13,10 +13,12 @@
   from Adobe.
 -->
 <script lang="ts">
+  import ProviderIcon from '$src/components/ProviderIcon/ProviderIcon.svelte';
   import { _ } from 'svelte-i18n';
-  import ProviderIcon from '../../../../../components/ProviderIcon/ProviderIcon.svelte';
   import IconContentRow from '../../../components/IconContentRow/IconContentRow.svelte';
   import SubSection from '../../../components/SubSection/SubSection.svelte';
+
+  export let issuedBy: string;
 </script>
 
 <SubSection>
@@ -26,6 +28,6 @@
     <div class="pe-2" slot="icon">
       <ProviderIcon provider="adobe" />
     </div>
-    <svelte:fragment slot="content">Adobe Inc</svelte:fragment>
+    <svelte:fragment slot="content">{issuedBy}</svelte:fragment>
   </IconContentRow>
 </SubSection>

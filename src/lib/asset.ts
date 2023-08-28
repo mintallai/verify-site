@@ -12,93 +12,172 @@
 // from Adobe.
 
 import {
+  assetDataToProps as contentSummaryAssetDataToProps,
+  type ContentSummarySectionProps,
+} from '$src/routes/verify/components/InfoPanel/ContentSummarySection/ContentSummarySection.svelte';
+import {
   selectEditsAndActivity,
+  selectFormattedGenerator,
   selectProducer,
   selectSocialAccounts,
   type C2paReadResult,
   type Ingredient,
   type Manifest,
-  type Thumbnail,
+  type ManifestStore,
   type TranslatedDictionaryCategory,
 } from 'c2pa';
 import { locale } from 'svelte-i18n';
 import { get } from 'svelte/store';
 import { DEFAULT_LOCALE } from './i18n';
+import {
+  selectGenerativeInfo,
+  type GenerativeInfo,
+} from './selectors/generativeInfo';
+import { selectReviewRatings } from './selectors/reviewRatings';
+import {
+  selectValidationStatus,
+  type ValidationStatus,
+  type ValidationStatusCode,
+} from './selectors/validationStatus';
+import type { Disposable } from './types';
 
 /**
  * Asset data required for the verify UI.
  */
-export interface AssetData {
-  title: string;
+export type AssetData = {
+  date: Date | null;
+  hasManifest: boolean;
   id: string;
-  thumbnail?: Thumbnail | null;
-  editsAndActivity?: TranslatedDictionaryCategory[];
-  socialAccounts?: ReturnType<typeof selectSocialAccounts>;
-  producer?: string;
+  thumbnail: string | null;
+  title: string | null;
   children?: string[];
-  date?: Date | null;
-}
+  claimGenerator?: string;
+  editsAndActivity?: TranslatedDictionaryCategory[];
+  generativeInfo?: GenerativeInfo;
+  producer?: string;
+  reviewRatings?: ReturnType<typeof selectReviewRatings>;
+  signatureInfo?: Manifest['signatureInfo'];
+  socialAccounts?: ReturnType<typeof selectSocialAccounts>;
+  validationStatus?: ReturnType<typeof selectValidationStatus>;
+} & ContentSummarySectionProps;
 
 export type AssetDataMap = Record<string, AssetData>;
+
+export type DisposableAssetDataMap = Disposable<{
+  // Flattened map of asset data, keyed by asset ID
+  assetMap: AssetDataMap;
+}>;
 
 export const ROOT_ID = '0';
 
 /**
  *
  * @param result Result from C2PA SDK
- * @returns Flattened map of asset data, keyed by asset ID
+ * @returns Object containing a flattened map of asset data (keyed by asset ID), along with a disposer
+ *
+ * This will recursively process all nodes in the provenance tree, adding to (mutating) the `assetStore`
+ * as the nodes are traversed. It also returns a disposer that should be called when this asset
  */
 export async function resultToAssetMap({
   manifestStore,
   source,
-}: C2paReadResult): Promise<AssetDataMap> {
-  if (!manifestStore) {
+}: C2paReadResult): Promise<DisposableAssetDataMap> {
+  const disposers: (() => void)[] = [];
+  const { hasError, hasOtgp, statusCode } = selectValidationStatus(
+    manifestStore?.validationStatus ?? [],
+  );
+
+  function dispose() {
+    while (disposers.length) {
+      disposers.pop()?.();
+    }
+  }
+
+  if (!manifestStore || hasError || hasOtgp) {
     const id = ROOT_ID;
-    return {
+    const thumbnail = source.thumbnail?.getUrl();
+
+    disposers.push(thumbnail.dispose);
+
+    const assetMap = {
       [id]: {
         // @TODO filename if none present?
         id,
-        title: source.metadata.filename ?? 'Untitled Asset',
-        thumbnail: source.thumbnail,
+        title: source.metadata.filename ?? null,
+        thumbnail: thumbnail.url ?? null,
+        date: null,
+        hasManifest: !!manifestStore,
       },
     };
+
+    // Return early if we don't have a manifestStore or have a root-level validation error
+    if (!manifestStore || hasError) {
+      return {
+        assetMap,
+        dispose,
+      };
+    }
   }
 
   const assetStore: AssetDataMap = {};
 
-  await manifestToAssetData(manifestStore.activeManifest, '0');
+  // Start processing the provenance tree
+  await manifestStoreToAssetData(manifestStore, statusCode);
 
   // Convert a manifest to an asset usable by the verify UI and add it to the map
-  async function manifestToAssetData(
-    manifest: Manifest,
-    id: string,
+  // Any processing here should be specific to keys on the root manifest
+  async function manifestStoreToAssetData(
+    manifestStore: ManifestStore,
+    validationStatusCode: ValidationStatusCode,
   ): Promise<AssetData> {
+    const { activeManifest: manifest, validationStatus } = manifestStore;
+
+    // Attempt to use a thumbnail on the manifest if found
+    let thumbnail = manifest.thumbnail?.getUrl();
+
+    // If no thumbnail exists on the claim and we have a valid manifest,
+    // we can use the source thumbnail
+    if (!thumbnail && validationStatusCode === 'valid') {
+      thumbnail = source.thumbnail?.getUrl();
+    }
+
     const asset = {
-      id,
+      id: ROOT_ID,
       title: manifest.title,
-      thumbnail: manifest.thumbnail ?? null,
-      date: manifest.signatureInfo?.time
-        ? new Date(manifest.signatureInfo.time)
-        : null,
-      ...(await getAssetDataFromManifest(manifest, id)),
+      thumbnail: thumbnail?.url ?? null,
+      ...(await getAssetDataFromManifest(manifest, validationStatus, ROOT_ID)),
     };
 
-    assetStore[id] = asset;
+    if (thumbnail?.dispose) {
+      disposers.push(thumbnail.dispose);
+    }
+
+    assetStore[ROOT_ID] = asset;
 
     return asset;
   }
 
   // Convert an ingredient to an asset usable by the verify UI and add it to the map
+  // Any processing here should be specific to keys on an ingredient
   async function ingredientToAssetData(
     ingredient: Ingredient,
     id: string,
   ): Promise<AssetData> {
+    const thumbnail = ingredient.thumbnail?.getUrl();
     const asset = {
       id,
       title: ingredient.title,
-      thumbnail: ingredient.thumbnail ?? null,
-      ...(await getAssetDataFromManifest(ingredient.manifest, id)),
+      thumbnail: thumbnail?.url ?? null,
+      ...(await getAssetDataFromManifest(
+        ingredient.manifest,
+        ingredient.validationStatus,
+        id,
+      )),
     };
+
+    if (thumbnail?.dispose) {
+      disposers.push(thumbnail.dispose);
+    }
 
     assetStore[id] = asset;
 
@@ -106,15 +185,26 @@ export async function resultToAssetMap({
   }
 
   // Get asset data from a manifest (either a root manifest or an ingredient manifest)
+  // Any processing that is common to both ingredients or active manifests should go here
   async function getAssetDataFromManifest(
     manifest: Manifest | null,
+    validationStatus: ValidationStatus[] | null,
     id: string,
   ): Promise<Omit<AssetData, 'title' | 'thumbnail' | 'id'>> {
     if (!manifest) {
-      return {};
+      return {
+        date: null,
+        hasManifest: false,
+      };
     }
 
-    return {
+    const assetData = {
+      date: manifest.signatureInfo?.time
+        ? new Date(manifest.signatureInfo.time)
+        : null,
+      hasManifest: !!manifest.signatureInfo?.time,
+      claimGenerator: selectFormattedGenerator(manifest),
+      signatureInfo: manifest.signatureInfo,
       producer: selectProducer(manifest)?.name,
       editsAndActivity:
         (await selectEditsAndActivity(
@@ -122,8 +212,16 @@ export async function resultToAssetMap({
           get(locale) ?? DEFAULT_LOCALE,
         )) ?? undefined,
       socialAccounts: selectSocialAccounts(manifest),
+      generativeInfo: selectGenerativeInfo(manifest) ?? undefined,
+      reviewRatings: selectReviewRatings(manifest),
+      validationStatus: selectValidationStatus(validationStatus ?? []),
       // Recursively process ingredients
       children: await processIngredients(manifest.ingredients, id),
+    };
+
+    return {
+      ...assetData,
+      ...contentSummaryAssetDataToProps(assetData),
     };
   }
 
@@ -134,7 +232,7 @@ export async function resultToAssetMap({
     const ingredientIds = ingredients.map(async (ingredient, idx) => {
       const ingredientId = `${id}.${idx}`;
 
-      ingredientToAssetData(ingredient, ingredientId);
+      await ingredientToAssetData(ingredient, ingredientId);
 
       return ingredientId;
     });
@@ -142,5 +240,8 @@ export async function resultToAssetMap({
     return Promise.all(ingredientIds);
   }
 
-  return assetStore;
+  return {
+    assetMap: assetStore,
+    dispose,
+  };
 }

@@ -12,48 +12,16 @@
   from Adobe.
 -->
 <script lang="ts">
+  import { providerInfoFromSocialId } from '$lib/providers';
   import type { ComponentType } from 'svelte';
-  import YouTubeLogo from '../../../assets/svg/color/logos/YT.svg?component';
-  import AdobeExpressLogo from '../../../assets/svg/color/logos/adobe-express.svg?component';
-  import AdobeStockLogo from '../../../assets/svg/color/logos/adobe-stock.svg?component';
-  import AdobeLogo from '../../../assets/svg/color/logos/adobe.svg?component';
-  import BehanceLogo from '../../../assets/svg/color/logos/behance.svg?component';
-  import FacebookLogo from '../../../assets/svg/color/logos/facebook.svg?component';
-  import InstagramLogo from '../../../assets/svg/color/logos/instagram.svg?component';
-  import LeicaLogo from '../../../assets/svg/color/logos/leica_logo.svg?component';
-  import LightroomLogo from '../../../assets/svg/color/logos/lightroom.svg?component';
-  import NikonLogo from '../../../assets/svg/color/logos/nikon.svg?component';
-  import PhotoshopLogo from '../../../assets/svg/color/logos/photoshop.svg?component';
-  import PinterestLogo from '../../../assets/svg/color/logos/pinterest.svg?component';
-  import TruepicLogo from '../../../assets/svg/color/logos/truepic.svg?component';
-  import TwitterLogo from '../../../assets/svg/color/logos/twitter.svg?component';
-  import VimeoLogo from '../../../assets/svg/color/logos/vimeo.svg?component';
+
   export let provider: string;
   export let fallbackIcon: ComponentType | null = null;
   let className = '';
-  const matchers = [
-    { pattern: /nikon/i, icon: NikonLogo },
-    { pattern: /photoshop/i, icon: PhotoshopLogo },
-    { pattern: /adobe\sexpress/i, icon: AdobeExpressLogo },
-    { pattern: /adobe\sstock/i, icon: AdobeStockLogo },
-    { pattern: /adobe/i, icon: AdobeLogo },
-    { pattern: /behance\.net/i, icon: BehanceLogo },
-    { pattern: /facebook\.com/i, icon: FacebookLogo },
-    { pattern: /instagram\.com/i, icon: InstagramLogo },
-    // Behance staging
-    { pattern: /net\.s2stagehance\.com/i, icon: BehanceLogo },
-    { pattern: /truepic/i, icon: TruepicLogo },
-    { pattern: /twitter\.com/i, icon: TwitterLogo },
-    { pattern: /pinterest\.com/i, icon: PinterestLogo },
-    { pattern: /vimeo\.com/i, icon: VimeoLogo },
-    { pattern: /youtube\.com/i, icon: YouTubeLogo },
-    { pattern: /leica/i, icon: LeicaLogo },
-    { pattern: /M11/i, icon: LeicaLogo },
-    { pattern: /lightroom/i, icon: LightroomLogo },
-  ];
+
   $: iconComponent =
-    matchers.find(({ pattern }) => pattern.test(provider?.toString() ?? ''))
-      ?.icon ?? fallbackIcon;
+    providerInfoFromSocialId(provider?.toString() ?? '')?.icon ?? fallbackIcon;
+
   export { className as class };
 </script>
 

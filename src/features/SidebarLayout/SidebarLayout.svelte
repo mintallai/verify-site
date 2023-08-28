@@ -13,35 +13,48 @@
   from Adobe.
 -->
 <script>
-  import ChevronLeft from '../../../assets/svg/monochrome/chevron-left.svg?component';
-  import Header from '../../components/Header/Header.svelte';
-  import HeaderTypo from '../../components/typography/Header.svelte';
+  import ChevronLeft from '$assets/svg/monochrome/chevron-left.svg?component';
+  import Header from '$src/components/Header/Header.svelte';
+  import HeaderTypo from '$src/components/typography/Header.svelte';
   import { sidebarLayoutPageState } from './store/sidebarLayoutPageState';
+
+  export let leftColumnTakeover = false;
 </script>
 
 <div
-  class="grid h-screen grid-cols-[100vw_100vw] overflow-x-hidden lg:grid-cols-[theme(spacing.sidebar)_auto]">
-  <div class="lg:border-e-2">
+  class={[
+    'grid h-screen grid-cols-[100vw_100vw] overflow-x-hidden transition-colors duration-100',
+    leftColumnTakeover
+      ? 'bg-gray-100'
+      : 'bg-white lg:grid-cols-[theme(spacing.sidebar)_auto]',
+  ].join(' ')}>
+  <div class="flex flex-col lg:border-e-2">
     <Header><slot name="header" /></Header>
-    <div class="relative z-0 border-t-2">
+    <div
+      class={[
+        'relative z-0 flex-grow border-t-2 transition-colors duration-100',
+        leftColumnTakeover ? 'border-transparent' : 'border-gray-200',
+      ].join(' ')}>
       <slot name="sidebar" />
     </div>
   </div>
-  <div
-    class="h-screen overflow-hidden transition-transform lg:transform-none"
-    class:-translate-x-full={$sidebarLayoutPageState === 1}>
+  {#if !leftColumnTakeover}
     <div
-      class="flex h-header items-center border-b bg-gray-50 px-6 sm:border-b-0 lg:hidden">
-      <button
-        class="flex items-center"
-        on:click={() => sidebarLayoutPageState.back()}>
-        <ChevronLeft class="pe-3" />
-        <HeaderTypo><slot name="back-bar" /></HeaderTypo>
-      </button>
-    </div>
+      class="h-screen overflow-hidden transition-transform lg:transform-none"
+      class:-translate-x-full={$sidebarLayoutPageState === 1}>
+      <div
+        class="flex h-header items-center border-b bg-gray-50 px-6 lg:hidden">
+        <button
+          class="flex items-center"
+          on:click={() => sidebarLayoutPageState.back()}>
+          <ChevronLeft class="pe-3" />
+          <HeaderTypo><slot name="back-bar" /></HeaderTypo>
+        </button>
+      </div>
 
-    <div class="h-full border-t-2 bg-gray-100 lg:border-none">
-      <slot name="content" />
+      <div class="h-full border-t-2 bg-gray-100 lg:border-none">
+        <slot name="content" />
+      </div>
     </div>
-  </div>
+  {/if}
 </div>

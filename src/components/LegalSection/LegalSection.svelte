@@ -13,8 +13,8 @@
   from Adobe.
 -->
 <script lang="ts">
+  import sunIcon from '$assets/svg/monochrome/sun.svg';
   import { _ } from 'svelte-i18n';
-  import sunIcon from '../../../assets/svg/monochrome/sun.svg';
   import SmallDescription from '../typography/SmallDescription.svelte';
 
   let readMore = false;

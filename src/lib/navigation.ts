@@ -11,13 +11,23 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import percySnapshot from '@percy/playwright';
-import { expect, test } from '@playwright/test';
+import { page } from '$app/stores';
+import { get } from 'svelte/store';
 
-test.describe('Base functionality', () => {
-  test('site loads', async ({ page }) => {
-    await page.goto('/');
-    await expect(page).toHaveTitle(/Content Credentials/);
-    await percySnapshot(page, 'Home page');
-  });
-});
+export function removeParamsFromUrl(params: string[]) {
+  const { url } = get(page);
+
+  if (!url) {
+    return null;
+  }
+
+  const { host, pathname, protocol, searchParams } = url;
+
+  params.forEach((param) => searchParams.delete(param));
+
+  const queryString = searchParams.toString();
+
+  return `${protocol}//${host}${pathname}${
+    queryString ? `?${queryString}` : ``
+  }`;
+}

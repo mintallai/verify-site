@@ -13,7 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
-  import DownArrow from '../../../assets/svg/monochrome/down-arrow.svg?component';
+  import DownArrow from '$assets/svg/monochrome/down-arrow.svg?component';
   import BodyBold from '../typography/BodyBold.svelte';
   import SmallDescription from '../typography/SmallDescription.svelte';
   import SidebarSectionBase from './SidebarSectionBase.svelte';

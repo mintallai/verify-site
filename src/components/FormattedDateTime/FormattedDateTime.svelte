@@ -13,6 +13,7 @@
 -->
 <script lang="ts">
   import { _, date, time } from 'svelte-i18n';
+
   export let sigDate: Date;
   export let noTime = false;
 </script>

@@ -13,11 +13,15 @@
   from Adobe.
 -->
 <script lang="ts">
+  import CollapsibleSection from '$src/components/SidebarSection/CollapsibleSection.svelte';
+  import type { AssetData } from '$src/lib/asset';
   import { _ } from 'svelte-i18n';
-  import CollapsibleSection from '../../../../../components/SidebarSection/CollapsibleSection.svelte';
   import ActionsSection from './ActionsSection.svelte';
   import AppDeviceSection from './AppDeviceSection.svelte';
   import IngredientsSection from './IngredientsSection.svelte';
+
+  export let assetData: AssetData;
+  export let ingredients: AssetData[];
 </script>
 
 <CollapsibleSection>
@@ -26,8 +30,16 @@
   <svelte:fragment slot="description">
     {$_('sidebar.verify.process.description')}</svelte:fragment>
   <svelte:fragment slot="content">
-    <AppDeviceSection />
-    <ActionsSection />
-    <IngredientsSection />
+    {#if assetData.claimGenerator}
+      <AppDeviceSection generator={assetData.claimGenerator} />
+    {/if}
+    {#if assetData.editsAndActivity?.length}
+      <ActionsSection
+        editsAndActivity={assetData.editsAndActivity}
+        reviewRatings={assetData.reviewRatings} />
+    {/if}
+    {#if ingredients.length}
+      <IngredientsSection {ingredients} />
+    {/if}
   </svelte:fragment>
 </CollapsibleSection>

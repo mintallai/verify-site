@@ -24,7 +24,6 @@ pnpm check
 echo "Building project, initializing test suite"
 pnpm build
 echo "Running Playwright tests"
-pnpm test
+pnpm run test:ci
 
-node ./etc/scripts/percy-test.js
 node ./etc/scripts/gh-preview.js

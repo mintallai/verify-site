@@ -13,7 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
-  import Section from '../../../../components/SidebarSection/Section.svelte';
+  import Section from '$src/components/SidebarSection/Section.svelte';
   import BigThumbnail from './BigThumbnail.svelte';
 
   export let thumbnail: string | null;

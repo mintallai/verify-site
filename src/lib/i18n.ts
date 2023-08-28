@@ -55,6 +55,7 @@ export function registerLocales() {
       dbg(`Fetching locale information for ${locale}`);
       const data = (await import(`../../locales/${locale}.json`)).default;
       dbg(`Received translations for ${locale}`, data);
+
       return data;
     });
   });

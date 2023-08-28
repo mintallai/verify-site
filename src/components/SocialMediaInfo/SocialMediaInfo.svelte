@@ -15,6 +15,7 @@
 <script lang="ts">
   import Link from '../typography/Link.svelte';
   import SmallDescription from '../typography/SmallDescription.svelte';
+
   export let link: string;
   export let username: string;
   export let appName: string;

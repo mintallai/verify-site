@@ -92,6 +92,7 @@ function getMcidGuid() {
     dbg('Could not find mcid_guid, generating');
     localStorage.setItem(MCID_GUID_LOCALSTORAGE_KEY, nanoid());
   }
+
   return localStorage.getItem(MCID_GUID_LOCALSTORAGE_KEY);
 }
 
@@ -121,6 +122,7 @@ export async function postEvent(data: Partial<IngestPayload>) {
   const payload = merge(common, eventDefaults, data) as IngestPayload;
 
   const missing = difference(requiredEvents, Object.keys(payload));
+
   if (missing.length) {
     dbg('Payload sent with missing data', { payload, missing });
     throw new Error(`Attempting to send payload with missing required data`);

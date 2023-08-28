@@ -13,10 +13,12 @@
   from Adobe.
 -->
 <script lang="ts">
+  import producerIcon from '$assets/svg/color/logos/producer.svg';
   import { _ } from 'svelte-i18n';
-  import producer from '../../../../../../assets/svg/color/logos/producer.svg';
   import IconContentRow from '../../IconContentRow/IconContentRow.svelte';
   import SubSection from '../../SubSection/SubSection.svelte';
+
+  export let producer: string;
 </script>
 
 <SubSection
@@ -24,7 +26,7 @@
     {$_('sidebar.verify.credit.producer')}
   </svelte:fragment>
   <IconContentRow slot="content">
-    <img slot="icon" src={producer} alt={producer} class="mr-2 w-4" />
-    <svelte:fragment slot="content">Jane Smith</svelte:fragment>
+    <img slot="icon" src={producerIcon} alt="" class="me-2 w-4" />
+    <svelte:fragment slot="content">{producer}</svelte:fragment>
   </IconContentRow>
 </SubSection>

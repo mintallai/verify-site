@@ -13,19 +13,22 @@
   from Adobe.
 -->
 <script lang="ts">
+  import type { AssetData } from '$src/lib/asset';
   import { _ } from 'svelte-i18n';
   import SubSection from '../../../components/SubSection/SubSection.svelte';
   import SmallAssetInfo from '../../AssetInfo/SmallAssetInfo.svelte';
-  let date: Date = new Date('2019-01-16');
+
+  export let ingredients: AssetData[];
 </script>
 
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.process.ingredients')}</svelte:fragment>
   <svelte:fragment slot="content">
-    <SmallAssetInfo
-      thumbnail="https://verify.contentauthenticity.org/_app/immutable/assets/fake-news-2ec11861.jpg"
-      {date}>
-      <svelte:fragment slot="name">couquette.png</svelte:fragment
-      ></SmallAssetInfo>
+    {#each ingredients as ingredient}
+      <SmallAssetInfo thumbnail={ingredient.thumbnail} date={ingredient.date}>
+        <svelte:fragment slot="name"
+          >{ingredient.title ?? $_('asset.defaultTitle')}</svelte:fragment
+        ></SmallAssetInfo>
+    {/each}
   </svelte:fragment></SubSection>

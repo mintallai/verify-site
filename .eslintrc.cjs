@@ -22,28 +22,48 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
+    'plugin:import/typescript',
     'plugin:storybook/recommended',
+    'plugin:svelte/recommended',
+    'prettier',
   ],
-  plugins: ['svelte3', '@typescript-eslint', 'header'],
-  ignorePatterns: ['*.cjs'],
   overrides: [
     {
       files: ['*.svelte'],
-      processor: 'svelte3/svelte3',
+      parser: 'svelte-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+      },
       // @TODO: Figure out header enforcement for svelte
       rules: { 'header/header': 'off' },
     },
   ],
+  plugins: ['@typescript-eslint', 'header', 'import'],
+  ignorePatterns: ['*.cjs'],
   settings: {
-    'svelte3/typescript': () => require('typescript'),
+    'import/extensions': ['.svelte', '.ts'],
+    'import/parsers': {
+      'svelte-eslint-parser': ['.svelte'],
+    },
   },
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2020,
+    extraFileExtensions: ['.svelte'],
   },
   rules: {
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: '*', next: 'block-like' },
+      { blankLine: 'always', prev: 'block-like', next: '*' },
+      { blankLine: 'always', prev: '*', next: 'return' },
+    ],
+    'no-multi-spaces': ['error'],
     'header/header': ['error', 'line', header, 2],
+    'import/newline-after-import': ['error', { count: 1 }],
+    'svelte/html-closing-bracket-spacing': ['error'],
+    'svelte/shorthand-attribute': ['error'],
+    'svelte/shorthand-directive': ['error'],
     '@typescript-eslint/no-explicit-any': ['error'],
     '@typescript-eslint/no-unused-vars': ['error'],
     '@typescript-eslint/no-non-null-assertion': ['error'],

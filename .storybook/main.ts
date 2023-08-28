@@ -1,6 +1,5 @@
 import type { StorybookConfig } from '@storybook/sveltekit';
 import { mergeConfig } from 'vite';
-
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|svelte|ts|tsx)'],
   addons: [
@@ -33,5 +32,4 @@ const config: StorybookConfig = {
     });
   },
 };
-
 export default config;

@@ -41,6 +41,7 @@ async function deploy({ prNumber }) {
   await exec(
     `aws s3 sync ./dist s3://adobe-cai-verify-dev/dist/verify-site${path}`,
   );
+
   return {
     deployUrl: `https://verify-dev.contentauthenticity.org${path}`,
     storybookUrl: `https://verify-dev.contentauthenticity.org${path}/storybook/index.html`,
@@ -71,6 +72,7 @@ async function postComment({
   const existingComment = pr.data.find((comment) =>
     comment.body.includes('<div id="moonbeam-deploy-info">'),
   );
+
   if (existingComment) {
     await octokit.request(
       `PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}`,
@@ -96,6 +98,7 @@ async function postComment({
 
 async function ciHandler({ prNumber, repoPath, sha }) {
   const [owner, repo] = repoPath.split('/');
+
   if (isValidPr(prNumber)) {
     const { deployUrl, storybookUrl } = await deploy({ prNumber });
     await postComment({ owner, repo, prNumber, deployUrl, storybookUrl, sha });

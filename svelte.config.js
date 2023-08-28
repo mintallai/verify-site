@@ -38,6 +38,10 @@ const config = {
       precompress: false,
       strict: true,
     }),
+    alias: {
+      $assets: 'assets',
+      $src: 'src',
+    },
     paths: {
       base: BASE_PATH,
     },

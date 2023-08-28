@@ -13,9 +13,9 @@
   from Adobe.
 -->
 <script lang="ts">
+  import close from '$assets/svg/color/logos/close.svg';
+  import Body from '$src/components/typography/Body.svelte';
   import { _ } from 'svelte-i18n';
-  import close from '../../../../../../assets/svg/color/logos/close.svg';
-  import Body from '../../../../../components/typography/Body.svelte';
 
   export let showTooltip: boolean;
 </script>
