@@ -12,10 +12,6 @@
 // from Adobe.
 
 import {
-  assetDataToProps as contentSummaryAssetDataToProps,
-  type ContentSummarySectionProps,
-} from '$src/routes/verify/components/InfoPanel/ContentSummarySection/ContentSummarySection.svelte';
-import {
   selectEditsAndActivity,
   selectFormattedGenerator,
   selectProducer,
@@ -35,31 +31,33 @@ import {
 } from './selectors/generativeInfo';
 import { selectReviewRatings } from './selectors/reviewRatings';
 import {
-  selectValidationStatus,
-  type ValidationStatus,
-  type ValidationStatusCode,
-} from './selectors/validationStatus';
+  selectValidationResult,
+  type ValidationStatusResult,
+} from './selectors/validationResult';
 import type { Disposable } from './types';
 
 /**
  * Asset data required for the verify UI.
  */
 export type AssetData = {
-  date: Date | null;
-  hasManifest: boolean;
   id: string;
+  manifestData: ManifestData | null;
   thumbnail: string | null;
   title: string | null;
-  children?: string[];
-  claimGenerator?: string;
-  editsAndActivity?: TranslatedDictionaryCategory[];
-  generativeInfo?: GenerativeInfo;
-  producer?: string;
-  reviewRatings?: ReturnType<typeof selectReviewRatings>;
-  signatureInfo?: Manifest['signatureInfo'];
-  socialAccounts?: ReturnType<typeof selectSocialAccounts>;
-  validationStatus?: ReturnType<typeof selectValidationStatus>;
-} & ContentSummarySectionProps;
+};
+
+export type ManifestData = {
+  children: string[];
+  claimGenerator: string;
+  date: Date | null;
+  editsAndActivity: TranslatedDictionaryCategory[] | null;
+  generativeInfo: GenerativeInfo | null;
+  producer: string | null;
+  reviewRatings: ReturnType<typeof selectReviewRatings>;
+  signatureInfo: Manifest['signatureInfo'];
+  socialAccounts: ReturnType<typeof selectSocialAccounts>;
+  validationResult: ValidationStatusResult;
+};
 
 export type AssetDataMap = Record<string, AssetData>;
 
@@ -83,9 +81,10 @@ export async function resultToAssetMap({
   source,
 }: C2paReadResult): Promise<DisposableAssetDataMap> {
   const disposers: (() => void)[] = [];
-  const { hasError, hasOtgp, statusCode } = selectValidationStatus(
-    manifestStore?.validationStatus ?? [],
-  );
+  const rootValidationResult = manifestStore?.validationStatus
+    ? selectValidationResult(manifestStore?.validationStatus)
+    : null;
+  const { hasError, hasOtgp } = rootValidationResult ?? {};
 
   function dispose() {
     while (disposers.length) {
@@ -105,13 +104,12 @@ export async function resultToAssetMap({
         id,
         title: source.metadata.filename ?? null,
         thumbnail: thumbnail.url ?? null,
-        date: null,
-        hasManifest: !!manifestStore,
+        manifestData: null,
       },
     };
 
-    // Return early if we don't have a manifestStore or have a root-level validation error
-    if (!manifestStore || hasError) {
+    // Return early if we don't have a manifestStore
+    if (!manifestStore) {
       return {
         assetMap,
         dispose,
@@ -122,22 +120,25 @@ export async function resultToAssetMap({
   const assetStore: AssetDataMap = {};
 
   // Start processing the provenance tree
-  await manifestStoreToAssetData(manifestStore, statusCode);
+  // This conditional should always resolve to `true`, it's more to help TypeScript out
+  if (manifestStore && rootValidationResult) {
+    await manifestStoreToAssetData(manifestStore, rootValidationResult);
+  }
 
   // Convert a manifest to an asset usable by the verify UI and add it to the map
   // Any processing here should be specific to keys on the root manifest
   async function manifestStoreToAssetData(
     manifestStore: ManifestStore,
-    validationStatusCode: ValidationStatusCode,
+    validationResult: ValidationStatusResult,
   ): Promise<AssetData> {
-    const { activeManifest: manifest, validationStatus } = manifestStore;
+    const { activeManifest: manifest } = manifestStore;
 
     // Attempt to use a thumbnail on the manifest if found
     let thumbnail = manifest.thumbnail?.getUrl();
 
     // If no thumbnail exists on the claim and we have a valid manifest,
     // we can use the source thumbnail
-    if (!thumbnail && validationStatusCode === 'valid') {
+    if (!thumbnail && validationResult.statusCode === 'valid') {
       thumbnail = source.thumbnail?.getUrl();
     }
 
@@ -145,7 +146,7 @@ export async function resultToAssetMap({
       id: ROOT_ID,
       title: manifest.title,
       thumbnail: thumbnail?.url ?? null,
-      ...(await getAssetDataFromManifest(manifest, validationStatus, ROOT_ID)),
+      manifestData: await getManifestData(manifest, validationResult, ROOT_ID),
     };
 
     if (thumbnail?.dispose) {
@@ -164,15 +165,18 @@ export async function resultToAssetMap({
     id: string,
   ): Promise<AssetData> {
     const thumbnail = ingredient.thumbnail?.getUrl();
+    const validationResult = selectValidationResult(
+      ingredient.validationStatus,
+    );
     const asset = {
       id,
       title: ingredient.title,
       thumbnail: thumbnail?.url ?? null,
-      ...(await getAssetDataFromManifest(
+      manifestData: await getManifestData(
         ingredient.manifest,
-        ingredient.validationStatus,
+        validationResult,
         id,
-      )),
+      ),
     };
 
     if (thumbnail?.dispose) {
@@ -184,44 +188,35 @@ export async function resultToAssetMap({
     return asset;
   }
 
-  // Get asset data from a manifest (either a root manifest or an ingredient manifest)
+  // Get manifest data from a manifest (either a root manifest or an ingredient manifest)
   // Any processing that is common to both ingredients or active manifests should go here
-  async function getAssetDataFromManifest(
+  async function getManifestData(
     manifest: Manifest | null,
-    validationStatus: ValidationStatus[] | null,
+    validationResult: ValidationStatusResult,
     id: string,
-  ): Promise<Omit<AssetData, 'title' | 'thumbnail' | 'id'>> {
+  ): Promise<ManifestData | null> {
     if (!manifest) {
-      return {
-        date: null,
-        hasManifest: false,
-      };
+      return null;
     }
 
-    const assetData = {
+    return {
       date: manifest.signatureInfo?.time
         ? new Date(manifest.signatureInfo.time)
         : null,
-      hasManifest: !!manifest.signatureInfo?.time,
       claimGenerator: selectFormattedGenerator(manifest),
       signatureInfo: manifest.signatureInfo,
-      producer: selectProducer(manifest)?.name,
-      editsAndActivity:
-        (await selectEditsAndActivity(
-          manifest,
-          get(locale) ?? DEFAULT_LOCALE,
-        )) ?? undefined,
+      producer: selectProducer(manifest)?.name ?? null,
+      editsAndActivity: await selectEditsAndActivity(
+        manifest,
+        get(locale) ?? DEFAULT_LOCALE,
+      ),
       socialAccounts: selectSocialAccounts(manifest),
-      generativeInfo: selectGenerativeInfo(manifest) ?? undefined,
+      generativeInfo: selectGenerativeInfo(manifest),
       reviewRatings: selectReviewRatings(manifest),
-      validationStatus: selectValidationStatus(validationStatus ?? []),
+      validationResult,
+
       // Recursively process ingredients
       children: await processIngredients(manifest.ingredients, id),
-    };
-
-    return {
-      ...assetData,
-      ...contentSummaryAssetDataToProps(assetData),
     };
   }
 

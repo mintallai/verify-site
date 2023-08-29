@@ -14,13 +14,13 @@
 -->
 <script lang="ts">
   import CollapsibleSection from '$src/components/SidebarSection/CollapsibleSection.svelte';
-  import type { AssetData } from '$src/lib/asset';
+  import type { ManifestData } from '$src/lib/asset';
   import { _ } from 'svelte-i18n';
   import AiSubSection from './AISubSection.svelte';
   import ProducerSubSection from './ProducerSubSection.svelte';
   import SocialSubSection from './SocialSubSection.svelte';
 
-  export let assetData: AssetData;
+  export let manifestData: ManifestData;
 </script>
 
 <CollapsibleSection>
@@ -28,14 +28,15 @@
   <svelte:fragment slot="description">
     {$_('sidebar.verify.credit.description')}</svelte:fragment>
   <svelte:fragment slot="content">
-    {#if assetData.producer}
-      <ProducerSubSection producer={assetData.producer} />
+    {#if manifestData.producer}
+      <ProducerSubSection producer={manifestData.producer} />
     {/if}
-    {#if assetData.socialAccounts?.length}
-      <SocialSubSection socialAccounts={assetData.socialAccounts} />
+    {#if manifestData.socialAccounts?.length}
+      <SocialSubSection socialAccounts={manifestData.socialAccounts} />
     {/if}
-    {#if assetData.generativeInfo?.softwareAgents?.length}
-      <AiSubSection softwareAgents={assetData.generativeInfo.softwareAgents} />
+    {#if manifestData.generativeInfo?.softwareAgents?.length}
+      <AiSubSection
+        softwareAgents={manifestData.generativeInfo.softwareAgents} />
     {/if}
   </svelte:fragment>
 </CollapsibleSection>

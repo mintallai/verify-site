@@ -90,7 +90,7 @@ function getHierarchyViewData(
     }, {} as ReadableAssetMap),
 
     ingredientsForAssetId(assetId: string) {
-      return (assetMap[assetId]?.children ?? [])
+      return (assetMap[assetId]?.manifestData?.children ?? [])
         .reduce<AssetData[]>((acc, childId) => {
           const childAsset = assetMap[childId];
 
@@ -100,7 +100,11 @@ function getHierarchyViewData(
 
           return acc;
         }, [])
-        .sort((a, b) => (b.date?.valueOf() ?? 0) - (a.date?.valueOf() ?? 0));
+        .sort(
+          (a, b) =>
+            (b.manifestData?.date?.valueOf() ?? 0) -
+            (a.manifestData?.date?.valueOf() ?? 0),
+        );
     },
 
     rootAsset: assetMap[ROOT_ID],

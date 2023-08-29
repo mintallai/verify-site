@@ -17,6 +17,7 @@ import { expect, test } from '@playwright/test';
 test.describe('Base functionality', () => {
   test('Verify site loads', async ({ page }) => {
     await page.goto('/verify');
+    await page.locator('header').filter({ hasText: 'Verify' }).waitFor();
     await expect(page).toHaveTitle(/Content Credentials/);
     await percySnapshot(page, 'Verify zero state');
   });

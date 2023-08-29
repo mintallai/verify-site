@@ -16,12 +16,12 @@
   import { providerInfoFromSocialId } from '$lib/providers';
   import ProviderIcon from '$src/components/ProviderIcon/ProviderIcon.svelte';
   import SocialMediaInfo from '$src/components/SocialMediaInfo/SocialMediaInfo.svelte';
-  import type { AssetData } from '$src/lib/asset';
+  import type { ManifestData } from '$src/lib/asset';
   import { _ } from 'svelte-i18n';
   import IconContentRow from '../../IconContentRow/IconContentRow.svelte';
   import SubSection from '../../SubSection/SubSection.svelte';
 
-  export let socialAccounts: NonNullable<AssetData['socialAccounts']>;
+  export let socialAccounts: NonNullable<ManifestData['socialAccounts']>;
 </script>
 
 <SubSection>

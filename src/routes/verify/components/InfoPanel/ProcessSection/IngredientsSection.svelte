@@ -26,7 +26,9 @@
     {$_('sidebar.verify.process.ingredients')}</svelte:fragment>
   <svelte:fragment slot="content">
     {#each ingredients as ingredient}
-      <SmallAssetInfo thumbnail={ingredient.thumbnail} date={ingredient.date}>
+      <SmallAssetInfo
+        thumbnail={ingredient.thumbnail}
+        date={ingredient.manifestData?.date}>
         <svelte:fragment slot="name"
           >{ingredient.title ?? $_('asset.defaultTitle')}</svelte:fragment
         ></SmallAssetInfo>

@@ -15,14 +15,14 @@
 <script lang="ts">
   import AlertOutlineIcon from '$assets/svg/color/alert-outline.svg?component';
   import Link from '$src/components/typography/Link.svelte';
-  import type { AssetData } from '$src/lib/asset';
+  import type { ManifestData } from '$src/lib/asset';
   import { DATA_PRIVACY_URL } from '$src/lib/config';
   import { _ } from 'svelte-i18n';
   import IconContentRow from '../../../components/IconContentRow/IconContentRow.svelte';
   import SubSection from '../../../components/SubSection/SubSection.svelte';
 
-  export let editsAndActivity: NonNullable<AssetData['editsAndActivity']>;
-  export let reviewRatings: AssetData['reviewRatings'];
+  export let editsAndActivity: NonNullable<ManifestData['editsAndActivity']>;
+  export let reviewRatings: ManifestData['reviewRatings'];
 </script>
 
 <SubSection>

@@ -30,7 +30,7 @@
       class:border-blue-900={$assetStore.state === 'selected'}>
       <TreeThumbnail thumbnail={$assetStore.thumbnail} />
       <div class="bottom-0 py-2">
-        <AssetInfoBase date={$assetStore.date}>
+        <AssetInfoBase date={$assetStore.manifestData?.date}>
           <Body slot="name"
             >{$assetStore.title ?? $_('asset.defaultTitle')}</Body>
         </AssetInfoBase>

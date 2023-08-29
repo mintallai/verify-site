@@ -31,7 +31,7 @@
 </script>
 
 {#if asset}
-  <ManifestRecoverySection {...asset} />
+  <ManifestRecoverySection {...asset} date={asset.manifestData?.date ?? null} />
 {/if}
 <LegalSection>
   <svelte:fragment slot="legal-text-visible">

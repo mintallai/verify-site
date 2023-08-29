@@ -14,13 +14,13 @@
 -->
 <script lang="ts">
   import CollapsibleSection from '$src/components/SidebarSection/CollapsibleSection.svelte';
-  import type { AssetData } from '$src/lib/asset';
+  import type { AssetData, ManifestData } from '$src/lib/asset';
   import { _ } from 'svelte-i18n';
   import ActionsSection from './ActionsSection.svelte';
   import AppDeviceSection from './AppDeviceSection.svelte';
   import IngredientsSection from './IngredientsSection.svelte';
 
-  export let assetData: AssetData;
+  export let manifestData: ManifestData;
   export let ingredients: AssetData[];
 </script>
 
@@ -30,13 +30,13 @@
   <svelte:fragment slot="description">
     {$_('sidebar.verify.process.description')}</svelte:fragment>
   <svelte:fragment slot="content">
-    {#if assetData.claimGenerator}
-      <AppDeviceSection generator={assetData.claimGenerator} />
+    {#if manifestData.claimGenerator}
+      <AppDeviceSection generator={manifestData.claimGenerator} />
     {/if}
-    {#if assetData.editsAndActivity?.length}
+    {#if manifestData.editsAndActivity?.length}
       <ActionsSection
-        editsAndActivity={assetData.editsAndActivity}
-        reviewRatings={assetData.reviewRatings} />
+        editsAndActivity={manifestData.editsAndActivity}
+        reviewRatings={manifestData.reviewRatings} />
     {/if}
     {#if ingredients.length}
       <IngredientsSection {ingredients} />

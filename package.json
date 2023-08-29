@@ -11,7 +11,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "run-s test:unit test:e2e",
+    "test": "run-p test:unit test:e2e",
     "test:ci": "run-p test:unit test:e2e test:percy",
     "test:percy": "node ./etc/scripts/percy-test.js",
     "test:unit": "vitest run",

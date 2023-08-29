@@ -17,6 +17,8 @@ export type ValidationStatus = ManifestStore['validationStatus'][0];
 
 export type ValidationStatusCode = 'valid' | 'invalid' | 'incomplete';
 
+export type ValidationStatusResult = ReturnType<typeof selectValidationResult>;
+
 export const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
 
 /**
@@ -43,9 +45,7 @@ export function hasErrorStatus(validationStatus: ValidationStatus[] = []) {
   );
 }
 
-export function selectValidationStatus(
-  validationStatus: ValidationStatus[] = [],
-) {
+export function selectValidationResult(validationStatus: ValidationStatus[]) {
   const hasError = hasErrorStatus(validationStatus);
   const hasOtgp = hasOtgpStatus(validationStatus);
   let statusCode: ValidationStatusCode;

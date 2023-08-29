@@ -13,17 +13,19 @@
   from Adobe.
 -->
 <script lang="ts">
+  import close from '$assets/svg/color/logos/close.svg';
   import Body from '$src/components/typography/Body.svelte';
   import { createEventDispatcher } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { fly } from 'svelte/transition';
-  import close from '../../../../../assets/svg/color/logos/close.svg';
   import { verifyStore } from '../../stores';
   import BigAssetInfo from '../AssetInfo/BigAssetInfo.svelte';
   import ThumbnailSection from '../Thumbnail/ThumbnailSection.svelte';
   import AboutSection from './AboutSection/AboutSection.svelte';
   import AdvancedSection from './AdvancedSection/AdvancedSection.svelte';
-  import ContentSummarySection from './ContentSummarySection/ContentSummarySection.svelte';
+  import ContentSummarySection, {
+    assetDataToProps as assetDataToContentSummaryProps,
+  } from './ContentSummarySection/ContentSummarySection.svelte';
   import CreditAndUsage from './CreditAndUsageSection/CreditAndUsageSection.svelte';
   import ProcessSection from './ProcessSection/ProcessSection.svelte';
 
@@ -55,7 +57,9 @@
   {#if $assetStore}
     <div
       class="flex h-20 shrink-0 items-center justify-between border-b-2 bg-gray-50 px-6 shadow">
-      <BigAssetInfo date={$assetStore.date} thumbnail={$assetStore.thumbnail}>
+      <BigAssetInfo
+        date={$assetStore.manifestData?.date}
+        thumbnail={$assetStore.thumbnail}>
         <svelte:fragment slot="name">{$assetStore.title}</svelte:fragment
         ></BigAssetInfo>
       <button on:click={togglePanel}>
@@ -65,14 +69,11 @@
           alt={$_('sidebar.verify.hideInfo')} /></button>
     </div>
     <ThumbnailSection thumbnail={$assetStore.thumbnail} />
-    {#if $assetStore.hasManifest}
-      {#if $assetStore.contentSummaryKey}
-        <ContentSummarySection
-          contentSummaryKey={$assetStore.contentSummaryKey} />
-      {/if}
-      <CreditAndUsage assetData={$assetStore} />
-      <ProcessSection assetData={$assetStore} {ingredients} />
-      <AboutSection assetData={$assetStore} />
+    {#if $assetStore.manifestData}
+      <ContentSummarySection {...assetDataToContentSummaryProps($assetStore)} />
+      <CreditAndUsage manifestData={$assetStore.manifestData} />
+      <ProcessSection manifestData={$assetStore.manifestData} {ingredients} />
+      <AboutSection manifestData={$assetStore.manifestData} />
       <AdvancedSection />
     {:else}
       <div class="p-5"><Body>{$_('sidebar.verify.noCCFile')}</Body></div>

@@ -53,7 +53,7 @@
   $: {
     const d3hierarchy = d3Hierarchy(assetStoreMap[ROOT_ID], (readableAsset) => {
       const assetData = get(readableAsset);
-      const childrenIds = assetData.children;
+      const childrenIds = assetData.manifestData?.children;
 
       return childrenIds ? childrenIds.map((id) => assetStoreMap[id]) : [];
     });

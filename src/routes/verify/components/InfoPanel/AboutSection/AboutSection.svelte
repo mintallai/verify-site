@@ -14,23 +14,23 @@
 -->
 <script lang="ts">
   import CollapsibleSection from '$src/components/SidebarSection/CollapsibleSection.svelte';
-  import type { AssetData } from '$src/lib/asset';
+  import type { ManifestData } from '$src/lib/asset';
   import { _ } from 'svelte-i18n';
   import IssuedBySection from './IssuedBySection.svelte';
   import IssuedOnSection from './IssuedOnSection.svelte';
 
-  export let assetData: AssetData;
+  export let manifestData: ManifestData;
 </script>
 
 <CollapsibleSection>
   <svelte:fragment slot="header">
     {$_('sidebar.verify.about')}</svelte:fragment>
   <svelte:fragment slot="content">
-    {#if assetData.signatureInfo?.issuer}
-      <IssuedBySection issuedBy={assetData.signatureInfo?.issuer} />
+    {#if manifestData.signatureInfo?.issuer}
+      <IssuedBySection issuedBy={manifestData.signatureInfo?.issuer} />
     {/if}
-    {#if assetData.date}
-      <IssuedOnSection date={assetData.date} />
+    {#if manifestData.date}
+      <IssuedOnSection date={manifestData.date} />
     {/if}
   </svelte:fragment>
 </CollapsibleSection>

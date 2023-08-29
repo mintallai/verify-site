@@ -16,15 +16,16 @@
   import type { AssetData } from '$src/lib/asset';
 
   export interface ContentSummarySectionProps {
-    contentSummaryKey?:
+    contentSummaryKey:
       | 'contentSummary.compositeWithTrainedAlgorithmicMedia'
-      | 'contentSummary.trainedAlgorithmicMedia';
+      | 'contentSummary.trainedAlgorithmicMedia'
+      | null;
   }
 
   export function assetDataToProps(
     assetData: Partial<AssetData>,
   ): ContentSummarySectionProps {
-    switch (assetData.generativeInfo?.type) {
+    switch (assetData.manifestData?.generativeInfo?.type) {
       case 'compositeWithTrainedAlgorithmicMedia':
         return {
           contentSummaryKey:
@@ -36,7 +37,9 @@
           contentSummaryKey: 'contentSummary.trainedAlgorithmicMedia',
         };
       default:
-        return {};
+        return {
+          contentSummaryKey: null,
+        };
     }
   }
 </script>
@@ -48,13 +51,15 @@
   import Description from '$src/components/typography/Description.svelte';
   import { _ } from 'svelte-i18n';
 
-  export let contentSummaryKey: string;
+  export let contentSummaryKey: ContentSummarySectionProps['contentSummaryKey'];
 </script>
 
-<Section>
-  <BodyBold slot="title">{$_('sidebar.verify.summary')}</BodyBold>
-  <div class="flex" slot="content">
-    <img src={info} alt="" class="self-start pe-2" />
-    <Description>{$_(contentSummaryKey)}</Description>
-  </div>
-</Section>
+{#if contentSummaryKey}
+  <Section>
+    <BodyBold slot="title">{$_('sidebar.verify.summary')}</BodyBold>
+    <div class="flex" slot="content">
+      <img src={info} alt="" class="self-start pe-2" />
+      <Description>{$_(contentSummaryKey)}</Description>
+    </div>
+  </Section>
+{/if}
