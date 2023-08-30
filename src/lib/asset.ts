@@ -22,6 +22,7 @@ import {
   type ManifestStore,
   type TranslatedDictionaryCategory,
 } from 'c2pa';
+import debug from 'debug';
 import { locale } from 'svelte-i18n';
 import { get } from 'svelte/store';
 import { DEFAULT_LOCALE } from './i18n';
@@ -36,18 +37,21 @@ import {
 } from './selectors/validationResult';
 import type { Disposable } from './types';
 
+const dbg = debug('lib:asset');
+
 /**
  * Asset data required for the verify UI.
  */
 export type AssetData = {
   id: string;
+  children: string[];
   manifestData: ManifestData | null;
   thumbnail: string | null;
   title: string | null;
+  validationResult: ValidationStatusResult | null;
 };
 
 export type ManifestData = {
-  children: string[];
   claimGenerator: string;
   date: Date | null;
   editsAndActivity: TranslatedDictionaryCategory[] | null;
@@ -56,7 +60,6 @@ export type ManifestData = {
   reviewRatings: ReturnType<typeof selectReviewRatings>;
   signatureInfo: Manifest['signatureInfo'];
   socialAccounts: ReturnType<typeof selectSocialAccounts>;
-  validationResult: ValidationStatusResult;
 };
 
 export type AssetDataMap = Record<string, AssetData>;
@@ -80,11 +83,19 @@ export async function resultToAssetMap({
   manifestStore,
   source,
 }: C2paReadResult): Promise<DisposableAssetDataMap> {
+  const assetMap: AssetDataMap = {};
   const disposers: (() => void)[] = [];
   const rootValidationResult = manifestStore?.validationStatus
     ? selectValidationResult(manifestStore?.validationStatus)
     : null;
   const { hasError, hasOtgp } = rootValidationResult ?? {};
+  let id = ROOT_ID;
+
+  dbg('resultToAssetMap input:', {
+    manifestStore,
+    source,
+    rootValidationResult,
+  });
 
   function dispose() {
     while (disposers.length) {
@@ -93,19 +104,19 @@ export async function resultToAssetMap({
   }
 
   if (!manifestStore || hasError || hasOtgp) {
-    const id = ROOT_ID;
     const thumbnail = source.thumbnail?.getUrl();
+    const children = manifestStore ? ['0.0'] : [];
 
     disposers.push(thumbnail.dispose);
 
-    const assetMap = {
-      [id]: {
-        // @TODO filename if none present?
-        id,
-        title: source.metadata.filename ?? null,
-        thumbnail: thumbnail.url ?? null,
-        manifestData: null,
-      },
+    assetMap[id] = {
+      // @TODO filename if none present?
+      id,
+      title: source.metadata.filename ?? null,
+      thumbnail: thumbnail.url ?? null,
+      children,
+      manifestData: null,
+      validationResult: rootValidationResult,
     };
 
     // Return early if we don't have a manifestStore
@@ -115,14 +126,15 @@ export async function resultToAssetMap({
         dispose,
       };
     }
-  }
 
-  const assetStore: AssetDataMap = {};
+    // If we are not returning early, increment the ID
+    id = children[0];
+  }
 
   // Start processing the provenance tree
   // This conditional should always resolve to `true`, it's more to help TypeScript out
   if (manifestStore && rootValidationResult) {
-    await manifestStoreToAssetData(manifestStore, rootValidationResult);
+    await manifestStoreToAssetData(manifestStore, rootValidationResult, id);
   }
 
   // Convert a manifest to an asset usable by the verify UI and add it to the map
@@ -130,6 +142,7 @@ export async function resultToAssetMap({
   async function manifestStoreToAssetData(
     manifestStore: ManifestStore,
     validationResult: ValidationStatusResult,
+    id: string,
   ): Promise<AssetData> {
     const { activeManifest: manifest } = manifestStore;
 
@@ -143,17 +156,19 @@ export async function resultToAssetMap({
     }
 
     const asset = {
-      id: ROOT_ID,
+      id,
       title: manifest.title,
       thumbnail: thumbnail?.url ?? null,
-      manifestData: await getManifestData(manifest, validationResult, ROOT_ID),
+      children: await processIngredients(manifest.ingredients, id),
+      manifestData: await getManifestData(manifest),
+      validationResult,
     };
 
     if (thumbnail?.dispose) {
       disposers.push(thumbnail.dispose);
     }
 
-    assetStore[ROOT_ID] = asset;
+    assetMap[id] = asset;
 
     return asset;
   }
@@ -172,18 +187,19 @@ export async function resultToAssetMap({
       id,
       title: ingredient.title,
       thumbnail: thumbnail?.url ?? null,
-      manifestData: await getManifestData(
-        ingredient.manifest,
-        validationResult,
+      children: await processIngredients(
+        ingredient.manifest?.ingredients ?? [],
         id,
       ),
+      manifestData: await getManifestData(ingredient.manifest),
+      validationResult,
     };
 
     if (thumbnail?.dispose) {
       disposers.push(thumbnail.dispose);
     }
 
-    assetStore[id] = asset;
+    assetMap[id] = asset;
 
     return asset;
   }
@@ -192,8 +208,6 @@ export async function resultToAssetMap({
   // Any processing that is common to both ingredients or active manifests should go here
   async function getManifestData(
     manifest: Manifest | null,
-    validationResult: ValidationStatusResult,
-    id: string,
   ): Promise<ManifestData | null> {
     if (!manifest) {
       return null;
@@ -213,10 +227,6 @@ export async function resultToAssetMap({
       socialAccounts: selectSocialAccounts(manifest),
       generativeInfo: selectGenerativeInfo(manifest),
       reviewRatings: selectReviewRatings(manifest),
-      validationResult,
-
-      // Recursively process ingredients
-      children: await processIngredients(manifest.ingredients, id),
     };
   }
 
@@ -235,8 +245,10 @@ export async function resultToAssetMap({
     return Promise.all(ingredientIds);
   }
 
+  dbg('resultToAssetMap result:', assetMap);
+
   return {
-    assetMap: assetStore,
+    assetMap,
     dispose,
   };
 }

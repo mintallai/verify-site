@@ -21,7 +21,7 @@ import type { SelectedSource } from './verifyStore';
 
 export type ReadableAssetMap = Record<string, ReadableAssetStore>;
 
-interface HierarchyViewStateData {
+export interface HierarchyViewStateData {
   assets: ReadableAssetMap;
   ingredientsForAssetId(id: string): AssetData[];
   rootAsset: AssetData;
@@ -90,7 +90,7 @@ function getHierarchyViewData(
     }, {} as ReadableAssetMap),
 
     ingredientsForAssetId(assetId: string) {
-      return (assetMap[assetId]?.manifestData?.children ?? [])
+      return (assetMap[assetId]?.children ?? [])
         .reduce<AssetData[]>((acc, childId) => {
           const childAsset = assetMap[childId];
 

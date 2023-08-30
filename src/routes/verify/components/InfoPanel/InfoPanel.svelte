@@ -51,7 +51,7 @@
 </script>
 
 <div
-  class="h-screen overflow-auto bg-gray-50 transition-transform sm:h-[calc(100vh-theme(spacing.header))] sm:transform-none sm:border-s-2 lg:h-screen"
+  class="z-10 h-screen overflow-auto bg-gray-50 transition-transform sm:h-[calc(100vh-theme(spacing.header))] sm:transform-none sm:border-s-2 lg:h-screen"
   class:-translate-y-full={showInfoPanel}
   transition:fly={{ duration: 300, opacity: 0, x: 200 }}>
   {#if $assetStore}

@@ -87,6 +87,7 @@ export default {
       'blue-1200': defs['blue-1200'],
       'blue-1300': defs['blue-1300'],
       transparent: 'transparent',
+      current: 'currentColor',
     },
     fontSize: {
       title: [
@@ -141,6 +142,7 @@ export default {
     },
     boxShadow: {
       DEFAULT: '0px 4px 20px rgba(0, 0, 0, 0.3)',
+      md: '0px 2px 6px 0px rgba(0, 0, 0, 0.15)',
     },
     extend: {
       spacing: {

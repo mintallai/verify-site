@@ -20,8 +20,8 @@
   import EmptyState from './components/EmptyState/EmptyState.svelte';
   import InfoPanel from './components/InfoPanel/InfoPanel.svelte';
   import NavigationPanel from './components/NavigationPanel/NavigationPanel.svelte';
-  import TreeView from './components/TreeView.svelte';
-  import { dragDropAction, type DragDropActionParams } from './lib/drag-drop';
+  import TreeView from './components/TreeView/TreeView.svelte';
+  import { dragDropAction, type DragDropActionParams } from './lib/dragDrop';
   import { verifyStore } from './stores';
 
   let showDropOverlay = false;
@@ -69,7 +69,9 @@
       class=" h-full grid-cols-[auto_theme(spacing.sidebar)] sm:grid">
       <div class="h-full lg:h-screen">
         {#if $hierarchyView.state === 'success'}
-          <TreeView assetStoreMap={$hierarchyView.assets} />
+          <TreeView
+            assetStoreMap={$hierarchyView.assets}
+            selectedAsset={$hierarchyView.selectedAssetStore} />
         {/if}
         <button
           class="m-2 bg-blue-600 p-2 text-white sm:hidden"

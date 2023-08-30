@@ -66,7 +66,7 @@ export function createManifestRecoverer(
     recover: async ({ blob }: Source) => {
       manifestRecoveryState.set({ state: 'loading' });
 
-      while (disposers.length) {
+      while (disposers?.length) {
         disposers.pop()?.();
       }
 
