@@ -31,8 +31,7 @@
         <ProviderIcon
           slot="icon"
           provider={softwareAgent}
-          fallbackIcon={AiModelIcon}
-          class="me-2" />
+          fallbackIcon={AiModelIcon} />
         <svelte:fragment slot="content">
           {softwareAgent}</svelte:fragment>
       </IconContentRow>

@@ -62,6 +62,8 @@
   "sidebar.process": "Process",
   "sidebar.verify.about": "About this Content Credential",
   "sidebar.verify.about.issuedby": "Issued by",
+  "sidebar.verify.about.issuedby.tooltip": "This is the trusted organization, device, or individual that recorded the details above and issued this Content Credential.",
+  "sidebar.verify.about.issuedby.tooltip.link": "See certificate information",
   "sidebar.verify.about.issuedon": "Issued on",
   "sidebar.verify.advanced": "Advanced",
   "sidebar.verify.advanced.show": "Show all data",

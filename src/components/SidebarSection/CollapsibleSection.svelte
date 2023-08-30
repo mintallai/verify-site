@@ -24,15 +24,15 @@
 <div class="px-5">
   <SidebarSectionBase {expanded}>
     <svelte:fragment slot="headerSection">
-      <div class="flex justify-between">
-        <BodyBold><slot name="header" /></BodyBold>
-        <button on:click={() => (expanded = !expanded)}>
+      <button class="w-full" on:click={() => (expanded = !expanded)}>
+        <div class="flex items-baseline justify-between">
+          <BodyBold><slot name="header" /></BodyBold>
           <DownArrow
             class="h-2 w-3 transform duration-100 {expanded
               ? 'rotate-0'
               : '-rotate-90'}" />
-        </button>
-      </div>
+        </div>
+      </button>
 
       <div class:hidden={!expanded} class="pt-1">
         <SmallDescription><slot name="description" /></SmallDescription>

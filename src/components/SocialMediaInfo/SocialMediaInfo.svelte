@@ -22,7 +22,7 @@
 </script>
 
 <div class="flex flex-col">
-  <Link><a href={link}>{username}</a></Link>
+  <Link><a class="break-all" href={link}>{username}</a></Link>
   <div class="pt-1">
     <SmallDescription>{appName}</SmallDescription>
   </div>

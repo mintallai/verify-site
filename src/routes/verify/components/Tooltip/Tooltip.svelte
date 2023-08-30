@@ -14,20 +14,28 @@
 -->
 <script lang="ts">
   import close from '$assets/svg/color/logos/close.svg';
-  import Body from '$src/components/typography/Body.svelte';
+  import Description from '$src/components/typography/Description.svelte';
+  import { createEventDispatcher } from 'svelte';
   import { _ } from 'svelte-i18n';
 
+  const dispatch = createEventDispatcher();
   export let showTooltip: boolean;
+
+  function toggleTooltip() {
+    dispatch('showToolip', {
+      showTooltip: showTooltip,
+    });
+  }
 </script>
 
 <div class="h-30 mt-5 flex w-full justify-between rounded bg-gray-100">
   <div class="py-5 ps-5">
-    <Body>
-      {$_('sidebar.verify.search.tooltip')}</Body>
+    <Description>
+      <slot name="tooltip" /></Description>
   </div>
   <button
     class="box-content h-4 w-4 shrink-0 self-start py-6 pe-5 ps-3"
-    on:click={() => (showTooltip = !showTooltip)}
+    on:click={toggleTooltip}
     ><img
       src={close}
       alt={$_('sidebar.verify.search.tooltip.close')} /></button>

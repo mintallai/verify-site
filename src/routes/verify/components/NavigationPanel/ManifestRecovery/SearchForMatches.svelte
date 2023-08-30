@@ -16,7 +16,7 @@
   import help from '$assets/svg/color/logos/help.svg';
   import Link from '$src/components/typography/Link.svelte';
   import { _ } from 'svelte-i18n';
-  import ManifestTooltip from './ManifestTooltip.svelte';
+  import Tooltip from '../../Tooltip/Tooltip.svelte';
 
   let showTooltip = false;
 </script>
@@ -30,6 +30,9 @@
         alt={$_('sidebar.verify.search.tooltip.help')} /></button>
   </div>
   {#if showTooltip}
-    <ManifestTooltip bind:showTooltip />
+    <Tooltip {showTooltip} on:showToolip={() => (showTooltip = !showTooltip)}>
+      <svelte:fragment slot="tooltip"
+        >{$_('sidebar.verify.search.tooltip')}</svelte:fragment>
+    </Tooltip>
   {/if}
 </div>

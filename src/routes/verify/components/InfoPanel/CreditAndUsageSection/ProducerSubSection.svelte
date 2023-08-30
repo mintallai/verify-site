@@ -26,7 +26,7 @@
     {$_('sidebar.verify.credit.producer')}
   </svelte:fragment>
   <IconContentRow slot="content">
-    <img slot="icon" src={producerIcon} alt="" class="me-2 w-4" />
-    <svelte:fragment slot="content">{producer}</svelte:fragment>
+    <img slot="icon" src={producerIcon} alt="" class="w-4" />
+    <div class="break-all" slot="content">{producer}</div>
   </IconContentRow>
 </SubSection>

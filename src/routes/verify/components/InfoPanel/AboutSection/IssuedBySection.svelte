@@ -13,21 +13,43 @@
   from Adobe.
 -->
 <script lang="ts">
+  import help from '$assets/svg/color/logos/help.svg';
   import ProviderIcon from '$src/components/ProviderIcon/ProviderIcon.svelte';
+  import Link from '$src/components/typography/Link.svelte';
   import { _ } from 'svelte-i18n';
   import IconContentRow from '../../../components/IconContentRow/IconContentRow.svelte';
   import SubSection from '../../../components/SubSection/SubSection.svelte';
+  import Tooltip from '../../Tooltip/Tooltip.svelte';
 
+  let showTooltip = false;
   export let issuedBy: string;
 </script>
 
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.about.issuedby')}</svelte:fragment>
-  <IconContentRow slot="content">
-    <div class="pe-2" slot="icon">
-      <ProviderIcon provider="adobe" />
+  <div slot="content">
+    <div class="flex justify-between">
+      <IconContentRow>
+        <div slot="icon">
+          <ProviderIcon provider={issuedBy} />
+        </div>
+        <svelte:fragment slot="content">
+          {issuedBy}
+        </svelte:fragment>
+      </IconContentRow>
+      <button on:click={() => (showTooltip = !showTooltip)}
+        ><img
+          src={help}
+          alt={$_('sidebar.verify.search.tooltip.help')} /></button>
     </div>
-    <svelte:fragment slot="content">{issuedBy}</svelte:fragment>
-  </IconContentRow>
+    {#if showTooltip}
+      <Tooltip showTooltip on:showToolip={() => (showTooltip = !showTooltip)}
+        ><div slot="tooltip">
+          {$_('sidebar.verify.about.issuedby.tooltip')}
+          <Link>{$_('sidebar.verify.about.issuedby.tooltip.link')}</Link>
+        </div>
+      </Tooltip>
+    {/if}
+  </div>
 </SubSection>

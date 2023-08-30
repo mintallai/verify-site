@@ -16,7 +16,10 @@
   import Body from '$src/components/typography/Body.svelte';
 </script>
 
-<div class="flex items-start pt-3">
-  <slot name="icon" />
+<div class="flex items-baseline space-x-2 pt-3">
+  <div class="relative top-0.5 shrink-0">
+    <slot name="icon" />
+  </div>
+
   <Body><slot name="content" /></Body>
 </div>

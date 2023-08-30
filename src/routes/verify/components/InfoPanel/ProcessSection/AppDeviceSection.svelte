@@ -25,7 +25,7 @@
   <svelte:fragment slot="title">
     {$_('sidebar.verify.process.app')}</svelte:fragment>
   <IconContentRow slot="content">
-    <ProviderIcon slot="icon" provider={generator} class="pe-2" />
-    <svelte:fragment slot="content">{generator}</svelte:fragment>
+    <ProviderIcon slot="icon" provider={generator} />
+    <div slot="content" class="break-all">{generator}</div>
   </IconContentRow>
 </SubSection>

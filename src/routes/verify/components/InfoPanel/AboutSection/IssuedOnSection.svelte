@@ -26,7 +26,7 @@
   <svelte:fragment slot="title">
     {$_('sidebar.verify.about.issuedon')}</svelte:fragment>
   <IconContentRow slot="content">
-    <img slot="icon" src={signedOn} alt={signedOn} class="me-2 w-4" />``
+    <img slot="icon" src={signedOn} alt="" class="w-4" />
     <svelte:fragment slot="content"
       ><FormattedDateTime sigDate={date} />
     </svelte:fragment></IconContentRow>

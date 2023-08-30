@@ -31,11 +31,7 @@
   <svelte:fragment slot="content">
     {#if reviewRatings?.hasUnknownActions || reviewRatings?.wasPossiblyModified}
       <IconContentRow>
-        <AlertOutlineIcon
-          slot="icon"
-          width="1rem"
-          height="1rem"
-          class="me-2 flex-shrink-0" />
+        <AlertOutlineIcon slot="icon" width="1rem" height="1rem" />
         <div slot="content" class="italic text-gray-900">
           <span>{$_('reviewRatings.unknownActions')}</span>
           <a href={DATA_PRIVACY_URL} target="_blank" rel="noreferrer"
@@ -46,7 +42,10 @@
       <IconContentRow>
         <svelte:fragment slot="icon">
           {#if category.icon}
-            <img src={category.icon} alt={category.label} class="me-2 w-4" />
+            <img
+              src={category.icon}
+              alt={category.label}
+              class="w-4 brightness-0 filter" />
           {/if}
         </svelte:fragment>
         <div slot="content" class="flex flex-col">

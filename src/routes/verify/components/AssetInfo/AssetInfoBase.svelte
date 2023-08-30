@@ -24,7 +24,7 @@
 <div class="flex items-center">
   <slot name="thumbnail" />
   <div class="ps-2.5">
-    <div class="flex"><slot name="name" /></div>
+    <div class="flex pb-0.5"><slot name="name" /></div>
     <div class="flex">
       {#if date}
         <img src={L1Icon} class="me-2 h-4 w-4" alt={$_('page.apply.hasCC')} />

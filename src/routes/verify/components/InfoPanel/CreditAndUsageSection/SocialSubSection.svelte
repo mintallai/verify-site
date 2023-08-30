@@ -30,7 +30,7 @@
   <svelte:fragment slot="content">
     {#each socialAccounts as account (account['@id'])}
       <IconContentRow>
-        <div class="pe-2" slot="icon">
+        <div slot="icon">
           <ProviderIcon provider={account['@id'] ?? ''} />
         </div>
         <span slot="content">
