@@ -67,7 +67,7 @@
         {#if hasEmptyState}
           <EmptyState />
         {:else if $hierarchyView.state === 'success'}
-          <NavigationPanel asset={$hierarchyView.rootAsset} />
+          <NavigationPanel assetData={$hierarchyView.rootAsset} />
         {/if}
         <button
           class="m-2 bg-blue-600 p-2 text-white"
@@ -78,12 +78,13 @@
     </svelte:fragment>
     <div
       slot="content"
-      class=" h-full grid-cols-[auto_theme(spacing.sidebar)] sm:grid">
+      class="h-full grid-cols-[auto_theme(spacing.sidebar)] sm:grid">
       <div class="h-full lg:h-screen">
         {#if $viewState === 'hierarchy' && $hierarchyView.state === 'success'}
           <TreeView
             assetStoreMap={$hierarchyView.assets}
-            selectedAsset={$hierarchyView.selectedAssetStore} />
+            selectedAsset={$hierarchyView.selectedAssetStore}
+            on:mobileTap={() => (showPanel = true)} />
         {:else if $viewState === 'compare' && $compareView.state === 'success'}
           <CompareView selectedAssets={$compareView.selectedAssets} />
         {/if}
