@@ -12,21 +12,26 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
+
 <script lang="ts">
   import { afterNavigate } from '$app/navigation';
   import { SidebarLayout } from '$src/features/SidebarLayout';
   import { _ } from 'svelte-i18n';
+  import CompareDetailedInfo from './components/CompareInfo/CompareInfo.svelte';
+  import ComparePanel from './components/ComparePanel/ComparePanel.svelte';
+  import CompareView from './components/CompareView/CompareView.svelte';
+  import DetailedInfo from './components/DetailedInfo/DetailedInfo.svelte';
   import DragDropOverlay from './components/DragDropOverlay/DragDropOverlay.svelte';
   import EmptyState from './components/EmptyState/EmptyState.svelte';
-  import InfoPanel from './components/InfoPanel/InfoPanel.svelte';
   import NavigationPanel from './components/NavigationPanel/NavigationPanel.svelte';
+  import RevealablePanel from './components/RevealablePanel/RevealablePanel.svelte';
   import TreeView from './components/TreeView/TreeView.svelte';
   import { dragDropAction, type DragDropActionParams } from './lib/dragDrop';
   import { verifyStore } from './stores';
 
   let showDropOverlay = false;
-  let showInfoPanel = false;
-  const { hierarchyView } = verifyStore;
+  let showPanel = false;
+  const { hierarchyView, compareView, viewState } = verifyStore;
 
   const dragDropParams: DragDropActionParams = {
     onDragStateChange(newState: boolean) {
@@ -58,28 +63,47 @@
   <SidebarLayout leftColumnTakeover={hasEmptyState}>
     <svelte:fragment slot="header">{$_('page.verify.title')}</svelte:fragment>
     <svelte:fragment slot="sidebar">
-      {#if hasEmptyState}
-        <EmptyState />
-      {:else if $hierarchyView.state === 'success'}
-        <NavigationPanel asset={$hierarchyView.rootAsset} />
+      {#if $viewState === 'hierarchy'}
+        {#if hasEmptyState}
+          <EmptyState />
+        {:else if $hierarchyView.state === 'success'}
+          <NavigationPanel asset={$hierarchyView.rootAsset} />
+        {/if}
+        <button
+          class="m-2 bg-blue-600 p-2 text-white"
+          on:click={() => verifyStore.setCompareView()}>Compare View</button>
+      {:else if $viewState === 'compare' && $compareView.state === 'success'}
+        <ComparePanel assetStoreMap={$compareView.compareAssetMap} />
       {/if}
     </svelte:fragment>
     <div
       slot="content"
       class=" h-full grid-cols-[auto_theme(spacing.sidebar)] sm:grid">
       <div class="h-full lg:h-screen">
-        {#if $hierarchyView.state === 'success'}
+        {#if $viewState === 'hierarchy' && $hierarchyView.state === 'success'}
           <TreeView
             assetStoreMap={$hierarchyView.assets}
             selectedAsset={$hierarchyView.selectedAssetStore} />
+        {:else if $viewState === 'compare' && $compareView.state === 'success'}
+          <CompareView selectedAssets={$compareView.selectedAssets} />
         {/if}
         <button
           class="m-2 bg-blue-600 p-2 text-white sm:hidden"
-          on:click={() => (showInfoPanel = !showInfoPanel)}>Reveal</button>
+          on:click={() => (showPanel = !showPanel)}>Reveal</button>
       </div>
-      <InfoPanel
-        {showInfoPanel}
-        on:isShown={() => (showInfoPanel = !showInfoPanel)} />
+      <RevealablePanel {showPanel}>
+        {#if $viewState === 'hierarchy' && $hierarchyView.state === 'success'}
+          <DetailedInfo
+            on:close={() => (showPanel = false)}
+            assetData={$hierarchyView.selectedAssetStore} />
+        {:else if $viewState === 'compare' && $compareView.state === 'success'}
+          {#if $compareView.activeAssetData}
+            <CompareDetailedInfo
+              on:close={() => (showPanel = false)}
+              assetData={$compareView.activeAssetData} />
+          {/if}
+        {/if}
+      </RevealablePanel>
     </div>
     <svelte:fragment slot="back-bar">{$_('page.home.title')}</svelte:fragment>
   </SidebarLayout>

@@ -14,8 +14,9 @@
 import { ROOT_ID } from '$lib/asset';
 import type { C2paSourceType } from 'c2pa';
 import debug from 'debug';
-import { get, writable } from 'svelte/store';
+import { get, writable, type Readable } from 'svelte/store';
 import { createC2paReader } from './c2paReader';
+import { createCompareView, type CompareStore } from './compareView';
 import { createHierarchyView, type HierarchyViewStore } from './hierarchyView';
 import {
   createManifestRecoverer,
@@ -24,22 +25,30 @@ import {
 
 const dbg = debug('stores:verifyStore');
 
+export type ViewState = 'hierarchy' | 'compare';
+
 export type SelectedSource =
   | { type: 'local' }
   | { type: 'external'; url: string }
   | { type: 'recovery'; id: number };
 
 interface VerifyStore {
+  viewState: Readable<ViewState>;
   hierarchyView: Pick<HierarchyViewStore, 'subscribe'>;
+  compareView: CompareStore;
   readC2paSource: (source: C2paSourceType) => void;
   recoveredManifestResults: Pick<ManifestRecovererStore, 'subscribe'>;
   recoverManifests: () => void;
+  setCompareView: () => void;
+  setHierarchyView: () => void;
+  setCompareActiveId: (id: string | null) => void;
 }
 
 /**
  * Creates a store representing the state of the verify page, exposing the "public" API used by the page.
  */
 export function createVerifyStore(): VerifyStore {
+  const viewState = writable<ViewState>('hierarchy');
   const selectedSource = writable<SelectedSource>({ type: 'local' });
   const selectedAssetId = writable<string>(ROOT_ID);
   const c2paReader = createC2paReader();
@@ -56,8 +65,19 @@ export function createVerifyStore(): VerifyStore {
     manifestRecoverer,
   );
 
+  const compareSelectedAssetIds = writable<(string | null)[]>([null, null]);
+  const compareActiveAssetId = writable<string | null>(null);
+
+  const compareView = createCompareView(
+    c2paReader,
+    compareSelectedAssetIds,
+    compareActiveAssetId,
+  );
+
   return {
-    hierarchyView: hierarchyView,
+    viewState,
+    hierarchyView,
+    compareView,
     readC2paSource: (source: C2paSourceType) => {
       const existingSource = get(selectedSource);
       const incomingSource: SelectedSource =
@@ -89,6 +109,19 @@ export function createVerifyStore(): VerifyStore {
       if (reader.state === 'success') {
         manifestRecoverer.recover(reader.data);
       }
+    },
+    setCompareView: () => {
+      viewState.set('compare');
+      const id = get(selectedAssetId);
+      compareActiveAssetId.set(id);
+      compareSelectedAssetIds.set([id, null]);
+    },
+    setHierarchyView: () => {
+      viewState.set('hierarchy');
+      selectedAssetId.set(get(compareActiveAssetId) ?? ROOT_ID);
+    },
+    setCompareActiveId: (id: string | null) => {
+      compareActiveAssetId.set(id);
     },
   };
 }
