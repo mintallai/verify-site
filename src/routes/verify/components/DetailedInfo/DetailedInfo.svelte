@@ -65,7 +65,6 @@
   <ProcessSection manifestData={$assetData.manifestData} {ingredients} />
   <AboutSection manifestData={$assetData.manifestData} />
   <AdvancedSection />
-  <div class="p-5"><Body>{$_('sidebar.verify.noCCFile')}</Body></div>
 {:else}
   <div class="p-5">
     <Body>
