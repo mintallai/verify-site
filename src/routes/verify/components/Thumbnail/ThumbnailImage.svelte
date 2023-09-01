@@ -13,8 +13,8 @@
   from Adobe.
 -->
 <script lang="ts">
+  import fallback from '$assets/svg/monochrome/emptyImage.svg';
   import { _ } from 'svelte-i18n';
-  import fallback from '../../../../../assets/svg/monochrome/emptyImage.svg';
 
   export let thumbnail: string | null;
   export let fillMode: 'contain' | 'cover' = 'contain';
@@ -26,5 +26,7 @@
 
 <img
   src={thumbnailImg}
-  class={`h-full w-full object-${fillMode}`}
+  class="h-full w-full"
+  class:object-contain={fillMode === 'contain'}
+  class:object-cover={fillMode === 'cover'}
   alt={thumbnailAltText} />

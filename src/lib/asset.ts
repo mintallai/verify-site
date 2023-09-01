@@ -190,14 +190,14 @@ export async function resultToAssetMap({
     const validationResult = selectValidationResult(
       ingredient.validationStatus,
     );
+    const showChildren = validationResult.statusCode !== 'invalid';
     const asset = {
       id,
       title: ingredient.title,
       thumbnail: thumbnail?.url ?? null,
-      children: await processIngredients(
-        ingredient.manifest?.ingredients ?? [],
-        id,
-      ),
+      children: showChildren
+        ? await processIngredients(ingredient.manifest?.ingredients ?? [], id)
+        : [],
       manifestData: await getManifestData(ingredient.manifest),
       validationResult,
     };
