@@ -39,13 +39,15 @@ export type ManifestRecoveryResult = Omit<
   'dispose'
 >;
 
+export const overrideBaseUrl = __OVERRIDE_MANIFEST_RECOVERY_BASE_URL__;
+
 export async function recoverManifests(
   sourceImage: Blob,
 ): Promise<DisposableManifestRecoveryResult[]> {
   // @TODO force-stage functionality?
   const config = await getConfig();
   const baseUrl =
-    config.env === 'prod'
+    overrideBaseUrl || config.env === 'prod'
       ? `https://cai-msb.adobe.io`
       : `https://cai-msb-stage.adobe.io`;
   const searchImage = await resizeImage(sourceImage);
