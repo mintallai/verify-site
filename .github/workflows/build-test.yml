@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-test:
-    name: Set up environment
+    name: Build and test
     runs-on: ubuntu-latest
     env:
       PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
