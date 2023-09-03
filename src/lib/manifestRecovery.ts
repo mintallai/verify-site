@@ -30,6 +30,8 @@ const baseParams = { api_key: apiKey };
 
 const limit = pLimit(Math.min(navigator.hardwareConcurrency ?? 8, 8));
 
+export const MANIFEST_STORE_MIME_TYPE = 'application/x-c2pa-manifest-store';
+
 export type DisposableManifestRecoveryResult = DisposableAssetDataMap & {
   source: Source;
 };
@@ -47,9 +49,10 @@ export async function recoverManifests(
   // @TODO force-stage functionality?
   const config = await getConfig();
   const baseUrl =
-    overrideBaseUrl || config.env === 'prod'
+    overrideBaseUrl ||
+    (config.env === 'prod'
       ? `https://cai-msb.adobe.io`
-      : `https://cai-msb-stage.adobe.io`;
+      : `https://cai-msb-stage.adobe.io`);
   const searchImage = await resizeImage(sourceImage);
   const { url, filename } = await getUploadUrlAndFilename(searchImage, baseUrl);
 
@@ -70,7 +73,7 @@ export async function recoverManifests(
 
         const resultData = await resultResponse.arrayBuffer();
         const blob = new Blob([resultData], {
-          type: 'application/x-c2pa-manifest-store',
+          type: MANIFEST_STORE_MIME_TYPE,
         });
 
         const result = await sdk.read(blob);

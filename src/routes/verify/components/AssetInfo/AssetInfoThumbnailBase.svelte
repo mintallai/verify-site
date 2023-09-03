@@ -18,9 +18,13 @@
   import AssetInfoBase from './AssetInfoBase.svelte';
 
   export let assetData: AssetData;
+  export let highlighted = false;
 </script>
 
 <AssetInfoBase {assetData}>
-  <SmallThumbnail thumbnail={assetData.thumbnail} slot="thumbnail" />
+  <SmallThumbnail
+    thumbnail={assetData.thumbnail}
+    {highlighted}
+    slot="thumbnail" />
   <slot slot="name" name="name" />
 </AssetInfoBase>

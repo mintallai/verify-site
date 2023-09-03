@@ -38,6 +38,7 @@ interface VerifyStore {
   compareView: CompareStore;
   readC2paSource: (source: C2paSourceType) => void;
   recoveredManifestResults: Pick<ManifestRecovererStore, 'subscribe'>;
+  clearManifestResults: ManifestRecovererStore['clear'];
   recoverManifests: () => void;
   setCompareView: () => void;
   setHierarchyView: () => void;
@@ -103,6 +104,7 @@ export function createVerifyStore(): VerifyStore {
       selectedSource.set(incomingSource);
     },
     recoveredManifestResults: manifestRecoverer,
+    clearManifestResults: manifestRecoverer.clear,
     recoverManifests: () => {
       const reader = get(c2paReader);
 
