@@ -5,7 +5,7 @@
   export let results: ReadableRecoveredManifestStore[];
 </script>
 
-<div class="space-y-3">
+<div>
   {#each results as result}
     <ManifestRecoveryItem recoveredManifestStore={result} />
   {/each}

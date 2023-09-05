@@ -21,7 +21,7 @@
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { verifyStore } from '../../../stores';
-  import SmallAssetInfo from '../../AssetInfo/SmallAssetInfo.svelte';
+  import AssetInfoButton from '../../AssetInfoButton.svelte';
   import SearchForMatches from './SearchForMatches.svelte';
   import SearchResults from './SearchResults.svelte';
 
@@ -43,12 +43,7 @@
     {$_('sidebar.verify.title')}
   </div>
   <svelte:fragment slot="content">
-    <div class="-mx-5 -mb-5 bg-blue-100 px-5 py-2">
-      <SmallAssetInfo {assetData} highlighted>
-        <svelte:fragment slot="name"
-          >{assetData.title ?? $_('asset.defaultTitle')}</svelte:fragment
-        ></SmallAssetInfo>
-    </div>
+    <AssetInfoButton {assetData} />
   </svelte:fragment>
 </ClosedBorderSection>
 {#if $recoveredManifestResults.state === 'success'}

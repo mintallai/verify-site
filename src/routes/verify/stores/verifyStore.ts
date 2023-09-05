@@ -11,10 +11,10 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-import { ROOT_ID } from '$lib/asset';
+import { ROOT_ID, type AssetData } from '$lib/asset';
 import type { C2paSourceType } from 'c2pa';
 import debug from 'debug';
-import { get, writable, type Readable } from 'svelte/store';
+import { derived, get, writable, type Readable } from 'svelte/store';
 import { createC2paReader } from './c2paReader';
 import { createCompareView, type CompareStore } from './compareView';
 import { createHierarchyView, type HierarchyViewStore } from './hierarchyView';
@@ -32,17 +32,25 @@ export type SelectedSource =
   | { type: 'external'; url: string }
   | { type: 'recovery'; id: number };
 
+export type MostRecentlyLoaded = {
+  assetData?: AssetData;
+  source?: SelectedSource;
+  select?: () => void;
+  isSelected: boolean;
+};
+
 interface VerifyStore {
-  viewState: Readable<ViewState>;
-  hierarchyView: Pick<HierarchyViewStore, 'subscribe'>;
+  clearManifestResults: ManifestRecovererStore['clear'];
   compareView: CompareStore;
+  hierarchyView: Pick<HierarchyViewStore, 'subscribe'>;
+  mostRecentyLoaded: Readable<MostRecentlyLoaded>;
   readC2paSource: (source: C2paSourceType) => void;
   recoveredManifestResults: Pick<ManifestRecovererStore, 'subscribe'>;
-  clearManifestResults: ManifestRecovererStore['clear'];
   recoverManifests: () => void;
+  setCompareActiveId: (id: string | null) => void;
   setCompareView: () => void;
   setHierarchyView: () => void;
-  setCompareActiveId: (id: string | null) => void;
+  viewState: Readable<ViewState>;
 }
 
 /**
@@ -125,6 +133,32 @@ export function createVerifyStore(): VerifyStore {
     setCompareActiveId: (id: string | null) => {
       compareActiveAssetId.set(id);
     },
+    mostRecentyLoaded: derived(
+      [hierarchyView, selectedSource],
+      ([$hierarchyView, $selectedSource], set, update) => {
+        if (
+          $hierarchyView.state === 'success' &&
+          $selectedSource.type !== 'recovery'
+        ) {
+          set({
+            assetData: $hierarchyView.rootAsset,
+            source: $selectedSource,
+            isSelected: true,
+          });
+        } else {
+          update((existing: MostRecentlyLoaded) => {
+            return {
+              isSelected: false,
+              select() {
+                if (existing.source) {
+                  selectedSource.set(existing.source);
+                }
+              },
+            };
+          });
+        }
+      },
+    ),
   };
 }
 

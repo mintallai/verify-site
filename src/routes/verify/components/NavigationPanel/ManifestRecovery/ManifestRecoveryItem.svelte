@@ -15,18 +15,16 @@
 
 <script lang="ts">
   import { ROOT_ID } from '$lib/asset';
-  import { _ } from 'svelte-i18n';
   import type { ReadableRecoveredManifestStore } from '../../../stores/recoveredManifest';
-  import SmallAssetInfo from '../../AssetInfo/SmallAssetInfo.svelte';
+  import AssetInfoButton from '../../AssetInfoButton.svelte';
 
   export let recoveredManifestStore: ReadableRecoveredManifestStore;
 
   $: assetData = $recoveredManifestStore.assetMap[ROOT_ID];
+  $: isSelected = $recoveredManifestStore.isSelected;
 </script>
 
-<button on:click={() => $recoveredManifestStore.select()}>
-  <SmallAssetInfo {assetData}>
-    <svelte:fragment slot="name"
-      >{assetData.title ?? $_('asset.defaultTitle')}</svelte:fragment
-    ></SmallAssetInfo>
-</button>
+<AssetInfoButton
+  {assetData}
+  {isSelected}
+  on:click={$recoveredManifestStore.select} />

@@ -12,16 +12,23 @@
   is strictly forbidden unless prior written permission is obtained
   from Adobe.
 -->
-<script lang="ts">
-  import ThumbnailImage from './ThumbnailImage.svelte';
 
-  export let thumbnail: string | null;
-  export let highlighted = false;
+<script lang="ts">
+  import type { AssetData } from '$src/lib/asset';
+  import { _ } from 'svelte-i18n';
+  import SmallAssetInfo from './AssetInfo/SmallAssetInfo.svelte';
+
+  export let assetData: AssetData;
+  export let isSelected = false;
 </script>
 
 <div
-  class="h-12 w-12 shrink-0 rounded-sm bg-gray-100 transition"
-  class:ring-2={highlighted}
-  class:ring-blue-800={highlighted}>
-  <ThumbnailImage {thumbnail} />
+  class:bg-blue-100={isSelected}
+  class="-mx-5 box-content h-12 px-5 py-2 transition-colors">
+  <button on:click class="w-full">
+    <SmallAssetInfo {assetData} highlighted={isSelected}>
+      <svelte:fragment slot="name"
+        >{assetData.title ?? $_('asset.defaultTitle')}</svelte:fragment
+      ></SmallAssetInfo>
+  </button>
 </div>
