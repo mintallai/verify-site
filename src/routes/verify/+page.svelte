@@ -31,8 +31,7 @@
 
   let showDropOverlay = false;
   let showPanel = false;
-  const { hierarchyView, compareView, viewState, mostRecentyLoadedAsset } =
-    verifyStore;
+  const { hierarchyView, compareView, viewState } = verifyStore;
 
   const dragDropParams: DragDropActionParams = {
     onDragStateChange(newState: boolean) {
@@ -67,8 +66,8 @@
       {#if $viewState === 'hierarchy'}
         {#if hasEmptyState}
           <EmptyState />
-        {:else if $mostRecentyLoadedAsset}
-          <NavigationPanel assetData={$mostRecentyLoadedAsset} />
+        {:else}
+          <NavigationPanel />
         {/if}
         <button
           class="m-2 bg-blue-600 p-2 text-white"

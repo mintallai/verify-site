@@ -17,7 +17,6 @@
   import ClosedBorderSection from '$src/components/SidebarSection/ClosedBorderSection.svelte';
   import Spinner from '$src/components/Spinner/Spinner.svelte';
   import BodyBold from '$src/components/typography/BodyBold.svelte';
-  import type { AssetData } from '$src/lib/asset';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { verifyStore } from '../../../stores';
@@ -25,9 +24,8 @@
   import SearchForMatches from './SearchForMatches.svelte';
   import SearchResults from './SearchResults.svelte';
 
-  export let assetData: AssetData;
-
-  const { recoveredManifestResults, clearManifestResults } = verifyStore;
+  const { recoveredManifestResults, clearManifestResults, mostRecentlyLoaded } =
+    verifyStore;
 
   async function handleRecovery() {
     verifyStore.recoverManifests();
@@ -43,12 +41,17 @@
     {$_('sidebar.verify.title')}
   </div>
   <svelte:fragment slot="content">
-    <AssetInfoButton {assetData} />
+    {#if $mostRecentlyLoaded.assetData}
+      <AssetInfoButton
+        assetData={$mostRecentlyLoaded.assetData}
+        on:click={$mostRecentlyLoaded.select}
+        isSelected={$mostRecentlyLoaded.isSelected} />
+    {/if}
   </svelte:fragment>
 </ClosedBorderSection>
 {#if $recoveredManifestResults.state === 'success'}
   <ClosedBorderSection>
-    <div slot="title" class="mb-3 flex justify-between">
+    <div slot="title" class="mb-5 flex justify-between">
       <div class="text-md">
         <BodyBold>
           {$_('sidebar.verify.recovery.possibleMatches')}

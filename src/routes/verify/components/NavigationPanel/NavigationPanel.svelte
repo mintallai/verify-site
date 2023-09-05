@@ -15,16 +15,11 @@
 <script lang="ts">
   import LegalSection from '$src/components/LegalSection/LegalSection.svelte';
   import { sidebarLayoutPageState } from '$src/features/SidebarLayout';
-  import type { AssetData } from '$src/lib/asset';
   import { _ } from 'svelte-i18n';
   import ManifestRecoverySection from './ManifestRecovery/ManifestRecoverySection.svelte';
-
-  export let assetData: AssetData;
 </script>
 
-{#if assetData}
-  <ManifestRecoverySection {assetData} />
-{/if}
+<ManifestRecoverySection />
 <LegalSection>
   <svelte:fragment slot="legal-text-visible">
     <p>{$_('sidebar.verify.legal.part1')}</p>

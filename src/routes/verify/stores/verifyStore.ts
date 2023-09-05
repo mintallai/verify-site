@@ -14,7 +14,13 @@
 import { ROOT_ID, type AssetData } from '$lib/asset';
 import type { C2paSourceType } from 'c2pa';
 import debug from 'debug';
-import { derived, get, writable, type Readable } from 'svelte/store';
+import {
+  derived,
+  get,
+  writable,
+  type Readable,
+  type Writable,
+} from 'svelte/store';
 import { createC2paReader } from './c2paReader';
 import { createCompareView, type CompareStore } from './compareView';
 import { createHierarchyView, type HierarchyViewStore } from './hierarchyView';
@@ -43,7 +49,8 @@ interface VerifyStore {
   clearManifestResults: ManifestRecovererStore['clear'];
   compareView: CompareStore;
   hierarchyView: Pick<HierarchyViewStore, 'subscribe'>;
-  mostRecentyLoaded: Readable<MostRecentlyLoaded>;
+  // Gets the most recently loaded asset (i.e. was dragged in or passed via source)
+  mostRecentlyLoaded: Readable<MostRecentlyLoaded>;
   readC2paSource: (source: C2paSourceType) => void;
   recoveredManifestResults: Pick<ManifestRecovererStore, 'subscribe'>;
   recoverManifests: () => void;
@@ -83,6 +90,37 @@ export function createVerifyStore(): VerifyStore {
     compareActiveAssetId,
   );
 
+  const mostRecentlyLoaded = derived<
+    [HierarchyViewStore, Writable<SelectedSource>],
+    MostRecentlyLoaded
+  >(
+    [hierarchyView, selectedSource],
+    ([$hierarchyView, $selectedSource], set, update) => {
+      if (
+        $hierarchyView.state === 'success' &&
+        $selectedSource.type !== 'recovery'
+      ) {
+        set({
+          assetData: $hierarchyView.rootAsset,
+          source: $selectedSource,
+          isSelected: true,
+        });
+      } else {
+        update((existing) => {
+          return {
+            ...existing,
+            isSelected: false,
+            select() {
+              if (existing.source) {
+                selectedSource.set(existing.source);
+              }
+            },
+          };
+        });
+      }
+    },
+  );
+
   return {
     viewState,
     hierarchyView,
@@ -112,7 +150,14 @@ export function createVerifyStore(): VerifyStore {
       selectedSource.set(incomingSource);
     },
     recoveredManifestResults: manifestRecoverer,
-    clearManifestResults: manifestRecoverer.clear,
+    clearManifestResults: () => {
+      const mrlSource = get(mostRecentlyLoaded)?.source;
+      manifestRecoverer.clear();
+
+      if (mrlSource) {
+        selectedSource.set(mrlSource);
+      }
+    },
     recoverManifests: () => {
       const reader = get(c2paReader);
 
@@ -133,32 +178,7 @@ export function createVerifyStore(): VerifyStore {
     setCompareActiveId: (id: string | null) => {
       compareActiveAssetId.set(id);
     },
-    mostRecentyLoaded: derived(
-      [hierarchyView, selectedSource],
-      ([$hierarchyView, $selectedSource], set, update) => {
-        if (
-          $hierarchyView.state === 'success' &&
-          $selectedSource.type !== 'recovery'
-        ) {
-          set({
-            assetData: $hierarchyView.rootAsset,
-            source: $selectedSource,
-            isSelected: true,
-          });
-        } else {
-          update((existing: MostRecentlyLoaded) => {
-            return {
-              isSelected: false,
-              select() {
-                if (existing.source) {
-                  selectedSource.set(existing.source);
-                }
-              },
-            };
-          });
-        }
-      },
-    ),
+    mostRecentlyLoaded,
   };
 }
 
