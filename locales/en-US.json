@@ -90,5 +90,6 @@
   "sidebar.verify.search.tooltip.close": "Close",
   "sidebar.verify.search.tooltip.help": "Help",
   "sidebar.verify.summary": "Content Summary",
-  "sidebar.verify.title": "Content Credentials"
+  "sidebar.verify.title": "Content Credentials",
+  "spinner.loading": "Loading"
 }
