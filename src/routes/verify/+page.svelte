@@ -66,8 +66,8 @@
       {#if $viewState === 'hierarchy'}
         {#if hasEmptyState}
           <EmptyState />
-        {:else if $hierarchyView.state === 'success'}
-          <NavigationPanel assetData={$hierarchyView.rootAsset} />
+        {:else}
+          <NavigationPanel />
         {/if}
         <button
           class="m-2 bg-blue-600 p-2 text-white"

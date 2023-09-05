@@ -18,8 +18,9 @@
   import AssetInfoThumbnailBase from './AssetInfoThumbnailBase.svelte';
 
   export let assetData: AssetData;
+  export let highlighted = false;
 </script>
 
-<AssetInfoThumbnailBase {assetData}>
+<AssetInfoThumbnailBase {assetData} {highlighted}>
   <Body slot="name"><slot name="name" /></Body>
 </AssetInfoThumbnailBase>
