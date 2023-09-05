@@ -52,17 +52,20 @@ const handler: Handler = async (event: HandlerEvent) => {
       body: JSON.stringify(mockResult),
     };
   } else if (path.endsWith('/sign_upload/v1')) {
+    const response = await fetch(
+      'https://cai-msb-stage.adobe.io/sign_upload/v1?api_key=cai-verify-site',
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ content_type: 'image/jpeg' }),
+      },
+    );
+    const body = await response.text();
+
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({
-        filename: 'mock-upload.jpg',
-        url: `${process.env.URL}/.netlify/functions/manifest-recovery/mock_upload`,
-      }),
-    };
-  } else if (path.endsWith('/mock_upload')) {
-    return {
-      statusCode: 200,
+      body,
     };
   }
 
