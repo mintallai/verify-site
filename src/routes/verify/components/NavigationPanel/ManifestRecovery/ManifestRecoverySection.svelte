@@ -17,7 +17,6 @@
   import ClosedBorderSection from '$src/components/SidebarSection/ClosedBorderSection.svelte';
   import Spinner from '$src/components/Spinner/Spinner.svelte';
   import BodyBold from '$src/components/typography/BodyBold.svelte';
-  import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { verifyStore } from '../../../stores';
   import AssetInfoButton from '../../AssetInfoButton.svelte';
@@ -30,10 +29,6 @@
   async function handleRecovery() {
     verifyStore.recoverManifests();
   }
-
-  onMount(() => {
-    verifyStore.recoverManifests();
-  });
 </script>
 
 <ClosedBorderSection>

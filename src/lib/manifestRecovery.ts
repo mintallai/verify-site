@@ -41,6 +41,8 @@ export type ManifestRecoveryResult = Omit<
   'dispose'
 >;
 
+// Allows overriding of the manifest service API URL for testing, development,
+// and deploy preview environments where we may run into CORS issues
 export const overrideBaseUrl = __OVERRIDE_MANIFEST_RECOVERY_BASE_URL__;
 
 export async function recoverManifests(
