@@ -16,10 +16,15 @@
   import LegalSection from '$src/components/LegalSection/LegalSection.svelte';
   import { sidebarLayoutPageState } from '$src/features/SidebarLayout';
   import { _ } from 'svelte-i18n';
+  import { verifyStore } from '../../stores';
   import ManifestRecoverySection from './ManifestRecovery/ManifestRecoverySection.svelte';
+
+  const { hierarchyView } = verifyStore;
 </script>
 
-<ManifestRecoverySection />
+{#if $hierarchyView.state === 'success'}
+  <ManifestRecoverySection />
+{/if}
 <LegalSection>
   <svelte:fragment slot="legal-text-visible">
     <p>{$_('sidebar.verify.legal.part1')}</p>
