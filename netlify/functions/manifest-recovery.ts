@@ -57,7 +57,7 @@ const handler: Handler = async (event: HandlerEvent) => {
       headers,
       body: JSON.stringify({
         filename: 'mock-upload.jpg',
-        url: `${process.env.DEPLOY_PRIME_URL}/.netlify/functions/manifest-recovery/mock_upload`,
+        url: `/.netlify/functions/manifest-recovery/mock_upload`,
       }),
     };
   } else if (path.endsWith('/mock_upload')) {
