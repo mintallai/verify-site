@@ -19,7 +19,7 @@
 </script>
 
 <BaseModal {label}>
-  <div class="m-2 w-full max-w-[24rem] rounded bg-white p-7">
+  <div class="m-2 w-full max-w-sm rounded bg-white p-7">
     <div class="mb-5 border-b-2 pb-5">
       <slot name="header" />
     </div>
