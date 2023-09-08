@@ -91,5 +91,8 @@
   "sidebar.verify.search.tooltip.help": "Help",
   "sidebar.verify.summary": "Content Summary",
   "sidebar.verify.title": "Content Credentials",
-  "spinner.loading": "Loading"
+  "spinner.loading": "Loading",
+  "dialog.error.connectionIssue.title": "Connection issue",
+  "dialog.error.connectionIssue.message": "This Content Credential can’t be displayed right now due to connection issues with another service. Try viewing it again later.",
+  "dialog.OK": "OK"
 }
