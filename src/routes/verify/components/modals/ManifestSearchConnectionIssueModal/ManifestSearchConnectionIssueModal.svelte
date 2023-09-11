@@ -26,15 +26,19 @@
 </script>
 
 {#if isOpen}
-  <HeaderContentModal label={$_('dialog.error.connectionIssue.title')}>
+  <HeaderContentModal
+    label={$_('dialog.error.manifestSearchConnectionIssue.title')}>
     <div class="flex items-center justify-between" slot="header">
-      <BodyBold><h2>{$_('dialog.error.connectionIssue.title')}</h2></BodyBold>
+      <BodyBold
+        ><h2>
+          {$_('dialog.error.manifestSearchConnectionIssue.title')}
+        </h2></BodyBold>
       <span class="text-red-900">
         <Alert />
       </span>
     </div>
     <Body slot="content">
-      {$_('dialog.error.connectionIssue.message')}
+      {$_('dialog.error.manifestSearchConnectionIssue.message')}
     </Body>
     <Button slot="buttons" size="m" on:click={closeModal}
       >{$_('dialog.OK')}</Button>

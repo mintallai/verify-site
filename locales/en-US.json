@@ -92,7 +92,7 @@
   "sidebar.verify.summary": "Content Summary",
   "sidebar.verify.title": "Content Credentials",
   "spinner.loading": "Loading",
-  "dialog.error.connectionIssue.title": "Connection issue",
-  "dialog.error.connectionIssue.message": "This Content Credential can’t be displayed right now due to connection issues with another service. Try viewing it again later.",
+  "dialog.error.manifestSearchConnectionIssue.title": "Connection issue",
+  "dialog.error.manifestSearchConnectionIssue.message": "Manifest search can't be completed right now due to connection issues with another service. Try again later.",
   "dialog.OK": "OK"
 }

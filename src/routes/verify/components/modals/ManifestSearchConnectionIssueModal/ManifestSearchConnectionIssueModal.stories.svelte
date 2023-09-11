@@ -1,6 +1,6 @@
 <script>
   import { Meta, Story, Template } from '@storybook/addon-svelte-csf';
-  import ConnectionIssueModal from './ConnectionIssueModal.svelte';
+  import ManifestSearchConnectionIssueModal from './ManifestSearchConnectionIssueModal.svelte';
 
   const design = {
     type: 'figma',
@@ -17,12 +17,12 @@
 </script>
 
 <Meta
-  title="Verify/Modals/ConnectionIssueModal"
-  component={ConnectionIssueModal}
+  title="Verify/Modals/ManifestSearchConnectionIssueModal"
+  component={ManifestSearchConnectionIssueModal}
   parameters={{ design, backgrounds }} />
 
 <Template let:args>
-  <ConnectionIssueModal {...args} />
+  <ManifestSearchConnectionIssueModal {...args} />
 </Template>
 
 <Story name="Default" args={{ isOpen: true }} />

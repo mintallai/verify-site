@@ -27,7 +27,9 @@
 import { recoverManifests } from '$lib/manifestRecovery';
 import type { Loadable } from '$lib/types';
 import type { Source } from 'c2pa';
+import { openModal } from 'svelte-modals';
 import { writable, type Readable, type Writable } from 'svelte/store';
+import ManifestSearchConnectionIssueModal from '../components/modals/ManifestSearchConnectionIssueModal/ManifestSearchConnectionIssueModal.svelte';
 import {
   createRecoveredManifest,
   type ReadableRecoveredManifestStore,
@@ -96,6 +98,7 @@ export function createManifestRecoverer(
           ),
         });
       } catch (e) {
+        openModal(ManifestSearchConnectionIssueModal);
         console.error(e);
         manifestRecoveryState.set({ state: 'none' });
       }
