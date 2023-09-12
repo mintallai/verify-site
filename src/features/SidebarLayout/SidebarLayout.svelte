@@ -23,7 +23,7 @@
 
 <div
   class={[
-    'grid h-screen grid-cols-[100vw_100vw] overflow-x-hidden transition-colors duration-100',
+    'grid h-screen grid-cols-[100vw_100vw] overflow-hidden transition-colors duration-100',
     leftColumnTakeover
       ? 'bg-gray-100'
       : 'bg-white lg:grid-cols-[theme(spacing.sidebar)_auto]',

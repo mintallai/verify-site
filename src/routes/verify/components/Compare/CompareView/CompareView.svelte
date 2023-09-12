@@ -15,7 +15,8 @@
 
 <script lang="ts">
   import type { Readable } from 'svelte/store';
-  import type { CompareSelectedAssetStore } from '../../stores/compareSelectedAsset';
+  import type { CompareSelectedAssetStore } from '../../../stores/compareSelectedAsset';
+  import SideBySideImg from './SideBySideImg.svelte';
 
   export let selectedAssets: Readable<(CompareSelectedAssetStore | null)[]>;
 
@@ -27,21 +28,11 @@
   }
 </script>
 
-<div>
-  {#if primaryAsset !== null}
-    <button on:click={$primaryAsset?.select}>
-      <img src={$primaryAsset?.thumbnail} alt={$primaryAsset?.title} />
-    </button>
-  {:else}
-    None
-  {/if}
-</div>
-<div>
-  {#if secondaryAsset !== null}
-    <button on:click={$secondaryAsset?.select}>
-      <img src={$secondaryAsset?.thumbnail} alt={$secondaryAsset?.title} />
-    </button>
-  {:else}
-    None
-  {/if}
+<div class="flex w-full flex-col">
+  <div class="flex justify-center px-6 pb-1">
+    <SideBySideImg asset={primaryAsset}></SideBySideImg>
+  </div>
+  <div class="flex justify-center px-6">
+    <SideBySideImg asset={secondaryAsset}></SideBySideImg>
+  </div>
 </div>

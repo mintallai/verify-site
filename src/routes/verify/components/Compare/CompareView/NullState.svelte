@@ -14,16 +14,15 @@
 -->
 
 <script lang="ts">
-  import type { CompareAssetStore } from '../../stores/compareAsset';
-
-  export let compareAssetStore: CompareAssetStore;
+  import EmptyImage from '$assets/svg/monochrome/emptyImage.svg?component';
+  import Body from '$src/components/typography/Body.svelte';
+  import { _ } from 'svelte-i18n';
 </script>
 
-<div
-  class="m-2 rounded border p-2"
-  class:bg-blue-100={$compareAssetStore.isSelected}
-  class:border-gray-900={$compareAssetStore.isActive}>
-  <button on:click={$compareAssetStore.select}>
-    {$compareAssetStore.id} - {$compareAssetStore.title}
-  </button>
+<div class="flex h-[45vh] flex-col justify-center">
+  <EmptyImage class="h-40 w-40 self-center text-gray-300"></EmptyImage>
+  <Body
+    ><span class=" text-center text-gray-500">
+      {$_('sidebar.verify.compare.null.picture')}</span
+    ></Body>
 </div>

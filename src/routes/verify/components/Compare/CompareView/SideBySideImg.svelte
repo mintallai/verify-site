@@ -14,18 +14,21 @@
 -->
 
 <script lang="ts">
-  import type { AssetData } from '$src/lib/asset';
-  import type { Readable } from 'svelte/store';
-  import DetailedInfo from '../DetailedInfo/DetailedInfo.svelte';
+  import type { CompareSelectedAssetStore } from '../../../stores/compareSelectedAsset';
+  import NullState from './NullState.svelte';
 
-  export let assetData: Readable<AssetData | null>;
-
-  // It's horrible, only necessary because Svelte doesn't support TS expressions in templates (no casting)
-  const assetDataNonNull = assetData as Readable<AssetData>;
+  export let asset: CompareSelectedAssetStore | null;
 </script>
 
-{#if $assetData !== null}
-  <DetailedInfo on:close assetData={assetDataNonNull} />
+{#if asset !== null}
+  <button
+    on:click={$asset?.select}
+    class={[$asset?.isActive ? 'inset-2 ring-2 ring-blue-800' : ''].join(' ')}>
+    <img
+      src={$asset?.thumbnail}
+      alt={$asset?.title}
+      class="h-[45vh] w-full object-contain" />
+  </button>
 {:else}
-  Null state pls implement
+  <NullState />
 {/if}
