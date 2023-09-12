@@ -17,7 +17,7 @@
 </script>
 
 <div class="pt-4">
-  <div class="pb-2">
+  <div class="pb-2.5">
     <Label><slot name="title" /></Label>
   </div>
   <div><slot name="content" /></div>
