@@ -27,7 +27,7 @@
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.credit.social')}</svelte:fragment>
-  <svelte:fragment slot="content">
+  <div class="flex flex-col gap-2.5" slot="content">
     {#each socialAccounts as account (account['@id'])}
       <AboutSectionIconContentRow>
         <div slot="icon">
@@ -41,5 +41,5 @@
             ''} />
       </AboutSectionIconContentRow>
     {/each}
-  </svelte:fragment>
+  </div>
 </SubSection>

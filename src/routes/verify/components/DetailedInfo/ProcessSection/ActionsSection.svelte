@@ -28,8 +28,8 @@
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.process.actions')}</svelte:fragment>
-  <svelte:fragment slot="content">
-    {#if reviewRatings?.hasUnknownActions || reviewRatings?.wasPossiblyModified}
+  <div class="flex flex-col gap-2.5" slot="content">
+    {#if reviewRatings.hasUnknownActions || reviewRatings.wasPossiblyModified}
       <AboutSectionIconContentRow>
         <AlertOutlineIcon slot="icon" width="1rem" height="1rem" />
         <div slot="content" class="italic text-gray-900">
@@ -53,5 +53,5 @@
           <span class="text-gray-600">{category.description}</span>
         </div></AboutSectionIconContentRow>
     {/each}
-  </svelte:fragment>
+  </div>
 </SubSection>
