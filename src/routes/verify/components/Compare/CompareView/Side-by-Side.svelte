@@ -14,19 +14,24 @@
 -->
 
 <script lang="ts">
-  import { compareViewMode } from '$src/routes/verify/stores/compareView';
   import type { Readable } from 'svelte/store';
   import type { CompareSelectedAssetStore } from '../../../stores/compareSelectedAsset';
-  import SideBySide from './Side-by-Side.svelte';
-  import Slider from './Slider/SliderView.svelte';
+  import SideBySideImg from './SideBySideImg.svelte';
 
   export let selectedAssets: Readable<(CompareSelectedAssetStore | null)[]>;
+  let primaryAsset: CompareSelectedAssetStore | null;
+  let secondaryAsset: CompareSelectedAssetStore | null;
+
+  $: {
+    [primaryAsset, secondaryAsset] = $selectedAssets;
+  }
 </script>
 
-<div class="flex h-full flex-col justify-center">
-  {#if $compareViewMode === 'slider'}
-    <Slider {selectedAssets} />
-  {:else}
-    <SideBySide {selectedAssets} />
-  {/if}
+<div class="flex w-full flex-col">
+  <div class="flex justify-center px-6 pb-1">
+    <SideBySideImg asset={primaryAsset} />
+  </div>
+  <div class="flex justify-center px-6">
+    <SideBySideImg asset={secondaryAsset} />
+  </div>
 </div>

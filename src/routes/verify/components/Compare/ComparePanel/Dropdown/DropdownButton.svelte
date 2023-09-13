@@ -14,19 +14,21 @@
 -->
 
 <script lang="ts">
-  import { compareViewMode } from '$src/routes/verify/stores/compareView';
-  import type { Readable } from 'svelte/store';
-  import type { CompareSelectedAssetStore } from '../../../stores/compareSelectedAsset';
-  import SideBySide from './Side-by-Side.svelte';
-  import Slider from './Slider/SliderView.svelte';
+  import DownArrow from '$assets/svg/monochrome/down-arrow.svg?component';
+  import Body from '$src/components/typography/Body.svelte';
+  import { _ } from 'svelte-i18n';
 
-  export let selectedAssets: Readable<(CompareSelectedAssetStore | null)[]>;
+  export let compareViewMode;
 </script>
 
-<div class="flex h-full flex-col justify-center">
-  {#if $compareViewMode === 'slider'}
-    <Slider {selectedAssets} />
-  {:else}
-    <SideBySide {selectedAssets} />
-  {/if}
-</div>
+<button class="h-7 w-44 border border-gray-500 pe-2 ps-2" on:click>
+  <div class="flex justify-between">
+    <Body>
+      {#if $compareViewMode === 'slider'}
+        {$_('sidebar.verify.compare.slider')}
+      {:else}
+        {$_('sidebar.verify.compare.sideBySide')}
+      {/if}</Body>
+    <DownArrow class="h-3 w-3 self-center"></DownArrow>
+  </div>
+</button>
