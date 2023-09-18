@@ -13,7 +13,6 @@
 -->
 
 <script>
-  import Alert from '$assets/svg/monochrome/alert.svg?component';
   import Body from '$src/components/typography/Body.svelte';
   import BodyBold from '$src/components/typography/BodyBold.svelte';
   import Button from '$src/routes/verify/components/Button/Button.svelte';
@@ -23,24 +22,30 @@
 
   // provided by ModalContainer.svelte
   export let isOpen;
+
+  function handleContinue() {
+    // @TODO how do we want to handle this?
+    closeModal();
+  }
 </script>
 
 {#if isOpen}
-  <HeaderContentModal
-    label={$_('dialog.error.manifestSearchConnectionIssue.title')}>
-    <div class="flex items-center justify-between" slot="header">
-      <BodyBold
-        ><h2>
-          {$_('dialog.error.manifestSearchConnectionIssue.title')}
-        </h2></BodyBold>
-      <span class="text-red-900">
-        <Alert />
-      </span>
-    </div>
+  <HeaderContentModal label={$_('dialog.error.legacyCredential.title')}>
+    <BodyBold slot="header"
+      ><h2>
+        {$_('dialog.error.legacyCredential.title')}
+      </h2></BodyBold>
     <Body slot="content">
-      {$_('dialog.error.manifestSearchConnectionIssue.message')}
+      {$_('dialog.error.legacyCredential.message')}
     </Body>
-    <Button slot="buttons" size="m" on:click={closeModal}
-      >{$_('dialog.OK')}</Button>
+    <div slot="buttons" class="flex gap-2.5">
+      <Button
+        treatment="outline"
+        variant="secondary"
+        size="m"
+        on:click={closeModal}>{$_('dialog.cancel')}</Button>
+      <Button size="m" on:click={handleContinue}
+        >{$_('dialog.continue')}</Button>
+    </div>
   </HeaderContentModal>
 {/if}
