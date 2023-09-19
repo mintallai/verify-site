@@ -15,7 +15,7 @@ import type { ToastOptions } from '../store/toastState';
 
 export const matchesUnavailable = (): ToastOptions => ({
   messageId: 'toast.matchesUnavailable',
-  duration: 50000,
+  duration: 5000,
 });
 
 export const unsupportedFileType = (): ToastOptions => ({

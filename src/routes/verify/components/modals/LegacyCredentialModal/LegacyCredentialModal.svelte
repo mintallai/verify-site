@@ -12,20 +12,31 @@
   from Adobe.
 -->
 
-<script>
+<script lang="ts">
+  import { page } from '$app/stores';
   import Body from '$src/components/typography/Body.svelte';
   import BodyBold from '$src/components/typography/BodyBold.svelte';
+  import { getConfig } from '$src/lib/config';
   import Button from '$src/routes/verify/components/Button/Button.svelte';
   import { _ } from 'svelte-i18n';
   import { closeModal } from 'svelte-modals';
+  import { get } from 'svelte/store';
   import HeaderContentModal from '../HeaderContentModal/HeaderContentModal.svelte';
 
   // provided by ModalContainer.svelte
-  export let isOpen;
+  export let isOpen: boolean;
 
-  function handleContinue() {
-    // @TODO how do we want to handle this?
+  async function handleContinue() {
     closeModal();
+    const config = await getConfig();
+    const legacyVerifyUrl =
+      config.env === 'stage'
+        ? 'https://verify-beta-stage.contentauthenticity.org'
+        : 'https://verify-beta.contentauthenticity.org';
+
+    const { search } = get(page).url;
+
+    window.location.assign(`${legacyVerifyUrl}/inspect${search}`);
   }
 </script>
 
