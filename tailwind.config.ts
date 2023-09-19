@@ -11,8 +11,7 @@
 // is strictly forbidden unless prior written permission is obtained
 // from Adobe.
 
-// import tailwindForms from '@tailwindcss/forms';
-
+import tailwindForms from '@tailwindcss/forms';
 import css from 'css';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -58,9 +57,8 @@ export default {
   },
   theme: {
     fontFamily: {
-      // home: defs['family-home'],
-      // homeWide: defs['family-home-wide'],
-      // base: defs['family-base'],
+      home: defs['family-home'],
+      base: defs['family-base'],
       Norske: ['Norske', 'sans-serif'],
     },
     colors: {
@@ -68,11 +66,8 @@ export default {
       'brand-orange': '#EF9349',
       'brand-gray': '#757575',
       'sub-desc': '#757575',
-      white: defs['gray-50'],
       white: '#ffffff',
       'gray-40': defs['gray-40'],
-      'gray-50': defs['gray-50'],
-      'gray-75': defs['gray-75'],
       'gray-100': defs['gray-100'],
       'gray-200': defs['gray-200'],
       'gray-300': defs['gray-300'],
@@ -149,6 +144,13 @@ export default {
           fontWeight: '700',
         },
       ],
+      informational: [
+        '0.75rem',
+        {
+          lineHeight: '0.875rem',
+          fontWeight: '400',
+        },
+      ],
       hero: [
         '3.75rem',
         {
@@ -156,6 +158,7 @@ export default {
           lineHeight: '75px',
         },
       ],
+      // For the Homepage
       'hero-title': [
         '96px',
         {
@@ -317,6 +320,8 @@ export default {
           fontWeight: '400',
         },
       ],
+
+      // For the Homepage
     },
     boxShadow: {
       DEFAULT: '0px 4px 20px rgba(0, 0, 0, 0.3)',
@@ -325,9 +330,6 @@ export default {
     extend: {
       fontFamily: {
         Norske: ['Store Norske Ja', 'sans-serif'],
-      },
-      backgroundImage: {
-        'hero-pattern': "url('/assets/png/Circles.png')",
       },
       backgroundColor: {
         'brand-red': '#fe818b',
@@ -351,9 +353,8 @@ export default {
     },
   },
   plugins: [
-    // tailwindForms({
-    //   strategy: 'class',
-    // }),
-
+    tailwindForms({
+      strategy: 'class',
+    }),
   ],
 } satisfies Config;
