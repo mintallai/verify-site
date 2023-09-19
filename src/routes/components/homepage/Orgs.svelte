@@ -1,7 +1,7 @@
 <script>
   import WashPost from '../../../../assets/png/WashPost.png';
   import BBC from '../../../../assets/png/BBC-Logo.png';
-  import AFP from '../../../../assets/png/Agence_France-Presse_logo.png';
+  import AFP from '../../../../assets/png/Agence_France-Presse_Logo.png';
   import Leica from '../../../../assets/svg/Leica.svg';
   import Canon from '../../../../assets/png/Canon.png';
 
