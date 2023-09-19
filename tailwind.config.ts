@@ -12,6 +12,7 @@
 // from Adobe.
 
 // import tailwindForms from '@tailwindcss/forms';
+
 import css from 'css';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -353,5 +354,6 @@ export default {
     // tailwindForms({
     //   strategy: 'class',
     // }),
+
   ],
 } satisfies Config;
