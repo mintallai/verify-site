@@ -24,22 +24,22 @@
   ];
 </script>
 
-<div class="flex h-[1000px] w-screen items-center justify-center">
-  <div class="flex flex-col items-center justify-center text-sub-title">
-    <div class="text-home-secondary-title w-[910px] pb-20 text-center">
+<div class="flex w-screen items-center justify-center px-[1.5rem]">
+  <div class="flex flex-col items-center justify-center pt-12">
+    <div class="text-hiw-title w-[27rem] pb-20 text-center">
       What makes Content Credential trustworthy
     </div>
-    <div class="flex w-full flex-row gap-6">
+    <div class="flex w-full flex-col">
       {#each data as item}
-        <div>
-          <div class="h-[400px] w-[445px]">
+        <div class="h-[20rem] pb-2">
+          <div class="">
             <div
-              class="text-hiw-label font-Norske rounded-t-xl px-[32px] py-[20px]"
+              class="text-trust-label font-Norske rounded-t-2xl px-[32px] py-[20px]"
               style={`background-color: ${item.bgColor}`}>
               {item.label}
             </div>
             <div
-              class="text-sub-label h-full rounded-b-xl bg-gray-200 px-[32px] py-[20px]">
+              class="text-trust-desc h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pt-[20px] pb-20">
               {item.description}
             </div>
           </div>

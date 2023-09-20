@@ -291,31 +291,62 @@ export default {
         },
       ],
       'hiw-label': [
-        '28px',
+        '1.5rem',
         {
           fontWeight: '400',
-          lineHeight: '35px',
+          lineHeight: '1.35rem',
+        },
+      ],
+      'hiw-title': [
+        '2.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '2.75rem',
         },
       ],
       'hiw-desc': [
-        '21px',
+        '1rem',
         {
           fontWeight: '400',
-          lineHeight: '28.35px',
+          lineHeight: '1.35rem',
         },
       ],
-      test: [
-        '21px',
+      'trust-title': [
+        '2.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '2.75rem',
+        },
+      ],
+      'trust-label': [
+        '1.5rem',
         {
           fontWeight: '400',
-          lineHeight: '28.35px',
+          lineHeight: '2.025rem',
+          letterSpacing: '-0.015rem',
+        },
+      ],
+      'trust-desc': [
+        '1rem',
+        {
+          fontWeight: '400',
+          lineHeight: '1.35rem',
+        },
+      ],
+      'movement-title': [
+        '2.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '2.75rem',
+          letterSpacing: '-0.075rem',
         },
       ],
       'movement-text': [
-        '1.8rem',
+        '1.3125rem',
         {
           fontWeight: '400',
-          lineHeight: '2.53125rem',
+          lineHeight: '1.77188rem',
+          letterSpacing: '-0.01313rem',
         },
       ],
       'stories-title': [
@@ -428,7 +459,7 @@ export default {
         Norske: ['Store Norske Ja', 'sans-serif'],
       },
       backgroundColor: {
-        'brand-red': '#fe818b',
+        'brand-red': '#ED8089',
         'brand-green': '#5ac97d',
         'brand-yellow': '#fbe756',
         'brand-orange': '#ef9449',

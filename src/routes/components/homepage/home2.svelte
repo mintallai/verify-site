@@ -3,9 +3,12 @@
 </script>
 
 <div
-  class="w-screen flex flex-col items-center justify-center px-[1.5rem] gap-10 lg:flex-row">
+  class="w-screen flex flex-col items-center justify-center px-[1.5rem] lg:flex-row lg:gap-10 lg:items-start">
   <div class="w-full flex justify-center items-center pb-10 lg:w-1/2">
-    <img src={Trust} class="max-h-full max-w-full rounded-xl" alt="hi" />
+    <img
+      src={Trust}
+      class="max-h-full max-w-full rounded-xl"
+      alt="placeholder" />
   </div>
   <div class="flex flex-col items-start justify-start lg:w-1/2">
     <div class="text-key-title text-left pb-8 2xl:text-key-title-xl">

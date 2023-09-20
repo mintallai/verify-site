@@ -1,7 +1,6 @@
-<div class="flex h-[1000px] w-screen items-center justify-center">
-  <div
-    class="flex h-[60%] w-[860px] flex-col items-center justify-evenly gap-[40px]">
-    <div class="text-home-secondary-title text-center">
+<div class="flex w-screen items-center justify-center py-20 px-[1.5rem]">
+  <div class="flex flex-col items-center justify-evenly gap-[40px]">
+    <div class="text-movement-title text-center">
       Join the movement for content authenticity
     </div>
     <div class="text-center text-movement-text text-brand-gray w-full">

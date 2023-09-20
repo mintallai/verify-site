@@ -23,7 +23,7 @@
   import HowItWorks from './components/homepage/HowItWorks.svelte';
   import Trust from './components/homepage/Trust.svelte';
   import Movement from './components/homepage/Movement.svelte';
-  import Orgs from './components/homepage/Orgs.svelte';
+  // import Orgs from './components/homepage/Orgs.svelte';
   // import Stories from './components/homepage/Stories.svelte';
 </script>
 
@@ -42,7 +42,7 @@
     <HowItWorks />
     <Trust />
     <Movement />
-    <Orgs />
+    <!-- <Orgs /> -->
     <!-- <Stories /> -->
   </div>
   <NewFooter />

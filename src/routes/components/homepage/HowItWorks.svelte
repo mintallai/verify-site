@@ -35,14 +35,15 @@
   ];
 </script>
 
-<div class="flex h-full w-screen flex-col items-center bg-[#F6F5F2] pb-40">
-  <div class="pt-[160px] text-home-secondary-title">How it Works</div>
-  <div class="flex w-[1142px] flex-col">
+<div
+  class="flex h-full w-screen flex-col items-center bg-[#F6F5F2] pb-40 p-[1.5rem]">
+  <div class="text-hiw-title pt-12">How it Works</div>
+  <div class="flex w-full flex-col">
     <div class="">
       {#each data as item}
-        <div class="gap-[60px]">
-          <div class="flex flex-row items-start justify-between pt-20 pb-12">
-            <div class="flex flex-row gap-3">
+        <div class="">
+          <div class="flex flex-col items-start justify-between pt-12 pb-12">
+            <div class="flex flex-row items-start justify-center gap-4">
               <div
                 class="flex h-[22px] w-[22px] items-center justify-center rounded-full px-4 py-4"
                 style={`background-color: ${item.labelBg}`}>
@@ -50,14 +51,11 @@
               </div>
               <div class="text-hiw-label pr-10 w-[400px]">{item.label}</div>
             </div>
-            <div class="text-hiw-desc text-brand-gray h-[112px] w-[560px]">
+            <div class="text-hiw-desc text-brand-gray pt-6">
               {item.description}
             </div>
           </div>
-          <img
-            src={item.Image}
-            alt="how it works"
-            class="h-[642px] w-full rounded-2xl" />
+          <img src={item.Image} alt="how it works" class="w-full rounded-2xl" />
         </div>
       {/each}
     </div>
