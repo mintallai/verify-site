@@ -2,15 +2,15 @@
   import Image from '../../../../assets/png/cr-purp.png';
 </script>
 
-<div class="flex px-10 py-10">
-  <div class="flex w-1/2 items-center justify-center pr-8">
-    <img src={Image} class="max-h-full max-w-full w-full rounded-xl" alt="hi" />
+<div class="flex w-screen flex-col items-center justify-center px-[1.5rem]">
+  <div class="flex w-full items-center justify-center pb-10">
+    <img src={Image} class="max-h-full max-w-full rounded-xl" alt="hi" />
   </div>
-  <div class="flex w-1/2 flex-col items-center justify-start pl-8">
-    <div class="w-[492px] pb-4 text-home-third-title">
+  <div class="flex flex-col items-center justify-start">
+    <div class="text-home-third-title pb-10">
       Introducing the Content Credentials pin
     </div>
-    <div class="w-[492px] text-home-sub-text text-brand-gray">
+    <div class="text-home-sub-text text-brand-gray">
       Every time you see the Content Credentials pin that means Content
       Credentials have been attached to the content! Simply click on the pin to
       reveal more information.

@@ -4,7 +4,7 @@
   import Home4 from './home4.svelte';
 </script>
 
-<div class="pb-20">
+<div class="pb-20 pt-8 flex flex-col items-center justify-center">
   <div class="py-10"><Home2 /></div>
   <div class="py-10"><Home3 /></div>
   <div class="py-10"><Home4 /></div>
