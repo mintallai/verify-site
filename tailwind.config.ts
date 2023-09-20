@@ -174,11 +174,12 @@ export default {
           lineHeight: '3.85rem',
         },
       ],
-      'hero-title-m': [
-        '96px',
+      'hero-title-desktop': [
+        '6rem',
         {
           fontWeight: '700',
-          lineHeight: '100px',
+          lineHeight: '6rem',
+          letterSpacing: '-0.24rem',
         },
       ],
       'hero-sub': [
@@ -186,6 +187,14 @@ export default {
         {
           fontWeight: '400',
           lineHeight: '1.77188rem',
+        },
+      ],
+      'hero-sub-desktop': [
+        '1.875rem',
+        {
+          fontWeight: '400',
+          lineHeight: ' 2.53125rem',
+          letterSpacing: '-0.01875rem',
         },
       ],
       'home-secondary-title': [
