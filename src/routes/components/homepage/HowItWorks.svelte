@@ -49,7 +49,7 @@
                 style={`background-color: ${item.labelBg}`}>
                 {item.labelNumber}
               </div>
-              <div class="text-hiw-label pr-10 w-[400px]">{item.label}</div>
+              <div class="text-hiw-label pr-10">{item.label}</div>
             </div>
             <div class="text-hiw-desc text-brand-gray pt-6">
               {item.description}

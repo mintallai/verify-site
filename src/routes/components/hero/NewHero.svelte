@@ -11,7 +11,7 @@
       class="flex h-full w-full items-center justify-center lg:w-1/2
     ">
       <div
-        class="lg:max-w[25rem] flex w-[670px] max-w-[41rem] flex-col items-center justify-center p-[1.5rem]
+        class="lg:max-w[25rem] flex w-[670px] max-w-[41rem] flex-col items-center justify-center
         self-stretch xl:max-w-[41rem]">
         <div
           class=" text-hero-title pb-6 text-center tracking-[-0.105rem] 2xl:text-hero-title-desktop">

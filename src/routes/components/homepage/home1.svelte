@@ -5,7 +5,7 @@
 <div
   class="w-screen flex flex-col items-center justify-evenly py-[4rem] px-[1.5rem] gap-6">
   <div
-    class="h-[468px] flex flex-col items-center justify-center py-[2rem] xl:h-screen xl:w-[802px] 2xl:w-[910px]">
+    class="flex flex-col items-center justify-center pt-20 pb-10 xl:h-screen xl:w-[802px] 2xl:w-[910px]">
     <div
       class="text-home-secondary-title text-center md:text-home-title-md xl:text-home-title-xl 2xl:text-home-title-2xl">
       Content Credentials reveals helpful information that's usually hidden
