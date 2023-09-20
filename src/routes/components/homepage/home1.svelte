@@ -3,8 +3,8 @@
 </script>
 
 <div
-  class="w-screen flex flex-col items-center justify-center py-[4rem] px-[1.5rem]">
-  <div class="h-[468px] flex flex-col items-center justify-center">
+  class="w-screen flex flex-col items-center justify-evenly py-[6rem] px-[1.5rem]">
+  <div class="w-[802px] flex flex-col items-center justify-center py-[2rem]">
     <div
       class="text-home-secondary-title text-center md:text-home-title-md xl:text-home-title-xl 2xl:text-home-title-2xl">
       Content Credentials reveals helpful information that's usually hidden
