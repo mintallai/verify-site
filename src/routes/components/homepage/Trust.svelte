@@ -31,7 +31,7 @@
     </div>
     <div class="flex w-full flex-col">
       {#each data as item}
-        <div class="h-[20rem] pb-2">
+        <div class="h-[302px]">
           <div class="">
             <div
               class="text-trust-label font-Norske rounded-t-2xl px-[32px] py-[20px]"
