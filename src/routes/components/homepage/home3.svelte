@@ -2,12 +2,13 @@
   import Image from '../../../../assets/png/human.png';
 </script>
 
-<div class="flex w-screen flex-col items-center justify-center px-[1.5rem]">
-  <div class="flex w-full items-center justify-center pb-10">
+<div
+  class="flex w-screen flex-col items-center justify-center px-[1.5rem] gap-10 lg:flex-row-reverse">
+  <div class="flex w-full items-center justify-center pb-10 lg:w-1/2">
     <img src={Image} class="max-h-full max-w-full rounded-xl" alt="hi" />
   </div>
-  <div class="flex flex-col items-center justify-start">
-    <div class="text-key-title pb-8 2xl:text-key-title-xl">
+  <div class="flex flex-col items-start justify-start lg:w-1/2">
+    <div class="text-key-title text-left pb-8 2xl:text-key-title-xl">
       Empowering creators to get credit for their work
     </div>
     <div
