@@ -56,6 +56,14 @@ export default {
     preflight: false,
   },
   theme: {
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '991px',
+      xl: '1280px',
+      '2xl': '1281px',
+      '3xl': '1441px',
+    },
     fontFamily: {
       home: defs['family-home'],
       base: defs['family-base'],
@@ -160,6 +168,13 @@ export default {
       ],
       // For the Homepage
       'hero-title': [
+        '3.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '3.85rem',
+        },
+      ],
+      'hero-title-m': [
         '96px',
         {
           fontWeight: '700',
@@ -167,10 +182,10 @@ export default {
         },
       ],
       'hero-sub': [
-        '30px',
+        '1.3125rem',
         {
           fontWeight: '400',
-          lineHeight: '40.5px',
+          lineHeight: '1.77188rem',
         },
       ],
       'home-secondary-title': [

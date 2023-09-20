@@ -5,25 +5,30 @@
 
 <div class="h-[screen - 100px] flex w-screen items-center justify-center">
   <div
-    class="flex h-full w-full flex-row items-center justify-center p-6 gap-[20px]">
-    <div class="flex h-full w-[50%] items-center justify-center">
+    class="flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[2.25rem] md:p-[2.5rem]
+    lg:flex-row lg:gap-[1.5rem]">
+    <div
+      class="flex h-full w-full items-center justify-center lg:w-1/2 xl:gap-5
+    ">
       <div
-        class="flex w-[670px] max-w-[670px] flex-col items-center justify-center">
-        <div class="pb-6 text-center text-hero-title">
+        class="lg:max-w[25rem] flex w-[670px] max-w-[41rem] flex-col items-center justify-center p-[1.5rem]
+        self-stretch xl:max-w-[41rem]">
+        <div class=" text-hero-title pb-6 text-center tracking-[-0.105rem]">
           Wait, where did this image come from?
         </div>
-        <div class="text-sub-heading text-center text-brand-gray">
+        <div class="text-hero-sub text-brand-gray text-center">
           Deepfakes. Voice Cloning. It's hard to tell what's accurate and
           authentic online these days.
         </div>
       </div>
     </div>
-    <div class="flex h-full w-[50%] flex-col items-start justify-center">
+    <div
+      class="flex h-full w-full flex-col items-start justify-center lg:w-1/2">
       <img
         src={PolarBear}
         alt="hi"
         class="w-[full - 20px] h-[full - 20px] rounded-xl" />
-      <div class="text-small-description text-gray-500 pt-1">
+      <div class="pt-1 text-small-description text-gray-500">
         Click on the pin to see the Content Credentials.
       </div>
     </div>
