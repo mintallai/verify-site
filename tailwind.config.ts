@@ -252,18 +252,42 @@ export default {
           letterSpacing: '-0.01875rem',
         },
       ],
-      'home-third-title': [
-        '40px',
+      'key-title': [
+        '1.875rem',
         {
           fontWeight: '700',
-          lineHeight: '44px',
+          lineHeight: '2.0625rem',
+          letterSpacing: '-0.01875rem',
         },
       ],
-      'home-sub-text': [
+      'key-title-xl': [
+        '2.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '2.75rem',
+          letterSpacing: '-0.075rem',
+        },
+      ],
+      'key-sub-text': [
+        '1rem',
+        {
+          fontWeight: '400',
+          lineHeight: '1.35rem ',
+        },
+      ],
+      'key-sub-text-xl': [
+        '1.125rem',
+        {
+          fontWeight: '400',
+          lineHeight: '1.51875rem',
+        },
+      ],
+      'key-sub-text-2xl': [
         '1.3125rem',
         {
           fontWeight: '400',
-          lineHeight: '28.35px',
+          lineHeight: '1.77188rem',
+          letterSpacing: '-0.01313rem',
         },
       ],
       'hiw-label': [

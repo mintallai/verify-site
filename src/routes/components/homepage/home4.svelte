@@ -7,10 +7,11 @@
     <img src={Image} class="max-h-full max-w-full rounded-xl" alt="hi" />
   </div>
   <div class="flex flex-col items-center justify-start">
-    <div class="text-home-third-title pb-10">
+    <div class="text-key-title pb-8 2xl:text-key-title-xl">
       Introducing the Content Credentials pin
     </div>
-    <div class="text-home-sub-text text-brand-gray">
+    <div
+      class="text-key-sub-text text-brand-gray xl:text-key-sub-text-xl 2xl:text-key-sub-text-2xl">
       Every time you see the Content Credentials pin that means Content
       Credentials have been attached to the content! Simply click on the pin to
       reveal more information.
