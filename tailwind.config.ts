@@ -198,6 +198,14 @@ export default {
         },
       ],
       'home-secondary-title': [
+        '2.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '2.75rem',
+          letterSpacing: '-0.075rem',
+        },
+      ],
+      'home-': [
         '68px',
         {
           fontWeight: '700',
