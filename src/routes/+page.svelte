@@ -24,7 +24,7 @@
   import Trust from './components/homepage/Trust.svelte';
   import Movement from './components/homepage/Movement.svelte';
   import Orgs from './components/homepage/Orgs.svelte';
-  import Stories from './components/homepage/Stories.svelte';
+  // import Stories from './components/homepage/Stories.svelte';
   import KeyPoints from './components/homepage/KeyPoints.svelte';
 </script>
 
@@ -45,7 +45,7 @@
     <Trust />
     <Movement />
     <Orgs />
-    <Stories />
+    <!-- <Stories /> -->
   </div>
   <NewFooter />
 </div>
