@@ -304,6 +304,13 @@ export default {
           lineHeight: '28.35px',
         },
       ],
+      test: [
+        '21px',
+        {
+          fontWeight: '400',
+          lineHeight: '28.35px',
+        },
+      ],
       'movement-text': [
         '1.8rem',
         {
