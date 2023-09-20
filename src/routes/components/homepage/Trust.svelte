@@ -25,8 +25,8 @@
 </script>
 
 <div class="flex w-screen items-center justify-center px-[1.5rem]">
-  <div class="flex flex-col items-center justify-center pt-12">
-    <div class="text-hiw-title w-[27rem] pb-20 text-center">
+  <div class="flex flex-col items-center justify-center pt-16">
+    <div class="text-hiw-title w-[27rem] pb-16 text-center">
       What makes Content Credential trustworthy
     </div>
     <div class="flex w-full flex-col">
