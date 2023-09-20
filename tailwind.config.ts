@@ -205,18 +205,51 @@ export default {
           letterSpacing: '-0.075rem',
         },
       ],
-      'home-': [
-        '68px',
+      'home-title-md': [
+        '3rem',
         {
           fontWeight: '700',
-          lineHeight: '79.2px',
+          lineHeight: '3.3rem',
+        },
+      ],
+      'home-title-xl': [
+        '3.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '3.85rem',
+          letterSpacing: '-0.105rem',
+        },
+      ],
+      'home-title-2xl': [
+        '4.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '4.95rem',
+          letterSpacing: '-0.135rem',
         },
       ],
       'home-sub': [
-        '30px',
+        '1.3125rem',
         {
           fontWeight: '400',
-          lineHeight: '40.5px',
+          lineHeight: '1.77188rem',
+          letterSpacing: '-0.01313rem',
+        },
+      ],
+      'home-sub-XL': [
+        '1.5rem',
+        {
+          fontWeight: '400',
+          lineHeight: '2.025rem',
+          letterSpacing: '-0.015rem',
+        },
+      ],
+      'home-sub-2xl': [
+        '1.875rem',
+        {
+          fontWeight: '400',
+          lineHeight: '2.53125rem',
+          letterSpacing: '-0.01875rem',
         },
       ],
       'home-third-title': [

@@ -2,14 +2,16 @@
   import KeyPoints from './KeyPoints.svelte';
 </script>
 
-<div class="w-screen flex flex-col items-center justify-center py-[4rem]">
-  <div
-    class="h-[468px] max-w-[438px] flex flex-col items-center justify-center">
-    <div class="text-home-secondary-title text-center">
+<div
+  class="w-screen flex flex-col items-center justify-center py-[4rem] px-[1.5rem]">
+  <div class="h-[468px] flex flex-col items-center justify-center">
+    <div
+      class="text-home-secondary-title text-center md:text-home-title-md xl:text-home-title-xl 2xl:text-home-title-2xl">
       Content Credentials reveals helpful information that's usually hidden
     </div>
     <div class="pt-10 flex flex-col items-center justify-center">
-      <div class="text-hero-sub text-brand-gray text-center">
+      <div
+        class="text-home-sub text-brand-gray text-center xl:text-home-sub-XL 2xl:text-home-sub-2xl">
         Important information about the content you see is invisible to most
         users of the internet. Content Credentials is a new open-source tool
         that exposes answers to all the questions you have about content—like if
