@@ -3,14 +3,16 @@
 </script>
 
 <div
-  class="w-screen flex flex-col items-center justify-center px-[1.5rem] lg:flex-row lg:gap-10 lg:items-start">
-  <div class="w-full flex justify-center items-center pb-10 lg:w-1/2">
+  class="w-screen flex flex-col items-center justify-center px-[1.5rem] lg:flex-row lg:gap-10 lg:items-start xl:gap-[11rem]">
+  <div
+    class="w-full flex justify-center items-center pb-10 lg:w-1/2 2xl:max-w-[442px] xl:pb-0">
     <img
       src={Trust}
-      class="max-h-full max-w-full rounded-xl"
+      class="max-h-full max-w-full rounded-xl xl:h-full"
       alt="placeholder" />
   </div>
-  <div class="flex flex-col items-start justify-start lg:w-1/2">
+  <div
+    class="flex flex-col items-start justify-start lg:w-1/2 2xl:max-w-[442px]">
     <div class="text-key-title text-left pb-8 2xl:text-key-title-xl">
       Building trust in what you see online
     </div>
