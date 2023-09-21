@@ -14,6 +14,7 @@
 
 <script lang="ts">
   import { focusTrap } from 'svelte-focus-trap';
+  import { _ } from 'svelte-i18n';
   import { closeModal } from 'svelte-modals';
   import { fade } from 'svelte/transition';
   import Button from '../../Button/Button.svelte';
@@ -34,7 +35,8 @@
     transition:fade|global={{ duration: 100 }}
     use:focusTrap>
     <div class="pointer-events-auto absolute right-5 top-5">
-      <Button variant="secondary" size="m" on:click={closeModal}>Close</Button>
+      <Button variant="secondary" size="m" on:click={closeModal}
+        >{$_('dialog.close')}</Button>
     </div>
     <div class="flex max-h-screen p-4">
       <img class="object-scale-down" {src} alt={label} />
