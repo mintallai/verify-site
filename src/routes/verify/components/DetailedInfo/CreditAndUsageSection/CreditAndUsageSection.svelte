@@ -19,6 +19,7 @@
   import AiSubSection from './AISubSection.svelte';
   import ProducerSubSection from './ProducerSubSection.svelte';
   import SocialSubSection from './SocialSubSection.svelte';
+  import Web3SubSection from './Web3/Web3SubSection.svelte';
   import WebsiteSubSection from './WebsiteSubSection.svelte';
 
   export let manifestData: ManifestData;
@@ -27,6 +28,7 @@
     manifestData.producer ||
     manifestData.socialAccounts?.length ||
     manifestData.generativeInfo?.softwareAgents?.length ||
+    manifestData.web3Accounts.length ||
     manifestData.website;
 </script>
 
@@ -45,6 +47,9 @@
       {#if manifestData.generativeInfo?.softwareAgents?.length}
         <AiSubSection
           softwareAgents={manifestData.generativeInfo.softwareAgents} />
+      {/if}
+      {#if manifestData.web3Accounts.length}
+        <Web3SubSection web3Accounts={manifestData.web3Accounts} />
       {/if}
       {#if manifestData.website}
         <WebsiteSubSection website={manifestData.website} />
