@@ -28,13 +28,13 @@
   class="flex w-screen items-center justify-center px-[1.5rem] lg:my-20 xl:my-40">
   <div class="flex flex-col items-center justify-center">
     <div
-      class="text-trust-title w-[27rem] md:w-[40rem] 2xl:w-[58rem] text-center py-20 xl:py-0 md:text-trust-title-md xl:text-trust-title-xl 2xl:text-trust-title-2xl">
+      class="text-trust-title xs:w-[20rem] w-[27rem] md:w-[40rem] 2xl:w-[58rem] text-center py-20 xl:py-0 md:text-trust-title-md xl:text-trust-title-xl 2xl:text-trust-title-2xl">
       What makes Content Credential trustworthy
     </div>
     <!-- Media query for screens between 991px and 1280px (lg to xl) -->
     <div
       class="flex flex-col items-center lg:flex-row lg:justify-center xl:hidden">
-      <div class="mb-4 lg:mb-0 lg:mr-8">
+      <div class="mb-4 lg:mb-0 lg:mr-8 xs:w-[80%]">
         <!-- Add margin for consistent gap -->
         <div
           class="text-trust-label font-Norske rounded-t-2xl px-[32px] py-[20px]"
@@ -50,7 +50,7 @@
           </div>
         </div>
       </div>
-      <div class="mb-4 lg:mb-0">
+      <div class="mb-4 lg:mb-0 xs:w-[80%]">
         <!-- Add margin for consistent gap -->
         <div
           class="text-trust-label font-Norske rounded-t-2xl px-[32px] py-[20px]"
@@ -69,7 +69,7 @@
     </div>
     <div class="lg:hidden"></div>
     <!-- Empty div to create space between rows -->
-    <div class="mb-4 lg:mx-auto lg:mb-0 lg:pt-12">
+    <div class="mb-4 lg:mx-auto lg:mb-0 lg:pt-12 xs:w-[80%] lg:w-1/2">
       <!-- Add margin for consistent gap and center the third item -->
       <div class="xl:hidden">
         <div
