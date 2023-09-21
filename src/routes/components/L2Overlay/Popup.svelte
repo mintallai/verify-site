@@ -53,13 +53,13 @@
   {#if isOpen}
     <div class="bg-brand-white h-full w-[350px] rounded-xl py-4">
       <div class="py-2">
-        <h1 class="px-6 pb-1 font-bold">Content Credentials</h1>
+        <h1 class="px-6 pb-2 font-bold text-[24px]">Content Credentials</h1>
         <p class="text-brand-gray px-6">Issued by Adobe Inc. on Feb 2. 2023</p>
       </div>
       <hr />
       {#each data as item}
         <div class="px-6 py-2">
-          <div class="flex flex-row gap-1">
+          <div class="flex flex-row items-center justify-start gap-1">
             <div class="font-bold">{item.label}</div>
             <div>{item.value}</div>
           </div>
