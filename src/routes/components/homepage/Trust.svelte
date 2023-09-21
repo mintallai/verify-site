@@ -24,9 +24,10 @@
   ];
 </script>
 
-<div class="flex w-screen items-center justify-center px-[1.5rem]">
-  <div class="flex flex-col items-center justify-center pt-16">
-    <div class="text-hiw-title w-[36rem] pb-16 text-center">
+<div
+  class="flex w-screen items-center justify-center px-[1.5rem] lg:my-20 xl:my-40">
+  <div class="flex flex-col items-center justify-center">
+    <div class="text-hiw-title w-[36rem] text-center py-20 xl:py-0">
       What makes Content Credential trustworthy
     </div>
     <!-- Media query for screens between 991px and 1280px (lg to xl) -->
@@ -97,7 +98,7 @@
             {item.label}
           </div>
           <div
-            class="text-trust-desc xl:text-trust-desc-xl h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px]">
+            class="text-trust-desc xl:text-trust-desc-xl h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pt-[20px]">
             <div class="xl:h-[269px] xl:w-[325px]">
               {item.description}
             </div>
