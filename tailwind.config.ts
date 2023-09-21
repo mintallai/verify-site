@@ -340,6 +340,31 @@ export default {
         {
           fontWeight: '700',
           lineHeight: '2.75rem',
+          letterSpacing: '-0.075rem',
+        },
+      ],
+      'trust-title-md': [
+        '3rem',
+        {
+          fontWeight: '700',
+          lineHeight: '3.3rem',
+          letterSpacing: '-0.075rem',
+        },
+      ],
+      'trust-title-xl': [
+        '3.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '3.85rem',
+          letterSpacing: '-0.105rem',
+        },
+      ],
+      'trust-title-2xl': [
+        '4.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '4.95rem',
+          letterSpacing: '-0.135rem',
         },
       ],
       'trust-label': [
