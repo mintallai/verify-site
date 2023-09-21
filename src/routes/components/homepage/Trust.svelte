@@ -26,20 +26,79 @@
 
 <div class="flex w-screen items-center justify-center px-[1.5rem]">
   <div class="flex flex-col items-center justify-center pt-16">
-    <div class="text-hiw-title pb-16 text-center">
+    <div class="text-hiw-title w-[36rem] pb-16 text-center">
       What makes Content Credential trustworthy
     </div>
-    <div class="flex w-full flex-col">
+    <!-- Media query for screens between 991px and 1280px (lg to xl) -->
+    <div
+      class="flex flex-col items-center lg:flex-row lg:justify-center xl:hidden">
+      <div class="mb-4 lg:mb-0 lg:mr-8">
+        <!-- Add margin for consistent gap -->
+        <div
+          class="text-trust-label font-Norske rounded-t-2xl px-[32px] py-[20px]"
+          style="background-color: #84c7fc">
+          Open-source standards
+        </div>
+        <div
+          class="text-trust-desc lg:text-trust-desc-lg h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] lg:pb-0">
+          <div class="lg:h-[269px] lg:w-[325px]">
+            Content Credentials are based on open technical standards developed
+            and maintained by the C2PA, a cross-industry membership
+            organization. You can review the standards anytime.
+          </div>
+        </div>
+      </div>
+      <div class="mb-4 lg:mb-0">
+        <!-- Add margin for consistent gap -->
+        <div
+          class="text-trust-label font-Norske rounded-t-2xl px-[32px] py-[20px]"
+          style="background-color: #5ac97d">
+          Clear detection of tampering
+        </div>
+        <div
+          class="text-trust-desc lg:text-trust-desc-lg h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] lg:pb-0">
+          <div class="lg:h-[269px] lg:w-[325px]">
+            Content Credentials are made possible by cryptographic processes
+            which mean that any unsupported changes made to Content Credentials
+            can be easily identified and exposed.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="lg:hidden"></div>
+    <!-- Empty div to create space between rows -->
+    <div class="mb-4 lg:mx-auto lg:mb-0 lg:pt-12">
+      <!-- Add margin for consistent gap and center the third item -->
+      <div class="xl:hidden">
+        <div
+          class="text-trust-label font-Norske rounded-t-2xl px-[32px] py-[20px]"
+          style="background-color: #888ef8">
+          Accountability
+        </div>
+        <div
+          class="text-trust-desc lg:text-trust-desc-lg h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] lg:pb-0">
+          <div class="lg:h-[269px] lg:w-[325px]">
+            Organizations that issue Content Credentials must identify
+            themselves in the Content Credentials they issue. Issuers therefore
+            stake their reputations on their ability to collect and include
+            information with accuracy. Learn more about the Content Credentials
+            trust model.
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Media query for screens wider than 1280px (xl+) -->
+    <div class="hidden justify-center gap-4 xl:flex">
       {#each data as item}
-        <div class="h-[302px]">
-          <div class="">
-            <div
-              class="text-trust-label font-Norske rounded-t-2xl px-[32px] py-[20px]"
-              style={`background-color: ${item.bgColor}`}>
-              {item.label}
-            </div>
-            <div
-              class="text-trust-desc h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pt-[20px] pb-20">
+        <div class="w-[389px]">
+          <div
+            class="text-trust-label font-Norske rounded-t-2xl px-[32px] py-[20px]"
+            style={`background-color: ${item.bgColor}`}>
+            {item.label}
+          </div>
+          <div
+            class="text-trust-desc xl:text-trust-desc-xl h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px]">
+            <div class="xl:h-[269px] xl:w-[325px]">
               {item.description}
             </div>
           </div>

@@ -351,10 +351,25 @@ export default {
         },
       ],
       'trust-desc': [
+        '1.125rem',
+        {
+          fontWeight: '400',
+          lineHeight: '1.51875rem',
+        },
+      ],
+      'trust-desc-xl': [
         '1rem',
         {
           fontWeight: '400',
           lineHeight: '1.35rem',
+        },
+      ],
+      'trust-desc-2xl': [
+        '1.3125rem',
+        {
+          fontWeight: '400',
+          lineHeight: '1.77188rem',
+          letterSpacing: '-0.01313rem',
         },
       ],
       'movement-title': [

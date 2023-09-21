@@ -38,7 +38,7 @@
 <div
   class="flex h-full w-screen flex-col items-center bg-[#F6F5F2] pb-40 p-[1.5rem]">
   <div class="text-hiw-title pt-12">How it Works</div>
-  <div class="flex w-full flex-col">
+  <div class="flex w-full flex-col items-center">
     <div class="">
       {#each data as item}
         <div class="lg:pt-8 xl:px-[7rem] xl:py-14 max-w-[116rem]">
@@ -60,7 +60,10 @@
               {item.description}
             </div>
           </div>
-          <img src={item.Image} alt="how it works" class="w-full rounded-2xl" />
+          <img
+            src={item.Image}
+            alt="how it works"
+            class="max-w[71.375rem] rounded-2xl" />
         </div>
       {/each}
     </div>
