@@ -1,5 +1,5 @@
 <script>
-  import Image from '../../../../assets/png/CR-purp.png';
+  import Image from '../../../../assets/png/cr-purp.png';
 </script>
 
 <div
