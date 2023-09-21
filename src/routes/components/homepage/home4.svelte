@@ -3,9 +3,9 @@
 </script>
 
 <div
-  class="flex w-screen flex-col items-center justify-center px-[1.5rem] lg:gap-10 lg:flex-row lg:items-start">
+  class="flex w-screen flex-col items-center justify-center px-[1.5rem] lg:flex-row lg:gap-10 lg:items-start xl:gap-[11rem] 2xl:max-w-[90rem]">
   <div class="lg:w-1/2">
-    <div class="w-full flex justify-center items-center pb-10">
+    <div class="w-full flex justify-center items-center pb-10 2xl:w-full">
       <img
         src={Image}
         class="max-h-full max-w-full rounded-xl"
