@@ -294,7 +294,16 @@ export default {
         '1.5rem',
         {
           fontWeight: '400',
-          lineHeight: '1.35rem',
+          lineHeight: '2.025rem',
+          letterSpacing: '-0.015rem',
+        },
+      ],
+      'hiw-label-xl': [
+        '1.75rem',
+        {
+          fontWeight: '400',
+          lineHeight: '2.3625rem ',
+          letterSpacing: '-0.0175rem',
         },
       ],
       'hiw-title': [
@@ -309,6 +318,21 @@ export default {
         {
           fontWeight: '400',
           lineHeight: '1.35rem',
+        },
+      ],
+      'hiw-desc-xl': [
+        '1.125rem',
+        {
+          fontWeight: '400',
+          lineHeight: '1.51875rem ',
+        },
+      ],
+      'hiw-desc-2xl': [
+        '1.3125rem',
+        {
+          fontWeight: '400',
+          lineHeight: '1.77188rem',
+          letterSpacing: '-0.01313rem',
         },
       ],
       'trust-title': [
@@ -441,13 +465,6 @@ export default {
           lineHeight: '35px',
         },
       ],
-      'trust-title': [
-        '1.75rem',
-        {
-          fontWeight: '400',
-        },
-      ],
-
       // For the Homepage
     },
     boxShadow: {

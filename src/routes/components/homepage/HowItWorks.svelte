@@ -41,17 +41,22 @@
   <div class="flex w-full flex-col">
     <div class="">
       {#each data as item}
-        <div class="">
-          <div class="flex flex-col items-start justify-between pt-12 pb-12">
-            <div class="flex flex-row items-start justify-center gap-4">
+        <div class="lg:pt-8 xl:px-[7rem] xl:py-14 max-w-[116rem]">
+          <div
+            class="max-w-[86rem] flex flex-col items-start justify-between pt-12 pb-12 lg:flex-row">
+            <div
+              class="flex flex-row items-start justify-center gap-4 lg:w-1/2">
               <div
                 class="flex h-[22px] w-[22px] items-center justify-center rounded-full px-4 py-4"
                 style={`background-color: ${item.labelBg}`}>
                 {item.labelNumber}
               </div>
-              <div class="text-hiw-label pr-10">{item.label}</div>
+              <div class="text-hiw-label pr-10 xl:text-hiw-label-xl">
+                {item.label}
+              </div>
             </div>
-            <div class="text-hiw-desc text-brand-gray pt-6">
+            <div
+              class="text-hiw-desc text-brand-gray pt-6 lg:pt-0 lg:w-1/2 xl:text-hiw-desc-xl 2xl:text-hiw-desc-2xl">
               {item.description}
             </div>
           </div>
