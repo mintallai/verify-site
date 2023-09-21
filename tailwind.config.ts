@@ -562,6 +562,7 @@ export default {
         'brand-orange': '#ef9449',
         'brand-violet': '#888ef8',
         'brand-blue': '#84c7fc',
+        'brand-white': '#ffffff',
       },
       spacing: {
         sidebar: '20rem',
