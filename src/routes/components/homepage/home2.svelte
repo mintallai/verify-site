@@ -1,20 +1,22 @@
 <script>
-  import Trust from '../../../../assets/png/trust.png';
+  import Image from '../../../../assets/png/trust.png';
 </script>
 
 <div
-  class="flex w-screen flex-col items-center justify-center px-[10rem] lg:flex-row lg:items-start lg:gap-10 xl:gap-[11rem] 2xl:max-w-[90rem]">
+  class="flex w-screen flex-col items-center justify-center px-[10rem] lg:flex-row lg:items-start lg:gap-10 xl:gap-[7rem] 2xl:max-w-[90rem]">
   <div
-    class="flex w-screen flex-col items-center justify-center px-[1.5rem] lg:flex-row lg:items-start lg:gap-10 xl:gap-[11rem] 2xl:w-[90rem]">
+    class="flex w-screen flex-col items-center justify-center px-[1.5rem] lg:flex-row lg:items-start lg:gap-10 xl:gap-[7rem] 2xl:w-[90rem]">
+    <!-- Left Column -->
     <div
-      class="flex w-full items-center justify-center pb-10 lg:w-1/2 xl:pb-0 2xl:w-full">
+      class="flex w-full items-center justify-center pb-10 lg:w-1/2 xl:pb-0 2xl:w-1/2">
       <img
-        src={Trust}
-        class="max-h-full max-w-full rounded-xl xl:h-full 2xl:w-[675px]"
+        src={Image}
+        class="max-h-full max-w-full rounded-xl xl:h-full 2xl:w-full"
         alt="placeholder" />
     </div>
+    <!-- Right Column -->
     <div
-      class="flex flex-col items-start justify-start lg:w-1/2 2xl:max-w-[442px]">
+      class="flex flex-col items-start justify-start lg:w-1/2 xl:items-center 2xl:w-1/2 max-w-[442px]">
       <div class="text-key-title 2xl:text-key-title-xl pb-8 text-left">
         Building trust in what you see online
       </div>
