@@ -44,10 +44,9 @@
         <div class="lg:pt-8 xl:px-[7rem] xl:py-14 max-w-[116rem]">
           <div
             class="max-w-[86rem] flex flex-col items-start justify-between pt-12 pb-12 lg:flex-row">
-            <div
-              class="flex flex-row items-start justify-center gap-4 lg:w-1/2">
+            <div class="flex flex-row items-start justify-start gap-4 lg:w-1/2">
               <div
-                class="flex h-[22px] w-[22px] items-center justify-center rounded-full px-4 py-4"
+                class="flex h-[22px] w-[22px] items-center justify-center rounded-full mr-0.5 px-4 py-4"
                 style={`background-color: ${item.labelBg}`}>
                 {item.labelNumber}
               </div>
@@ -63,7 +62,7 @@
           <img
             src={item.Image}
             alt="how it works"
-            class="max-w[71.375rem] rounded-2xl" />
+            class="max-w[71.375rem] rounded-2xl 2xl:w-full" />
         </div>
       {/each}
     </div>

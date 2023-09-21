@@ -11,7 +11,7 @@
       class="flex w-full items-center justify-center pb-10 lg:w-1/2 xl:pb-0 2xl:w-1/2">
       <img
         src={Image}
-        class="max-h-full max-w-full rounded-xl xl:h-full 2xl:w-full"
+        class="max-h-full max-w-full rounded-xl xl:h-full 2xl:w-full 2xl:h-full"
         alt="placeholder" />
     </div>
     <!-- Right Column -->
