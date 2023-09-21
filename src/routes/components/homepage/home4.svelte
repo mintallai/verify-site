@@ -11,12 +11,12 @@
       class="flex w-full items-center justify-center pb-10 lg:w-1/2 xl:pb-0 2xl:w-1/2">
       <img
         src={Image}
-        class="max-h-full max-w-full rounded-xl xl:h-full 2xl:w-full"
+        class="max-h-full max-w-full rounded-xl xl:h-full 2xl:h-full 2xl:w-full"
         alt="placeholder" />
     </div>
     <!-- Right Column -->
     <div
-      class="flex max-w-[442px] flex-col items-start justify-start lg:w-1/2 xl:items-center 2xl:w-1/2">
+      class="flex flex-col items-start justify-start lg:w-1/2 xl:items-center 2xl:w-1/2 2xl:max-w-[442px]">
       <div class="text-key-title 2xl:text-key-title-xl pb-8 text-left">
         Introducing the Content Credentials pin
       </div>

@@ -16,7 +16,7 @@
     </div>
     <!-- Right Column -->
     <div
-      class="flex flex-col items-start justify-start lg:w-1/2 xl:items-center 2xl:w-1/2 max-w-[442px]">
+      class="flex flex-col items-start justify-start lg:w-1/2 xl:items-center 2xl:w-1/2 2xl:max-w-[442px]">
       <div class="text-key-title 2xl:text-key-title-xl pb-8 text-left">
         Building trust in what you see online
       </div>
