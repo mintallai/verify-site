@@ -13,7 +13,7 @@
   from Adobe.
 -->
 <script lang="ts">
-  import close from '$assets/svg/color/logos/close.svg';
+  import close from '$assets/svg/monochrome/close.svg';
   import Body from '$src/components/typography/Body.svelte';
   import type { AssetData } from '$src/lib/asset';
   import { createEventDispatcher } from 'svelte';
@@ -26,7 +26,7 @@
   import ThumbnailSection from '../Thumbnail/ThumbnailSection.svelte';
   import LightboxModal from '../modals/LightboxModal/LightboxModal.svelte';
   import AboutSection from './AboutSection/AboutSection.svelte';
-  import AdvancedSection from './AdvancedSection/AdvancedSection.svelte';
+  // import AdvancedSection from './AdvancedSection/AdvancedSection.svelte';
   import CameraCaptureSection from './CameraCaptureSection/CameraCaptureSection.svelte';
   import ContentSummarySection, {
     assetDataToProps as assetDataToContentSummaryProps,
@@ -87,6 +87,7 @@
 </div>
 <ThumbnailSection
   thumbnail={$assetData.thumbnail}
+  mimeType={$assetData.mimeType}
   on:click={handleThumbnailClick} />
 {#if $assetData.manifestData && isValid}
   <ContentSummarySection {...assetDataToContentSummaryProps($assetData)} />
@@ -94,7 +95,7 @@
   <ProcessSection manifestData={$assetData.manifestData} {ingredients} />
   <CameraCaptureSection manifestData={$assetData.manifestData} />
   <AboutSection manifestData={$assetData.manifestData} />
-  <AdvancedSection />
+  <!-- <AdvancedSection /> -->
 {:else}
   <div class="p-5">
     <Body>

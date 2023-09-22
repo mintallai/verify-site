@@ -68,11 +68,15 @@ export class VerifyPage {
 
   async waitForTreeView() {
     await this.page.waitForFunction(() => {
+      const loadingOverlay = document.querySelector(
+        'div[data-testid="loading-overlay"]',
+      );
       const treeViewThumbnails = Array.from<HTMLImageElement>(
         document.querySelectorAll('button[role="treeitem"] img'),
       );
 
       return (
+        loadingOverlay === null &&
         treeViewThumbnails.length > 0 &&
         treeViewThumbnails.every((x) => x.complete)
       );
@@ -82,7 +86,7 @@ export class VerifyPage {
   async takeDebugSnapshot(name: string, options: SnapshotOptions = {}) {
     const type = 'jpeg';
     const height = options.minHeight ?? percyConfig.snapshot['min-height'];
-    const widths = percyConfig.snapshot['widths'];
+    const widths = options.widths ?? percyConfig.snapshot['widths'];
     const outputDir = resolve('.', 'snapshot-debug');
     await mkdirp(outputDir);
 
