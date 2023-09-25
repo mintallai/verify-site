@@ -1,7 +1,13 @@
 <script>
   export let imageUrl;
   import Pin from '$assets/svg/color/cr-icon-fill.svg?component';
-  import Popup from './Popup.svelte'; // Import the Popup component
+  import MobilePopup from './MobilePopup.svelte';
+  import DesktopPopup from './Popup.svelte'; // Import the DesktopPopup component
+
+  // Function to detect if the device is mobile
+  // function isMobileDevice() {
+  //   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  // }
 
   let isPopupOpen = false;
 
@@ -28,6 +34,11 @@
     </div>
   </div>
 
-  <!-- Include the Popup component -->
-  <Popup isOpen={isPopupOpen} {togglePopup} />
+  <!-- Conditionally render the appropriate popup based on the device type -->
+  <!-- svelte-ignore missing-declaration -->
+  {#if window.innerWidth < 768}
+    <MobilePopup isOpen={isPopupOpen} {togglePopup} />
+  {:else}
+    <DesktopPopup isOpen={isPopupOpen} {togglePopup} />
+  {/if}
 </div>

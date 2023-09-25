@@ -1,4 +1,3 @@
-<!-- Popup.svelte -->
 <script>
   export let isOpen = false; // To control the menu's visibility
 
@@ -52,14 +51,15 @@
   ];
 </script>
 
-<!-- Popup markup -->
 <div
   class="popup shadow-lg absolute right-4 top-12 rounded-lg p-2 mb-10"
   class:visible={isOpen}>
   {#if isOpen}
     <div class="h-full w-[350px] rounded-xl bg-brand-white py-4">
       <div class="py-3">
-        <h1 class="px-6 pb-3 text-[24px] font-bold">Content Credentials</h1>
+        <h1 class="px-6 pb-3 text-[24px] font-bold">
+          Mobile Content Credentials
+        </h1>
         <p class="px-6 text-gray-900/60">Issued by Adobe Inc. on Feb 2. 2023</p>
       </div>
       <hr />
