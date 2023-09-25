@@ -68,13 +68,8 @@ export default {
     fontFamily: {
       home: defs['family-home'],
       base: defs['family-base'],
-      Norske: ['Norske', 'sans-serif'],
     },
     colors: {
-      'brand-yellow': '#FCE458',
-      'brand-orange': '#EF9349',
-      'brand-gray': '#757575',
-      'sub-desc': '#757575',
       white: '#ffffff',
       'gray-40': defs['gray-40'],
       'gray-100': defs['gray-100'],
@@ -100,6 +95,13 @@ export default {
       'blue-1200': defs['blue-1200'],
       'blue-1300': defs['blue-1300'],
       'red-900': defs['red-900'],
+      'brand-red': defs['brand-red'],
+      'brand-blue': defs['brand-blue'],
+      'brand-green': defs['brand-green'],
+      'brand-yellow': defs['brand-yellow'],
+      'brand-orange': defs['brand-orange'],
+      'brand-violet': defs['brand-violet'],
+      'brand-white': defs['brand-white'],
       transparent: 'transparent',
       current: 'currentColor',
     },
@@ -552,18 +554,6 @@ export default {
       md: '0px 2px 6px 0px rgba(0, 0, 0, 0.15)',
     },
     extend: {
-      fontFamily: {
-        Norske: ['Store Norske Ja', 'sans-serif'],
-      },
-      backgroundColor: {
-        'brand-red': '#ED8089',
-        'brand-green': '#5ac97d',
-        'brand-yellow': '#fbe756',
-        'brand-orange': '#ef9449',
-        'brand-violet': '#888ef8',
-        'brand-blue': '#84c7fc',
-        'brand-white': '#ffffff',
-      },
       spacing: {
         sidebar: '20rem',
         header: '3.5rem',

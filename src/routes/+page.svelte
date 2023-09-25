@@ -13,18 +13,15 @@
 -->
 <script lang="ts">
   // import { _ } from 'svelte-i18n';
-  // import Footer from '../components/Footer/Footer.svelte';
+  import Footer from '../components/Footer/Footer.svelte';
   // import Header from './components/header/Header.svelte';
-  import Header from './components/header/Header.svelte';
+  import Header from '../components/Home/header/Header.svelte';
   // import HeaderLink from '../components/Header/HeaderLink.svelte';
-  import Hero from './components/hero/NewHero.svelte';
-  import NewFooter from '$src/components/Footer/NewFooter.svelte';
-  import Home1 from './components/homepage/home1.svelte';
-  import HowItWorks from './components/homepage/HowItWorks.svelte';
-  import Trust from './components/homepage/Trust.svelte';
-  import Movement from './components/homepage/Movement.svelte';
-  // import Orgs from './components/homepage/Orgs.svelte';
-  // import Stories from './components/homepage/Stories.svelte';
+  import Hero from '$src/components/Home/hero/NewHero.svelte';
+  import Home1 from '$src/components/Home/homepage/Home1.svelte';
+  import HowItWorks from '$src/components/Home/homepage/HowItWorks.svelte';
+  import Trust from '$src/components/Home/homepage/Trust.svelte';
+  import Movement from '$src/components/Home/homepage/Movement.svelte';
 </script>
 
 <!-- <Header>
@@ -42,8 +39,6 @@
     <HowItWorks />
     <Trust />
     <Movement />
-    <!-- <Orgs /> -->
-    <!-- <Stories /> -->
   </div>
-  <NewFooter />
+  <Footer />
 </div>
