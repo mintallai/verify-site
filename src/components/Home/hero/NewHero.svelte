@@ -1,6 +1,6 @@
 <script>
   // import { _ } from 'svelte-i18n';
-  import PolarBear from '../../../../assets/png/polarbear.png';
+  import Image from '$assets/svg/logos/homepage/hero.svg';
   import L2Overlay from '../L2Overlay/L2Overlay.svelte';
 </script>
 
@@ -27,7 +27,7 @@
     </div>
     <div
       class="flex h-full w-full flex-col items-start justify-center lg:w-1/2">
-      <L2Overlay imageUrl={PolarBear} />
+      <L2Overlay imageUrl={Image} />
       <div class="pt-1 text-small-description text-gray-500">
         Click on the pin to see the Content Credentials.
       </div>
