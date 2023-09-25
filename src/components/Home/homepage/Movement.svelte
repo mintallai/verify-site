@@ -5,7 +5,7 @@
       Content Credentials is rolling out across the internet
     </div>
     <div
-      class="text-brand-gray w-full text-center text-movement-text xl:w-[50rem] xl:text-movement-text-xl 2xl:text-movement-text-2xl">
+      class="text-gray-900/60 w-full text-center text-movement-text xl:w-[50rem] xl:text-movement-text-xl 2xl:text-movement-text-2xl">
       Expect to see the Content Credentials pin popping up in more and more
       places. It’s already being implemented by leading organizations with the
       support of the Content Authenticity Initiative, the cross-industry

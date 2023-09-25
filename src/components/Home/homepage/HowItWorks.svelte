@@ -55,7 +55,7 @@
               </div>
             </div>
             <div
-              class="text-hiw-desc text-brand-gray pt-6 lg:pt-0 lg:w-1/2 xl:text-hiw-desc-xl 2xl:text-hiw-desc-2xl">
+              class="text-hiw-desc text-gray-900/60 pt-6 lg:pt-0 lg:w-1/2 xl:text-hiw-desc-xl 2xl:text-hiw-desc-2xl">
               {item.description}
             </div>
           </div>

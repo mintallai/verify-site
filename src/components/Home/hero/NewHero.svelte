@@ -19,7 +19,7 @@
           Wait, where did this image come from?
         </div>
         <div
-          class="text-hero-sub text-brand-gray text-center 2xl:text-hero-sub-desktop 2xl:w-[40rem]">
+          class="text-hero-sub text-gray-900/60 text-center 2xl:text-hero-sub-desktop 2xl:w-[40rem]">
           Deepfakes. Voice Cloning. It's hard to tell what's accurate and
           authentic online these days.
         </div>

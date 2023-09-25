@@ -21,7 +21,7 @@
         Introducing the Content Credentials pin
       </div>
       <div
-        class="text-key-sub-text text-brand-gray xl:text-key-sub-text-xl 2xl:text-key-sub-text-2xl">
+        class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl 2xl:text-key-sub-text-2xl">
         Every time you see the Content Credentials pin that means Content
         Credentials have been attached to the content! Simply click on the pin
         to reveal more information.

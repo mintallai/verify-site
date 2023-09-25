@@ -54,7 +54,7 @@
     <div class="bg-brand-white h-full w-[350px] rounded-xl py-4">
       <div class="py-2">
         <h1 class="px-6 pb-2 text-[24px] font-bold">Content Credentials</h1>
-        <p class="text-brand-gray px-6">Issued by Adobe Inc. on Feb 2. 2023</p>
+        <p class="text-gray-900/60 px-6">Issued by Adobe Inc. on Feb 2. 2023</p>
       </div>
       <hr />
       {#each data as item}

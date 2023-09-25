@@ -12,7 +12,7 @@
     </div>
     <div class="pt-10 flex flex-col items-center justify-center">
       <div
-        class="text-home-sub text-brand-gray text-center xl:text-home-sub-XL 2xl:text-home-sub-2xl">
+        class="text-home-sub text-gray-900/60 text-center xl:text-home-sub-XL 2xl:text-home-sub-2xl">
         Important information about the content you see is invisible to most
         users of the internet. Content Credentials is a new open-source tool
         that exposes answers to all the questions you have about content—like if

@@ -36,7 +36,7 @@
             <div class="pb-6 text-story-title">
               {item.title}
             </div>
-            <div class="text-sub-text text-brand-gray">
+            <div class="text-sub-text text-gray-900/60">
               {item.description}
             </div>
           </div>
