@@ -1,5 +1,5 @@
 <script>
-  import Image from '$assets/png/trust.png';
+  import Image from '$assets/svg/logos/homepage/home2.svg';
 </script>
 
 <div
