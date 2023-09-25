@@ -1,7 +1,7 @@
 <script>
   import Hiw1 from '$assets/svg/logos/homepage/2.svg';
   import Hiw2 from '$assets/svg/logos/homepage/1.svg';
-  import Hiw3 from '$assets/svg/logos/homepage/howitworks-3.svg';
+  import Hiw3 from '$assets/svg/logos/homepage/hiw3.svg';
 
   const data = [
     {
