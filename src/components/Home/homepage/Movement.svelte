@@ -12,8 +12,10 @@
       organization behind Content Credentials fighting for a more open and
       transparent internet.
     </div>
-    <a href="/learn-more">
-      <div class="rounded-full bg-brand-red px-4 py-3">Learn more</div>
+    <a href="/">
+      <div class="rounded-full bg-brand-red px-4 py-3 hover:bg-brand-red/80">
+        Learn more
+      </div>
     </a>
   </div>
 </div>

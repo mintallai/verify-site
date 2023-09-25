@@ -16,7 +16,7 @@
     <div class="pl-6">
       <a href="/verify">
         <div
-          class="w-[100px] rounded-full bg-brand-red px-2 py-3 text-center text-general">
+          class="w-[100px] rounded-full bg-brand-red px-2 py-3 text-center text-general hover:bg-brand-red/80">
           Verify
         </div>
       </a>

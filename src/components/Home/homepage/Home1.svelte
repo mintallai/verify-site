@@ -19,7 +19,9 @@
         it was made with AI or not, who made it and when, and how it was
         made—with a simple click.
       </div>
-      <a href="/" class="bg-brand-blue rounded-full px-3 py-3 mt-10"
+      <a
+        href="/"
+        class="bg-brand-blue rounded-full px-3 py-3 mt-10 hover:bg-brand-blue/80"
         >See how it works</a>
     </div>
   </div>
