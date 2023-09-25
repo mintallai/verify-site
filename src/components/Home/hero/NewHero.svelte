@@ -26,7 +26,7 @@
       </div>
     </div>
     <div
-      class="flex h-full w-full flex-col items-start justify-center lg:w-1/2">
+      class="flex h-full w-full flex-col items-start justify-center md:items-center lg:w-1/2 lg:items-start">
       <L2Overlay imageUrl={Image} />
       <div class="pt-1 text-small-description text-gray-500">
         Click on the pin to see the Content Credentials.
