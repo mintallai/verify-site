@@ -9,6 +9,12 @@
 
   const data = [
     {
+      id: 0,
+      label: ' ',
+      value:
+        'This image combines multiple pieces of content. At least one was generated with an AI tool.',
+    },
+    {
       id: 1,
       label: 'Produced by',
       value: 'Benoit Lemoine',
@@ -51,14 +57,14 @@
   class="popup shadow-lg absolute right-4 top-12 rounded-lg p-2"
   class:visible={isOpen}>
   {#if isOpen}
-    <div class="bg-brand-white h-full w-[350px] rounded-xl py-4">
-      <div class="py-2">
-        <h1 class="px-6 pb-2 text-[24px] font-bold">Content Credentials</h1>
-        <p class="text-gray-900/60 px-6">Issued by Adobe Inc. on Feb 2. 2023</p>
+    <div class="h-full w-[350px] rounded-xl bg-brand-white py-4">
+      <div class="py-3">
+        <h1 class="px-6 pb-3 text-[24px] font-bold">Content Credentials</h1>
+        <p class="px-6 text-gray-900/60">Issued by Adobe Inc. on Feb 2. 2023</p>
       </div>
       <hr />
       {#each data as item}
-        <div class="px-6 py-2">
+        <div class="px-6 py-3">
           <div class="flex flex-row items-center justify-start gap-1">
             <div class="font-bold">{item.label}</div>
             <div>{item.value}</div>

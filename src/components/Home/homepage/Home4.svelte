@@ -17,14 +17,17 @@
     <!-- Right Column -->
     <div
       class="flex flex-col items-start justify-start lg:w-1/2 xl:items-center 2xl:w-1/2 2xl:max-w-[442px]">
-      <div class="text-key-title 2xl:text-key-title-xl pb-8 text-left">
-        Introducing the Content Credentials pin
-      </div>
-      <div
-        class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl 2xl:text-key-sub-text-2xl">
-        Every time you see the Content Credentials pin that means Content
-        Credentials have been attached to the content! Simply click on the pin
-        to reveal more information.
+      <div class="max-w-[676px]">
+        <!-- Adjust the max-width as needed -->
+        <div class="pb-8 text-left text-key-title 2xl:text-key-title-xl">
+          Introducing the Content Credentials pin
+        </div>
+        <div
+          class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl 2xl:text-key-sub-text-2xl">
+          Every time you see the Content Credentials pin that means Content
+          Credentials have been attached to the content! Simply click on the pin
+          to reveal more information.
+        </div>
       </div>
     </div>
   </div>
