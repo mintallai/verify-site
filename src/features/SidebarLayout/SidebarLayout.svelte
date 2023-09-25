@@ -31,7 +31,7 @@
   <div class="flex h-screen flex-col border-gray-100 bg-white lg:border-e-2">
     <div
       class={[
-        'overflow-hidden transition-all duration-300',
+        'shrink-0 overflow-hidden transition-all duration-300',
         showHeader
           ? 'max-h-16 opacity-100 ease-in'
           : 'max-h-0 opacity-0 ease-out',
@@ -41,7 +41,12 @@
     <div class="min-height-0 relative w-full flex-grow overflow-hidden">
       <slot name="sidebar" />
     </div>
-    <LanguagePicker />
+    <div
+      class="relative border-t px-5 py-5 transition-colors duration-100"
+      class:border-transparent={leftColumnTakeover}
+      class:border-gray-100={!leftColumnTakeover}>
+      <LanguagePicker />
+    </div>
   </div>
   {#if !leftColumnTakeover}
     <div
