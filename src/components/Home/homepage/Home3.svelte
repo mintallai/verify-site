@@ -10,32 +10,32 @@
   <div
     class="pt-6 lg:col-start-1 lg:col-end-6 lg:pt-0 xl:col-start-2 xl:col-end-6 xl:flex">
     <div class="max-w-[676px]">
-      <div class="pb-6 text-left text-key-title xxl:text-key-title-xl">
+      <h3 class="xxl:text-key-title-xl pb-6 text-left text-key-title">
         Empowering creators to get credit for their work
-      </div>
-      <div
-        class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl xxl:text-key-sub-text-xxl">
+      </h3>
+      <p
+        class="xxl:text-key-sub-text-xxl text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl">
         Content is often mis-credited or not credited at all when shared online,
         creating tons of lost opportunity for creators. Content Credentials
         enable creators to get recognition for what they create—helping them
         build a following and market their work.
-      </div>
+      </p>
     </div>
   </div>
   <!--  -->
   <div
-    class="sm:hidden pt-6 lg:col-start-1 lg:col-end-6 lg:hidden lg:pt-0 xl:col-start-8 xl:col-end-12">
+    class="pt-6 sm:hidden lg:col-start-1 lg:col-end-6 lg:hidden lg:pt-0 xl:col-start-8 xl:col-end-12">
     <div class="max-w-[676px]">
-      <div class="pb-6 text-left text-key-title xxl:text-key-title-xl">
+      <h3 class="xxl:text-key-title-xl pb-6 text-left text-key-title">
         Empowering creators to get credit for their work
-      </div>
-      <div
-        class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl xxl:text-key-sub-text-xxl">
+      </h3>
+      <p
+        class="xxl:text-key-sub-text-xxl text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl">
         Content is often mis-credited or not credited at all when shared online,
         creating tons of lost opportunity for creators. Content Credentials
         enable creators to get recognition for what they create—helping them
         build a following and market their work.
-      </div>
+      </p>
     </div>
   </div>
   <!-- Below hidden until Desktop -->

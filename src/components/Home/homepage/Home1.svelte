@@ -3,25 +3,25 @@
 </script>
 
 <div
-  class="w-screen flex flex-col items-center justify-evenly py-[4rem] px-[1.5rem] gap-6">
+  class="flex w-screen flex-col items-center justify-evenly gap-6 px-[1.5rem] py-[4rem]">
   <div
-    class="flex flex-col items-center justify-center pt-20 pb-10 xl:h-screen xl:w-[802px] xxl:w-[910px]">
-    <div
-      class="text-home-secondary-title text-center md:text-home-title-md xl:text-hero-title xxl:text-home-title-xxl">
+    class="xxl:w-[910px] flex flex-col items-center justify-center pb-10 pt-20 xl:h-screen xl:w-[802px]">
+    <h2
+      class="xxl:text-home-title-xxl text-center text-home-secondary-title md:text-home-title-md xl:text-hero-title">
       Content Credentials reveals helpful information that's usually hidden
-    </div>
-    <div class="pt-10 flex flex-col items-center justify-center">
-      <div
-        class="text-home-sub text-gray-900/60 text-center xl:text-home-sub-XL xxl:text-home-sub-xxl">
+    </h2>
+    <div class="flex flex-col items-center justify-center pt-10">
+      <p
+        class="xxl:text-home-sub-xxl text-center text-home-sub text-gray-900/60 xl:text-home-sub-XL">
         Important information about the content you see is invisible to most
         users of the internet. Content Credentials is a new open-source tool
         that exposes answers to all the questions you have about content—like if
         it was made with AI or not, who made it and when, and how it was
         made—with a simple click.
-      </div>
+      </p>
       <a
         href="/"
-        class="bg-brand-blue rounded-full px-3 py-3 mt-10 hover:bg-brand-blue/80"
+        class="mt-10 rounded-full bg-brand-blue px-3 py-3 hover:bg-brand-blue/80"
         >See how it works</a>
     </div>
   </div>

@@ -27,36 +27,36 @@
 <div
   class="flex w-screen items-center justify-center px-[1.5rem] lg:my-20 xl:my-40">
   <div class="flex flex-col items-center justify-center">
-    <div
-      class="text-trust-title xs:w-[22rem] w-[27rem] md:w-[40rem] xxl:w-[58rem] text-center py-20 xl:py-0 md:text-trust-title-md xl:text-trust-title-xl xxl:text-trust-title-xxl">
+    <h2
+      class="xxl:w-[58rem] xxl:text-trust-title-xxl w-[27rem] py-20 text-center text-trust-title xs:w-[22rem] md:w-[40rem] md:text-trust-title-md xl:py-0 xl:text-trust-title-xl">
       What makes Content Credential trustworthy
-    </div>
+    </h2>
     <!-- Media query for screens between 991px and 1280px (lg to xl) -->
     <div
       class="flex flex-col items-center lg:flex-row lg:justify-center xl:hidden">
-      <div class="mb-4 lg:mb-0 lg:mr-8 xs:w-[80%]">
+      <div class="mb-4 xs:w-[80%] lg:mb-0 lg:mr-8">
         <!-- Add margin for consistent gap -->
-        <div
-          class="text-trust-label rounded-t-xxl px-[32px] py-[20px] bg-brand-blue">
+        <h3
+          class="rounded-t-xxl bg-brand-blue px-[32px] py-[20px] text-trust-label">
           Open-source standards
-        </div>
+        </h3>
         <div
-          class="text-trust-desc lg:text-trust-desc-lg h-full rounded-b-xxl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] lg:pb-0">
-          <div class="lg:h-[269px] lg:w-[325px]">
+          class="lg:text-trust-desc-lg rounded-b-xxl h-full bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] text-trust-desc lg:pb-0">
+          <p class="lg:h-[269px] lg:w-[325px]">
             Content Credentials are based on open technical standards developed
             and maintained by the C2PA, a cross-industry membership
             organization. You can review the standards anytime.
-          </div>
+          </p>
         </div>
       </div>
-      <div class="mb-4 lg:mb-0 xs:w-[80%]">
+      <div class="mb-4 xs:w-[80%] lg:mb-0">
         <!-- Add margin for consistent gap -->
         <div
-          class="text-trust-label font-Norske rounded-t-xxl px-[32px] py-[20px] bg-brand-green">
+          class="font-Norske rounded-t-xxl bg-brand-green px-[32px] py-[20px] text-trust-label">
           Clear detection of tampering
         </div>
         <div
-          class="text-trust-desc lg:text-trust-desc-lg h-full rounded-b-xxl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] lg:pb-0">
+          class="lg:text-trust-desc-lg rounded-b-xxl h-full bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] text-trust-desc lg:pb-0">
           <div class="lg:h-[269px] lg:w-[325px]">
             Content Credentials are made possible by cryptographic processes
             which mean that any unsupported changes made to Content Credentials
@@ -67,15 +67,15 @@
     </div>
     <div class="lg:hidden"></div>
     <!-- Empty div to create space between rows -->
-    <div class="mb-4 lg:mx-auto lg:mb-0 lg:pt-12 xs:w-[80%] lg:w-1/2">
+    <div class="mb-4 xs:w-[80%] lg:mx-auto lg:mb-0 lg:w-1/2 lg:pt-12">
       <!-- Add margin for consistent gap and center the third item -->
       <div class="xl:hidden">
         <div
-          class="text-trust-label font-Norske rounded-t-xxl px-[32px] py-[20px] bg-brand-violet">
+          class="font-Norske rounded-t-xxl bg-brand-violet px-[32px] py-[20px] text-trust-label">
           Accountability
         </div>
         <div
-          class="text-trust-desc lg:text-trust-desc-lg h-full rounded-b-xxl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] lg:pb-0">
+          class="lg:text-trust-desc-lg rounded-b-xxl h-full bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] text-trust-desc lg:pb-0">
           <div class="lg:h-[269px] lg:w-[325px]">
             Organizations that issue Content Credentials must identify
             themselves in the Content Credentials they issue. Issuers therefore
@@ -91,12 +91,12 @@
       {#each data as item}
         <div class="w-[389px]">
           <div
-            class="text-trust-label font-Norske rounded-t-xxl px-[32px] py-[20px]"
+            class="font-Norske rounded-t-xxl px-[32px] py-[20px] text-trust-label"
             style={`background-color: ${item.bgColor}`}>
             {item.label}
           </div>
           <div
-            class="text-trust-desc xl:text-trust-desc-xl xxl:text-trust-desc-xxl h-full rounded-b-xxl bg-[#F6F5F2] px-[32px] pt-[20px]">
+            class="xxl:text-trust-desc-xxl rounded-b-xxl h-full bg-[#F6F5F2] px-[32px] pt-[20px] text-trust-desc xl:text-trust-desc-xl">
             <div class="xl:h-[269px] xl:w-[325px]">
               {item.description}
             </div>

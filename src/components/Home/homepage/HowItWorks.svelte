@@ -36,31 +36,31 @@
 </script>
 
 <div
-  class="flex h-full w-screen flex-col items-center bg-[#F6F5F2] pb-40 p-[1.5rem]">
-  <div
-    class="text-hiw-title pt-12 md:text-hiw-title-md xl:text-hiw-title-xl xxl:text-hiw-title-xxl">
+  class="flex h-full w-screen flex-col items-center bg-[#F6F5F2] p-[1.5rem] pb-40">
+  <h2
+    class="md:text-hiw-title-md xl:text-hiw-title-xl xxl:text-hiw-title-xxl pt-12 text-hiw-title">
     How it Works
-  </div>
+  </h2>
   <div class="flex w-full flex-col items-center">
     <div class="">
       {#each data as item}
-        <div class="lg:pt-8 xl:px-[7rem] xl:py-14 max-w-[116rem]">
+        <div class="max-w-[116rem] lg:pt-8 xl:px-[7rem] xl:py-14">
           <div
-            class="max-w-[86rem] flex flex-col items-start justify-between pt-12 pb-12 lg:flex-row">
+            class="flex max-w-[86rem] flex-col items-start justify-between pb-12 pt-12 lg:flex-row">
             <div class="flex flex-row items-start justify-start gap-4 lg:w-1/2">
               <div
-                class="flex h-[22px] w-[22px] items-center justify-center rounded-full mr-0.5 px-4 py-4"
+                class="mr-0.5 flex h-[22px] w-[22px] items-center justify-center rounded-full px-4 py-4"
                 style={`background-color: ${item.labelBg}`}>
                 {item.labelNumber}
               </div>
-              <div class="text-hiw-label pr-10 xl:text-hiw-label-xl">
+              <h3 class="pr-10 text-hiw-label xl:text-hiw-label-xl">
                 {item.label}
-              </div>
+              </h3>
             </div>
-            <div
-              class="text-hiw-desc text-gray-900/60 pt-6 lg:pt-0 lg:w-1/2 xl:text-hiw-desc-xl xxl:text-hiw-desc-xxl">
+            <p
+              class="xxl:text-hiw-desc-xxl pt-6 text-hiw-desc text-gray-900/60 lg:w-1/2 lg:pt-0 xl:text-hiw-desc-xl">
               {item.description}
-            </div>
+            </p>
           </div>
           <img
             src={item.Image}
