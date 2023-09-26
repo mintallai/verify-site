@@ -21,7 +21,7 @@
       </p>
       <a
         href="/"
-        class="mt-10 rounded-full bg-brand-blue px-3 py-3 hover:bg-brand-blue/80"
+        class="h-[2.75rem] flex items-center mt-10 rounded-full bg-brand-blue px-[1.25rem] py-3 hover:bg-brand-blue/80"
         >See how it works</a>
     </div>
   </div>
