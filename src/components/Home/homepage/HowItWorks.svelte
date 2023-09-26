@@ -44,7 +44,7 @@
   <div class="flex w-full flex-col items-center">
     <div class="">
       {#each data as item}
-        <div class="max-w-[116rem] lg:pt-8 xl:px-[7rem] xl:py-14">
+        <div class="max-w-[116rem] lg:pt-8 xl:px-[10rem] xl:py-14">
           <div
             class="flex max-w-[86rem] flex-col items-start justify-between py-[4rem] lg:flex-row">
             <div class="flex flex-row items-start justify-start gap-4 lg:w-1/2">
