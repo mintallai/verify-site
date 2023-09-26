@@ -5,13 +5,13 @@
 </script>
 
 <div class="pb-10 pt-8 flex flex-col items-center justify-center">
-  <div class="py-[3rem] md:py-[5rem] lg:py-[8rem] xl:py-[10rem] w-full">
+  <div class="py-[3rem] md:py-[5rem] lg:py-[8rem] xl:pb-[160px] w-full">
     <Home2 />
   </div>
-  <div class="py-[3rem] md:py-[5rem] lg:py-[8rem] xl:py-[10rem] w-full">
+  <div class="py-[3rem] md:py-[5rem] lg:py-[8rem] xl:pb-[160px] w-full">
     <Home3 />
   </div>
-  <div class="py-[3rem] md:py-[5rem] lg:py-[8rem] xl:py-[10rem] w-full">
+  <div class="py-[3rem] md:py-[5rem] lg:py-[8rem] xl:pb-[160px] w-full">
     <Home4 />
   </div>
 </div>
