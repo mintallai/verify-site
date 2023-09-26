@@ -4,7 +4,7 @@
 
 <div class="px-[1.5rem] lg:grid lg:grid-cols-12 lg:gap-4 xl:max-w-[1440px]">
   <div class="lg:col-span-6 lg:col-start-7 lg:hidden">
-    <img src={Images} alt="" />
+    <img src={Images} alt="" class="w-full" />
   </div>
   <!-- Below hidden until Desktop -->
   <div

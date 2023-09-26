@@ -2,16 +2,15 @@
   import Image from '$assets/svg/logos/homepage/home2.svg';
 </script>
 
-<div class="px-[1.5rem] lg:grid lg:grid-cols-12 lg:gap-4 xl:max-w-[1440px]">
-  <div class="lg:col-span-6">
+<div
+  class="w-full px-[1.5rem] lg:grid lg:grid-cols-12 lg:gap-4 xl:max-w-[1440px]">
+  <div class="lg:col-span-6 w-full">
     <!-- Your image goes here -->
-    <img src={Image} alt="" />
+    <img src={Image} alt="" class="w-full" />
   </div>
   <div
     class="pt-6 lg:col-start-8 lg:col-end-12 lg:pt-0 xl:col-start-8 xl:col-end-12">
-    <div class="max-w-[676px]">
-      <!-- Adjust the max-width as needed -->
-
+    <div class="max-w-[676px] mx-auto md:mx-0">
       <h3 class="pb-6 text-left text-key-title xxl:text-key-title-xl">
         Building trust in what you see online
       </h3>

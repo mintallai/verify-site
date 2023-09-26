@@ -5,7 +5,7 @@
 </script>
 
 <div class="pb-10 pt-8 flex flex-col items-center justify-center">
-  <div class="py-10"><Home2 /></div>
-  <div class="py-10"><Home3 /></div>
-  <div class="py-10"><Home4 /></div>
+  <div class="py-10 w-full"><Home2 /></div>
+  <div class="py-10 w-full"><Home3 /></div>
+  <div class="py-10 w-full"><Home4 /></div>
 </div>
