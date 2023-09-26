@@ -3,7 +3,7 @@
 </script>
 
 <div
-  class="flex w-screen flex-col items-center justify-evenly gap-6 px-[1.5rem] py-[4rem]">
+  class="flex w-screen flex-col items-center justify-evenly gap-6 p-[1.5rem] max-w-[90rem]">
   <div
     class="xxl:w-[910px] flex flex-col items-center justify-center pb-10 pt-20 xl:h-screen xl:w-[802px]">
     <h2

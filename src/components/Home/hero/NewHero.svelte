@@ -2,12 +2,15 @@
   // import { _ } from 'svelte-i18n';
   import Image from '$assets/svg/logos/homepage/hero.svg';
   import L2Overlay from '../L2Overlay/L2Overlay.svelte';
+  // import HomeTest from '../homepage/HomeTest.svelte';
 </script>
 
 <div class="flex h-[screen-100px] w-screen items-center justify-center">
+  <!-- <HomeTest /> -->
   <div
-    class="flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[2.25rem] md:p-[2.5rem] lg:flex-row lg:gap-[1.5rem]">
-    <div class="flex h-full w-full items-center justify-center lg:w-1/2">
+    class="flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[2.25rem] md:p-[2.5rem] lg:flex-row lg:gap-[1.5rem] xxl:col-span-12">
+    <div
+      class="flex h-full w-full items-center justify-center lg:w-1/2 xxl:col-start-1 xxl:col-end-6">
       <div
         class="flex w-[670px] max-w-[41rem] flex-col items-start justify-center self-stretch lg:max-w-[25rem] xl:max-w-[41rem]">
         <h1

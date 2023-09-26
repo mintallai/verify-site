@@ -52,17 +52,17 @@
         </li>
         <li class="mb-4 xs:w-[80%] lg:mb-0">
           <!-- Add margin for consistent gap -->
-          <div
+          <h3
             class="font-Norske rounded-t-2xl bg-brand-green px-[32px] py-[20px] text-trust-label">
             Clear detection of tampering
-          </div>
+          </h3>
           <div
             class="lg:text-trust-desc-lg h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] text-trust-desc lg:pb-0">
-            <div class="lg:h-[269px] lg:w-[325px]">
+            <p class="lg:h-[269px] lg:w-[325px]">
               Content Credentials are made possible by cryptographic processes
               which mean that any unsupported changes made to Content
               Credentials can be easily identified and exposed.
-            </div>
+            </p>
           </div>
         </li>
       </div>
@@ -71,19 +71,19 @@
       <li class="mb-4 xs:w-[80%] lg:mx-auto lg:mb-0 lg:w-1/2 lg:pt-12">
         <!-- Add margin for consistent gap and center the third item -->
         <div class="xl:hidden">
-          <div
+          <h3
             class="font-Norske rounded-t-2xl bg-brand-violet px-[32px] py-[20px] text-trust-label">
             Accountability
-          </div>
+          </h3>
           <div
             class="lg:text-trust-desc-lg h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] text-trust-desc lg:pb-0">
-            <div class="lg:h-[269px] lg:w-[325px]">
+            <p class="lg:h-[269px] lg:w-[325px]">
               Organizations that issue Content Credentials must identify
               themselves in the Content Credentials they issue. Issuers
               therefore stake their reputations on their ability to collect and
               include information with accuracy. Learn more about the Content
               Credentials trust model.
-            </div>
+            </p>
           </div>
         </div>
       </li>
@@ -93,16 +93,16 @@
     <ul class="hidden justify-center gap-4 xl:flex">
       {#each data as item}
         <li class="w-[389px]">
-          <div
+          <h3
             class="font-Norske rounded-t-2xl px-[32px] py-[20px] text-trust-label"
             style={`background-color: ${item.bgColor}`}>
             {item.label}
-          </div>
+          </h3>
           <div
             class="xxl:text-trust-desc-xxl h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pt-[20px] text-trust-desc xl:text-trust-desc-xl">
-            <div class="xl:h-[269px] xl:w-[325px]">
+            <p class="xl:h-[269px] xl:w-[325px]">
               {item.description}
-            </div>
+            </p>
           </div>
         </li>
       {/each}

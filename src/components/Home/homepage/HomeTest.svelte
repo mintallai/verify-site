@@ -1,28 +1,21 @@
 <script>
-  import Image from '$assets/svg/logos/homepage/home2.svg';
+  import Image from '$assets/svg/logos/homepage/hero.svg';
 </script>
 
-<div class="lg:grid lg:grid-cols-12 lg:gap-4 px-[1.5rem] xl:max-w-[1440px]">
-  <div class="lg:col-span-6">
-    <!-- Your image goes here -->
-    <img src={Image} alt="" />
+<div
+  class="px-[1.5rem] py-[2.25rem] lg:grid lg:grid-cols-12 lg:gap-4 xl:max-w-[1440px]">
+  <div
+    class="px-[1.5rem] flex flex-col items-center justify-center lg:col-span-6 xxl:text-hero-title-desktop pb-6 text-center text-hero-title tracking-[-0.105rem] xl:text-center lg:text-hero-title-lg">
+    Wait, where did this image come from?
+    <div
+      class="xxl:w-[40rem] xxl:text-hero-sub-desktop text-center text-hero-sub text-gray-900/60">
+      Deepfakes. Voice cloning. It’s hard to tell what’s accurate and authentic
+      online these days.
+    </div>
   </div>
   <div
-    class="pt-6 lg:pt-0 lg:col-start-7 lg:col-end-13 xl:col-start-8 xl:col-end-12">
-    <div class="max-w-[676px]">
-      <!-- Adjust the max-width as needed -->
-
-      <div class="pb-6 text-left text-key-title xxl:text-key-title-xl">
-        Building trust in what you see online
-      </div>
-      <div
-        class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl xxl:text-key-sub-text-xxl">
-        With Content Credentials, the edit history of any piece of content is
-        available for everyone to access, anytime. With this information at your
-        fingertips, you have the ability to decide if you trust the content you
-        see—understanding if the content actually exists in the world and how
-        much editing or manipulation it went through.
-      </div>
-    </div>
+    class="grid pt-6 lg:col-start-7 lg:col-end-13 lg:pt-0 xl:col-start-7 xl:col-end-12">
+    <img src={Image} alt="" />
+    <p>placeholder</p>
   </div>
 </div>
