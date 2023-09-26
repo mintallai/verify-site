@@ -10,7 +10,7 @@
       loop
       muted
       src={Video}
-      class="xxl:h-full xxl:w-full max-h-full max-w-full rounded-xl xl:h-full" />
+      class="w-full xxl:h-full xxl:w-full max-h-full max-w-full rounded-xl xl:h-full object-cover" />
   </div>
   <div
     class="pt-6 md:col-start-7 md:col-end-13 md:pt-0 xl:col-start-8 xl:col-end-12">
