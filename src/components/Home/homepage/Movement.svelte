@@ -13,7 +13,8 @@
       transparent internet.
     </p>
     <a href="/">
-      <div class="rounded-full bg-brand-red px-4 py-3 hover:bg-brand-red/80">
+      <div
+        class="h-[2.75rem] flex items-center rounded-full bg-brand-red px-[1.25rem] py-3 hover:bg-brand-red/80">
         Learn more
       </div>
     </a>
