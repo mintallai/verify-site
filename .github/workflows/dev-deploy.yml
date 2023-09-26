@@ -7,7 +7,6 @@ on:
         description: 'Branch to deploy'
         type: text
         required: true
-        default: ${{ github.ref }}
 
 jobs:
   build-test:
