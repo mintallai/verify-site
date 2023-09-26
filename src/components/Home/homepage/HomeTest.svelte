@@ -2,13 +2,13 @@
   import Image from '$assets/svg/logos/homepage/home2.svg';
 </script>
 
-<div class="px-[1.5rem] lg:grid lg:grid-cols-12 lg:gap-4 xl:max-w-[1440px]">
+<div class="lg:grid lg:grid-cols-12 lg:gap-4 px-[1.5rem] xl:max-w-[1440px]">
   <div class="lg:col-span-6">
     <!-- Your image goes here -->
     <img src={Image} alt="" />
   </div>
   <div
-    class="pt-6 lg:col-start-7 lg:col-end-13 lg:pt-0 xl:col-start-8 xl:col-end-12">
+    class="pt-6 lg:pt-0 lg:col-start-7 lg:col-end-13 xl:col-start-8 xl:col-end-12">
     <div class="max-w-[676px]">
       <!-- Adjust the max-width as needed -->
 
