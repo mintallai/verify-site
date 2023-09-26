@@ -8,7 +8,7 @@
     <img src={Image} alt="" />
   </div>
   <div
-    class="pt-6 lg:col-start-7 lg:col-end-13 lg:pt-0 xl:col-start-8 xl:col-end-12">
+    class="pt-6 lg:col-start-8 lg:col-end-12 lg:pt-0 xl:col-start-8 xl:col-end-12">
     <div class="max-w-[676px]">
       <!-- Adjust the max-width as needed -->
 

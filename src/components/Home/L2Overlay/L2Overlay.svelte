@@ -5,11 +5,6 @@
   import MobilePopup from './MobilePopup.svelte';
   import DesktopPopup from './Popup.svelte'; // Import the DesktopPopup component
 
-  // Function to detect if the device is mobile
-  // function isMobileDevice() {
-  //   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  // }
-
   let isPopupOpen = false;
 
   function togglePopup() {
