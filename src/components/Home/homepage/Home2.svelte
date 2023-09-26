@@ -9,7 +9,7 @@
     <img src={Image} alt="" class="w-full" />
   </div>
   <div
-    class="pt-6 lg:col-start-8 lg:col-end-12 lg:pt-0 xl:col-start-8 xl:col-end-12">
+    class="pt-6 lg:col-start-7 lg:col-end-13 lg:pt-0 xl:col-start-8 xl:col-end-12">
     <div class="max-w-[676px] mx-auto md:mx-0">
       <h3 class="pb-6 text-left text-key-title xxl:text-key-title-xl">
         Building trust in what you see online

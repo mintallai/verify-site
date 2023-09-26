@@ -8,7 +8,7 @@
   </div>
   <!-- Below hidden until Desktop -->
   <div
-    class="pt-6 lg:col-start-2 lg:col-end-6 lg:pt-0 xl:col-start-2 xl:col-end-6 xl:flex">
+    class="pt-6 lg:col-start-1 lg:col-end-6 lg:pt-0 xl:col-start-2 xl:col-end-6 xl:flex">
     <div class="max-w-[676px]">
       <h3 class="xxl:text-key-title-xl pb-6 text-left text-key-title">
         Empowering creators to get credit for their work
@@ -24,7 +24,7 @@
   </div>
   <!--  -->
   <div
-    class="pt-6 sm:hidden lg:col-start-1 lg:col-end-6 lg:hidden lg:pt-0 xl:col-start-8 xl:col-end-12">
+    class="pt-6 sm:hidden lg:col-start-1 lg:col-end-6 lg:hidden lg:pt-0 xl:col-start-7 xl:col-end-13">
     <div class="max-w-[676px]">
       <h3 class="xxl:text-key-title-xl pb-6 text-left text-key-title">
         Empowering creators to get credit for their work
