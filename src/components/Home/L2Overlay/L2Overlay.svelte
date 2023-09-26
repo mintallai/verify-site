@@ -1,6 +1,7 @@
 <script>
   export let imageUrl;
   import Pin from '$assets/svg/color/cr-icon-fill.svg?component';
+  // import Pin from '$assets/svg/color/cr-icon-fill.svg';
   import MobilePopup from './MobilePopup.svelte';
   import DesktopPopup from './Popup.svelte'; // Import the DesktopPopup component
 

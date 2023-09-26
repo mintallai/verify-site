@@ -12,11 +12,11 @@
     <div class="max-w-[676px]">
       <!-- Adjust the max-width as needed -->
 
-      <div class="pb-6 text-left text-key-title 2xl:text-key-title-xl">
+      <div class="pb-6 text-left text-key-title xxl:text-key-title-xl">
         Building trust in what you see online
       </div>
       <div
-        class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl 2xl:text-key-sub-text-2xl">
+        class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl xxl:text-key-sub-text-xxl">
         With Content Credentials, the edit history of any piece of content is
         available for everyone to access, anytime. With this information at your
         fingertips, you have the ability to decide if you trust the content you

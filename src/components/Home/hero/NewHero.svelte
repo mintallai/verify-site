@@ -11,11 +11,11 @@
       <div
         class="flex w-[670px] max-w-[41rem] flex-col items-start justify-center self-stretch lg:max-w-[25rem] xl:max-w-[41rem]">
         <div
-          class="text-center pb-6 text-hero-title tracking-[-0.105rem] xl:text-center 2xl:text-hero-title-desktop">
+          class="text-center pb-6 text-hero-title tracking-[-0.105rem] xl:text-center xxl:text-hero-title-desktop">
           Wait, where did this image come from?
         </div>
         <div
-          class="text-center text-hero-sub text-gray-900/60 2xl:w-[40rem] 2xl:text-hero-sub-desktop">
+          class="text-center text-hero-sub text-gray-900/60 xxl:w-[40rem] xxl:text-hero-sub-desktop">
           Deepfakes. Voice Cloning. It's hard to tell what's accurate and
           authentic online these days.
         </div>

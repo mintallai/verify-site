@@ -62,8 +62,8 @@ export default {
       md: '768px',
       lg: '991px',
       xl: '1280px',
-      '2xl': '1281px',
-      '3xl': '1441px',
+      xxl: '1281px',
+      xxxl: '1440px',
     },
     fontFamily: {
       home: defs['family-home'],
@@ -223,7 +223,7 @@ export default {
           letterSpacing: '-0.105rem',
         },
       ],
-      'home-title-2xl': [
+      'home-title-xxl': [
         '4.5rem',
         {
           fontWeight: '700',
@@ -247,7 +247,7 @@ export default {
           letterSpacing: '-0.015rem',
         },
       ],
-      'home-sub-2xl': [
+      'home-sub-xxl': [
         '1.875rem',
         {
           fontWeight: '400',
@@ -285,7 +285,7 @@ export default {
           lineHeight: '1.51875rem',
         },
       ],
-      'key-sub-text-2xl': [
+      'key-sub-text-xxl': [
         '1.3125rem',
         {
           fontWeight: '400',
@@ -316,6 +316,29 @@ export default {
           lineHeight: '2.75rem',
         },
       ],
+      'hiw-title-md': [
+        '3rem',
+        {
+          fontWeight: '700',
+          lineHeight: '3.3rem',
+        },
+      ],
+      'hiw-title-xl': [
+        '3.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '3.85rem',
+          letterSpacing: '-0.105rem',
+        },
+      ],
+      'hiw-title-xxl:': [
+        '5.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '4.95rem',
+          letterSpacing: '-0.135rem',
+        },
+      ],
       'hiw-desc': [
         '1rem',
         {
@@ -330,7 +353,7 @@ export default {
           lineHeight: '1.51875rem ',
         },
       ],
-      'hiw-desc-2xl': [
+      'hiw-desc-xxl': [
         '1.3125rem',
         {
           fontWeight: '400',
@@ -362,7 +385,7 @@ export default {
           letterSpacing: '-0.105rem',
         },
       ],
-      'trust-title-2xl': [
+      'trust-title-xxl': [
         '4.5rem',
         {
           fontWeight: '700',
@@ -392,7 +415,7 @@ export default {
           lineHeight: '1.35rem',
         },
       ],
-      'trust-desc-2xl': [
+      'trust-desc-xxl': [
         '1.3125rem',
         {
           fontWeight: '400',
@@ -423,7 +446,7 @@ export default {
           letterSpacing: '-0.105rem',
         },
       ],
-      'movement-title-2xl': [
+      'movement-title-xxl': [
         '4.5rem',
         {
           fontWeight: '700',
@@ -447,7 +470,7 @@ export default {
           letterSpacing: '-0.015rem',
         },
       ],
-      'movement-text-2xl': [
+      'movement-text-xxl': [
         '1.875rem',
         {
           fontWeight: '400',

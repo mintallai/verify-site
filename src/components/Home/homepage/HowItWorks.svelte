@@ -37,7 +37,10 @@
 
 <div
   class="flex h-full w-screen flex-col items-center bg-[#F6F5F2] pb-40 p-[1.5rem]">
-  <div class="text-hiw-title pt-12">How it Works</div>
+  <div
+    class="text-hiw-title pt-12 md:text-hiw-title-md xl:text-hiw-title-xl xxl:text-hiw-title-xxl">
+    How it Works
+  </div>
   <div class="flex w-full flex-col items-center">
     <div class="">
       {#each data as item}
@@ -55,14 +58,14 @@
               </div>
             </div>
             <div
-              class="text-hiw-desc text-gray-900/60 pt-6 lg:pt-0 lg:w-1/2 xl:text-hiw-desc-xl 2xl:text-hiw-desc-2xl">
+              class="text-hiw-desc text-gray-900/60 pt-6 lg:pt-0 lg:w-1/2 xl:text-hiw-desc-xl xxl:text-hiw-desc-xxl">
               {item.description}
             </div>
           </div>
           <img
             src={item.Image}
             alt="how it works"
-            class="max-w[71.375rem] rounded-2xl 2xl:w-full" />
+            class="max-w[71.375rem] rounded-xxl xxl:w-full" />
         </div>
       {/each}
     </div>

@@ -10,18 +10,18 @@
       loop
       muted
       src={Video}
-      class="max-h-full max-w-full rounded-xl xl:h-full 2xl:h-full 2xl:w-full" />
+      class="max-h-full max-w-full rounded-xl xl:h-full xxl:h-full xxl:w-full" />
   </div>
   <div
     class="pt-6 lg:col-start-7 lg:col-end-13 lg:pt-0 xl:col-start-8 xl:col-end-12">
     <div class="max-w-[676px]">
       <!-- Adjust the max-width as needed -->
 
-      <div class="pb-6 text-left text-key-title 2xl:text-key-title-xl">
+      <div class="pb-6 text-left text-key-title xxl:text-key-title-xl">
         Introducing the Content Credentials pin
       </div>
       <div
-        class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl 2xl:text-key-sub-text-2xl">
+        class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl xxl:text-key-sub-text-xxl">
         Every time you see the Content Credentials pin that means Content
         Credentials have been attached to the content! Simply click on the pin
         to reveal more information.
