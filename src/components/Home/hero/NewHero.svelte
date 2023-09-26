@@ -11,7 +11,7 @@
       <div
         class="flex w-[670px] max-w-[41rem] flex-col items-start justify-center self-stretch lg:max-w-[25rem] xl:max-w-[41rem]">
         <h1
-          class="xxl:text-hero-title-desktop pb-6 text-center text-hero-title tracking-[-0.105rem] xl:text-center">
+          class="xxl:text-hero-title-desktop pb-6 text-center text-hero-title tracking-[-0.105rem] xl:text-center lg:text-hero-title-lg">
           Wait, where did this image come from?
         </h1>
         <p

@@ -177,6 +177,14 @@ export default {
           lineHeight: '3.85rem',
         },
       ],
+      'hero-title-lg': [
+        '4.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '4.95rem',
+          letterSpacing: '-0.135rem',
+        },
+      ],
       'hero-title-desktop': [
         '6rem',
         {
