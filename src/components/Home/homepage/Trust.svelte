@@ -29,7 +29,7 @@
   <div class="flex flex-col items-center justify-center">
     <h2
       class="xxl:w-[58rem] xxl:text-trust-title-xxl w-[27rem] py-20 text-center text-trust-title xs:w-[22rem] md:w-[40rem] md:text-trust-title-md xl:py-0 xl:text-trust-title-xl">
-      What makes Content Credential trustworthy
+      What makes Content Credentials trustworthy
     </h2>
     <!-- Media query for screens between 991px and 1280px (lg to xl) -->
     <ul class="flex flex-col items-center">
