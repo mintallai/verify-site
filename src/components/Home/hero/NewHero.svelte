@@ -95,7 +95,7 @@
               class="h-full w-full pr-4 pt-4" />
             {#if isOpen && screenWidth > 768}
               <div
-                class="bg-brand-white popup shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2 popup">
+                class="bg-brand-white shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2 popup">
                 <!-- Your popup content here -->
                 {#if isOpen}
                   <div class="h-full w-[350px] rounded-xl bg-brand-white py-4">
@@ -246,8 +246,7 @@
     </div>
   {/if}
 {:else if isOpen && screenWidth > 768}
-  <div class="popup shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2">
-  </div>
+  <div class="shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2"></div>
 {/if}
 
 <style>
