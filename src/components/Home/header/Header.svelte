@@ -15,10 +15,9 @@
           class="xxs:hidden xs:hidden sm:flex" />
         <img
           src={MobileLogo}
-          width="100px"
-          height="10px"
+          height="46px"
           alt="content credentials"
-          class="sm:hidden" />
+          class="sm:hidden max-h-[46px]" />
       </a>
     </div>
     <div class="pl-6">
