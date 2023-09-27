@@ -12,7 +12,7 @@
           width="250px"
           height="100px"
           alt="content credentials"
-          class="xs:hidden sm:flex" />
+          class="xxs:hidden xs:hidden sm:flex" />
         <img
           src={MobileLogo}
           width="100px"

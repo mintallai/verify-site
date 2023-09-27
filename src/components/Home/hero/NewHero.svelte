@@ -69,7 +69,7 @@
 {#if isPopupVisible}
   <!-- Rest of screen size -->
   <div
-    class="fixed inset-0 z-[9999] flex items-center justify-center bg-brand-blue bg-opacity-50">
+    class="fixed inset-0 z-[9999] flex items-center justify-center bg-brand-blue bg-opacity-50 lg:hidden">
     <!-- Popup Container -->
     <div
       class="fixed bottom-0 h-auto w-screen rounded-t-xl bg-white p-0.5 text-popup-text">
