@@ -5,12 +5,14 @@
 <div class="px-[1.5rem] md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
   <div class="md:col-span-6">
     <!-- Your image goes here -->
-    <video
-      autoplay
-      loop
-      muted
-      src={Video}
-      class="w-full xxl:h-full xxl:w-full max-h-full max-w-full rounded-xl xl:h-full object-cover" />
+    <div class="video-container">
+      <video
+        autoplay
+        loop
+        muted
+        src={Video}
+        class="w-full h-full max-h-full max-w-full rounded-xl xl:h-full object-cover" />
+    </div>
   </div>
   <div
     class="pt-6 md:col-start-7 md:col-end-13 md:pt-0 xl:col-start-8 xl:col-end-12">
@@ -29,3 +31,21 @@
     </div>
   </div>
 </div>
+
+<style>
+  /* CSS to set the aspect ratio for the video container */
+  .video-container {
+    position: relative;
+    padding-bottom: 66.67%; /* 3:2 aspect ratio (2/3) */
+    overflow: hidden;
+  }
+
+  /* Style the video to fill the container */
+  .video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
