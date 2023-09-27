@@ -578,6 +578,14 @@ export default {
           lineHeight: '35px',
         },
       ],
+      'popup-text': [
+        '0.75rem',
+        {
+          fontWeight: '400',
+          lineHeight: '1.0125rem',
+          letterSpacing: '-0.0075rem',
+        },
+      ],
       // For the Homepage
     },
     boxShadow: {

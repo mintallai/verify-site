@@ -82,16 +82,6 @@
           <hr class="pt-2" />
         {/each}
       </div>
-
-      <!-- {#each data as item}
-        <div class="px-6 py-3">
-          <div class="flex flex-row items-center justify-start gap-1">
-            <div class="font-bold">{item.label}</div>
-            <div>{item.value}</div>
-          </div>
-        </div>
-        <hr class="mx-6 pt-2" />
-      {/each} -->
       <div class="h-[60px] w-full px-6 py-1">
         <button class="h-full w-full rounded-full bg-brand-orange text-[24px]"
           >View more</button>
