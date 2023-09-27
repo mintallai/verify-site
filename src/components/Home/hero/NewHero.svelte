@@ -64,7 +64,7 @@
     <div
       class="xxl:col-start-1 xxl:col-end-6 flex h-full w-full items-center justify-center lg:w-1/2">
       <div
-        class="flex max-w-[41rem] flex-col items-start justify-center self-stretch p-[1.5rem] lg:max-w-[25rem] xl:max-w-[41rem]">
+        class="flex max-w-[41rem] flex-col items-start justify-center self-stretch p-[1.5rem] xl:max-w-[41rem]">
         <h1
           class="xxl:text-hero-title-desktop lg:text-hero-title-lg pb-[2rem] text-center text-hero-title tracking-[-0.105rem] xl:text-center">
           Wait, where did this image come from?
