@@ -1,11 +1,68 @@
 <script>
   import X from '$assets/svg/home/x.svg';
 
-  let isPopupVisible = false; // <-- Add this line
+  import { onMount } from 'svelte';
 
-  function togglePopup() {
+  import Image from '$assets/svg/logos/homepage/hero.svg';
+
+  import Logo from '$assets/png/_pin.png';
+
+  let isPopupVisible = false;
+
+  let screenWidth = window.innerWidth;
+
+  let logoElement;
+
+  let popupElement;
+
+  function positionPopup() {
+    console.log('positionPopup');
+
+    logoElement = document.getElementById('logo-image');
+
+    popupElement = document.getElementById('desktop-popup');
+
+    if (logoElement && popupElement) {
+      const rect = logoElement.getBoundingClientRect();
+
+      const popupRect = popupElement.getBoundingClientRect();
+
+      popupElement.style.top = `${rect.top}px`;
+
+      popupElement.style.left = `${rect.left - popupRect.width}px`; // Positioned to the left of the logo
+    }
+  }
+
+  onMount(() => {
+    positionPopup();
+
+    const handleResize = () => {
+      screenWidth = window.innerWidth;
+
+      positionPopup();
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  export function togglePopup() {
+    isOpen = !isOpen;
+
+    if (isOpen) {
+      positionPopup();
+    }
+  }
+
+  // Function to toggle the mobile popup
+  function toggleMobilePopup() {
     isPopupVisible = !isPopupVisible;
   }
+
+  let isOpen = false; // To control the desktop popup's visibility
 
   const data = [
     {
@@ -55,7 +112,21 @@
         <!-- <L2Overlay imageUrl={Image} /> -->
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div on:click={togglePopup}>Click me to see popup</div>
+        <!-- Logo that appears on hover and can be clicked to toggle popup -->
+        <div class="group relative">
+          <img src={Image} alt="Click for more info" />
+          <div
+            class="absolute right-0 top-0 z-10 flex cursor-pointer lg:opacity-0 lg:transition-opacity lg:duration-200 lg:group-hover:opacity-100"
+            on:click={() =>
+              screenWidth > 768 ? togglePopup() : toggleMobilePopup()}>
+            <img
+              src={Logo}
+              id="logo-image"
+              alt="Toggle popup"
+              class="h-full w-full pr-4 pt-4" />
+          </div>
+        </div>
+
         <p
           class="flex pt-[0.5rem] text-small-description text-gray-500 md:items-start">
           Click on the pin to see the Content Credentials.
@@ -65,44 +136,110 @@
   </div>
 </div>
 
-<!-- Popup content -->
-{#if isPopupVisible}
-  <!-- Rest of screen size -->
-  <div
-    class="fixed inset-0 z-[9999] flex items-center justify-center bg-brand-blue bg-opacity-50 lg:hidden">
-    <!-- Popup Container -->
+<!--  -->
+{#if screenWidth <= 768}
+  {#if isPopupVisible}
+    <!-- Your existing mobile popup code here -->
+    <!-- Rest of screen size -->
     <div
-      class="fixed bottom-0 h-auto w-screen rounded-t-xl bg-white p-0.5 text-popup-text">
-      <div class="h-full rounded-xl bg-brand-white py-4 px-2">
-        <div class="flex flex-row justify-between">
-          <div class="py-3">
-            <h1 class="px-6 pb-3 text-[24px] font-bold">Content Credentials</h1>
-            <p class="px-6 text-gray-900/60">
-              Issued by Adobe Inc. on Feb 2. 2023
-            </p>
+      class="fixed inset-0 z-[9999] flex items-center justify-center bg-brand-blue bg-opacity-50 md:hidden">
+      <!-- Popup Container -->
+      <div
+        class="text-popup-text fixed bottom-0 h-auto w-screen rounded-t-xl bg-white p-0.5">
+        <div class="h-full rounded-xl bg-brand-white px-2 py-4">
+          <div class="flex flex-row justify-between">
+            <div class="py-3">
+              <h1 class="px-6 pb-3 text-[24px] font-bold">
+                Content Credentials
+              </h1>
+              <p class="px-6 text-gray-900/60">
+                Issued by Adobe Inc. on Feb 2. 2023
+              </p>
+            </div>
+            <button class="pb-6 pr-4" on:click={toggleMobilePopup}>
+              <img src={X} alt="close" />
+            </button>
           </div>
-          <button class="pr-4 pb-6" on:click={togglePopup}>
-            <img src={X} alt="close" />
-          </button>
+          <hr />
+          <div class="px-6 py-3">
+            {#each data as item}
+              <div class="flex flex-row items-center gap-1 py-2">
+                <div class="text-popup-text pb-1">{item.Notice}</div>
+              </div>
+              <hr class="py-1" />
+              <div class="flex flex-row gap-1 py-2">
+                <div class="pb-1 font-bold">{item.ProducedLabel}</div>
+                <div>{item.ProducedValue}</div>
+              </div>
+              <hr class="pt-2" />
+              <div class="flex flex-row gap-1 py-2">
+                <div class="pb-1 font-bold">{item.CompanyLabel}</div>
+                <div>{item.CompanyValue}</div>
+              </div>
+              <hr class="pt-2" />
+              <div class="flex flex-row gap-1 py-2">
+                <div class="pb-1 font-bold">{item.WebsiteLabel}</div>
+                <div class="text-blue-700 underline">
+                  <a href={item.WebsiteValue}>{item.WebsiteValue}</a>
+                </div>
+              </div>
+              <hr class="pt-2" />
+              <div class="flex flex-col justify-center gap-1 py-2">
+                <div class="py-1 font-bold">{item.CaptionLabel}</div>
+                <div class="pb-1">{item.CaptionValue}</div>
+              </div>
+              <hr class="pt-2" />
+              <div class="flex flex-col justify-center gap-1 py-2">
+                <div class="py-1 font-bold">{item.AppLabel}</div>
+                <div class="pb-1">{item.AppValue}</div>
+              </div>
+              <hr class="pt-2" />
+              <div class="flex flex-row gap-1 py-2">
+                <div class="pb-1 font-bold">{item.AdditionalLabel}</div>
+                <div>{item.AdditionalValue}</div>
+              </div>
+              <hr class="pt-2" />
+            {/each}
+          </div>
+          <div class="h-[60px] w-full px-6 py-1">
+            <button
+              class="h-full w-full rounded-full bg-brand-orange text-[24px]"
+              >View more</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {/if}
+{:else if isOpen && screenWidth > 768}
+  <div
+    id="desktop-popup"
+    class="popup shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2">
+    {#if isOpen}
+      <div class="h-full w-[350px] rounded-xl bg-brand-white py-4">
+        <div class="py-3">
+          <h1 class="px-6 pb-3 text-[24px] font-bold">Content Credentials</h1>
+          <p class="px-6 text-gray-900/60">
+            Issued by Adobe Inc. on Feb 2. 2023
+          </p>
         </div>
         <hr />
         <div class="px-6 py-3">
           {#each data as item}
             <div class="flex flex-row items-center gap-1 py-2">
-              <div class="pb-1 text-popup-text">{item.Notice}</div>
+              <div class="pb-1">{item.Notice}</div>
             </div>
             <hr class="py-1" />
-            <div class="flex flex-row gap-1 py-2">
+            <div class="flex flex-row items-center gap-1 py-2">
               <div class="pb-1 font-bold">{item.ProducedLabel}</div>
               <div>{item.ProducedValue}</div>
             </div>
             <hr class="pt-2" />
-            <div class="flex flex-row gap-1 py-2">
+            <div class="flex flex-row items-center gap-1 py-2">
               <div class="pb-1 font-bold">{item.CompanyLabel}</div>
               <div>{item.CompanyValue}</div>
             </div>
             <hr class="pt-2" />
-            <div class="flex flex-row gap-1 py-2">
+            <div class="flex flex-row items-center gap-1 py-2">
               <div class="pb-1 font-bold">{item.WebsiteLabel}</div>
               <div class="text-blue-700 underline">
                 <a href={item.WebsiteValue}>{item.WebsiteValue}</a>
@@ -119,7 +256,7 @@
               <div class="pb-1">{item.AppValue}</div>
             </div>
             <hr class="pt-2" />
-            <div class="flex flex-row gap-1 py-2">
+            <div class="flex flex-row items-center gap-1 py-2">
               <div class="pb-1 font-bold">{item.AdditionalLabel}</div>
               <div>{item.AdditionalValue}</div>
             </div>
@@ -131,6 +268,14 @@
             >View more</button>
         </div>
       </div>
-    </div>
+    {/if}
   </div>
 {/if}
+
+<style>
+  /* Add this style to ensure the popup appears above other content */
+  .popup {
+    z-index: 9999;
+    position: absolute;
+  }
+</style>
