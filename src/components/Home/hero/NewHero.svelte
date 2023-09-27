@@ -91,13 +91,11 @@
               screenWidth > 768 ? togglePopup() : toggleMobilePopup()}>
             <img
               src={Logo}
-              id="logo-image"
               alt="Toggle popup"
               class="h-full w-full pr-4 pt-4" />
             {#if isOpen && screenWidth > 768}
               <div
-                id="desktop-popup"
-                class="popup shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2">
+                class="bg-brand-white popup shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2 popup">
                 <!-- Your popup content here -->
                 {#if isOpen}
                   <div class="h-full w-[350px] rounded-xl bg-brand-white py-4">
@@ -179,10 +177,10 @@
     <!-- Your existing mobile popup code here -->
     <!-- Rest of screen size -->
     <div
-      class="fixed inset-0 z-[9999] flex items-center justify-center bg-brand-blue bg-opacity-50 md:hidden">
+      class="fixed inset-0 z-[9999] flex items-center justify-center md:hidden">
       <!-- Popup Container -->
       <div
-        class="text-popup-text fixed bottom-0 h-auto w-screen rounded-t-xl bg-white p-0.5">
+        class="text-popup-text fixed bottom-0 h-auto w-screen rounded-t-xl bg-white p-0.5 top-rounded-shadow">
         <div class="h-full rounded-xl bg-brand-white px-2 py-4">
           <div class="flex flex-row justify-between">
             <div class="py-3">
@@ -248,16 +246,23 @@
     </div>
   {/if}
 {:else if isOpen && screenWidth > 768}
-  <div
-    id="desktop-popup"
-    class="popup shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2">
+  <div class="popup shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2">
   </div>
 {/if}
 
 <style>
-  /* Add this style to ensure the popup appears above other content */
   .popup {
-    z-index: 9999;
+    /* border-radius: 12px 12px 0 0; Adjust this value according to your mobile popup's top corners */
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+  }
+  .top-rounded-shadow::before {
+    content: '';
     position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px; /* Height of the shadow */
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
   }
 </style>
