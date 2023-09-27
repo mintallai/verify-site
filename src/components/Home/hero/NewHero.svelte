@@ -8,7 +8,7 @@
 <div class="flex h-[screen-100px] w-screen items-center justify-center">
   <!-- <HomeTest /> -->
   <div
-    class="xxl:col-span-12 flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[2.25rem] md:p-[2.5rem] lg:flex-row lg:gap-[1.5rem]">
+    class="xxl:col-span-12 flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[2rem] md:p-[2.5rem] lg:flex-row lg:gap-[1.5rem]">
     <div
       class="xxl:col-start-1 xxl:col-end-6 flex h-full w-full items-center justify-center lg:w-1/2">
       <div
