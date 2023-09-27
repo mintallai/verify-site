@@ -29,7 +29,7 @@
       <div class="flex flex-col items-start">
         <L2Overlay imageUrl={Image} />
         <p
-          class="flex pt-1 text-small-description text-gray-500 md:items-start">
+          class="flex pt-[0.5rem] text-small-description text-gray-500 md:items-start">
           Click on the pin to see the Content Credentials.
         </p>
       </div>
