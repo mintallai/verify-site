@@ -15,7 +15,7 @@
     </div>
   </div>
   <div
-    class="pt-6 md:col-start-7 md:col-end-13 md:pt-0 xl:col-start-8 xl:col-end-12">
+    class="pt-6 md:col-start-7 md:col-end-13 md:pt-0 lg:col-start-8 lg:col-end-12">
     <div class="max-w-[676px]">
       <!-- Adjust the max-width as needed -->
 

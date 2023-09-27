@@ -2,14 +2,13 @@
   import Image from '$assets/svg/logos/homepage/home2.svg';
 </script>
 
-<div
-  class="w-full px-[1.5rem] md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
+<div class="w-full md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
   <div class="md:col-span-6 w-full">
     <!-- Your image goes here -->
     <img src={Image} alt="" class="w-full" />
   </div>
   <div
-    class="pt-6 md:col-start-7 md:col-end-13 md:pt-0 xl:col-start-8 xl:col-end-12">
+    class="pt-6 md:col-start-7 md:col-end-13 md:pt-0 lg:col-start-8 lg:col-end-12">
     <div class="max-w-[676px] mx-auto md:mx-0">
       <h3 class="pb-6 text-left text-key-title xxl:text-key-title-xl">
         Building trust in what you see online
