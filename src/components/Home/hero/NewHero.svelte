@@ -11,35 +11,9 @@
 
   let screenWidth = window.innerWidth;
 
-  let logoElement;
-
-  let popupElement;
-
-  function positionPopup() {
-    console.log('positionPopup');
-
-    logoElement = document.getElementById('logo-image');
-
-    popupElement = document.getElementById('desktop-popup');
-
-    if (logoElement && popupElement) {
-      const rect = logoElement.getBoundingClientRect();
-
-      const popupRect = popupElement.getBoundingClientRect();
-
-      popupElement.style.top = `${rect.top}px`;
-
-      popupElement.style.left = `${rect.left - popupRect.width}px`; // Positioned to the left of the logo
-    }
-  }
-
   onMount(() => {
-    positionPopup();
-
     const handleResize = () => {
       screenWidth = window.innerWidth;
-
-      positionPopup();
     };
 
     window.addEventListener('resize', handleResize);
@@ -51,10 +25,6 @@
 
   export function togglePopup() {
     isOpen = !isOpen;
-
-    if (isOpen) {
-      positionPopup();
-    }
   }
 
   // Function to toggle the mobile popup
@@ -124,6 +94,73 @@
               id="logo-image"
               alt="Toggle popup"
               class="h-full w-full pr-4 pt-4" />
+            {#if isOpen && screenWidth > 768}
+              <div
+                id="desktop-popup"
+                class="popup shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2">
+                <!-- Your popup content here -->
+                {#if isOpen}
+                  <div class="h-full w-[350px] rounded-xl bg-brand-white py-4">
+                    <div class="py-3">
+                      <h1 class="px-6 pb-3 text-[24px] font-bold">
+                        Content Credentials
+                      </h1>
+                      <p class="px-6 text-gray-900/60">
+                        Issued by Adobe Inc. on Feb 2. 2023
+                      </p>
+                    </div>
+                    <hr />
+                    <div class="px-6 py-3">
+                      {#each data as item}
+                        <div class="flex flex-row items-center gap-1 py-2">
+                          <div class="pb-1">{item.Notice}</div>
+                        </div>
+                        <hr class="py-1" />
+                        <div class="flex flex-row items-center gap-1 py-2">
+                          <div class="pb-1 font-bold">{item.ProducedLabel}</div>
+                          <div class="pb-1">{item.ProducedValue}</div>
+                        </div>
+                        <hr class="pt-2" />
+                        <div class="flex flex-row items-center gap-1 py-2">
+                          <div class="pb-1 font-bold">{item.CompanyLabel}</div>
+                          <div class="pb-1">{item.CompanyValue}</div>
+                        </div>
+                        <hr class="pt-2" />
+                        <div class="flex flex-row items-center gap-1 py-2">
+                          <div class="pb-1 font-bold">{item.WebsiteLabel}</div>
+                          <div class="pb-1 text-blue-700 underline">
+                            <a href={item.WebsiteValue}>{item.WebsiteValue}</a>
+                          </div>
+                        </div>
+                        <hr class="pt-2" />
+                        <div class="flex flex-col justify-center gap-1 py-2">
+                          <div class="py-1 font-bold">{item.CaptionLabel}</div>
+                          <div class="pb-1">{item.CaptionValue}</div>
+                        </div>
+                        <hr class="pt-2" />
+                        <div class="flex flex-col justify-center gap-1 py-2">
+                          <div class="py-1 font-bold">{item.AppLabel}</div>
+                          <div class="pb-1">{item.AppValue}</div>
+                        </div>
+                        <hr class="pt-2" />
+                        <div class="flex flex-row items-center gap-1 py-2">
+                          <div class="pb-1 font-bold">
+                            {item.AdditionalLabel}
+                          </div>
+                          <div class="pb-1">{item.AdditionalValue}</div>
+                        </div>
+                        <hr class="pt-2" />
+                      {/each}
+                    </div>
+                    <div class="h-[60px] w-full px-6 py-1">
+                      <button
+                        class="h-full w-full rounded-full bg-brand-orange text-[24px]"
+                        >View more</button>
+                    </div>
+                  </div>
+                {/if}
+              </div>
+            {/if}
           </div>
         </div>
 
@@ -214,61 +251,6 @@
   <div
     id="desktop-popup"
     class="popup shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2">
-    {#if isOpen}
-      <div class="h-full w-[350px] rounded-xl bg-brand-white py-4">
-        <div class="py-3">
-          <h1 class="px-6 pb-3 text-[24px] font-bold">Content Credentials</h1>
-          <p class="px-6 text-gray-900/60">
-            Issued by Adobe Inc. on Feb 2. 2023
-          </p>
-        </div>
-        <hr />
-        <div class="px-6 py-3">
-          {#each data as item}
-            <div class="flex flex-row items-center gap-1 py-2">
-              <div class="pb-1">{item.Notice}</div>
-            </div>
-            <hr class="py-1" />
-            <div class="flex flex-row items-center gap-1 py-2">
-              <div class="pb-1 font-bold">{item.ProducedLabel}</div>
-              <div>{item.ProducedValue}</div>
-            </div>
-            <hr class="pt-2" />
-            <div class="flex flex-row items-center gap-1 py-2">
-              <div class="pb-1 font-bold">{item.CompanyLabel}</div>
-              <div>{item.CompanyValue}</div>
-            </div>
-            <hr class="pt-2" />
-            <div class="flex flex-row items-center gap-1 py-2">
-              <div class="pb-1 font-bold">{item.WebsiteLabel}</div>
-              <div class="text-blue-700 underline">
-                <a href={item.WebsiteValue}>{item.WebsiteValue}</a>
-              </div>
-            </div>
-            <hr class="pt-2" />
-            <div class="flex flex-col justify-center gap-1 py-2">
-              <div class="py-1 font-bold">{item.CaptionLabel}</div>
-              <div class="pb-1">{item.CaptionValue}</div>
-            </div>
-            <hr class="pt-2" />
-            <div class="flex flex-col justify-center gap-1 py-2">
-              <div class="py-1 font-bold">{item.AppLabel}</div>
-              <div class="pb-1">{item.AppValue}</div>
-            </div>
-            <hr class="pt-2" />
-            <div class="flex flex-row items-center gap-1 py-2">
-              <div class="pb-1 font-bold">{item.AdditionalLabel}</div>
-              <div>{item.AdditionalValue}</div>
-            </div>
-            <hr class="pt-2" />
-          {/each}
-        </div>
-        <div class="h-[60px] w-full px-6 py-1">
-          <button class="h-full w-full rounded-full bg-brand-orange text-[24px]"
-            >View more</button>
-        </div>
-      </div>
-    {/if}
   </div>
 {/if}
 
