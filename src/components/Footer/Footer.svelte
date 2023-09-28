@@ -24,8 +24,10 @@
       <div>Copyright © 2023 Content Credentials</div>
 
       <div class="text-footer-text">All rights reserved</div>
-      <a href="/privacy"> <div class="text-footer-text">Privacy</div> </a>
-      <a href="/terms-of-use">
+      <a href="https://www.adobe.com/privacy.html">
+        <div class="text-footer-text">Privacy</div>
+      </a>
+      <a href="https://www.adobe.com/legal/terms.html">
         <div class="text-footer-text">Terms of use</div>
       </a>
     </div>
