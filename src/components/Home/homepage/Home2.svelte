@@ -15,11 +15,11 @@
       </h3>
       <p
         class="text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl xxl:text-key-sub-text-xxl">
-        With Content Credentials, the edit history of any piece of content is
-        available for everyone to access, anytime. With this information at your
-        fingertips, you have the ability to decide if you trust the content you
-        see—understanding if the content actually exists in the world and how
-        much editing or manipulation it went through.
+        Content Credentials make the edit history of content available for
+        everyone to access, anytime. With this information at your fingertips,
+        you have the ability to decide if you trust the content you
+        see—understanding where it came from and how much editing or
+        manipulation it went through.
       </p>
     </div>
   </div>

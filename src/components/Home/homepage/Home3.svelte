@@ -15,10 +15,10 @@
       </h3>
       <p
         class="xxl:text-key-sub-text-xxl text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl">
-        Content is often mis-credited or not credited at all when shared online,
+        Content is often miscredited or not credited at all when shared online,
         creating tons of lost opportunity for creators. Content Credentials
-        enable creators to get recognition for what they create—helping them
-        build a following and market their work.
+        enable creators to get recognized for their work, market it, and build
+        their following.
       </p>
     </div>
   </div>
@@ -31,10 +31,10 @@
       </h3>
       <p
         class="xxl:text-key-sub-text-xxl text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl">
-        Content is often mis-credited or not credited at all when shared online,
+        Content is often miscredited or not credited at all when shared online,
         creating tons of lost opportunity for creators. Content Credentials
-        enable creators to get recognition for what they create—helping them
-        build a following and market their work.
+        enable creators to get recognized for their work, market it, and build
+        their following.
       </p>
     </div>
   </div>

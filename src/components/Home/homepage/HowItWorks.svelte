@@ -12,7 +12,7 @@
       labelBg: '#EF9349',
       Image: Hiw1,
       description:
-        'Creators choose to digitally sign their work by creating Content Credentials, which might include things like whether they used AI or not. Voila! This information gets added to the edit history of that content.',
+        'Creators can choose to attach Content Credentials to their content, which might include things like whether AI was used or not. Voila! This information is added to the edit history of the content—creating a record that can be confirmed.',
     },
     {
       id: 2,
@@ -21,7 +21,7 @@
       labelBg: '#FCE458',
       Image: Hiw2,
       description:
-        'Once the content is published, anyone can view the information by clicking on the pin, which reveals basic information about the image directly in context.',
+        'Once the content is published, anyone can view its Content Credentials by clicking the pin, which reveals the most relevant information directly in context.',
     },
     {
       id: 3,

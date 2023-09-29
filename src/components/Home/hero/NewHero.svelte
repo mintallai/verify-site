@@ -71,8 +71,8 @@
         </h1>
         <p
           class="xxl:text-hero-sub-desktop text-center text-hero-sub text-gray-900/60">
-          Deepfakes. Voice Cloning. It's hard to tell what's accurate and
-          authentic online these days.
+          Deepfakes. Voice cloning. Synthetic media. It’s hard to tell what’s
+          accurate and authentic these days.
         </p>
       </div>
     </div>

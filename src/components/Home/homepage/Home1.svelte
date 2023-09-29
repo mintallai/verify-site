@@ -8,16 +8,16 @@
     class="xxl:w-[910px] flex flex-col items-center justify-center pb-10 pt-20 xl:h-screen xl:w-[802px]">
     <h2
       class="xxl:text-home-title-xxl text-center text-home-secondary-title md:text-home-title-md xl:text-hero-title">
-      Content Credentials reveals helpful information that's usually hidden
+      Content Credentials reveal helpful information that’s usually hidden
     </h2>
     <div class="flex flex-col items-center justify-center pt-10">
       <p
         class="xxl:text-home-sub-xxl text-center text-home-sub text-gray-900/60 xl:text-home-sub-XL">
-        Important information about the content you see is invisible to most
-        users of the internet. Content Credentials is a new open-source tool
-        that exposes answers to all the questions you have about content—like if
-        it was made with AI or not, who made it and when, and how it was
-        made—with a simple click.
+        Important information about the content you see online is often
+        inaccessible or inaccurate. Content Credentials are a new open-source
+        tool for revealing answers to your questions about content with a simple
+        click: How was it made? Who created it and when? Was AI used? made—with
+        a simple click.
       </p>
       <a
         href="/"
