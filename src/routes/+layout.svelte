@@ -14,7 +14,7 @@
 -->
 <script lang="ts">
   import { afterNavigate } from '$app/navigation';
-  import { postEvent } from '$lib/analytics';
+  import { analytics } from '$lib/analytics';
   import { SITE_VERSION } from '$lib/config';
   import { ToastContainer } from '$src/features/Toast';
   import { lang } from '@intl/adobe-locales';
@@ -24,28 +24,25 @@
   import SidebarMenu from '../features/SidebarMenu/SidebarMenu.svelte';
   import ModalContainer from './verify/components/modals/ModalContainer/ModalContainer.svelte';
 
+  import { get } from 'svelte/store';
   import '../app.css';
   import '../globalWebComponents';
 
-  afterNavigate(() => {
-    let duration: number | null = null;
-
-    if ('getEntriesByType' in window.performance) {
-      const navPerf = window.performance?.getEntriesByType('navigation')?.[0];
-      duration = navPerf?.duration;
+  afterNavigate((evt) => {
+    if (evt.type !== 'goto') {
+      analytics.track('pageLoad', {
+        from: evt.from?.route.id ?? '',
+        to: evt.to?.route.id ?? '',
+        navigationType: evt.type,
+        locale: get(locale) ?? 'unknown',
+      });
     }
-
-    postEvent({
-      'event.type': 'render',
-      'event.subtype': 'page',
-      ...(duration ? { 'event.value': duration } : {}),
-    });
 
     return true;
   });
 
   onMount(() => {
-    // @TODO: can't import serverside - look into this
+    // @TODO: can't import server side - look into this
     console.debug(`Verify site running revision ${SITE_VERSION}`);
 
     const unsubscribe = locale.subscribe((loc) => {
