@@ -27,7 +27,7 @@
 <div class="w-screen pt-[4rem]">
   <div class="px-6">
     <div class="w-[350px] text-[1.3125rem] leading-[1.77188rem] pb-4">
-      Content Credentials is used by the world’s leading organizations
+      Join a growing list of organizations
     </div>
     <div class="flex h-[200px] w-full items-center rounded-xl bg-gray-200">
       <div class="w-full flex flex-row items-center justify-evenly">

@@ -8,16 +8,16 @@
       bgColor: '#84c7fc',
     },
     {
-      label: 'Clear detection of tampering',
+      label: 'Clear tampering detection',
       description:
-        'Content Credentials are made possible by cryptographic processes which mean that any unsupported changes made to Content Credentials can be easily identified and exposed.',
+        'Content Credentials use technology that allows any unsupported changes to content’s edit history or the content itself  to be easily identified and exposed.',
       id: 2,
       bgColor: '#5ac97d',
     },
     {
       label: 'Accountability',
       description:
-        'Organizations that issue Content Credentials must identify themselves in the Content Credentials they issue. Issuers therefore stake their reputations on their ability to collect and include information with accuracy. Learn more about the Content Credentials trust model.',
+        'Organizations that issue Content Credentials must identify themselves in the Content Credentials they issue. Issuers therefore stake their reputations on their ability to record information accurately. Learn more about the Content Credentials trust model.',
       id: 3,
       bgColor: '#888ef8',
     },

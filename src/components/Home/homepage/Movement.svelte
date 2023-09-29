@@ -2,14 +2,14 @@
   <div class="flex flex-col items-center justify-evenly gap-[40px]">
     <h2
       class="xxl:text-movement-title-xxl text-center text-movement-title md:w-[40rem] md:text-movement-title-md xl:w-[50rem] xl:text-movement-title-xl">
-      Content Credentials is rolling out across the internet
+      Content Credentials are rolling out across the internet
     </h2>
     <p
       class="xxl:text-movement-text-xxl w-full text-center text-movement-text text-gray-900/60 xl:w-[50rem] xl:text-movement-text-xl">
       Expect to see the Content Credentials pin popping up in more and more
-      places. It’s already being implemented by leading organizations with the
-      support of the Content Authenticity Initiative, the cross-industry
-      organization behind Content Credentials fighting for a more open and
+      places. Many leading organizations are already implementing them with the
+      support of the Content Authenticity Initiative—the cross-industry
+      organization behind Content Credentials, fighting for a more open and
       transparent internet.
     </p>
     <a href="/">

@@ -25,12 +25,12 @@
     },
     {
       id: 3,
-      label: 'Go deeper to see the full edit history',
+      label: 'Go deeper to explore the full edit history',
       labelNumber: 3,
       labelBg: '#fe818b',
       Image: Hiw3,
       description:
-        'Content Credentials captures the full edit history of content in a new feature called Verify. Just click “Inspect.” The feature also allows you to upload your own content to see if edit history is available.',
+        'Content Credentials can capture a detailed history of changes over time. The Verify feature allows you to explore this information in depth, and upload any content to see if it has Content Credentials.',
     },
   ];
 </script>
