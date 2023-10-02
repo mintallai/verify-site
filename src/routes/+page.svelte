@@ -23,6 +23,7 @@
   import Trust from '$src/components/Home/homepage/Trust.svelte';
   import Movement from '$src/components/Home/homepage/Movement.svelte';
   import Orgs from '$src/components/Home/homepage/Orgs.svelte';
+  import Powered from '$src/components/Home/homepage/Powered.svelte';
 </script>
 
 <!-- <Header>
@@ -39,8 +40,9 @@
     <Home1 />
     <HowItWorks />
     <Trust />
-    <Movement />
+    <Powered />
     <Orgs />
+    <Movement />
   </div>
   <Footer />
 </div>
