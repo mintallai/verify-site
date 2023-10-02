@@ -55,14 +55,14 @@
           <!-- Add margin for consistent gap -->
           <h3
             class="font-Norske rounded-t-2xl bg-brand-green px-[32px] py-[20px] text-trust-label">
-            Clear detection of tampering
+            Clear tampering detection
           </h3>
           <div
             class="lg:text-trust-desc-lg h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] text-trust-desc lg:pb-0">
             <p class="lg:h-[269px] lg:w-[325px]">
-              Content Credentials are made possible by cryptographic processes
-              which mean that any unsupported changes made to Content
-              Credentials can be easily identified and exposed.
+              Content Credentials use technology that allows any unsupported
+              changes to content’s edit history or the content itself to be
+              easily identified and exposed.
             </p>
           </div>
         </li>
@@ -81,9 +81,9 @@
             <p class="lg:h-[269px] lg:w-[325px]">
               Organizations that issue Content Credentials must identify
               themselves in the Content Credentials they issue. Issuers
-              therefore stake their reputations on their ability to collect and
-              include information with accuracy. Learn more about the Content
-              Credentials trust model.
+              therefore stake their reputations on their ability to record
+              information accurately. Learn more about the Content Credentials
+              trust model.
             </p>
           </div>
         </div>

@@ -16,8 +16,7 @@
         Important information about the content you see online is often
         inaccessible or inaccurate. Content Credentials are a new open-source
         tool for revealing answers to your questions about content with a simple
-        click: How was it made? Who created it and when? Was AI used? made—with
-        a simple click.
+        click: How was it made? Who created it and when? Is it AI-generated?
       </p>
       <a
         href="/"

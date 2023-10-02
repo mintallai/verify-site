@@ -7,10 +7,7 @@
     <p
       class="xxl:text-movement-text-xxl w-full text-center text-movement-text text-gray-900/60 xl:w-[50rem] xl:text-movement-text-xl">
       Expect to see the Content Credentials pin popping up in more and more
-      places. Many leading organizations are already implementing them with the
-      support of the Content Authenticity Initiative—the cross-industry
-      organization behind Content Credentials, fighting for a more open and
-      transparent internet.
+      places as it gets implemented by partners far and wide.
     </p>
     <a href="/">
       <div
