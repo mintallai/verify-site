@@ -25,7 +25,7 @@
 </script>
 
 <div
-  class="flex w-screen items-center justify-center px-[1.5rem] lg:my-20 xl:my-40">
+  class="flex w-screen items-center justify-center px-[1.5rem] lg:my-20 xl:my-40 max-w-[90rem]">
   <div
     class="flex flex-col items-center justify-center gap-[64px] md:gap-[80px]">
     <h2

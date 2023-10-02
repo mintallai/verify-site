@@ -60,7 +60,8 @@
   ];
 </script>
 
-<div class="flex h-[screen-100px] w-screen items-center justify-center">
+<div
+  class="flex h-[screen-100px] w-screen items-center justify-center max-w-[90rem]">
   <div
     class="flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[20px] sm:p-[2rem] lg:flex-row lg:gap-[1.5rem] xxl:col-span-12">
     <div

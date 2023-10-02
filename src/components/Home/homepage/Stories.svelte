@@ -25,7 +25,8 @@
   ];
 </script>
 
-<div class="h-[1400px] w-screen items-center justify-center pb-[100px]">
+<div
+  class="h-[1400px] w-screen items-center justify-center pb-[100px] max-w-[90rem]">
   <div class="flex h-full w-full flex-col items-center justify-center">
     <div class="text-home-secondary-title mb-20 mt-40">Stories</div>
     <div class="flex flex-row gap-5">

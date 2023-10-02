@@ -1,4 +1,5 @@
-<div class="flex w-screen items-center justify-center px-[1.5rem] py-20">
+<div
+  class="flex w-screen items-center justify-center px-[1.5rem] py-20 max-w-[90rem]">
   <div class="flex flex-col items-center justify-evenly gap-[40px]">
     <h2
       class="xxl:text-movement-title-xxl text-center text-movement-title md:w-[40rem] md:text-movement-title-md xl:w-[50rem] xl:text-movement-title-xl">

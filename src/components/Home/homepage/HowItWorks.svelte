@@ -45,7 +45,7 @@
     <div class="">
       {#each data as item}
         <div
-          class="max-w-[116rem] pt-[96px] lg:max-w-[1145px] xl:max-w-[116rem] xl:pt-[128px] xl:px-[10rem] xxl:pt-[160px]">
+          class="pt-[96px] lg:max-w-[1145px] xl:max-w-[116rem] xl:pt-[128px] xl:px-[10rem] xxl:pt-[160px] max-w-[90rem]">
           <div
             class="flex max-w-[86rem] flex-col items-start justify-between sm:pb-[3.5rem] xl:pb-[4rem] lg:flex-row">
             <div class="flex flex-row items-start justify-start gap-4 lg:w-1/2">
