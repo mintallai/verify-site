@@ -5,7 +5,7 @@
 
   // import Image from '$assets/svg/logos/homepage/hero.svg';
 
-  import Video from '$assets/video/cr-pin.mp4';
+  import Video from '$assets/video/hero.mp4';
 
   import Logo from '$assets/png/_pin.png';
 

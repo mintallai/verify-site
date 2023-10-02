@@ -3,7 +3,7 @@
   import Hiw2 from '$assets/svg/logos/homepage/1.svg';
   // import Hiw3 from '$assets/svg/logos/homepage/hiw3.svg';
 
-  import Video from '$assets/video/cr-pin.mp4';
+  import Video from '$assets/video/howitworks.mp4';
 
   const data = [
     {
