@@ -12,8 +12,9 @@
           class="lg:text-trust-desc-lg h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pb-20 pt-[20px] text-trust-desc lg:pb-0">
           <p class="lg:h-[269px] lg:w-[325px]">
             Content Credentials are based on open technical standards developed
-            and maintained by the C2PA, a cross-industry membership
-            organization. You can review the standards anytime.
+            and maintained by the <span class="underline">C2PA</span>, a
+            cross-industry membership organization. You can review the standards
+            anytime.
           </p>
         </div>
       </li>
