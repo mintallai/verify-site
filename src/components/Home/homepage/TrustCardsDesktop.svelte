@@ -3,7 +3,7 @@
   <ul class="hidden justify-center gap-4 xl:flex">
     <li class="w-[389px]">
       <h3
-        class="font-Norske rounded-t-2xl px-[32px] py-[20px] text-trust-label bg-brand-orange">
+        class="rounded-t-2xl px-[32px] py-[20px] text-trust-label bg-brand-orange">
         Open-source standards
       </h3>
       <div
@@ -18,7 +18,7 @@
     </li>
     <li class="w-[389px]">
       <h3
-        class="font-Norske rounded-t-2xl px-[32px] py-[20px] text-trust-label bg-brand-red">
+        class="rounded-t-2xl px-[32px] py-[20px] text-trust-label bg-brand-red">
         Clear tampering detection
       </h3>
       <div
@@ -32,7 +32,7 @@
     </li>
     <li class="w-[389px]">
       <h3
-        class="font-Norske rounded-t-2xl px-[32px] py-[20px] text-trust-label bg-brand-violet">
+        class="rounded-t-2xl px-[32px] py-[20px] text-trust-label bg-brand-violet">
         Accountability
       </h3>
       <div

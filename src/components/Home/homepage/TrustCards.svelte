@@ -20,7 +20,7 @@
       </li>
       <li class="mb-4 w-[80%] lg:mb-0">
         <h3
-          class="font-Norske rounded-t-2xl bg-brand-red px-[32px] py-[20px] text-trust-label">
+          class=" rounded-t-2xl bg-brand-red px-[32px] py-[20px] text-trust-label">
           Clear detection of tampering
         </h3>
         <div
@@ -37,7 +37,7 @@
     <li class="mb-4 w-[80%] lg:mx-auto lg:mb-0 lg:w-1/2 lg:pt-12">
       <div class="xl:hidden">
         <h3
-          class="font-Norske rounded-t-2xl bg-brand-violet px-[32px] py-[20px] text-trust-label">
+          class="rounded-t-2xl bg-brand-violet px-[32px] py-[20px] text-trust-label">
           Accountability
         </h3>
         <div
