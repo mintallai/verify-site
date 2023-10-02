@@ -7,7 +7,7 @@
 
   import Video from '$assets/video/hero.mp4';
 
-  import Logo from '$assets/png/_pin.png';
+  import Logo from '$assets/png/pin.png';
 
   let isPopupVisible = false;
 
@@ -62,17 +62,17 @@
 
 <div class="flex h-[756px] w-screen items-center justify-center max-w-[90rem]">
   <div
-    class="flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[20px] pt-[40px] sm:p-[2rem] sm:pt-[40px] lg:flex-row lg:gap-[1.5rem] xxl:col-span-12">
+    class="flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[20px] pt-[40px] sm:p-[2rem] sm:pt-[40px] lg:flex-row lg:gap-[1.5rem] 2xl:col-span-12">
     <div
-      class="flex h-full w-full items-center justify-center lg:w-1/2 xxl:col-start-1 xxl:col-end-6">
+      class="flex h-full w-full items-center justify-center lg:w-1/2 2xl:col-start-1 2xl:col-end-6">
       <div
         class="flex max-w-[41rem] flex-col items-start justify-center self-stretch p-0 md:p-[1.5rem] xl:max-w-[41rem]">
         <h1
-          class="pb-[2rem] text-center text-hero-title tracking-[-0.105rem] lg:text-hero-title-lg xl:text-center xxl:text-hero-title-desktop">
+          class="pb-[2rem] text-center text-hero-title tracking-[-0.105rem] lg:text-hero-title-lg xl:text-center 2xl:text-hero-title-desktop">
           Wait, where did this image come from?
         </h1>
         <p
-          class="text-center text-hero-sub text-gray-900/60 xxl:text-hero-sub-desktop">
+          class="text-center text-hero-sub text-gray-900/60 2xl:text-hero-sub-desktop">
           Deepfakes. Voice Cloning. It's hard to tell what's accurate and
           authentic online these days.
         </p>
@@ -81,12 +81,10 @@
     <div
       class="flex h-full w-full flex-col items-start justify-center md:items-center lg:w-1/2 lg:items-start">
       <div class="flex flex-col items-start">
-        <!-- <L2Overlay imageUrl={Image} /> -->
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <!-- Logo that appears on hover and can be clicked to toggle popup -->
         <div class="group relative">
-          <!-- <img src={Image} alt="Click for more info" /> -->
           <video
             autoplay
             loop
@@ -181,7 +179,6 @@
 {#if screenWidth <= 768}
   {#if isPopupVisible}
     <!-- Your existing mobile popup code here -->
-    <!-- Rest of screen size -->
     <div
       class="fixed inset-0 z-[9999] flex items-center justify-center md:hidden">
       <!-- Popup Container -->
@@ -258,9 +255,6 @@
 {/if}  -->
 
 <style>
-  /* .popup {
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
-  } */
   .top-rounded-shadow::before {
     content: '';
     position: absolute;

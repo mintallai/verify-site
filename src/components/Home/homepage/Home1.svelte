@@ -5,14 +5,14 @@
 <div
   class="flex w-screen flex-col items-center justify-evenly gap-6 p-[1.5rem] max-w-[90rem]">
   <div
-    class="xxl:w-[910px] flex flex-col items-center justify-center pb-10 pt-20 xl:w-[802px]">
+    class="2xl:w-[910px] flex flex-col items-center justify-center pb-10 pt-20 xl:w-[802px]">
     <h2
-      class="xxl:text-home-title-xxl text-center text-home-secondary-title md:text-home-title-md xl:text-hero-title">
+      class="2xl:text-home-title-xxl text-center text-home-secondary-title md:text-home-title-md xl:text-hero-title">
       Content Credentials reveals helpful information that's usually hidden
     </h2>
     <div class="flex flex-col items-center justify-center pt-10">
       <p
-        class="xxl:text-home-sub-xxl text-center text-home-sub text-gray-900/60 xl:text-home-sub-XL">
+        class="2xl:text-home-sub-xxl text-center text-home-sub text-gray-900/60 xl:text-home-sub-XL">
         Important information about the content you see is invisible to most
         users of the internet. Content Credentials is a new open-source tool
         that exposes answers to all the questions you have about content—like if

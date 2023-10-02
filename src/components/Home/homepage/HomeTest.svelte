@@ -5,10 +5,10 @@
 <div
   class="px-[1.5rem] py-[2.25rem] lg:grid lg:grid-cols-12 lg:gap-4 xl:max-w-[1440px]">
   <div
-    class="px-[1.5rem] flex flex-col items-center justify-center lg:col-span-6 xxl:text-hero-title-desktop pb-6 text-center text-hero-title tracking-[-0.105rem] xl:text-center lg:text-hero-title-lg">
+    class="px-[1.5rem] flex flex-col items-center justify-center lg:col-span-6 2xl:text-hero-title-desktop pb-6 text-center text-hero-title tracking-[-0.105rem] xl:text-center lg:text-hero-title-lg">
     Wait, where did this image come from?
     <div
-      class="xxl:w-[40rem] xxl:text-hero-sub-desktop text-center text-hero-sub text-gray-900/60">
+      class="2xl:w-[40rem] 2xl:text-hero-sub-desktop text-center text-hero-sub text-gray-900/60">
       Deepfakes. Voice cloning. It’s hard to tell what’s accurate and authentic
       online these days.
     </div>

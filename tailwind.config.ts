@@ -63,8 +63,8 @@ export default {
       md: '768px',
       lg: '991px',
       xl: '1280px',
-      xxl: '1281px',
-      xxxl: '1440px',
+      '2xl': '1281px',
+      '3xl': '1440px',
     },
     fontFamily: {
       base: defs['family-base'],
@@ -102,6 +102,7 @@ export default {
       'brand-orange': defs['brand-orange'],
       'brand-violet': defs['brand-violet'],
       'brand-white': defs['brand-white'],
+      'brand-gray': defs['brand-gray'],
       transparent: 'transparent',
       current: 'currentColor',
     },
@@ -347,7 +348,7 @@ export default {
           letterSpacing: '-0.105rem',
         },
       ],
-      'hiw-title-xxl:': [
+      'hiw-title-2xl:': [
         '5.5rem',
         {
           fontWeight: '700',
