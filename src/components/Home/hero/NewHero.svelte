@@ -3,7 +3,9 @@
 
   import { onMount } from 'svelte';
 
-  import Image from '$assets/svg/logos/homepage/hero.svg';
+  // import Image from '$assets/svg/logos/homepage/hero.svg';
+
+  import Video from '$assets/video/cr-pin.mp4';
 
   import Logo from '$assets/png/_pin.png';
 
@@ -60,7 +62,7 @@
 
 <div class="flex h-[screen-100px] w-screen items-center justify-center">
   <div
-    class="flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[2rem] md:p-[2rem] lg:flex-row lg:gap-[1.5rem] xxl:col-span-12">
+    class="flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[20px] sm:p-[2rem] lg:flex-row lg:gap-[1.5rem] xxl:col-span-12">
     <div
       class="flex h-full w-full items-center justify-center lg:w-1/2 xxl:col-start-1 xxl:col-end-6">
       <div
@@ -84,7 +86,13 @@
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <!-- Logo that appears on hover and can be clicked to toggle popup -->
         <div class="group relative">
-          <img src={Image} alt="Click for more info" />
+          <!-- <img src={Image} alt="Click for more info" /> -->
+          <video
+            autoplay
+            loop
+            muted
+            src={Video}
+            class="h-full max-h-full w-full max-w-full rounded-xl object-cover xl:h-full" />
           <div
             class="absolute right-0 top-0 z-10 flex cursor-pointer lg:opacity-0 lg:transition-opacity lg:duration-200 lg:group-hover:opacity-100"
             on:click={() =>
