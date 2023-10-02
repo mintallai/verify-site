@@ -33,9 +33,9 @@
     <HeaderLink href="/">Embed</HeaderLink>
   </svelte:fragment>
 </Header> -->
-<div class="overflow-x-hidden overflow-y-hidden">
+<div class="overflow-x-hidden">
   <Header />
-  <div class="flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center justify-center space-y-4">
     <Hero />
     <Home1 />
     <HowItWorks />

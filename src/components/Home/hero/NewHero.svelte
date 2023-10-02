@@ -2,7 +2,7 @@
   import Video from '$assets/video/hero.mp4';
 </script>
 
-<div class="flex h-[756px] w-screen max-w-[90rem] items-center justify-center">
+<div class="flex w-screen max-w-[90rem] items-center justify-center">
   <div
     class="2xl:col-span-12 flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[20px] pt-[40px] sm:p-[2rem] sm:pt-[40px] lg:flex-row lg:gap-[1.5rem]">
     <div
@@ -16,7 +16,7 @@
         <p
           class="2xl:text-hero-sub-desktop text-center text-hero-sub text-gray-900/60">
           Deepfakes. Voice Cloning. It's hard to tell what's accurate and
-          authentic online these days.
+          authentic these days.
         </p>
       </div>
     </div>
@@ -29,7 +29,7 @@
             loop
             muted
             src={Video}
-            class="h-full max-h-full w-full max-w-full rounded-xl object-cover xl:h-full" />
+            class="h-full max-h-full w-full max-w-full rounded-xl object-cover md:max-w-[704px] xl:h-full" />
         </div>
         <p
           class="flex pt-[0.5rem] text-small-description text-gray-500 md:items-start">
