@@ -4,7 +4,6 @@
 
 <div class="px-[1.5rem] md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
   <div class="md:col-span-6">
-    <!-- Your image goes here -->
     <div class="video-container">
       <video
         autoplay
@@ -17,8 +16,6 @@
   <div
     class="pt-6 md:col-start-7 md:col-end-13 md:pt-0 lg:col-start-8 lg:col-end-12">
     <div class="max-w-[676px]">
-      <!-- Adjust the max-width as needed -->
-
       <h3 class="2xl:text-key-title-xl pb-6 text-left text-key-title">
         Introducing the Content Credentials pin
       </h3>

@@ -25,15 +25,6 @@
       description:
         'Once the content is published, anyone can view the information by clicking on the pin, which reveals basic information about the image directly in context.',
     },
-    // {
-    //   id: 3,
-    //   label: 'Go deeper to see the full edit history',
-    //   labelNumber: 3,
-    //   labelBg: '#fe818b',
-    //   Image: Hiw3,
-    //   description:
-    //     'Content Credentials captures the full edit history of content in a new feature called Verify. Just click “Inspect.” The feature also allows you to upload your own content to see if edit history is available.',
-    // },
   ];
 </script>
 

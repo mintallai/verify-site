@@ -13,11 +13,5 @@
         >Content Authenticity Initiative</span> — the cross-industry organization
       behind Content Credentials fighting for a more open and transparent internet.
     </p>
-    <!-- <a href="/">
-      <div
-        class="h-[2.75rem] flex items-center rounded-full bg-brand-red px-[1.25rem] py-3 hover:bg-brand-red/80">
-        Learn more
-      </div>
-    </a> -->
   </div>
 </div>

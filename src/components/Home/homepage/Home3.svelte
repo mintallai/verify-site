@@ -22,7 +22,6 @@
       </p>
     </div>
   </div>
-  <!--  -->
   <div
     class="pt-6 sm:hidden md:col-start-1 md:col-end-6 md:hidden md:pt-0 xl:col-start-7 xl:col-end-13">
     <div class="max-w-[676px] hidden">

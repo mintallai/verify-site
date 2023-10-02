@@ -4,7 +4,6 @@
 
 <div class="w-full md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
   <div class="md:col-span-6 w-full">
-    <!-- Your image goes here -->
     <img src={Image} alt="" class="w-full" />
   </div>
   <div
