@@ -48,6 +48,7 @@
 
   const nodeWidth = remToPx(10.25);
   const nodeHeight = remToPx(10.25);
+  const clickDistance = 10;
   const config: TreeViewConfig = {
     ...defaultConfig,
     nodeWidth,
@@ -59,9 +60,11 @@
   let width = 1;
   let height = 1;
   let boundsTransform: ZoomTransform;
-  let zoom = d3Zoom<SVGElement, ReadableAssetStore>().on('zoom', (evt) => {
-    boundsTransform = evt.transform;
-  });
+  let zoom = d3Zoom<SVGElement, ReadableAssetStore>()
+    .on('zoom', (evt) => {
+      boundsTransform = evt.transform;
+    })
+    .clickDistance(clickDistance);
 
   onMount(() => {
     svgSel = d3Select<SVGElement, ReadableAssetStore>(svgElement);
@@ -85,7 +88,7 @@
   });
   $: links = createLinks(tree, $selectedAsset);
   $: descendants = tree.descendants();
-  $: canCompare = descendants.length > 1;
+  $: canCompare = descendants.length > 1 && !!$selectedAsset?.thumbnail;
   $: {
     // Set the proper scaleExtent whenever the width/height changes
     zoom.scaleExtent([transforms.minScale, 1]);
@@ -120,32 +123,38 @@
     <div
       class="absolute left-0 top-0"
       style={`transform: ${transforms.htmlTransform ?? ''};`}>
-      {#each descendants as { x, y, data }, key (key)}
+      {#each descendants as { x, y, data, parent }, key (key)}
         <TreeNode
           assetStore={data}
           {x}
           {y}
           width={nodeWidth}
-          height={nodeHeight} />
+          height={nodeHeight}
+          {parent} />
       {/each}
     </div>
   </div>
 
   <div
-    class="absolute bottom-5 right-5 z-20 flex flex-col items-end justify-end space-y-5">
+    class="absolute bottom-5 right-5 z-20 hidden flex-col items-end justify-end space-y-5 lg:flex">
     <div class="flex h-8 items-center rounded-full bg-white shadow-md">
       <button
         class="h-full pe-2 ps-2.5 transition-opacity"
         class:opacity-40={!transforms.canZoomIn}
-        on:click={() => transforms.canZoomIn && zoomIn({ svgSel, zoom })}>
+        class:cursor-not-allowed={!transforms.canZoomIn}
+        disabled={!transforms.canZoomIn}
+        on:click={() => zoomIn({ svgSel, zoom })}
+        aria-roledescription={$_('page.verify.zoomIn')}>
         <ZoomIn width="1rem" height="1rem" class="text-gray-800" />
       </button>
       <div class="h-[85%] w-px bg-gray-200" />
       <button
         class="h-full pe-2.5 ps-2 transition-opacity"
         class:opacity-40={!transforms.canZoomOut}
+        class:cursor-not-allowed={!transforms.canZoomOut}
+        disabled={!transforms.canZoomOut}
+        aria-roledescription={$_('page.verify.zoomOut')}
         on:click={() =>
-          transforms.canZoomOut &&
           zoomOut({
             svgSel,
             zoom,
@@ -159,8 +168,11 @@
     </div>
     <div class="flex h-8 items-center rounded-full bg-white shadow-md">
       <button
-        on:click={() => canCompare && verifyStore.setCompareView()}
+        on:click={() => verifyStore.setCompareView()}
+        disabled={!canCompare}
+        class="transition-opacity"
         class:opacity-40={!canCompare}
+        class:cursor-not-allowed={!canCompare}
         ><div class="mx-3 my-2 flex items-center">
           <Compare class="me-2 h-4 w-4" />
           <Body

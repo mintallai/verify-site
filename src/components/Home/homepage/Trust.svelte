@@ -29,7 +29,7 @@
   <div
     class="flex flex-col items-center justify-center gap-[64px] md:gap-[80px]">
     <h2
-      class="xxl:w-[58rem] xxl:text-trust-title-xxl w-[27rem] pt-20 text-center text-trust-title xs:w-[22rem] md:w-[40rem] md:text-trust-title-md xl:py-0 xl:text-trust-title-xl">
+      class="w-[27rem] pt-20 text-center text-trust-title xs:w-[22rem] md:w-[40rem] md:text-trust-title-md xl:py-0 xl:text-trust-title-xl xxl:w-[58rem] xxl:text-trust-title-xxl">
       What makes Content Credentials trustworthy
     </h2>
     <!-- Media query for screens between 991px and 1280px (lg to xl) -->
@@ -67,7 +67,7 @@
           </div>
         </li>
       </div>
-      <div class="lg:hidden"></div>
+      <!-- <div class="lg:hidden"></div> -->
       <!-- Empty div to create space between rows -->
       <li class="mb-4 xs:w-[80%] lg:mx-auto lg:mb-0 lg:w-1/2 lg:pt-12">
         <!-- Add margin for consistent gap and center the third item -->
@@ -100,7 +100,7 @@
             {item.label}
           </h3>
           <div
-            class="xxl:text-trust-desc-xxl h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pt-[20px] text-trust-desc xl:text-trust-desc-xl">
+            class="h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pt-[20px] text-trust-desc xl:text-trust-desc-xl xxl:text-trust-desc-xxl">
             <p class="xl:h-[269px] xl:w-[325px]">
               {item.description}
             </p>

@@ -60,17 +60,17 @@
 
 <div class="flex h-[screen-100px] w-screen items-center justify-center">
   <div
-    class="xxl:col-span-12 flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[2rem] md:p-[2rem] lg:flex-row lg:gap-[1.5rem]">
+    class="flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[2rem] md:p-[2rem] lg:flex-row lg:gap-[1.5rem] xxl:col-span-12">
     <div
-      class="xxl:col-start-1 xxl:col-end-6 flex h-full w-full items-center justify-center lg:w-1/2">
+      class="flex h-full w-full items-center justify-center lg:w-1/2 xxl:col-start-1 xxl:col-end-6">
       <div
         class="flex max-w-[41rem] flex-col items-start justify-center self-stretch p-0 md:p-[1.5rem] xl:max-w-[41rem]">
         <h1
-          class="xxl:text-hero-title-desktop lg:text-hero-title-lg pb-[2rem] text-center text-hero-title tracking-[-0.105rem] xl:text-center">
+          class="pb-[2rem] text-center text-hero-title tracking-[-0.105rem] lg:text-hero-title-lg xl:text-center xxl:text-hero-title-desktop">
           Wait, where did this image come from?
         </h1>
         <p
-          class="xxl:text-hero-sub-desktop text-center text-hero-sub text-gray-900/60">
+          class="text-center text-hero-sub text-gray-900/60 xxl:text-hero-sub-desktop">
           Deepfakes. Voice Cloning. It's hard to tell what's accurate and
           authentic online these days.
         </p>
@@ -93,10 +93,9 @@
               src={Logo}
               alt="Toggle popup"
               class="h-full w-full pr-4 pt-4" />
-            {#if isOpen && screenWidth > 768}
+            <!-- {#if isOpen && screenWidth > 768}
               <div
-                class="bg-brand-white shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2 popup">
-                <!-- Your popup content here -->
+                class="shadow-lg popup absolute right-4 top-12 mb-10 rounded-lg bg-brand-white p-2">
                 {#if isOpen}
                   <div class="h-full w-[350px] rounded-xl bg-brand-white py-4">
                     <div class="py-3">
@@ -158,7 +157,7 @@
                   </div>
                 {/if}
               </div>
-            {/if}
+            {/if} -->
           </div>
         </div>
 
@@ -171,7 +170,6 @@
   </div>
 </div>
 
-<!--  -->
 {#if screenWidth <= 768}
   {#if isPopupVisible}
     <!-- Your existing mobile popup code here -->
@@ -180,7 +178,7 @@
       class="fixed inset-0 z-[9999] flex items-center justify-center md:hidden">
       <!-- Popup Container -->
       <div
-        class="text-popup-text fixed bottom-0 h-auto w-screen rounded-t-xl bg-white p-0.5 top-rounded-shadow">
+        class="top-rounded-shadow fixed bottom-0 h-auto w-screen rounded-t-xl bg-white p-0.5 text-popup-text">
         <div class="h-full rounded-xl bg-brand-white px-2 py-4">
           <div class="flex flex-row justify-between">
             <div class="py-3">
@@ -199,7 +197,7 @@
           <div class="px-6 py-3">
             {#each data as item}
               <div class="flex flex-row items-center gap-1 py-2">
-                <div class="text-popup-text pb-1">{item.Notice}</div>
+                <div class="pb-1 text-popup-text">{item.Notice}</div>
               </div>
               <hr class="py-1" />
               <div class="flex flex-row gap-1 py-2">
@@ -245,15 +243,16 @@
       </div>
     </div>
   {/if}
-{:else if isOpen && screenWidth > 768}
-  <div class="shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2"></div>
 {/if}
 
+<!-- {:else if isOpen && screenWidth > 768}
+  <div class="shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2"></div>
+{/if}  -->
+
 <style>
-  .popup {
-    /* border-radius: 12px 12px 0 0; Adjust this value according to your mobile popup's top corners */
+  /* .popup {
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
-  }
+  } */
   .top-rounded-shadow::before {
     content: '';
     position: absolute;

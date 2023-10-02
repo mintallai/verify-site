@@ -67,7 +67,6 @@ export default {
       xxxl: '1440px',
     },
     fontFamily: {
-      home: defs['family-home'],
       base: defs['family-base'],
     },
     colors: {
@@ -108,30 +107,37 @@ export default {
     },
     fontSize: {
       title: [
-        '1.5rem',
+        '2rem',
         {
-          lineHeight: '1.875rem',
-          fontWeight: '900',
+          lineHeight: '1.1',
+          fontWeight: '700',
+        },
+      ],
+      subtitle: [
+        '1.3125rem',
+        {
+          lineHeight: '1.3',
+          fontWeight: '400',
         },
       ],
       header: [
         '1.125rem',
         {
-          lineHeight: '1.5rem',
-          fontWeight: '500',
+          lineHeight: '1.4625rem',
+          fontWeight: '600',
         },
       ],
       'body-bold': [
         '0.875rem',
         {
-          lineHeight: '1.25rem',
+          lineHeight: '1.4',
           fontWeight: '700',
         },
       ],
       body: [
         '0.875rem',
         {
-          lineHeight: '1.25rem',
+          lineHeight: '1.4',
           fontWeight: '400',
         },
       ],
@@ -150,19 +156,21 @@ export default {
         },
       ],
       label: [
-        '0.75rem',
+        '0.875rem',
         {
-          lineHeight: '0.875rem',
+          lineHeight: '1.4',
           fontWeight: '700',
         },
       ],
       informational: [
-        '0.75rem',
+        '0.875rem',
         {
-          lineHeight: '0.875rem',
+          lineHeight: '1.3',
           fontWeight: '400',
         },
       ],
+
+      // For the Homepage
       hero: [
         '3.75rem',
         {
@@ -170,7 +178,6 @@ export default {
           lineHeight: '75px',
         },
       ],
-      // For the Homepage
       'hero-title': [
         '3.5rem',
         {
@@ -592,15 +599,22 @@ export default {
     boxShadow: {
       DEFAULT: '0px 4px 20px rgba(0, 0, 0, 0.3)',
       md: '0px 2px 6px 0px rgba(0, 0, 0, 0.15)',
+      sm: '0px 1px 3px 0px rgba(0, 0, 0, 0.35)',
     },
     extend: {
       spacing: {
         sidebar: '20rem',
         header: '3.5rem',
       },
+      translate: {
+        'h-screen': '100vh',
+      },
       borderColor: ({ theme }) => ({
         DEFAULT: theme('colors.gray-200'),
       }),
+      borderRadius: {
+        '3xl': '1.25rem',
+      },
       gridTemplateColumns: {
         table: '38% 28% 28% 6%',
         mobiletable: '67% 22% 10%',

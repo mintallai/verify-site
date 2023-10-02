@@ -13,18 +13,20 @@
   from Adobe.
 -->
 <script lang="ts">
-  import close from '$assets/svg/color/logos/close.svg';
+  import close from '$assets/svg/monochrome/close.svg';
   import Body from '$src/components/typography/Body.svelte';
+  import { analytics } from '$src/lib/analytics';
   import type { AssetData } from '$src/lib/asset';
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
+  import { openModal } from 'svelte-modals';
   import type { Readable } from 'svelte/store';
   import { verifyStore } from '../../stores';
   import BigAssetInfo from '../AssetInfo/BigAssetInfo.svelte';
   import ErrorBanner from '../ErrorBanner/ErrorBanner.svelte';
   import ThumbnailSection from '../Thumbnail/ThumbnailSection.svelte';
+  import LightboxModal from '../modals/LightboxModal/LightboxModal.svelte';
   import AboutSection from './AboutSection/AboutSection.svelte';
-  import AdvancedSection from './AdvancedSection/AdvancedSection.svelte';
   import CameraCaptureSection from './CameraCaptureSection/CameraCaptureSection.svelte';
   import ContentSummarySection, {
     assetDataToProps as assetDataToContentSummaryProps,
@@ -33,10 +35,18 @@
   import ProcessSection from './ProcessSection/ProcessSection.svelte';
 
   export let assetData: Readable<AssetData>;
+  export let viewportElement: HTMLElement | undefined = undefined;
+
+  let thumbnailElement: HTMLDivElement;
+  let headerHeight: number;
+  let hideHeaderThumbnail = true;
+
   $: statusCode = $assetData.validationResult?.statusCode;
   $: isValid = statusCode === 'valid';
   $: isIncomplete = statusCode === 'incomplete';
   $: isInvalid = statusCode === 'invalid';
+  $: manifestData = isValid ? $assetData.manifestData : null;
+  $: title = $assetData.title ?? $_('asset.defaultTitle');
 
   const dispatch = createEventDispatcher();
   const { hierarchyView } = verifyStore;
@@ -46,22 +56,58 @@
       ? $hierarchyView.ingredientsForAssetId($assetData.id)
       : [];
 
+  onMount(() => {
+    let observer: IntersectionObserver;
+
+    if (viewportElement && thumbnailElement) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            hideHeaderThumbnail = entry.isIntersecting;
+          });
+        },
+        {
+          root: viewportElement,
+          rootMargin: `${headerHeight}px 0px 0px 0px`,
+          threshold: 0.8,
+        },
+      );
+      observer.observe(thumbnailElement);
+    }
+
+    return () => {
+      observer?.disconnect();
+    };
+  });
+
   function handleCloseClick() {
     dispatch('close');
   }
+
+  function handleThumbnailClick() {
+    if ($assetData.thumbnail?.url) {
+      openModal(LightboxModal, {
+        src: $assetData.thumbnail.url,
+        label: title,
+      });
+      analytics.track('launchLightboxModal');
+    }
+  }
 </script>
 
-<div class="sticky top-0 z-30 bg-white shadow">
-  <div class="flex h-20 shrink-0 items-center justify-between bg-gray-50 px-6">
+<div
+  bind:offsetHeight={headerHeight}
+  class="sticky top-0 z-30 bg-white transition-shadow duration-300"
+  class:shadow={!hideHeaderThumbnail}>
+  <div class="bg-gray-50 flex h-20 shrink-0 items-center justify-between px-6">
     {#if $assetData}
-      <BigAssetInfo assetData={$assetData}>
-        <svelte:fragment slot="name">{$assetData.title}</svelte:fragment
-        ></BigAssetInfo>
+      <BigAssetInfo assetData={$assetData} hideThumbnail={hideHeaderThumbnail}>
+        <span slot="name" {title}>{title}</span></BigAssetInfo>
     {/if}
-    <button on:click={handleCloseClick}>
+    <button on:click={handleCloseClick} class="ms-2 shrink-0 sm:hidden">
       <img
         src={close}
-        class="h-[1.15rem] w-[1.15rem] sm:hidden"
+        class="h-[1.15rem] w-[1.15rem]"
         alt={$_('sidebar.verify.hideInfo')} /></button>
   </div>
   {#if isIncomplete}
@@ -74,24 +120,17 @@
       ></ErrorBanner>
   {/if}
 </div>
-<ThumbnailSection thumbnail={$assetData.thumbnail} />
-{#if $assetData.manifestData && isValid}
+<div bind:this={thumbnailElement}>
+  <ThumbnailSection
+    thumbnail={$assetData.thumbnail}
+    mimeType={$assetData.mimeType}
+    hasBorder={!!manifestData}
+    on:click={handleThumbnailClick} />
+</div>
+{#if manifestData}
   <ContentSummarySection {...assetDataToContentSummaryProps($assetData)} />
-  <CreditAndUsage manifestData={$assetData.manifestData} />
-  <ProcessSection manifestData={$assetData.manifestData} {ingredients} />
-  <CameraCaptureSection manifestData={$assetData.manifestData} />
-  <AboutSection manifestData={$assetData.manifestData} />
-  <AdvancedSection />
-{:else}
-  <div class="p-5">
-    <Body>
-      {#if isIncomplete}
-        {$_('assetInfo.incomplete')}
-      {:else if isInvalid}
-        {$_('assetInfo.invalid')}
-      {:else}
-        {$_('sidebar.verify.noCCFile')}
-      {/if}
-    </Body>
-  </div>
+  <CreditAndUsage {manifestData} />
+  <ProcessSection {manifestData} {ingredients} />
+  <CameraCaptureSection {manifestData} />
+  <AboutSection {manifestData} />
 {/if}

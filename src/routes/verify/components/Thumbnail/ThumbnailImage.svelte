@@ -13,20 +13,63 @@
   from Adobe.
 -->
 <script lang="ts">
-  import fallback from '$assets/svg/monochrome/emptyImage.svg';
+  import AudioFallback from '$assets/svg/monochrome/missing-thumb-audio.svg?component';
+  import ImageFallback from '$assets/svg/monochrome/missing-thumb-image.svg?component';
+  import VideoFallback from '$assets/svg/monochrome/missing-thumb-video.svg?component';
+  import { getMediaCategoryFromMimeType } from '$lib/asset';
+  import type { MediaCategory } from '$lib/formats';
+  import type { ThumbnailInfo } from '$lib/thumbnail';
+  import Body from '$src/components/typography/Body.svelte';
+  import type { ComponentType } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
   import { _ } from 'svelte-i18n';
 
-  export let thumbnail: string | null;
+  export let thumbnail: ThumbnailInfo | null;
   export let fillMode: 'contain' | 'cover' = 'contain';
+  export let mimeType: string;
+  export let size = '4rem';
+  export let showMissingText = false;
 
-  $: thumbnailImg = thumbnail ?? fallback;
-  $: thumbnailAltText =
-    thumbnailImg == fallback ? $_('page.verify.emptyThumbnail') : '';
+  const dispatch = createEventDispatcher();
+  let thumbnailError = false;
+
+  const fallbackMap: Record<MediaCategory, ComponentType> = {
+    audio: AudioFallback,
+    image: ImageFallback,
+    video: VideoFallback,
+    unknown: ImageFallback,
+  };
+
+  $: category = getMediaCategoryFromMimeType(mimeType);
+  $: alt = thumbnail ? '' : $_('page.verify.emptyThumbnail');
+  $: fallback = fallbackMap[category];
+
+  function handleImageError() {
+    thumbnailError = true;
+    dispatch('imageLoadingError');
+    console.error('Error loading thumbnail:', thumbnail);
+  }
 </script>
 
-<img
-  src={thumbnailImg}
-  class="h-full w-full"
-  class:object-contain={fillMode === 'contain'}
-  class:object-cover={fillMode === 'cover'}
-  alt={thumbnailAltText} />
+{#if thumbnail?.url && !thumbnailError}
+  <img
+    src={thumbnail.url}
+    on:error={handleImageError}
+    class="h-full w-full"
+    class:object-contain={fillMode === 'contain'}
+    class:object-cover={fillMode === 'cover'}
+    {alt} />
+{:else}
+  <div
+    role="img"
+    class="flex h-full w-full select-none flex-col items-center justify-center bg-gray-40">
+    <svelte:component
+      this={fallback}
+      width={size}
+      height={size}
+      class="text-gray-900" />
+    {#if showMissingText}
+      <Body>{$_('page.verify.noThumbnailAvailable')}</Body>
+    {/if}
+  </div>
+{/if}

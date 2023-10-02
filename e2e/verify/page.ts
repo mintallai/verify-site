@@ -61,18 +61,22 @@ export class VerifyPage {
         `/verify${params.keys.length > 0 ? `?${params.toString()}` : ``}`,
       );
       await this.page
-        .locator('span', { hasText: 'Drag and drop anywhere' })
+        .locator('h1', { hasText: 'Inspect content to dig deeper' })
         .waitFor();
     }
   }
 
   async waitForTreeView() {
     await this.page.waitForFunction(() => {
+      const loadingOverlay = document.querySelector(
+        'div[data-testid="loading-overlay"]',
+      );
       const treeViewThumbnails = Array.from<HTMLImageElement>(
         document.querySelectorAll('button[role="treeitem"] img'),
       );
 
       return (
+        loadingOverlay === null &&
         treeViewThumbnails.length > 0 &&
         treeViewThumbnails.every((x) => x.complete)
       );
@@ -82,7 +86,7 @@ export class VerifyPage {
   async takeDebugSnapshot(name: string, options: SnapshotOptions = {}) {
     const type = 'jpeg';
     const height = options.minHeight ?? percyConfig.snapshot['min-height'];
-    const widths = percyConfig.snapshot['widths'];
+    const widths = options.widths ?? percyConfig.snapshot['widths'];
     const outputDir = resolve('.', 'snapshot-debug');
     await mkdirp(outputDir);
 
@@ -114,7 +118,7 @@ export class VerifyPage {
       await this.takeDebugSnapshot(name, options);
     }
 
-    const domTransformation = `(documentElement) => Array.from(documentElement.querySelectorAll('span[aria-label="Signed on"]')).forEach((el) => el.innerText = 'PERCY_DATE_REPLACEMENT');`;
+    const domTransformation = `(documentElement) => Array.from(documentElement.querySelectorAll('span[data-testid="signedOn"]')).forEach((el) => el.innerText = 'PERCY_DATE_REPLACEMENT');`;
 
     await percySnapshot(this.page, `Verify: ${name}`, {
       ...options,

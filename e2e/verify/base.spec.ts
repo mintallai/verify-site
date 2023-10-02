@@ -21,17 +21,6 @@ test.describe('Verify - base functionality', () => {
     await verify.takeSnapshot(`zero state`);
   });
 
-  test('sidebar opens', async ({ page }) => {
-    const verify = new VerifyPage(page);
-    await verify.goto();
-    await page
-      .locator('header')
-      .filter({ hasText: 'Verify' })
-      .getByLabel('Menu toggle')
-      .click();
-    await verify.takeSnapshot(`sidebar open`);
-  });
-
   test('specifying an image via source should work (CAICAI.jpg)', async ({
     page,
   }) => {
@@ -82,6 +71,32 @@ test.describe('Verify - base functionality', () => {
 
     await verify.takeTallSnapshot(
       `result setting language as ja-JP via URL parameter`,
+    );
+  });
+
+  test('missing thumbnails should display correctly', async ({ page }) => {
+    const verify = new VerifyPage(page);
+    await page.setViewportSize({ width: 2000, height: 1024 });
+    const source = VerifyPage.getFixtureUrl('missingThumbnails');
+    await verify.goto(source);
+    await page.getByTestId('tree-node-0.0').click({ force: true });
+    await page
+      .locator('div[role="img"]', { hasText: 'No thumbnail available' })
+      .waitFor();
+    await verify.takeSnapshot(`result for missing thumbnails`, {
+      widths: [2000],
+      minHeight: 1024,
+    });
+  });
+
+  test('source thumbnail should show if image does not have a thumbnail and hashes are valid', async ({
+    page,
+  }) => {
+    const verify = new VerifyPage(page);
+    const source = VerifyPage.getFixtureUrl('no-thumbnail.jpg', 'file');
+    await verify.goto(source);
+    await verify.takeTallSnapshot(
+      `result showing valid claim without thumbnail`,
     );
   });
 });

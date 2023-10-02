@@ -26,8 +26,15 @@ import debug from 'debug';
 import { locale } from 'svelte-i18n';
 import { get } from 'svelte/store';
 import { selectExif } from './exif';
+import {
+  MEDIA_CATEGORIES,
+  SUPPORTED_FORMATS,
+  isBrowserViewable,
+  type MediaCategory,
+} from './formats';
 import { DEFAULT_LOCALE } from './i18n';
 import { MANIFEST_STORE_MIME_TYPE } from './manifestRecovery';
+import { selectDoNotTrain } from './selectors/doNotTrain';
 import {
   selectGenerativeInfo,
   type GenerativeInfo,
@@ -37,7 +44,9 @@ import {
   selectValidationResult,
   type ValidationStatusResult,
 } from './selectors/validationResult';
-import { formatThumbnail } from './thumbnail';
+import { selectWeb3 } from './selectors/web3Info';
+import { selectWebsite } from './selectors/website';
+import { loadThumbnail, type ThumbnailInfo } from './thumbnail';
 import type { Disposable } from './types';
 
 const dbg = debug('lib:asset');
@@ -49,7 +58,8 @@ export type AssetData = {
   id: string;
   children: string[];
   manifestData: ManifestData | null;
-  thumbnail: string | null;
+  thumbnail: ThumbnailInfo | null;
+  mimeType: string;
   title: string | null;
   validationResult: ValidationStatusResult | null;
 };
@@ -63,7 +73,10 @@ export type ManifestData = {
   producer: string | null;
   reviewRatings: ReturnType<typeof selectReviewRatings>;
   signatureInfo: Manifest['signatureInfo'];
+  doNotTrain: ReturnType<typeof selectDoNotTrain>;
   socialAccounts: ReturnType<typeof selectSocialAccounts>;
+  web3Accounts: [string, string[]][];
+  website: string | null;
 };
 
 export type AssetDataMap = Record<string, AssetData>;
@@ -74,6 +87,15 @@ export type DisposableAssetDataMap = Disposable<{
 }>;
 
 export const ROOT_ID = '0';
+
+export function getMediaCategoryFromMimeType(mimeType: string): MediaCategory {
+  const prefix = mimeType?.split('/')[0] as MediaCategory;
+
+  return (
+    SUPPORTED_FORMATS[mimeType]?.category ??
+    (MEDIA_CATEGORIES.includes(prefix) ? prefix : 'unknown')
+  );
+}
 
 /**
  *
@@ -109,7 +131,10 @@ export async function resultToAssetMap({
   }
 
   if (!isManifest && (!manifestStore || hasError || hasOtgp)) {
-    const thumbnail = await formatThumbnail(source.thumbnail.getUrl());
+    const thumbnail = await loadThumbnail(
+      source.type,
+      source.thumbnail.getUrl(),
+    );
     const children = hasOtgp ? ['0.0'] : [];
 
     if (thumbnail?.dispose) {
@@ -120,7 +145,8 @@ export async function resultToAssetMap({
       // @TODO filename if none present?
       id,
       title: source.metadata.filename ?? null,
-      thumbnail: thumbnail?.url ?? null,
+      thumbnail: thumbnail.info,
+      mimeType: source.type,
       children,
       manifestData: null,
       validationResult: rootValidationResult,
@@ -161,18 +187,26 @@ export async function resultToAssetMap({
     const { activeManifest: manifest } = manifestStore;
 
     // Attempt to use a thumbnail on the manifest if found
-    let thumbnail = await formatThumbnail(manifest.thumbnail?.getUrl());
+    let thumbnail = await loadThumbnail(
+      manifest.thumbnail?.contentType,
+      manifest.thumbnail?.getUrl(),
+    );
 
     // If no thumbnail exists on the claim and we have a valid manifest,
-    // we can use the source thumbnail
-    if (!thumbnail && validationResult.statusCode === 'valid') {
-      thumbnail = source.thumbnail?.getUrl();
+    // we can use the source thumbnail if it is viewable by the browser
+    if (
+      !thumbnail.info &&
+      validationResult.statusCode === 'valid' &&
+      (await isBrowserViewable(source.type))
+    ) {
+      thumbnail = await loadThumbnail(source.type, source.thumbnail?.getUrl());
     }
 
     const asset = {
       id,
       title: manifest.title,
-      thumbnail: thumbnail?.url ?? null,
+      thumbnail: thumbnail.info,
+      mimeType: manifest.format,
       children: await processIngredients(manifest.ingredients, id),
       manifestData: await getManifestData(manifest),
       validationResult,
@@ -193,7 +227,10 @@ export async function resultToAssetMap({
     ingredient: Ingredient,
     id: string,
   ): Promise<AssetData> {
-    const thumbnail = await formatThumbnail(ingredient.thumbnail?.getUrl());
+    const thumbnail = await loadThumbnail(
+      ingredient.thumbnail?.contentType,
+      ingredient.thumbnail?.getUrl(),
+    );
     const validationResult = selectValidationResult(
       ingredient.validationStatus,
     );
@@ -201,7 +238,8 @@ export async function resultToAssetMap({
     const asset = {
       id,
       title: ingredient.title,
-      thumbnail: thumbnail?.url ?? null,
+      thumbnail: thumbnail.info,
+      mimeType: ingredient.format,
       children: showChildren
         ? await processIngredients(ingredient.manifest?.ingredients ?? [], id)
         : [],
@@ -241,7 +279,10 @@ export async function resultToAssetMap({
       socialAccounts: selectSocialAccounts(manifest),
       generativeInfo: selectGenerativeInfo(manifest),
       exif: selectExif(manifest),
+      doNotTrain: selectDoNotTrain(manifest),
       reviewRatings: selectReviewRatings(manifest),
+      web3Accounts: selectWeb3(manifest),
+      website: selectWebsite(manifest),
     };
   }
 

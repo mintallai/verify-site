@@ -13,14 +13,20 @@
   from Adobe.
 -->
 <script lang="ts">
+  import type { ThumbnailInfo } from '$lib/thumbnail';
   import Section from '$src/components/SidebarSection/Section.svelte';
   import BigThumbnail from './BigThumbnail.svelte';
 
-  export let thumbnail: string | null;
+  export let thumbnail: ThumbnailInfo | null;
+  export let mimeType: string;
+  export let hasBorder = true;
 </script>
 
-<div class="flex justify-center">
-  <Section>
-    <BigThumbnail slot="content" {thumbnail} />
-  </Section>
-</div>
+<Section hasBorder={false} hasPadding={false}>
+  <div
+    slot="content"
+    class="flex justify-center border-gray-100 pb-5"
+    class:border-b={hasBorder}>
+    <BigThumbnail on:click {thumbnail} {mimeType} />
+  </div>
+</Section>

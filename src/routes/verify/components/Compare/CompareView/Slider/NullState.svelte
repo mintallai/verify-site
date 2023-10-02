@@ -12,12 +12,12 @@
   from Adobe.
 -->
 <script lang="ts">
-  import EmptyImage from '$assets/svg/monochrome/emptyImage.svg?component';
+  import EmptyImage from '$assets/svg/monochrome/missing-thumb-image.svg?component';
   import Body from '$src/components/typography/Body.svelte';
   import { _ } from 'svelte-i18n';
 </script>
 
-<EmptyImage class="h-40 w-40 text-gray-400"></EmptyImage>
+<EmptyImage class="h-40 w-40 text-gray-400" />
 <Body
   ><span class="text-center text-gray-500">
     {$_('sidebar.verify.compare.null.picture')}</span

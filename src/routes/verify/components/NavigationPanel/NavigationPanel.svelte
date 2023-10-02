@@ -13,23 +13,33 @@
   from Adobe.
 -->
 <script lang="ts">
-  import LegalSection from '$src/components/LegalSection/LegalSection.svelte';
+  import Body from '$src/components/typography/Body.svelte';
+  import Link from '$src/components/typography/Link.svelte';
+  import { createEventDispatcher } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { verifyStore } from '../../stores';
   import ManifestRecoverySection from './ManifestRecovery/ManifestRecoverySection.svelte';
 
+  export let isScrolled = false;
+
   const { hierarchyView } = verifyStore;
+
+  const dispatch = createEventDispatcher();
 </script>
 
+<div
+  class="sticky top-0 bg-white p-5 transition-shadow duration-200"
+  class:shadow={isScrolled}>
+  <Body>
+    <button
+      on:click={() => dispatch('launchFilePicker')}
+      class="inline text-left"
+      ><Link>{$_('sidebar.verify.selectFileLink')}</Link>
+      <span class="hidden text-gray-600 lg:inline"
+        >{$_('sidebar.verify.dragDrop')}</span
+      ></button>
+  </Body>
+</div>
 {#if $hierarchyView.state === 'success'}
   <ManifestRecoverySection />
 {/if}
-<LegalSection>
-  <svelte:fragment slot="legal-text-visible">
-    <p>{$_('sidebar.verify.legal.part1')}</p>
-  </svelte:fragment>
-  <svelte:fragment slot="legal-text-more">
-    <p class="pt-2">{$_('sidebar.verify.legal.part2')}</p>
-    <p class="pt-2">{$_('sidebar.verify.legal.part3')}</p>
-  </svelte:fragment>
-</LegalSection>

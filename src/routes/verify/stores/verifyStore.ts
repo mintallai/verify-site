@@ -12,6 +12,7 @@
 // from Adobe.
 
 import { ROOT_ID, type AssetData } from '$lib/asset';
+import { analytics } from '$src/lib/analytics';
 import type { C2paSourceType } from 'c2pa';
 import debug from 'debug';
 import {
@@ -22,7 +23,11 @@ import {
   type Writable,
 } from 'svelte/store';
 import { createC2paReader } from './c2paReader';
-import { createCompareView, type CompareStore } from './compareView';
+import {
+  compareViewMode,
+  createCompareView,
+  type CompareStore,
+} from './compareView';
 import { createHierarchyView, type HierarchyViewStore } from './hierarchyView';
 import {
   createManifestRecoverer,
@@ -58,6 +63,7 @@ interface VerifyStore {
   setCompareView: () => void;
   setHierarchyView: () => void;
   viewState: Readable<ViewState>;
+  clear: () => void;
 }
 
 /**
@@ -121,11 +127,21 @@ export function createVerifyStore(): VerifyStore {
     },
   );
 
+  function resetCompare() {
+    viewState.set('hierarchy');
+    compareActiveAssetId.set(null);
+    compareSelectedAssetIds.set([null, null]);
+  }
+
   return {
     viewState,
     hierarchyView,
     compareView,
+    recoveredManifestResults: manifestRecoverer,
+    mostRecentlyLoaded,
     readC2paSource: (source: C2paSourceType) => {
+      resetCompare();
+      selectedAssetId.set(ROOT_ID);
       const existingSource = get(selectedSource);
       const incomingSource: SelectedSource =
         typeof source === 'string'
@@ -146,10 +162,10 @@ export function createVerifyStore(): VerifyStore {
 
       dbg('Reading C2PA source', source);
       c2paReader.read(source);
+      manifestRecoverer.clear();
       dbg('Setting selected source', incomingSource);
       selectedSource.set(incomingSource);
     },
-    recoveredManifestResults: manifestRecoverer,
     clearManifestResults: () => {
       const mrlSource = get(mostRecentlyLoaded)?.source;
       manifestRecoverer.clear();
@@ -166,19 +182,29 @@ export function createVerifyStore(): VerifyStore {
       }
     },
     setCompareView: () => {
+      analytics.track('setCompareView', {
+        compareMode: get(compareViewMode),
+      });
       viewState.set('compare');
       const id = get(selectedAssetId);
       compareActiveAssetId.set(id);
       compareSelectedAssetIds.set([id, null]);
     },
     setHierarchyView: () => {
+      analytics.track('setHierarchyView');
       viewState.set('hierarchy');
       selectedAssetId.set(get(compareActiveAssetId) ?? ROOT_ID);
     },
     setCompareActiveId: (id: string | null) => {
       compareActiveAssetId.set(id);
     },
-    mostRecentlyLoaded,
+    clear: () => {
+      manifestRecoverer.clear();
+      c2paReader.clear();
+      selectedAssetId.set(ROOT_ID);
+      selectedSource.set({ type: 'local' });
+      resetCompare();
+    },
   };
 }
 
