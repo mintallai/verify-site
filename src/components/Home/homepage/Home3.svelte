@@ -14,7 +14,7 @@
         Empowering creators to get credit for their work
       </h3>
       <p
-        class="2xl:text-key-sub-text-xxl text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl">
+        class="2xl:text-key-sub-text-2xl text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl">
         Content is often mis-credited or not credited at all when shared online,
         creating tons of lost opportunity for creators. Content Credentials
         enable creators to get recognition for what they create—helping them
@@ -30,7 +30,7 @@
         Empowering creators to get credit for their work
       </h3>
       <p
-        class="2xl:text-key-sub-text-xxl text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl">
+        class="2xl:text-key-sub-text-2xl text-key-sub-text text-gray-900/60 xl:text-key-sub-text-xl">
         Content is often mis-credited or not credited at all when shared online,
         creating tons of lost opportunity for creators. Content Credentials
         enable creators to get recognition for what they create—helping them

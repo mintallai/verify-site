@@ -40,7 +40,7 @@
 <div
   class="flex h-full w-screen flex-col items-center bg-brand-gray p-[1.5rem] pb-40">
   <h2
-    class="2xl:text-hiw-title-xxl pt-[4rem] text-hiw-title md:text-hiw-title-md xl:text-hiw-title-xl">
+    class="2xl:text-hiw-title-2xl pt-[4rem] text-hiw-title md:text-hiw-title-md xl:text-hiw-title-xl">
     How it Works
   </h2>
   <div class="flex w-full flex-col items-center">
@@ -61,14 +61,14 @@
               </h3>
             </div>
             <p
-              class="pt-6 text-hiw-desc text-gray-900/60 lg:w-1/2 lg:pt-0 xl:text-hiw-desc-xl 2xl:text-hiw-desc-xxl">
+              class="pt-6 text-hiw-desc text-gray-900/60 lg:w-1/2 lg:pt-0 xl:text-hiw-desc-xl 2xl:text-hiw-desc-2xl">
               {item.description}
             </p>
           </div>
           <img
             src={item.Image}
             alt="how it works"
-            class="max-w[71.375rem] rounded-xxl 2xl:w-full" />
+            class="max-w[71.375rem] rounded-2xl 2xl:w-full" />
         </div>
       {/each}
       <!-- Video Component -->
@@ -86,7 +86,7 @@
             </h3>
           </div>
           <p
-            class="pt-6 text-hiw-desc text-gray-900/60 lg:w-1/2 lg:pt-0 xl:text-hiw-desc-xl 2xl:text-hiw-desc-xxl">
+            class="pt-6 text-hiw-desc text-gray-900/60 lg:w-1/2 lg:pt-0 xl:text-hiw-desc-xl 2xl:text-hiw-desc-2xl">
             Content Credentials can capture a detailed history of changes over
             time. The Verify feature allows you to explore this information in
             depth, and upload any content to see if it has Content Credentials.
