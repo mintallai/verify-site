@@ -25,18 +25,18 @@
 </script>
 
 <div
-  class="flex w-screen items-center justify-center px-[1.5rem] lg:my-20 xl:my-40 max-w-[90rem]">
+  class="flex w-screen max-w-[90rem] items-center justify-center px-[1.5rem] lg:my-20 xl:my-40">
   <div
     class="flex flex-col items-center justify-center gap-[64px] md:gap-[80px]">
     <h2
-      class="w-[27rem] pt-20 text-center text-trust-title xs:w-[22rem] md:w-[40rem] md:text-trust-title-md xl:py-0 xl:text-trust-title-xl 2xl:w-[58rem] 2xl:text-trust-title-2xl">
+      class=" 2xl:w-[58rem] 2xl:text-trust-title-2xl w-[22rem] pt-20 text-center text-trust-title md:w-[40rem] md:text-trust-title-md xl:py-0 xl:text-trust-title-xl">
       What makes Content Credentials trustworthy
     </h2>
     <!-- Media query for screens between 991px and 1280px (lg to xl) -->
     <ul class="flex flex-col items-center xl:hidden">
       <div
         class="flex flex-col items-center lg:flex-row lg:justify-center xl:hidden">
-        <li class="mb-4 xs:w-[80%] lg:mb-0 lg:mr-8">
+        <li class="mb-4 w-[80%] lg:mb-0 lg:mr-8">
           <!-- Add margin for consistent gap -->
           <h3
             class="rounded-t-2xl bg-brand-orange px-[32px] py-[20px] text-trust-label">
@@ -51,7 +51,7 @@
             </p>
           </div>
         </li>
-        <li class="mb-4 xs:w-[80%] lg:mb-0">
+        <li class="mb-4 w-[80%] lg:mb-0">
           <!-- Add margin for consistent gap -->
           <h3
             class="font-Norske rounded-t-2xl bg-brand-red px-[32px] py-[20px] text-trust-label">
@@ -69,7 +69,7 @@
       </div>
       <!-- <div class="lg:hidden"></div> -->
       <!-- Empty div to create space between rows -->
-      <li class="mb-4 xs:w-[80%] lg:mx-auto lg:mb-0 lg:w-1/2 lg:pt-12">
+      <li class="mb-4 w-[80%] lg:mx-auto lg:mb-0 lg:w-1/2 lg:pt-12">
         <!-- Add margin for consistent gap and center the third item -->
         <div class="xl:hidden">
           <h3
@@ -100,7 +100,7 @@
             {item.label}
           </h3>
           <div
-            class="h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pt-[20px] text-trust-desc xl:text-trust-desc-xl 2xl:text-trust-desc-2xl">
+            class="2xl:text-trust-desc-2xl h-full rounded-b-2xl bg-[#F6F5F2] px-[32px] pt-[20px] text-trust-desc xl:text-trust-desc-xl">
             <p class="xl:h-[269px] xl:w-[325px]">
               {item.description}
             </p>

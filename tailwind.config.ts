@@ -57,8 +57,6 @@ export default {
   },
   theme: {
     screens: {
-      xxs: '100px',
-      xs: '300px',
       sm: '478px',
       md: '768px',
       lg: '991px',

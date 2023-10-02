@@ -25,7 +25,7 @@
   <!--  -->
   <div
     class="pt-6 sm:hidden md:col-start-1 md:col-end-6 md:hidden md:pt-0 xl:col-start-7 xl:col-end-13">
-    <div class="max-w-[676px] xxs:hidden">
+    <div class="max-w-[676px] hidden">
       <h3 class="2xl:text-key-title-xl pb-6 text-left text-key-title">
         Empowering creators to get credit for their work
       </h3>
@@ -39,7 +39,7 @@
     </div>
   </div>
   <!-- Below hidden until Desktop -->
-  <div class="w-full xxs:hidden md:col-span-6 md:col-start-7 md:flex">
+  <div class="w-full hidden md:col-span-6 md:col-start-7 md:flex">
     <!-- Your image goes here -->
     <img src={Images} alt="" class="w-full" />
   </div>

@@ -3,7 +3,7 @@
   import MobileLogo from '$assets/svg/logos/homepage/crvertical.svg';
 </script>
 
-<div class="h-[6.25rem] w-screen xs:px-[1.25rem] sm:px-[2rem] xl:px-[2rem]">
+<div class="h-[6.25rem] w-screen px-[1.25rem] sm:px-[2rem] xl:px-[2rem]">
   <div class="flex flex-row items-center justify-between pt-6">
     <div class="pr-6">
       <a href="/">
@@ -12,7 +12,7 @@
           width="250px"
           height="100px"
           alt="content credentials"
-          class="xxs:hidden xs:hidden sm:flex" />
+          class="hidden sm:flex" />
         <img
           src={MobileLogo}
           height="46px"
