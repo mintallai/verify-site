@@ -5,14 +5,14 @@
       description:
         'Content Credentials are based on open technical standards developed and maintained by the C2PA, a cross-industry membership organization. You can review the standards anytime.',
       id: 1,
-      bgColor: '#84c7fc',
+      bgColor: '#ef9449',
     },
     {
       label: 'Clear detection of tampering',
       description:
         'Content Credentials are made possible by cryptographic processes which mean that any unsupported changes made to Content Credentials can be easily identified and exposed.',
       id: 2,
-      bgColor: '#5ac97d',
+      bgColor: '#ed8089',
     },
     {
       label: 'Accountability',
@@ -39,7 +39,7 @@
         <li class="mb-4 xs:w-[80%] lg:mb-0 lg:mr-8">
           <!-- Add margin for consistent gap -->
           <h3
-            class="rounded-t-2xl bg-brand-blue px-[32px] py-[20px] text-trust-label">
+            class="rounded-t-2xl bg-brand-orange px-[32px] py-[20px] text-trust-label">
             Open-source standards
           </h3>
           <div
@@ -54,7 +54,7 @@
         <li class="mb-4 xs:w-[80%] lg:mb-0">
           <!-- Add margin for consistent gap -->
           <h3
-            class="font-Norske rounded-t-2xl bg-brand-green px-[32px] py-[20px] text-trust-label">
+            class="font-Norske rounded-t-2xl bg-brand-red px-[32px] py-[20px] text-trust-label">
             Clear detection of tampering
           </h3>
           <div

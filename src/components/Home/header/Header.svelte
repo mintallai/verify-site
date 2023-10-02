@@ -20,13 +20,13 @@
           class="sm:hidden max-h-[46px]" />
       </a>
     </div>
-    <div class="pl-6">
+    <!-- <div class="pl-6">
       <a href="/verify">
         <div
           class="w-[100px] h-[2.75rem] rounded-full bg-brand-red px-[1.25rem] flex items-center justify-center text-center text-general hover:bg-brand-red/80">
           Verify
         </div>
       </a>
-    </div>
+    </div> -->
   </div>
 </div>
