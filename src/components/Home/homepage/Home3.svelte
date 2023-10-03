@@ -1,10 +1,15 @@
 <script>
   import Images from '$assets/png/human.png';
+  import L2Overlay from '../L2Overlay/L2Overlay.svelte';
 </script>
 
 <div class="md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
   <div class="md:col-span-6 md:col-start-7 md:hidden">
-    <img src={Images} alt="" class="w-full" />
+    <L2Overlay
+      imageUrl={Images}
+      class="w-full"
+      alt="A content creator sitting at her desk and smiling, with an
+    office behind her blurred in the background" />
   </div>
   <!-- Below hidden until Desktop -->
   <div
@@ -39,7 +44,10 @@
   </div>
   <!-- Below hidden until Desktop -->
   <div class="w-full hidden md:col-span-6 md:col-start-7 md:flex">
-    <!-- Your image goes here -->
-    <img src={Images} alt="" class="w-full" />
+    <L2Overlay
+      imageUrl={Images}
+      class="w-full"
+      alt="A content creator sitting at her desk and smiling, with an
+    office behind her blurred in the background" />
   </div>
 </div>

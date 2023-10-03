@@ -1,10 +1,15 @@
 <script>
   import Image from '$assets/svg/logos/homepage/home2.svg';
+  import L2Overlay from '../L2Overlay/L2Overlay.svelte';
 </script>
 
 <div class="w-full md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
   <div class="md:col-span-6 w-full">
-    <img src={Image} alt="" class="w-full" />
+    <L2Overlay
+      imageUrl={Image}
+      class="w-full"
+      alt="Two women looking at a mobile phone, smiling and
+    pointing at it with a clear sky behind them." />
   </div>
   <div
     class="pt-6 md:col-start-7 md:col-end-13 md:pt-0 lg:col-start-8 lg:col-end-12">

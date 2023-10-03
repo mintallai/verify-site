@@ -29,7 +29,8 @@
             loop
             muted
             src={Video}
-            class="h-full max-h-full w-full max-w-full rounded-xl object-cover md:max-w-[704px] xl:h-full" />
+            class="h-full max-h-full w-full max-w-full rounded-xl object-cover md:max-w-[704px] xl:h-full"
+            alt="Penguins in a desert with sand dunes in the background." />
         </div>
         <p
           class="flex pt-[0.5rem] text-small-description text-gray-500 md:items-start">

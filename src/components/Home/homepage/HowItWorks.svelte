@@ -34,9 +34,12 @@
             content—creating a record that can be confirmed.
           </p>
         </div>
+        <!-- svelte-ignore a11y-img-redundant-alt -->
         <img
           src={Hiw1}
-          alt="how it works"
+          alt="A phone in someones hand, displaying a photo of the
+          surrounding snowy landscape and a penguin. The option
+          to enable Content Credentials for the photo is available"
           class="max-w[71.375rem] 2xl:w-full rounded-2xl" />
       </div>
       <div
@@ -59,9 +62,13 @@
             information directly in context.
           </p>
         </div>
+        <!-- svelte-ignore a11y-img-redundant-alt -->
         <img
           src={Hiw2}
-          alt="how it works"
+          alt="Penguins in a desert with sand dunes in the background.
+          Content Credentials information is displayed over the
+          image, including that AI was used to generate some of
+          the content, who produced the content, and more"
           class="max-w[71.375rem] 2xl:w-full rounded-2xl" />
       </div>
       <!-- Video Component -->
@@ -90,7 +97,10 @@
           loop
           muted
           src={Video}
-          class="h-full max-h-full w-full max-w-full rounded-xl object-cover xl:h-full" />
+          class="h-full max-h-full w-full max-w-full rounded-xl object-cover xl:h-full"
+          alt="A tree view of the relationship between different images
+          and how they were used together to create a final image
+          over time, available in the Verify feature" />
       </div>
     </div>
   </div>

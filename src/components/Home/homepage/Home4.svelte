@@ -10,7 +10,9 @@
         loop
         muted
         src={Video}
-        class="w-full h-full max-h-full max-w-full rounded-xl xl:h-full object-cover" />
+        class="w-full h-full max-h-full max-w-full rounded-xl xl:h-full object-cover"
+        alt="Animation of a mouse cursor hovering over and clicking
+        the Content Credentials pin icon" />
     </div>
   </div>
   <div

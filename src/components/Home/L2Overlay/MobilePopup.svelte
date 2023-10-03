@@ -23,6 +23,29 @@
       window.removeEventListener('resize', handleResize);
     };
   });
+
+  // const data = [
+  //   {
+  //     id: 1,
+  //     Notice:
+  //       'This image combines multiple pieces of content. At least one was generated with an AI tool.',
+  //     ProducedLabel: 'Produced by',
+  //     ProducedValue: 'Benoit Lemoine',
+  //     CompanyLabel: 'Company',
+  //     CompanyValue: 'Area17',
+  //     WebsiteLabel: 'Website',
+  //     WebsiteValue: 'https://area17.com',
+  //     CaptionLabel: 'Caption',
+  //     CaptionValue:
+  //       'Caption goes here and can wrap to multiple lines as needed',
+  //     AppLabel: 'App or device used',
+  //     AppValue: 'Adobe Photoshop 23.0.0',
+  //     AItoolLabel: 'AI tool used',
+  //     AItoolValue: 'Adobe Firefly',
+  //     AdditionalLabel: 'Additional history',
+  //     AdditionalValue: 'Yes',
+  //   },
+  // ];
 </script>
 
 <div
@@ -33,13 +56,11 @@
   class="popup shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2"
   transition:fly={{ y: 200, duration: 300 }}>
   {#if isOpen}
-    <!-- Your Popup Content Here -->
     <div class="h-20 bg-brand-orange">hello world!</div>
   {/if}
 </div>
 
 <!-- Code from original in Hero
-{#if screenWidth <= 768}
   {#if isPopupVisible}
     <div
       class="fixed inset-0 z-[9999] flex items-center justify-center md:hidden">
@@ -108,11 +129,10 @@
         </div>
       </div>
     </div>
-  {/if}
-{:else if isOpen && screenWidth > 768}
-  <div class="shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2"></div>
-{/if}
--->
+  {/if} -->
+<!-- {:else if isOpen && screenWidth > 768}
+  <div class="shadow-lg absolute right-4 top-12 mb-10 rounded-lg p-2"></div> -->
+<!-- {/if} -->
 
 <!-- <style>
   .top-rounded-shadow::before {
