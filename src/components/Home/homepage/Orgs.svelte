@@ -24,7 +24,7 @@
   ];
 </script>
 
-<div class="w-screen pt-[4rem] max-w-[90rem]">
+<div class="w-screen py-16 max-w-[90rem] lg:py-[5.5rem] xl:pb-[7.5rem]">
   <div class="px-6">
     <!-- <div class="w-[350px] pb-4 text-[1.3125rem] leading-[1.77188rem]">
       Content Credentials is used by the world’s leading organizations
