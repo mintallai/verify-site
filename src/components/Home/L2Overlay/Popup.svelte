@@ -36,9 +36,8 @@
 <!-- Desktop Popup -->
 <div class="hidden md:flex">
   {#if isOpen && window.innerWidth >= 768}
-    <!-- Desktop popup content here -->
     <div
-      class="z-[9999] popup shadow-lg rounded-lg bg-brand-white p-2 absolute right-4 top-12 mb-10"
+      class="z-[9999] popup shadow-lg rounded-lg bg-brand-white p-2 absolute right-[3.5rem] top-[1rem] mb-10"
       class:visible={isOpen}>
       {#if isOpen}
         <div class="h-full w-[350px] rounded-xl bg-brand-white py-4">
@@ -91,7 +90,7 @@
           </div>
           <div class="h-[60px] w-full px-6 py-1">
             <button
-              class="h-full w-full rounded-full bg-brand-orange text-[24px]"
+              class="h-full w-full rounded-full bg-brand-yellow text-[1rem]"
               >View more</button>
           </div>
         </div>
@@ -103,7 +102,6 @@
 <!-- Mobile Popup -->
 <div class="block md:hidden">
   {#if isOpen && window.innerWidth < 768}
-    <!-- Mobile popup content here -->
     <div
       class="fixed inset-0 z-[9999] flex items-center justify-center md:hidden">
       <div
@@ -165,7 +163,7 @@
           </div>
           <div class="h-[60px] w-full px-6 py-1">
             <button
-              class="h-full w-full rounded-full bg-brand-orange text-[24px]"
+              class="h-full w-full rounded-full bg-brand-yellow text-[1rem]"
               >View more</button>
           </div>
         </div>
