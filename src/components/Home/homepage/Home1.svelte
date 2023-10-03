@@ -20,7 +20,7 @@
       </p>
       <a
         href="#how-it-works"
-        class="mt-10 flex h-[2.75rem] items-center rounded-full bg-brand-red px-[1.25rem] py-3 hover:bg-brand-red/80"
+        class="scroll-smooth mt-10 flex h-[2.75rem] items-center rounded-full bg-brand-red px-[1.25rem] py-3 hover:bg-brand-red/80"
         >See how it works</a>
     </div>
   </div>

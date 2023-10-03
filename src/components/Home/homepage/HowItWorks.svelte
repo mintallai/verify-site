@@ -89,8 +89,9 @@
           <p
             class="2xl:text-hiw-desc-2xl pt-6 text-hiw-desc text-gray-900/60 lg:w-1/2 lg:pt-0 xl:text-hiw-desc-xl">
             Content Credentials can capture a detailed history of changes over
-            time. The Verify feature allows you to explore this information in
-            depth, and upload any content to see if it has Content Credentials.
+            time. The <a href="/verify" class="underline">Verify</a> feature allows
+            you to explore this information in depth, and upload any content to see
+            if it has Content Credentials.
           </p>
         </div>
         <video
