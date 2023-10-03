@@ -1,5 +1,5 @@
 <script>
-  import Video from '$assets/video/cr-pin.mp4';
+  import Video from '$assets/video/cr-06.mp4';
 </script>
 
 <div class="md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
