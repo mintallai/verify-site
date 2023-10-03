@@ -2,7 +2,7 @@
   import Images from '$assets/png/human.png';
 </script>
 
-<div class="px-[1.5rem] md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
+<div class="md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
   <div class="md:col-span-6 md:col-start-7 md:hidden">
     <img src={Images} alt="" class="w-full" />
   </div>

@@ -2,7 +2,7 @@
   import Video from '$assets/video/cr-pin.mp4';
 </script>
 
-<div class="px-[1.5rem] md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
+<div class="md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
   <div class="md:col-span-6">
     <div class="video-container">
       <video
