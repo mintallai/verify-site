@@ -37,60 +37,75 @@
 <div class="hidden md:flex">
   {#if isOpen && window.innerWidth >= 768}
     <div
-      class="z-[9999] popup shadow-lg rounded-lg bg-brand-white p-2 absolute right-[3.5rem] top-[1rem] mb-10"
+      class="popup shadow-lg absolute right-[3.5rem] top-[1rem] z-[9999] mb-10 rounded-lg bg-brand-white p-2"
       class:visible={isOpen}>
       {#if isOpen}
-        <div class="h-full w-[350px] rounded-xl bg-brand-white py-4">
-          <div class="py-3">
-            <h1 class="px-6 pb-3 text-[24px] font-bold">Content Credentials</h1>
-            <p class="px-6 text-gray-900/60">
+        <div class="h-full w-[350px] rounded-xl bg-brand-white">
+          <div class="px-4 flex flex-col justify-center py-[0.625rem]">
+            <h1 class=" pb-1 text-popup-title font-bold">
+              Content Credentials
+            </h1>
+            <p class="pb-1 text-gray-900/60 text-popup-text">
               Issued by Adobe Inc. on Feb 2. 2023
             </p>
           </div>
           <hr />
-          <div class="px-6 py-3">
+          <div class="px-4">
             {#each data as item}
-              <div class="flex flex-row items-center gap-1 py-2">
-                <div class="pb-1">{item.Notice}</div>
+              <div
+                class="flex flex-row items-center gap-1 py-[0.625rem] text-popup-text">
+                <div class="">{item.Notice}</div>
               </div>
               <hr class="py-1" />
-              <div class="flex flex-row items-center gap-1 py-2">
-                <div class="pb-1 font-bold">{item.ProducedLabel}</div>
-                <div>{item.ProducedValue}</div>
+              <div class="flex flex-row gap-1 py-[0.625rem]">
+                <div class="pb-1 text-popup-text font-bold">
+                  {item.ProducedLabel}
+                </div>
+                <div class="text-popup-text">{item.ProducedValue}</div>
               </div>
               <hr class="pt-2" />
-              <div class="flex flex-row items-center gap-1 py-2">
-                <div class="pb-1 font-bold">{item.CompanyLabel}</div>
-                <div>{item.CompanyValue}</div>
+              <div class="flex flex-row gap-1 py-[0.625rem]">
+                <div class="pb-1 text-popup-text font-bold">
+                  {item.CompanyLabel}
+                </div>
+                <div class="text-popup-text">{item.CompanyValue}</div>
               </div>
               <hr class="pt-2" />
-              <div class="flex flex-row items-center gap-1 py-2">
-                <div class="pb-1 font-bold">{item.WebsiteLabel}</div>
-                <div class="text-blue-700 underline">
+              <div class="flex flex-row gap-1 py-[0.625rem]">
+                <div class="pb-1 text-popup-text font-bold">
+                  {item.WebsiteLabel}
+                </div>
+                <div class="text-popup-text text-blue-700 underline">
                   <a href={item.WebsiteValue}>{item.WebsiteValue}</a>
                 </div>
               </div>
               <hr class="pt-2" />
-              <div class="flex flex-col justify-center gap-1 py-2">
-                <div class="py-1 font-bold">{item.CaptionLabel}</div>
-                <div class="pb-1">{item.CaptionValue}</div>
+              <div class="flex flex-col justify-center gap-1 py-[0.625rem]">
+                <div class="py-1 text-popup-text font-bold">
+                  {item.CaptionLabel}
+                </div>
+                <div class="pb-1 text-popup-text">{item.CaptionValue}</div>
               </div>
               <hr class="pt-2" />
-              <div class="flex flex-col justify-center gap-1 py-2">
-                <div class="py-1 font-bold">{item.AppLabel}</div>
-                <div class="pb-1">{item.AppValue}</div>
+              <div class="flex flex-col justify-center gap-1 py-[0.625rem]">
+                <div class="py-1 text-popup-text font-bold">
+                  {item.AppLabel}
+                </div>
+                <div class="pb-1 text-popup-text">{item.AppValue}</div>
               </div>
               <hr class="pt-2" />
-              <div class="flex flex-row items-center gap-1 py-2">
-                <div class="pb-1 font-bold">{item.AdditionalLabel}</div>
-                <div>{item.AdditionalValue}</div>
+              <div class="flex flex-row gap-1 py-[0.625rem]">
+                <div class="pb-1 text-popup-text font-bold">
+                  {item.AdditionalLabel}
+                </div>
+                <div class="text-popup-text">{item.AdditionalValue}</div>
               </div>
-              <hr class="pt-2" />
             {/each}
           </div>
-          <div class="h-[60px] w-full px-6 py-1">
+          <hr />
+          <div class="h-[60px] w-full px-6 py-1 mt-4">
             <button
-              class="h-full w-full rounded-full bg-brand-yellow text-[1rem]"
+              class="h-full w-full rounded-full bg-brand-yellow text-popup-text"
               >View more</button>
           </div>
         </div>
