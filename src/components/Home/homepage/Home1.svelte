@@ -1,5 +1,13 @@
 <script>
   import KeyPoints from './KeyPoints.svelte';
+
+  function scrollToHowItWorks() {
+    const element = document.getElementById('how-it-works');
+
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 </script>
 
 <div
@@ -18,10 +26,13 @@
         tool for revealing answers to your questions about content with a simple
         click: How was it made? Who created it and when? Is it AI-generated?
       </p>
-      <a
-        href="#how-it-works"
-        class="scroll-smooth mt-10 flex h-[2.75rem] items-center rounded-full bg-brand-red px-[1.25rem] py-3 hover:bg-brand-red/80"
-        >See how it works</a>
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <!-- svelte-ignore a11y-no-static-element-interactions -->
+      <div
+        on:click={scrollToHowItWorks}
+        class="mt-10 flex h-[2.75rem] items-center scroll-smooth rounded-full bg-brand-red px-[1.25rem] py-3 hover:bg-brand-red/80 hover:cursor-pointer">
+        See how it works
+      </div>
     </div>
   </div>
   <KeyPoints />
