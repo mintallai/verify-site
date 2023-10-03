@@ -1,7 +1,6 @@
 <script>
   import Hiw1 from '$assets/svg/logos/homepage/2.svg';
   import Hiw2 from '$assets/svg/logos/homepage/1.svg';
-
   import Video from '$assets/video/howitworks.mp4';
 </script>
 
