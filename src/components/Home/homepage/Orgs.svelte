@@ -26,9 +26,9 @@
 
 <div class="w-screen pt-[4rem] max-w-[90rem]">
   <div class="px-6">
-    <div class="w-[350px] pb-4 text-[1.3125rem] leading-[1.77188rem]">
+    <!-- <div class="w-[350px] pb-4 text-[1.3125rem] leading-[1.77188rem]">
       Content Credentials is used by the world’s leading organizations
-    </div>
+    </div> -->
     <div class="flex h-[200px] w-full items-center rounded-xl bg-gray-200">
       <div class="flex w-full flex-row items-center justify-evenly">
         {#each data as item}

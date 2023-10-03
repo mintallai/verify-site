@@ -19,7 +19,7 @@
         click: How was it made? Who created it and when? Is it AI-generated?
       </p>
       <a
-        href="/"
+        href="#how-it-works"
         class="mt-10 flex h-[2.75rem] items-center rounded-full bg-brand-red px-[1.25rem] py-3 hover:bg-brand-red/80"
         >See how it works</a>
     </div>

@@ -32,10 +32,10 @@
             class="h-full max-h-full w-full max-w-full rounded-xl object-cover md:max-w-[704px] xl:h-full"
             alt="Penguins in a desert with sand dunes in the background." />
         </div>
-        <p
+        <!-- <p
           class="flex pt-[0.5rem] text-small-description text-gray-500 md:items-start">
           Click on the pin to see the Content Credentials.
-        </p>
+        </p> -->
       </div>
     </div>
   </div>
