@@ -5,9 +5,9 @@
 </script>
 
 <div
-  class="bg-brand-gray flex h-full w-screen flex-col items-center p-[1.5rem] pb-40">
+  class="bg-brand-gray flex h-full w-screen flex-col items-center px-[1.5rem] pb-40 pt-[4rem] md:pt-[6rem] lg:pt-[8rem] xl:pt-[10rem]">
   <h2
-    class="2xl:text-hiw-title-2xl pt-[4rem] text-hiw-title md:text-hiw-title-md xl:text-hiw-title-xl">
+    class="2xl:text-hiw-title-2xl text-hiw-title md:text-hiw-title-md xl:text-hiw-title-xl">
     How it Works
   </h2>
   <div class="flex w-full flex-col items-center">
