@@ -2,7 +2,6 @@
   export let imageUrl;
   import Pin from '$assets/svg/color/cr-icon-fill.svg?component';
   // import Pin from '$assets/svg/color/cr-icon-fill.svg';
-  import MobilePopup from './MobilePopup.svelte';
   import DesktopPopup from './Popup.svelte'; // Import the DesktopPopup component
 
   let isPopupOpen = false;
@@ -32,9 +31,9 @@
 
   <!-- Conditionally render the appropriate popup based on the device type -->
   <!-- svelte-ignore missing-declaration -->
-  {#if window.innerWidth < 768}
-    <MobilePopup isOpen={isPopupOpen} {togglePopup} />
-  {:else}
-    <DesktopPopup isOpen={isPopupOpen} {togglePopup} />
-  {/if}
+  <!-- {#if window.innerWidth < 768} -->
+  <!-- <MobilePopup isOpen={isPopupOpen} {togglePopup} />
+  {:else if window.innerWidth >= 768} -->
+  <DesktopPopup isOpen={isPopupOpen} {togglePopup} />
+  <!-- {/if} -->
 </div>

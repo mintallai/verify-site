@@ -4,7 +4,7 @@
 
 <div class="md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
   <div class="md:col-span-6">
-    <div class="video-container">
+    <div class="video-container z-998">
       <video
         autoplay
         loop
