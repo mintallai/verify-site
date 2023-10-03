@@ -3,7 +3,7 @@
   import BBC from '$assets/png/BBC-Logo.png';
   import Canon from '$assets/png/Canon.png';
   import WashPost from '$assets/png/WashPost.png';
-  import Leica from '$assets/svg/color/logos/leica.svg';
+  import Leica from '$assets/svg/logos/homepage/Leica.svg';
 
   const data = [
     {
