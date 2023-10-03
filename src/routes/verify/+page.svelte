@@ -145,6 +145,6 @@
         {/if}
       </RevealablePanel>
     </div>
-    <svelte:fragment slot="back-bar">{$_('page.home.title')}</svelte:fragment>
+    <svelte:fragment slot="back-bar">{$_('')}</svelte:fragment>
   </SidebarLayout>
 </div>

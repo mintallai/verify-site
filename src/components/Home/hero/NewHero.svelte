@@ -1,0 +1,41 @@
+<script>
+  import Video from '$assets/video/hero.mp4';
+</script>
+
+<div class="flex w-screen max-w-[90rem] items-center justify-center">
+  <div
+    class="2xl:col-span-12 flex h-full w-full flex-col items-center justify-between gap-[1.25rem] self-stretch p-[20px] pt-[40px] sm:p-[2rem] sm:pt-[40px] lg:flex-row lg:gap-[1.5rem]">
+    <div
+      class="2xl:col-start-1 2xl:col-end-6 flex h-full w-full items-center justify-center lg:w-1/2">
+      <div
+        class="flex max-w-[41rem] flex-col items-start justify-center self-stretch p-0 md:p-[1.5rem] xl:max-w-[41rem]">
+        <h1
+          class="2xl:text-hero-title-desktop pb-[2rem] text-center text-hero-title tracking-[-0.105rem] lg:text-hero-title-lg xl:text-center">
+          Wait, where did this image come from?
+        </h1>
+        <p
+          class="2xl:text-hero-sub-desktop text-center text-hero-sub text-gray-900/60">
+          Deepfakes. Voice Cloning. It's hard to tell what's accurate and
+          authentic these days.
+        </p>
+      </div>
+    </div>
+    <div
+      class="flex h-full w-full flex-col items-start justify-center md:items-center lg:w-1/2 lg:items-start">
+      <div class="flex flex-col items-start">
+        <div class="group relative">
+          <video
+            autoplay
+            loop
+            muted
+            src={Video}
+            class="h-full max-h-full w-full max-w-full rounded-xl object-cover md:max-w-[704px] xl:h-full" />
+        </div>
+        <p
+          class="flex pt-[0.5rem] text-small-description text-gray-500 md:items-start">
+          Click on the pin to see the Content Credentials.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -57,23 +57,17 @@ export default {
   },
   theme: {
     screens: {
-      xs: '300px',
       sm: '478px',
       md: '768px',
       lg: '991px',
       xl: '1280px',
       '2xl': '1281px',
-      '3xl': '1441px',
+      '3xl': '1440px',
     },
     fontFamily: {
       base: defs['family-base'],
     },
     colors: {
-      'brand-yellow': '#FCE458',
-      'brand-orange': '#EF9349',
-      'brand-gray': '#757575',
-      'brand-blue': '#84c7fc',
-      'sub-desc': '#757575',
       white: '#ffffff',
       'gray-40': defs['gray-40'],
       'gray-100': defs['gray-100'],
@@ -106,6 +100,7 @@ export default {
       'brand-orange': defs['brand-orange'],
       'brand-violet': defs['brand-violet'],
       'brand-white': defs['brand-white'],
+      'brand-gray': defs['brand-gray'],
       transparent: 'transparent',
       current: 'currentColor',
     },
@@ -187,6 +182,14 @@ export default {
         {
           fontWeight: '700',
           lineHeight: '3.85rem',
+        },
+      ],
+      'hero-title-lg': [
+        '4.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '4.95rem',
+          letterSpacing: '-0.135rem',
         },
       ],
       'hero-title-desktop': [
@@ -326,6 +329,29 @@ export default {
         {
           fontWeight: '700',
           lineHeight: '2.75rem',
+        },
+      ],
+      'hiw-title-md': [
+        '3rem',
+        {
+          fontWeight: '700',
+          lineHeight: '3.3rem',
+        },
+      ],
+      'hiw-title-xl': [
+        '3.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '3.85rem',
+          letterSpacing: '-0.105rem',
+        },
+      ],
+      'hiw-title-2xl:': [
+        '5.5rem',
+        {
+          fontWeight: '700',
+          lineHeight: '4.95rem',
+          letterSpacing: '-0.135rem',
         },
       ],
       'hiw-desc': [
@@ -559,10 +585,12 @@ export default {
           lineHeight: '35px',
         },
       ],
-      'trust-title': [
-        '1.75rem',
+      'popup-text': [
+        '0.75rem',
         {
           fontWeight: '400',
+          lineHeight: '1.0125rem',
+          letterSpacing: '-0.0075rem',
         },
       ],
       // For the Homepage
@@ -573,14 +601,6 @@ export default {
       sm: '0px 1px 3px 0px rgba(0, 0, 0, 0.35)',
     },
     extend: {
-      backgroundColor: {
-        'brand-red': '#fe818b',
-        'brand-green': '#5ac97d',
-        'brand-yellow': '#fbe756',
-        'brand-orange': '#ef9449',
-        'brand-violet': '#888ef8',
-        'brand-blue': '#84c7fc',
-      },
       spacing: {
         sidebar: '20rem',
         header: '3.5rem',
