@@ -29,7 +29,7 @@
             loop
             muted
             src={Video}
-            class="h-full max-h-full w-full max-w-full rounded-xl object-cover md:max-w-[704px] xl:h-full"
+            class="h-full max-h-full w-full max-w-full rounded-xl lg:rounded-[20px] object-cover md:max-w-[704px] xl:h-full"
             alt="Penguins in a desert with sand dunes in the background." />
         </div>
         <!-- <p

@@ -42,7 +42,7 @@
           alt="A phone in someones hand, displaying a photo of the
           surrounding snowy landscape and a penguin. The option
           to enable Content Credentials for the photo is available"
-          class="max-w[71.375rem] 2xl:w-full rounded-2xl" />
+          class="max-w[71.375rem] 2xl:w-full rounded-xl lg:rounded-[20px]" />
       </div>
       <div
         class="2xl:pt-[160px] max-w-[90rem] pt-[96px] lg:max-w-[1145px] xl:max-w-[116rem] xl:px-[10rem] xl:pt-[128px]">
@@ -73,7 +73,7 @@
           Content Credentials information is displayed over the
           image, including that AI was used to generate some of
           the content, who produced the content, and more"
-          class="max-w[71.375rem] 2xl:w-full rounded-2xl" />
+          class="max-w[71.375rem] 2xl:w-full rounded-xl lg:rounded-[20px]" />
       </div>
       <!-- Video Component -->
       <div
@@ -104,7 +104,7 @@
           loop
           muted
           src={Video}
-          class="h-full max-h-full w-full max-w-full rounded-xl object-cover xl:h-full"
+          class="h-full max-h-full w-full max-w-full rounded-xl lg:rounded-[20px] object-cover xl:h-full"
           alt="A tree view of the relationship between different images
           and how they were used together to create a final image
           over time, available in the Verify feature" />
