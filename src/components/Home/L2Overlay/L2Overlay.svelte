@@ -2,12 +2,16 @@
   export let imageUrl;
   import Pin from '$assets/svg/color/cr-icon-fill.svg?component';
   // import Pin from '$assets/svg/color/cr-icon-fill.svg';
-  import DesktopPopup from './Popup.svelte'; // Import the DesktopPopup component
+  import Popup from './Popup.svelte'; // Import the DesktopPopup component
 
   let isPopupOpen = false;
 
   function togglePopup() {
     isPopupOpen = !isPopupOpen;
+  }
+
+  function handleClose() {
+    isPopupOpen = false;
   }
 </script>
 
@@ -17,7 +21,6 @@
     alt="overlay"
     class="w-[calc(100% - 20px)] h-[calc(100% - 20px)] rounded-xl" />
 
-  <!-- Overlay -->
   <div
     class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out group-hover:opacity-100">
     <!-- Logo in the top-right corner -->
@@ -31,9 +34,5 @@
 
   <!-- Conditionally render the appropriate popup based on the device type -->
   <!-- svelte-ignore missing-declaration -->
-  <!-- {#if window.innerWidth < 768} -->
-  <!-- <MobilePopup isOpen={isPopupOpen} {togglePopup} />
-  {:else if window.innerWidth >= 768} -->
-  <DesktopPopup isOpen={isPopupOpen} {togglePopup} />
-  <!-- {/if} -->
+  <Popup isOpen={isPopupOpen} on:close={handleClose} />
 </div>
