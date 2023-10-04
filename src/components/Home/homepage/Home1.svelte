@@ -21,16 +21,17 @@
     <div class="flex flex-col items-center justify-center pt-10">
       <p
         class="2xl:text-home-sub-2xl text-center text-home-sub text-gray-900/60 xl:text-home-sub-XL">
-        Important information about the content you see online is often
-        inaccessible or inaccurate. Content Credentials are a new open-source
-        tool for revealing answers to your questions about content with a simple
-        click: How was it made? Who created it and when? Is it AI-generated?
+        Critical information about the content you see online is often
+        inaccessible or inaccurate. Content Credentials are a new open
+        technology for revealing answers to your questions about content with a
+        simple click: How was it made? Is it AI-generated? When was it created
+        or edited?
       </p>
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <!-- svelte-ignore a11y-no-static-element-interactions -->
       <div
         on:click={scrollToHowItWorks}
-        class="mt-10 flex h-[2.75rem] items-center scroll-smooth rounded-full bg-brand-red px-[1.25rem] py-3 hover:bg-brand-red/80 hover:cursor-pointer">
+        class="mt-10 flex h-[2.75rem] items-center scroll-smooth rounded-full bg-brand-red px-[1.25rem] py-3 hover:cursor-pointer hover:bg-brand-red/80">
         See how it works
       </div>
     </div>
