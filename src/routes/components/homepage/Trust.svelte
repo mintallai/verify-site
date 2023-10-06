@@ -1,23 +1,22 @@
 <script>
   const data = [
     {
-      label: 'Open-source standards',
-      description:
-        'Content Credentials are based on open technical standards developed and maintained by the C2PA, a cross-industry membership organization. You can review the standards anytime.',
+      label: 'Truly open standards',
+      description: `Content Credentials are based on an open technical specification developed and maintained by the <a href="https://c2pa.org/" class="underline">C2PA</a>, a cross-industry standards development organization. You can review the specification anytime.`,
       id: 1,
       bgColor: '#84c7fc',
     },
     {
-      label: 'Clear detection of tampering',
+      label: 'Clear tampering detection',
       description:
-        'Content Credentials are made possible by cryptographic processes which mean that any unsupported changes made to Content Credentials can be easily identified and exposed.',
+        'Content Credentials use technology that makes it clear if content has been altered since its Content Credentials were created. Up-to-date context travels with the content, wherever it goes.',
       id: 2,
       bgColor: '#5ac97d',
     },
     {
       label: 'Accountability',
       description:
-        'Organizations that issue Content Credentials must identify themselves in the Content Credentials they issue. Issuers therefore stake their reputations on their ability to collect and include information with accuracy. Learn more about the Content Credentials trust model.',
+        'Devices, software, and organizations that issue Content Credentials identify themselves in the Content Credentials they issue. Issuers therefore stake their reputations on their ability to record information accurately.',
       id: 3,
       bgColor: '#888ef8',
     },

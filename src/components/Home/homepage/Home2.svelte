@@ -5,15 +5,16 @@
 
 <div class="w-full md:grid md:grid-cols-12 md:gap-4 xl:max-w-[1440px]">
   <div class="w-full md:col-span-6">
-    <L2Overlay
-      imageUrl={Image}
-      class="w-full"
-      alt="Two women looking at a mobile phone, smiling and
-    pointing at it with a clear sky behind them." />
+    <div class="aspect-[3/2]">
+      <L2Overlay
+        imageUrl={Image}
+        class="h-full w-full"
+        alt="Close-up of a colorful butterfly sitting on a sidewalk, with people walking past blurred in the background." />
+    </div>
   </div>
   <div
     class="pt-6 md:col-start-7 md:col-end-13 md:pt-0 lg:col-start-8 lg:col-end-12">
-    <div class="mx-auto max-w-[676px] md:mx-0">
+    <div class="max-w-[676px] md:mx-0">
       <h3 class="pb-6 text-left text-key-title 2xl:text-key-title-xl">
         Building trust in what you see online
       </h3>

@@ -11,12 +11,12 @@
 </script>
 
 <div
-  class="flex w-screen max-w-[90rem] flex-col items-center justify-evenly gap-6 px-[1.5rem] pt-[1.5rem]">
+  class="flex w-screen max-w-[90rem] flex-col items-center justify-evenly gap-6 px-[20px] sm:px-[1.5rem] pt-[1.5rem]">
   <div
     class="2xl:w-[910px] flex flex-col items-center justify-center pb-10 pt-20 xl:w-[802px]">
     <h2
       class="2xl:text-home-title-2xl text-center text-home-secondary-title md:text-home-title-md xl:text-hero-title">
-      Content Credentials reveals helpful information that's usually hidden
+      Content Credentials reveal helpful information that's usually hidden
     </h2>
     <div class="flex flex-col items-center justify-center pt-10">
       <p
@@ -27,13 +27,11 @@
         simple click: How was it made? Is it AI-generated? When was it created
         or edited?
       </p>
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <!-- svelte-ignore a11y-no-static-element-interactions -->
-      <div
+      <button
         on:click={scrollToHowItWorks}
-        class="mt-10 flex h-[2.75rem] items-center scroll-smooth rounded-full bg-brand-red px-[1.25rem] py-3 hover:cursor-pointer hover:bg-brand-red/80">
+        class="mt-10 flex h-[2.75rem] items-center scroll-smooth rounded-full bg-brand-red px-[1.25rem] py-3 hover:cursor-pointer hover:brightness-[0.9] focus:border-solid focus:border-[1px] focus:border-gray-900">
         See how it works
-      </div>
+      </button>
     </div>
   </div>
   <KeyPoints />

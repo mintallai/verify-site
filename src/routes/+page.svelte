@@ -17,46 +17,41 @@
   // import Header from './components/header/Header.svelte';
   import Header from '../components/Home/header/Header.svelte';
   // import HeaderLink from '../components/Header/HeaderLink.svelte';
-  import { goto } from '$app/navigation';
+  // import { goto } from '$app/navigation';
   import Hero from '$src/components/Home/hero/NewHero.svelte';
   import Home1 from '$src/components/Home/homepage/Home1.svelte';
   import HowItWorks from '$src/components/Home/homepage/HowItWorks.svelte';
   import Movement from '$src/components/Home/homepage/Movement.svelte';
   import Orgs from '$src/components/Home/homepage/Orgs.svelte';
-  import Powered from '$src/components/Home/homepage/Powered.svelte';
   import Trust from '$src/components/Home/homepage/Trust.svelte';
-  import { getConfig } from '$src/lib/config';
-  import { onMount } from 'svelte';
-
-  const { features } = getConfig();
-  const showPage = features.includes('homepage');
-
-  onMount(() => {
-    if (!showPage) {
-      goto('/verify');
-    }
-  });
+  import Powered from '$src/components/Home/homepage/Powered.svelte';
+  import { MetaTags } from 'svelte-meta-tags';
 </script>
 
-{#if showPage}
-  <!-- <Header>
+<MetaTags
+  title="Content Credentials"
+  description="Introducing the new standard for content authentication. Content Credentials provide deeper transparency into how content was created or edited."
+  canonical="https://www.contentcredentials.org/" />
+
+<!-- <Header>
+
   <svelte:fragment slot="links">
     <HeaderLink href="/verify">Verify</HeaderLink>
     <HeaderLink href="/apply">Apply</HeaderLink>
     <HeaderLink href="/">Embed</HeaderLink>
   </svelte:fragment>
 </Header> -->
-  <div class="overflow-x-hidden">
-    <Header />
-    <div class="flex flex-col items-center justify-center">
-      <Hero />
-      <Home1 />
-      <HowItWorks />
-      <Trust />
-      <Powered />
-      <Orgs />
-      <Movement />
-    </div>
-    <Footer />
+
+<div class="overflow-x-hidden">
+  <Header />
+  <div class="flex flex-col items-center justify-center">
+    <Hero />
+    <Home1 />
+    <HowItWorks />
+    <Trust />
+    <Powered />
+    <Orgs />
+    <Movement />
   </div>
-{/if}
+  <Footer />
+</div>
