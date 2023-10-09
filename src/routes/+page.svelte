@@ -25,15 +25,15 @@
 </script>
 
 <MetaTags
-  title="Reveal Where That Content Came From | Content Credentials"
-  titleTemplate="Reveal Where That Content Came From | Content Credentials"
-  description="Introducing the new standard for content authentication. Content Credentials provide deeper transparency into how content was created or edited."
+  title="Content Credentials"
+  titleTemplate="Content Credentials"
+  description="Introducing the new standard for content authenticity. Content Credentials provide transparency into how content was created or edited."
   canonical="https://www.contentcredentials.org/"
   openGraph={{
     url: 'https://www.contentcredentials.org/',
-    title: 'Reveal Where That Content Came From | Content Credentials',
+    title: 'Content Credentials',
     description:
-      'Introducing the new standard for content authentication. Content Credentials provide deeper transparency into how content was created or edited.',
+      'Introducing the new standard for content authenticity. Content Credentials provide transparency into how content was created or edited.',
     images: [
       {
         url: 'https://www.contentcredentials.org/static/opengraph.png',
