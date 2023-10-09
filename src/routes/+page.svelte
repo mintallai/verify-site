@@ -12,12 +12,8 @@
   from Adobe.
 -->
 <script lang="ts">
-  // import { _ } from 'svelte-i18n';
   import Footer from '../components/Footer/Footer.svelte';
-  // import Header from './components/header/Header.svelte';
   import Header from '../components/Home/header/Header.svelte';
-  // import HeaderLink from '../components/Header/HeaderLink.svelte';
-  // import { goto } from '$app/navigation';
   import Hero from '$src/components/Home/hero/NewHero.svelte';
   import Home1 from '$src/components/Home/homepage/Home1.svelte';
   import HowItWorks from '$src/components/Home/homepage/HowItWorks.svelte';
@@ -29,18 +25,24 @@
 </script>
 
 <MetaTags
-  title="Content Credentials"
+  title="Reveal Where That Content Came From | Content Credentials"
+  titleTemplate="Reveal Where That Content Came From | Content Credentials"
   description="Introducing the new standard for content authentication. Content Credentials provide deeper transparency into how content was created or edited."
-  canonical="https://www.contentcredentials.org/" />
-
-<!-- <Header>
-
-  <svelte:fragment slot="links">
-    <HeaderLink href="/verify">Verify</HeaderLink>
-    <HeaderLink href="/apply">Apply</HeaderLink>
-    <HeaderLink href="/">Embed</HeaderLink>
-  </svelte:fragment>
-</Header> -->
+  canonical="https://www.contentcredentials.org/"
+  openGraph={{
+    url: 'https://www.contentcredentials.org/',
+    title: 'Reveal Where That Content Came From | Content Credentials',
+    description:
+      'Introducing the new standard for content authentication. Content Credentials provide deeper transparency into how content was created or edited.',
+    images: [
+      {
+        url: 'https://www.contentcredentials.org/static/opengraph.png',
+        width: 1200,
+        height: 630,
+        alt: 'Content Credentials',
+      },
+    ],
+  }} />
 
 <div class="overflow-x-hidden">
   <Header />
