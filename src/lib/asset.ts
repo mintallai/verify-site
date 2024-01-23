@@ -270,11 +270,26 @@ export async function resultToAssetMap({
       return null;
     }
 
+    function formattedGeneratorInfo(
+      claim_generator: Manifest['claimGeneratorInfo'][0],
+    ) {
+      const version = claim_generator?.version;
+      claim_generator.version = version?.replace(/\([^()]*\)/g, '');
+
+      return claim_generator;
+    }
+
+    const claimGeneratorInfo = manifest?.claimGeneratorInfo[0]
+      ? formattedGeneratorInfo(manifest?.claimGeneratorInfo[0])
+      : null;
+
     return {
       date: manifest.signatureInfo?.time
         ? new Date(manifest.signatureInfo.time)
         : null,
-      claimGenerator: selectFormattedGenerator(manifest),
+      claimGenerator: claimGeneratorInfo?.name
+        ? `${claimGeneratorInfo.name} ${claimGeneratorInfo?.version}`
+        : selectFormattedGenerator(manifest),
       signatureInfo: manifest.signatureInfo,
       producer: selectProducer(manifest)?.name ?? null,
       editsAndActivityForLocale: async (locale) => {
