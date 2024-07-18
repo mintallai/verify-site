@@ -64,11 +64,12 @@ We use the following process when adding or updating functionality to the site:
 
 1. Create a branch on the repo for development work that encapsulates a particular feature/change
 2. Once the change is complete (see definition below), open up a pull request, and fill out the template. If a PR is not yet ready for review, please add the `wip` tag.
-3. Once a PR is created, automated tests will run and a preview link will be created. Please make sure the end-to-end and/or unit tests pass and correct them if they are broken.
-4. If any visual snapshot tests need attention, log in to [Percy](https://percy.io/85a19a76/contentcredentials.org) to review or correct unexpected visual changes (please comment on the PR if you need access to Percy).
-5. Once automated tests are resolved, please signal that the PR is ready for review by removing the `wip` tag (if added) and requesting review from a CAI team member.
-6. If the feature needs any product, design, or QE review, please send the preview link to the appropriate team members (the password to the site is available in the deploy preview PR comment).
-7. Once tests pass and the PR has been approved by a [code owner](https://github.com/orgs/contentauth/teams/c2pa-js-committers/members), you can merge for auto-deployment to our [staging site](https://cc-dev.netlify.app/). [Squash and merge](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request#merging-a-pull-request) is generally recommended for small-to-medium PRs with a single author. PRs encompassing larger features should get [rebased](https://docs.github.com/en/get-started/using-git/about-git-rebase) into logical and descriptive commits.
+3. Once a PR is created, an automated dev deploy will run and a preview link will be created. Please make sure the end-to-end and/or unit tests pass and correct them if they are broken.
+4. When you feel like the PR is ready enough to run visual tests (these are expensive so we don't do this automatically on every commit), add the `snapshot requested` tag to the PR and the snapshot tests will start to run. Once they are done GitHub will automatically remove the tag for you.
+5. If any visual snapshot tests need attention, log in to [Percy](https://percy.io/85a19a76/contentcredentials.org) to review or correct unexpected visual changes (please comment on the PR if you need access to Percy).
+6. Once automated tests are resolved, please signal that the PR is ready for review by removing the `wip` tag (if added) and requesting review from a CAI team member.
+7. If the feature needs any product, design, or QE review, please send the preview link to the appropriate team members (the password to the site is available in the deploy preview PR comment).
+8. Once tests pass and the PR has been approved by a [code owner](https://github.com/orgs/contentauth/teams/c2pa-js-committers/members), you can merge for auto-deployment to our [staging site](https://cc-dev.netlify.app/). [Squash and merge](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request#merging-a-pull-request) is generally recommended for small-to-medium PRs with a single author. PRs encompassing larger features should get [rebased](https://docs.github.com/en/get-started/using-git/about-git-rebase) into logical and descriptive commits.
 
 #### Definition of complete
 
