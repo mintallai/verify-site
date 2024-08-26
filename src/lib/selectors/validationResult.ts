@@ -16,15 +16,15 @@ import { difference } from 'lodash';
 
 export type ValidationStatus = ManifestStore['validationStatus'][0];
 
-export type ValidationStatusCode = 'valid' | 'invalid' | 'incomplete';
+export type ValidationStatusCode = 'valid' | 'invalid' | 'unrecognized';
 
 export type ValidationStatusResult = ReturnType<typeof selectValidationResult>;
+
+export const GENERAL_ERROR_CODE = 'general.error';
 
 export const OTGP_ERROR_CODE = 'assertion.dataHash.mismatch';
 
 export const UNTRUSTED_SIGNER_ERROR_CODE = 'signingCredential.untrusted';
-
-export const SIGNATURE_MISMATCH = 'claimSignature.mismatch';
 
 export const SUCCESS_CODES = [
   'claimSignature.validated',
@@ -88,7 +88,7 @@ export function hasUntrustedSigner(
   // and possibly the signature mismatch code
   const codes = validationStatus.map((err) => err.code);
   const filtered = codes.filter((code) =>
-    [UNTRUSTED_SIGNER_ERROR_CODE, SIGNATURE_MISMATCH].includes(code),
+    [UNTRUSTED_SIGNER_ERROR_CODE, GENERAL_ERROR_CODE].includes(code),
   );
   const others = difference(codes, filtered);
   const hasUntrusted = filtered.includes(UNTRUSTED_SIGNER_ERROR_CODE);
@@ -138,12 +138,17 @@ export function selectValidationResult(validationStatus: ValidationStatus[]) {
       UntrustedSignerResult.TrustedWithErrors,
     ].includes(untrustedResult);
   const hasOtgp = hasOtgpStatus(onlyErrors);
+  const hasUntrusted = [
+    UntrustedSignerResult.UntrustedOnly,
+    UntrustedSignerResult.UntrustedWithOtgp,
+    UntrustedSignerResult.UntrustedWithOtherErrors,
+  ].includes(untrustedResult);
   let statusCode: ValidationStatusCode;
 
-  if (hasError) {
+  if (hasError || hasOtgp) {
     statusCode = 'invalid';
-  } else if (hasOtgp) {
-    statusCode = 'incomplete';
+  } else if (hasUntrusted) {
+    statusCode = 'unrecognized';
   } else {
     statusCode = 'valid';
   }
@@ -151,11 +156,86 @@ export function selectValidationResult(validationStatus: ValidationStatus[]) {
   return {
     hasError,
     hasOtgp,
-    hasUntrustedSigner: [
-      UntrustedSignerResult.UntrustedOnly,
-      UntrustedSignerResult.UntrustedWithOtgp,
-      UntrustedSignerResult.UntrustedWithOtherErrors,
-    ].includes(untrustedResult),
+    hasUntrustedSigner: hasUntrusted,
     statusCode,
   };
+}
+
+const jumbfUriRegExp = /^self#jumbf=\/c2pa\/([^/]+)\/?(.*)$/i;
+
+export function extractManifestLabelFromJumbfUri(uri: string) {
+  return jumbfUriRegExp.exec(uri)?.[1] ?? null;
+}
+
+export type ManifestLabelValidationStatusMap = Record<
+  string,
+  ValidationStatus[]
+>;
+
+interface ValidationStatusReducer {
+  reduced: ManifestLabelValidationStatusMap;
+  currentKey: string | null;
+}
+
+/**
+ * This function parses the runtime validation status list, which exists in the root of the `manifestStore` object.
+ *
+ * The way the validation status list is sorted from c2pa-rs is that any entry without a `url` that is a manifest
+ * label is attributed to its "parent" error that has one. The "parent" error will come _after_ the originating error
+ * due to the traversal path when c2pa-rs validates a manifest.
+ *
+ * Sometimes, URLs may reference labels that don't exist in the case of corrupted manifests. In this case, we try to
+ * attribute everything to the active manifest label. Some safeguards are also in place to make sure entries that
+ * don't have a label for whatever reason get attributed to the active manifest.
+ *
+ * **IMPORTANT:** Please update the tests in `validationResult.spec.ts` if making any changes to this function.
+ *
+ * @param validationStatus The runtime validation status on the root of the manifest
+ * @param allLabels
+ * @param activeManifestLabel
+ * @returns
+ */
+export function validationStatusByManifestLabel(
+  validationStatus: ValidationStatus[],
+  allLabels: string[],
+  activeManifestLabel: string,
+): ManifestLabelValidationStatusMap {
+  const { reduced } = [...validationStatus]
+    // Reverse this so we don't have to look forward for the associated URLs
+    .reverse()
+    .reduce<ValidationStatusReducer>(
+      (acc, curr) => {
+        // Try to see if this entry has a label in the URL to associate the validation status with
+        const label = extractManifestLabelFromJumbfUri(curr.url ?? '');
+
+        if (label) {
+          // If this label exists in the manifest store, use it. If not, attribute to the active manifest.
+          const currentKey = allLabels.includes(label)
+            ? label
+            : activeManifestLabel;
+
+          return {
+            reduced: {
+              ...acc.reduced,
+              [currentKey]: [...(acc.reduced[currentKey] ?? []), curr],
+            },
+            currentKey,
+          };
+        } else if (acc.currentKey) {
+          // If we previously parsed a status with a valid label, use that
+          acc.reduced[acc.currentKey].push(curr);
+        } else {
+          // If we don't have anything to go off of and no previous label, add to active manifest errors
+          acc.reduced[activeManifestLabel] = [
+            ...(acc.reduced[activeManifestLabel] ?? []),
+            curr,
+          ];
+        }
+
+        return acc;
+      },
+      { reduced: {}, currentKey: null },
+    );
+
+  return reduced;
 }

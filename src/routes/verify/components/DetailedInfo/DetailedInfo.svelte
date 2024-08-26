@@ -43,11 +43,9 @@
   let hideHeaderThumbnail = true;
 
   $: statusCode = $assetData.validationResult?.statusCode;
-  $: isValid = statusCode === 'valid';
-  $: isIncomplete = statusCode === 'incomplete';
   $: isInvalid = statusCode === 'invalid';
-  $: isUntrusted = $assetData.validationResult?.hasUntrustedSigner ?? false;
-  $: manifestData = isValid ? $assetData.manifestData : null;
+  $: isUntrusted = statusCode === 'unrecognized';
+  $: manifestData = isInvalid ? null : $assetData.manifestData;
   $: title = $assetData.title ?? $_('asset.defaultTitle');
 
   const dispatch = createEventDispatcher();
@@ -118,10 +116,6 @@
 {#if isInvalid}
   <ErrorBanner type="error"
     ><Body><span class="text-white">{$_('error.invalid')}</span></Body
-    ></ErrorBanner>
-{:else if isIncomplete}
-  <ErrorBanner type="info"
-    ><Body><span class="text-white">{$_('error.incomplete')}</span></Body
     ></ErrorBanner>
 {:else if isUntrusted}
   <ErrorBanner type="warning"
