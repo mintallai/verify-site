@@ -1,22 +1,10 @@
 <!--
-  ADOBE CONFIDENTIAL
-  Copyright 2023 Adobe
-  All Rights Reserved.
-
-  NOTICE: All information contained herein is, and remains
-  the property of Adobe and its suppliers, if any. The intellectual
-  and technical concepts contained herein are proprietary to Adobe
-  and its suppliers and are protected by all applicable intellectual
-  property laws, including trade secret and copyright laws.
-  Dissemination of this information or reproduction of this material
-  is strictly forbidden unless prior written permission is obtained
-  from Adobe.
+Copyright 2021-2024 Adobe, Copyright 2025 The C2PA Contributors
 -->
 
 <script lang="ts">
   import { afterNavigate } from '$app/navigation';
   import { SidebarLayout } from '$src/features/SidebarLayout';
-  import { analytics } from '$src/lib/analytics';
   import { onMount, type SvelteComponent } from 'svelte';
   import { _ } from 'svelte-i18n';
   import CompareDetailedInfo from './components/Compare/CompareInfo/CompareInfo.svelte';
@@ -69,10 +57,9 @@
     }
   });
 
-  function handleLaunchFilePicker(context: string) {
+  function handleLaunchFilePicker() {
     return () => {
       filePicker?.launch();
-      analytics.track('launchFilePicker', { context });
     };
   }
 
@@ -103,11 +90,10 @@
     <svelte:fragment slot="sidebar">
       {#if $viewState === 'hierarchy'}
         {#if hasEmptyState}
-          <EmptyState
-            on:launchFilePicker={handleLaunchFilePicker('emptyState')} />
+          <EmptyState on:launchFilePicker={handleLaunchFilePicker()} />
         {:else}
           <NavigationPanel
-            on:launchFilePicker={handleLaunchFilePicker('leftPanel')}
+            on:launchFilePicker={handleLaunchFilePicker()}
             isScrolled={isSidebarScrolled} />
         {/if}
       {:else if $viewState === 'compare' && $compareView.state === 'success'}

@@ -1,18 +1,6 @@
-// ADOBE CONFIDENTIAL
-// Copyright 2023 Adobe
-// All Rights Reserved.
-//
-// NOTICE: All information contained herein is, and remains
-// the property of Adobe and its suppliers, if any. The intellectual
-// and technical concepts contained herein are proprietary to Adobe
-// and its suppliers and are protected by all applicable intellectual
-// property laws, including trade secret and copyright laws.
-// Dissemination of this information or reproduction of this material
-// is strictly forbidden unless prior written permission is obtained
-// from Adobe.
+// Copyright 2021-2024 Adobe, Copyright 2025 The C2PA Contributors
 
 import type { Loadable } from '$lib/types';
-import { analytics } from '$src/lib/analytics';
 import type { AssetData } from '$src/lib/asset';
 import { derived, writable, type Readable, type Writable } from 'svelte/store';
 import {
@@ -93,9 +81,6 @@ function createCompareViewMode() {
   return {
     subscribe: compareMode.subscribe,
     set: (mode: CompareMode) => {
-      analytics.track('setCompareViewMode', {
-        compareMode: mode,
-      });
       compareMode.set(mode);
       localStorage.setItem(STORAGE_MODE_KEY, mode);
     },

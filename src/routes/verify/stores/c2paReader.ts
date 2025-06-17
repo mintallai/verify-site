@@ -1,15 +1,4 @@
-// ADOBE CONFIDENTIAL
-// Copyright 2023 Adobe
-// All Rights Reserved.
-//
-// NOTICE: All information contained herein is, and remains
-// the property of Adobe and its suppliers, if any. The intellectual
-// and technical concepts contained herein are proprietary to Adobe
-// and its suppliers and are protected by all applicable intellectual
-// property laws, including trade secret and copyright laws.
-// Dissemination of this information or reproduction of this material
-// is strictly forbidden unless prior written permission is obtained
-// from Adobe.
+// Copyright 2021-2024 Adobe, Copyright 2025 The C2PA Contributors
 
 import { resultToAssetMap, type AssetDataMap } from '$lib/asset';
 import { getLegacySdk, getSdk, getToolkitSettings } from '$lib/sdk';
@@ -19,7 +8,6 @@ import {
   toast,
   unsupportedFileType,
 } from '$src/features/Toast';
-import { analytics } from '$src/lib/analytics';
 import type { Source as C2paSource, C2paSourceType } from 'c2pa';
 import { openModal } from 'svelte-modals';
 import { writable, type Readable } from 'svelte/store';
@@ -107,30 +95,16 @@ export function createC2paReader(): C2paReaderStore {
           if (correctedType) {
             const buffer = await source.arrayBuffer();
             source = new File([buffer], source.name, { type: correctedType });
-            analytics.track('correctedType', {
-              originalType: sourceType,
-              correctedType,
-            });
           }
         }
 
-        const timingStart = performance.now();
         const result = await sdk.read(source, {
           settings: await getToolkitSettings(),
         });
-        const timingEnd = performance.now();
 
         const { assetMap, dispose: assetMapDisposer } =
           await resultToAssetMap(result);
         dispose = assetMapDisposer;
-
-        analytics.track('readAsset', {
-          result: 'success',
-          origin: typeof source === 'string' ? 'external' : 'local',
-          sourceMimeType: source instanceof Blob ? source.type : 'unknown',
-          fileSize: source instanceof Blob ? source.size : -1,
-          elapsedMs: Math.round(timingEnd - timingStart),
-        });
 
         set({
           state: 'success',
@@ -139,25 +113,13 @@ export function createC2paReader(): C2paReaderStore {
         });
       } catch (e: unknown) {
         if ((e as Record<string, unknown>)?.name === 'InvalidMimeTypeError') {
-          analytics.track('readAsset', {
-            result: 'error',
-            reason: 'invalidMimeType',
-            sourceMimeType: source instanceof Blob ? source.type : 'unknown',
-          });
-
           toast.trigger(unsupportedFileType());
         } else if (
           (e as Record<string, unknown>)?.name === 'C2pa(PrereleaseError)' &&
           (await hasLegacyCredentials(source))
         ) {
-          analytics.track('readAsset', {
-            result: 'prereleaseDetected',
-          });
           openModal(LegacyCredentialModal);
         } else {
-          analytics.trackError(e as Error, {
-            context: 'readAsset',
-          });
           toast.trigger(somethingWentWrong());
         }
 
