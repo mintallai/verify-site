@@ -190,3 +190,13 @@ SNAPSHOT_DEBUG_MODE=1 pnpm run test:e2e
 
 This will render all snapshots locally using Chrome with all of the widths declared in the Percy config and write the
 rendered snapshots to the `snapshot-debug` directory.
+
+## Contributions and feedback
+
+We welcome contributions to this project. For information on contributing, providing feedback, and about ongoing work, see [Contributing](https://github.com/contentauth/verify-site/blob/main/CONTRIBUTING.md). For additional information on testing, see [Contributing to the project](https://github.com/contentauth/verify-site/blob/main/docs/project-contributions.md).
+
+## License
+
+This project is distributed under the terms of the [Apache License (Version 2.0)](https://github.com/contentauth/verify-site/blob/main/LICENSE-APACHE).
+
+Some components and dependent crates are licensed under different terms; please check their licenses for details.
