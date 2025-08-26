@@ -196,7 +196,7 @@ test.describe('Verify - assertion display', () => {
     );
   });
 
-  test.skip('image with embedded icon in claim_generator_info should be displayed correctly', async ({
+  test('image with embedded icon in claim_generator_info should be displayed correctly', async ({
     page,
   }) => {
     const verify = new VerifyPage(page);
