@@ -176,7 +176,7 @@
   "sidebar.verify.process.blockchain": "Blokkjede-registrering",
   "sidebar.verify.process.description": "Applikasjonen eller enheten som ble brukt til å lage dette innholdet, har registrert følgende informasjon:",
   "sidebar.verify.process.ingredients": "Bestanddeler",
-  "sidebar.verify.process.viewOnExplorer": "Vis i Explorer",
+  "sidebar.verify.process.viewOnExplorer": "Vis i explorer",
   "sidebar.verify.recovery.noMatches": "Finner ingen treff",
   "sidebar.verify.recovery.possibleMatches": "Mulige treff",
   "sidebar.verify.search": "Søk etter potensielle treff",

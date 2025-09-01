@@ -176,7 +176,7 @@
   "sidebar.verify.process.blockchain": "Blockchain-registrering",
   "sidebar.verify.process.description": "Den app eller enhed, der er blevet anvendt til at producere dette indhold, har registreret følgende oplysninger:",
   "sidebar.verify.process.ingredients": "Ingredienser",
-  "sidebar.verify.process.viewOnExplorer": "Vis i Explorer",
+  "sidebar.verify.process.viewOnExplorer": "Vis i explorer",
   "sidebar.verify.recovery.noMatches": "Der blev ikke fundet nogen matches",
   "sidebar.verify.recovery.possibleMatches": "Mulige matches",
   "sidebar.verify.search": "Søg efter mulige matches",
