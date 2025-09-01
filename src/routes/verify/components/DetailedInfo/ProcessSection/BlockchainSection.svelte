@@ -24,7 +24,7 @@
 <SubSection>
   <svelte:fragment slot="title">
     {$_('sidebar.verify.process.blockchain', {
-      default: 'Blockchain Record',
+      default: 'Blockchain record',
     })}</svelte:fragment>
   <div class="flex flex-col gap-2.5" slot="content">
     <AboutSectionIconContentRow>
