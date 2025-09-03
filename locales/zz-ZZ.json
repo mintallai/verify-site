@@ -176,7 +176,7 @@
   "sidebar.verify.process.blockchain": "Blockchain record",
   "sidebar.verify.process.description": "[8] _üThe app or device used to produce this content recorded the following info:",
   "sidebar.verify.process.ingredients": "[9] _üIngredients",
-  "sidebar.verify.process.viewOnExplorer": "View on explorer",
+  "sidebar.verify.process.viewOnExplorer": "View on Explorer",
   "sidebar.verify.recovery.noMatches": "[B4] _üNo matches found",
   "sidebar.verify.recovery.possibleMatches": "[Bf] _üPossible matches",
   "sidebar.verify.search": "[BI] _üSearch for possible matches",
