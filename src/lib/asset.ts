@@ -284,8 +284,14 @@ export async function resultToAssetMap({
       ingredient.thumbnail?.getUrl(),
     );
 
+    const activeManifestValidationResults =
+      ingredient.validationResults?.activeManifest;
+
     // Check validation result in the validationStatus supplied in the manifest
-    let validationResult = selectValidationResult(ingredient.validationStatus);
+    let validationResult = selectValidationResult(
+      ingredient.validationStatus,
+      activeManifestValidationResults,
+    );
 
     if (!validationResult.hasError && ingredientManifestLabel) {
       // If validationResult doesn't have an error, also check the runtime validation
@@ -390,7 +396,23 @@ export async function resultToAssetMap({
           const hasInference =
             !!actionsAssertion?.data?.metadata?.['com.adobe.inference'];
 
-          return { editsAndActivity, hasInference };
+          const editsAndActivityWithUnknowns = editsAndActivity?.map(
+            (value) => {
+              if (value.label === undefined) {
+                return {
+                  ...value,
+                  label: 'Unknown',
+                };
+              }
+
+              return value;
+            },
+          );
+
+          return {
+            editsAndActivity: editsAndActivityWithUnknowns,
+            hasInference,
+          };
         }
 
         return null;
