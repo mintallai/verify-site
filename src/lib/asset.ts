@@ -28,7 +28,6 @@ import {
   selectModelsFromIngredient,
   type GenerativeInfo,
 } from './selectors/generativeInfo';
-import { selectNFTInfo, type NFTInfo } from './selectors/nftInfo';
 import { selectReviewRatings } from './selectors/reviewRatings';
 import {
   selectValidationResult,
@@ -85,7 +84,6 @@ export type ManifestData = {
   web3Accounts: [string, string[]][];
   website: string | null;
   autoDubInfo: AutoDubInfo | null;
-  nftInfo: NFTInfo | null;
 };
 
 export type AssetDataMap = Record<string, AssetData>;
@@ -408,7 +406,6 @@ export async function resultToAssetMap({
       web3Accounts: selectWeb3(manifest),
       website: selectWebsite(manifest),
       autoDubInfo: selectAutoDubInfo(manifest),
-      nftInfo: selectNFTInfo(manifest),
     };
   }
 

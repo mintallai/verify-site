@@ -8,7 +8,6 @@
   import AiSubSection from './AISubSection.svelte';
   import ActionsSection from './ActionsSection.svelte';
   import AppDeviceSection from './AppDeviceSection.svelte';
-  import BlockchainSection from './BlockchainSection.svelte';
   import IngredientsSection from './IngredientsSection.svelte';
 
   export let manifestData: ManifestData;
@@ -39,9 +38,6 @@
         {/if}
       </div>
     {/await}
-    {#if manifestData.nftInfo}
-      <BlockchainSection blockchainData={manifestData.nftInfo} />
-    {/if}
     {#if ingredients.length}
       <IngredientsSection {ingredients} />
     {/if}
