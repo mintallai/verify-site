@@ -1,6 +1,5 @@
 <!--
- Legacy redirect: This page redirects /verify to / for backward compatibility.
- This redirect is maintained to support external applications that link to /verify.
+ Copyright 2021-2025 Adobe, Copyright 2025 The C2PA Contributors
 -->
 
 <script lang="ts">
